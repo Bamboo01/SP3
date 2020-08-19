@@ -105,7 +105,7 @@ bool Application::GetMouseUpdate()
 	int sizeX, sizeY;
 	glfwGetWindowPos(m_window, &tempxPos, &tempyPos);
 	glfwGetWindowSize(m_window, &sizeX, &sizeY);
-	RECT WindowRect = { tempxPos,tempyPos,tempxPos + sizeX - 8,tempyPos + sizeY - 15 };
+	RECT WindowRect = { tempxPos,tempyPos - 30,tempxPos + sizeX - 8,tempyPos + sizeY - 15 };
 	ClipCursor(&WindowRect);
 
 	glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
