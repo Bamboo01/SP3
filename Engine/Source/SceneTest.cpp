@@ -17,6 +17,7 @@ void SceneTest::Init()
 	transformsystem->Setup();
 	camerasystem->Setup();
 	rendersystem->Setup();
+	cameracontrollersystem->Setup();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
@@ -27,11 +28,13 @@ void SceneTest::Init()
 		CAMERA_TYPE::CAMERA_MAIN,
 		CAMERA_MODE::MODE_PERSPECTIVE
 	));
+	coordinator.AddComponent<CameraController>(maincamera, CameraController());
 
 	Entity axes = coordinator.CreateEntity();
 	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));
 	coordinator.AddComponent<Transform>(axes, Transform());
 	Math::InitRNG();
+
 	for (int i = 0; i < 400; i++)
 	{
 		int x = Math::RandIntMinMax(-10, 10);
