@@ -2,6 +2,7 @@
 #include "TransformSystem.h"
 #include "CameraSystem.h"
 #include "RenderSystem.h"
+#include "CameraControllerSystem.h"
 
 #pragma once
 class SceneTest : public Scene
@@ -23,6 +24,7 @@ public:
 	std::shared_ptr<TransformSystem> transformsystem;
 	std::shared_ptr<CameraSystem> camerasystem;
 	std::shared_ptr<RenderSystem> rendersystem;
+	std::shared_ptr<CameraControllerSystem> cameracontrollersystem;
 
 };
 

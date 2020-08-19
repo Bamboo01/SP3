@@ -7,10 +7,12 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<Camera>();
 	coordinator.RegisterComponent<Transform>();
 	coordinator.RegisterComponent<RenderData>();
+	coordinator.RegisterComponent<CameraController>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
 	rendersystem = coordinator.RegisterSystem<RenderSystem>();
+	cameracontrollersystem = coordinator.RegisterSystem<CameraControllerSystem>();
 
 	transformsystem->Setup();
 	camerasystem->Setup();
@@ -18,8 +20,8 @@ void SceneTest::Init()
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
-		glm::vec3(0, 0, -3.f),
-		glm::vec3(0, 0, 0),
+		glm::vec3(0, 50, -3.f),
+		glm::vec3(90, 0, 0),
 		800, 800,
 		90.f, 
 		CAMERA_TYPE::CAMERA_MAIN,
@@ -40,9 +42,11 @@ void SceneTest::Init()
 		coordinator.AddComponent<Transform>(cube, Transform());
 		coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
 		coordinator.GetComponent<Transform>(cube).position = glm::vec3(x, y, z);
+		coordinator.GetComponent<Transform>(cube).scale = glm::vec3(20, 20, 20);
 		coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 	}
 	/*Init all systes*/
+
 	camerasystem->Init();
 	rendersystem->Init();
 	transformsystem->Init();
@@ -57,6 +61,7 @@ void SceneTest::Update(double dt)
 {
 	transformsystem->Update(dt);
 	camerasystem->Update(dt);
+	cameracontrollersystem->Update(dt);
 	rendersystem->Update(dt);
 }
 

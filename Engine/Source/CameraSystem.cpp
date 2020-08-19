@@ -24,13 +24,38 @@ void CameraSystem::Update(float dt)
 	{
 		auto& camera = coordinator.GetComponent<Camera>(entity);
 
-		if (Application::IsKeyPressed('A'))
+		if (Application::IsKeyPressed('W'))
 		{
-			camera.position.x -= dt * 50.f;
+			camera.position -= (camera.position - camera.target) * 50.f * dt;
+		}
+		if (Application::IsKeyPressed('S'))
+		{
+			camera.position += (camera.position - camera.target) * 50.f * dt;
 		}
 		if (Application::IsKeyPressed('D'))
 		{
-			camera.position.x += dt * 50.f;
+			camera.position += camera.right * 50.f * dt;
+		}
+		if (Application::IsKeyPressed('A'))
+		{
+			camera.position -= camera.right * 50.f * dt;
+		}
+		if (Application::IsKeyPressed(VK_SPACE))
+		{
+			camera.position += camera.up * 50.f * dt;
+		}
+		if (Application::IsKeyPressed(VK_CONTROL))
+		{
+			camera.position -= camera.up * 50.f * dt;
+		}
+
+		if (Application::IsKeyPressed('E'))
+		{
+			camera.rotation.y += 50.f * dt;
+		}
+		if (Application::IsKeyPressed('Q'))
+		{
+			camera.rotation.y -= 50.f * dt;
 		}
 
 		glm::mat4 rot(1.f);

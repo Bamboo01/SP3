@@ -109,6 +109,12 @@
     <Filter Include="Meshes\TextMesh">
       <UniqueIdentifier>{0369c8e4-e705-4fb5-ba88-5c87598f4ed2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{d03be200-4d18-4c98-ad11-3075c899aa1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{a4882746-b3ff-4dd9-97df-e46382c9e600}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -173,6 +179,9 @@
       <Filter>Core\Core Systems\RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="Source\TextMesh.cpp" />
+    <ClCompile Include="Source\CameraControllerSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Timer.h">
@@ -284,5 +293,11 @@
       <Filter>Core\Core Components\Render</Filter>
     </ClInclude>
     <ClInclude Include="Source\TextMesh.h" />
+    <ClInclude Include="Source\CameraControllerSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraController.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

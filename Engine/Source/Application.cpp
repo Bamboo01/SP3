@@ -22,7 +22,8 @@ const unsigned char FPS = 60; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
 double Application::mouse_last_x = 0.0, Application::mouse_last_y = 0.0,
 Application::mouse_current_x = 0.0, Application::mouse_current_y = 0.0,
-Application::mouse_diff_x = 0.0, Application::mouse_diff_y = 0.0;
+Application::mouse_diff_x = 0.0, Application::mouse_diff_y = 0.0,
+Application::mouse_scroll_x = 0.0, Application::mouse_scroll_y = 0.0;
 double Application::camera_yaw = 0.0, Application::camera_pitch = 0.0;
 int m_width, m_height;
 bool Application::exitProgram;
@@ -44,6 +45,11 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
+static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	Application::mouse_scroll_x += xoffset;
+	Application::mouse_scroll_y += yoffset;
+}
 
 void resize_callback(GLFWwindow* window, int w, int h)
 {
@@ -55,6 +61,11 @@ void resize_callback(GLFWwindow* window, int w, int h)
 bool Application::IsKeyPressed(unsigned short key)
 {
 	return ((GetAsyncKeyState(key) & 0x8001) != 0);
+}
+
+bool Application::IsMousePressed(unsigned short key)
+{
+	return glfwGetMouseButton(m_window, key) != 0;
 }
 
 int Application::GetWindowWidth()
@@ -80,7 +91,7 @@ bool Application::GetMouseUpdate()
 	camera_pitch = mouse_diff_y * 0.0174555555555556f;// 3.142f / 180.0f );
 
 	// Do a wraparound if the mouse cursor has gone out of the deadzone
-	if ((mouse_current_x < m_window_deadzone) || (mouse_current_x > m_window_width - m_window_deadzone))
+	/*if ((mouse_current_x < m_window_deadzone) || (mouse_current_x > m_window_width - m_window_deadzone))
 	{
 		mouse_current_x = m_window_width >> 1;
 		glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
@@ -89,7 +100,15 @@ bool Application::GetMouseUpdate()
 	{
 		mouse_current_y = m_window_height >> 1;
 		glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
-	}
+	}*/
+	int tempxPos, tempyPos;
+	int sizeX, sizeY;
+	glfwGetWindowPos(m_window, &tempxPos, &tempyPos);
+	glfwGetWindowSize(m_window, &sizeX, &sizeY);
+	RECT WindowRect = { tempxPos,tempyPos,tempxPos + sizeX - 8,tempyPos + sizeY - 15 };
+	ClipCursor(&WindowRect);
+
+	glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
 
 	// Store the current position as the last position
 	mouse_last_x = mouse_current_x;
@@ -146,6 +165,7 @@ void Application::Init()
 	//Sets the key callback
 	//glfwSetKeyCallback(m_window, key_callback);
 	glfwSetWindowSizeCallback(m_window, resize_callback);
+	glfwSetScrollCallback(m_window, scroll_callback);
 
 	glewExperimental = true; // Needed for core profile
 	//Initialize GLEW
@@ -161,7 +181,7 @@ void Application::Init()
 	renderer.Init();
 
 	// Hide the cursor
-	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
 
 void Application::Run()
