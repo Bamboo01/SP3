@@ -14,6 +14,7 @@ void CameraSystem::Init()
 	for (auto const& entity : m_Entities)
 	{
 		auto& camera = coordinator.GetComponent<Camera>(entity);
+		camera.target = glm::vec3(0, 0, 0);
 		camera.Init();
 	}
 }
@@ -64,8 +65,6 @@ void CameraSystem::Update(float dt)
 		//rot = glm::rotate(rot, rotation.x, glm::vec3(1, 0, 0));
 		//rot = glm::rotate(rot, rotation.y, glm::vec3(0, 1, 0));
 		//rot = glm::rotate(rot, rotation.z, glm::vec3(0, 0, 1));
-
-		//camera.target = camera.position + glm::vec3((rot * glm::vec4(0, 0, 1, 0)));
 		//camera.up = rot * glm::vec4(0, 1, 0, 0);
 		//camera.right = glm::cross((camera.target - camera.position), camera.up);
 		camera.ViewMatrix = glm::lookAt(camera.position, camera.target, camera.up);
