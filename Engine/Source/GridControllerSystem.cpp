@@ -11,7 +11,7 @@ void GridControllerSytem::CreateGrids()
 			GridPosition[count] = glm::vec3(x, 2, y);
 			GridCost[count] = 1;
 			CheckGridCost(count);
-			//std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << " ::::" << GridCost[count] << std::endl;
+			std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << " ::::" << GridCost[count] << std::endl;
 			count++;
 		}
 	
@@ -25,7 +25,8 @@ void GridControllerSytem::CheckGridCost(int GridNum)
 	for (auto const& entity : m_Entities)
 	{
 		auto& unit = coordinator.GetComponent<Unit>(entity);
-		if (unit.WorldPos.x >= GridTopLeft.x && unit.WorldPos.x <= GridBottomRight.x && unit.WorldPos.z <= GridTopLeft.z && unit.WorldPos.z >= GridBottomRight.z)
+		auto& transform = coordinator.GetComponent<Transform>(entity);
+		if (transform.position.x + transform.scale.x>= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z+ transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 		{
 			GridCost[GridNum] += unit.FlowFieldCost;
 		}
@@ -69,6 +70,7 @@ void GridControllerSytem::SetUp()
 {
 	Signature signature;
 	signature.set(coordinator.GetComponentType<Unit>());
+	signature.set(coordinator.GetComponentType<Transform>());
 	coordinator.SetSystemSignature<GridControllerSytem>(signature);
 }
 

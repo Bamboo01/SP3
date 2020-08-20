@@ -13,8 +13,6 @@ struct Unit
 	int Defense;		// Mitigates a percentage of the damage the unit takes
 	float AttackSpeed;	// The interval between attacks for the unit
 	int FlowFieldCost;	// The cost of the unit [ONLY FOR UNPASSABLE OBJECTS/ REST ARE 1]
-	glm::vec3 WorldPos;	// Unit World Position
-	glm::vec3 UnitScale; // Unit scale
 
 	enum UnitTypes // This is arrange in a way to know what is rendered out for each unit when selected
 	{
@@ -47,8 +45,6 @@ struct Unit
 		, AttackSpeed(0)
 		, unittype(Unit::START)
 		, FlowFieldCost(0)
-		,WorldPos(0,0,0)
-		, UnitScale(0,0,0)
 	{
 	}
 
@@ -56,7 +52,7 @@ struct Unit
 	// Max base damage and defense is 100
 	// Calculation for health = (basehealth * 4 * level) / 100 + level + 10
 	// Calculation for damage/defense = (basedamage/basedefense * 4 * level) / 100 + 5
-	Unit(std::string name, int level, int basehealth, int damage, int defense, float attackspeed, UnitTypes type,int flowfieldcost,glm::vec3 worldpos, glm::vec3 unitscale)
+	Unit(std::string name, int level, int basehealth, int damage, int defense, float attackspeed, UnitTypes type,int flowfieldcost)
 		: Name(name)
 		, Level(level)
 		, Health((basehealth * 4 * level) / 100 + level + 10)
@@ -65,8 +61,7 @@ struct Unit
 		, AttackSpeed(attackspeed)
 		, unittype(type)
 		, FlowFieldCost(flowfieldcost)
-		, WorldPos (worldpos)
-		, UnitScale(unitscale)
+
 	{
 	}
 

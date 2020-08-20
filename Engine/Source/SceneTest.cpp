@@ -26,14 +26,14 @@ void SceneTest::Init()
 	cameracontrollersystem->Setup();
 
 	Entity testunit = coordinator.CreateEntity();
-	coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 500, glm::vec3(10, 2, 10), glm::vec3(30, 30, 30)));
+	coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 500));
 	coordinator.AddComponent<RenderData>(testunit, RenderData(renderer.getMesh(GEO_GRID), false));
 	coordinator.AddComponent<Transform>(testunit, Transform());
 	coordinator.GetComponent<Transform>(testunit).position = glm::vec3(10, 2, 10);
 	coordinator.GetComponent<Transform>(testunit).scale = glm::vec3(30, 30, 30);
 	coordinator.GetComponent<Transform>(testunit).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 	Entity testunit2 = coordinator.CreateEntity();
-	coordinator.AddComponent<Unit>(testunit2, Unit("Test2", 0, 0, 0, 0, 0, Unit::WALL, 500, glm::vec3(60, 2, 150), glm::vec3(30, 30, 30)));
+	coordinator.AddComponent<Unit>(testunit2, Unit("Test2", 0, 0, 0, 0, 0, Unit::WALL, 500));
 	coordinator.AddComponent<RenderData>(testunit2, RenderData(renderer.getMesh(GEO_GRID), false));
 	coordinator.AddComponent<Transform>(testunit2, Transform());
 	coordinator.GetComponent<Transform>(testunit2).position = glm::vec3(60, 2, 150);
