@@ -127,6 +127,9 @@
     <Filter Include="Component">
       <UniqueIdentifier>{750cc336-f1ed-4969-9c3f-37c1ed7439bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules\ImGui">
+      <UniqueIdentifier>{14ca273d-9c32-42cf-aabb-c313b839f95a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -192,6 +195,24 @@
     </ClCompile>
     <ClCompile Include="Source\CanvasImageSystem.cpp">
       <Filter>Systems\CanvasImageSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_demo.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_draw.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_impl_glfw.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_impl_opengl3.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_widgets.cpp">
+      <Filter>Modules\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +341,30 @@
     </ClInclude>
     <ClInclude Include="Source\CanvasImageSystem.h">
       <Filter>Systems\CanvasImageSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imconfig.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imgui.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imgui_impl_glfw.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imgui_impl_opengl3.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imgui_internal.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imstb_rectpack.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imstb_textedit.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imstb_truetype.h">
+      <Filter>Modules\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

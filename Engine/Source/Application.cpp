@@ -17,6 +17,10 @@
 //Include Renderer for rendering
 #include "Renderer.h"
 
+#include "../Dependencies/ImGui/imgui.h"
+#include "../Dependencies/ImGui/imgui_impl_glfw.h"
+#include "../Dependencies/ImGui/imgui_impl_opengl3.h"
+
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
@@ -173,6 +177,15 @@ void Application::Run()
 	scenemanager->ChangeScene(SCENE_TEST);
 	scenemanager->Update();
 	
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+
+	const char* glsl_version = "#version 330";
+
+	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+	ImGui_ImplOpenGL3_Init(glsl_version);
+	ImGui::StyleColorsDark();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 	while ((!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE)))
@@ -200,6 +213,10 @@ void Application::Run()
 		m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.   
 
 	} //Check if the ESC key had been pressed or if the window had been closed
+	// Clean Up ImGui
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	scene->Exit();
 	delete scene;
 }

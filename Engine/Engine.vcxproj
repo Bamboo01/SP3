@@ -160,6 +160,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Dependencies\ImGui\imgui.cpp" />
+    <ClCompile Include="..\Dependencies\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="..\Dependencies\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="..\Dependencies\ImGui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\Dependencies\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\Dependencies\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source\CanvasImageSystem.cpp" />
     <ClCompile Include="Source\RenderSystem.cpp" />
     <ClCompile Include="Source\CameraSystem.cpp" />
@@ -184,6 +190,14 @@
     <ClCompile Include="Source\TransformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dependencies\ImGui\imconfig.h" />
+    <ClInclude Include="..\Dependencies\ImGui\imgui.h" />
+    <ClInclude Include="..\Dependencies\ImGui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\Dependencies\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\Dependencies\ImGui\imgui_internal.h" />
+    <ClInclude Include="..\Dependencies\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="..\Dependencies\ImGui\imstb_textedit.h" />
+    <ClInclude Include="..\Dependencies\ImGui\imstb_truetype.h" />
     <ClInclude Include="Source\CanvasImageSystem.h" />
     <ClInclude Include="Source\CanvasImage.h" />
     <ClInclude Include="Source\CanvasText.h" />

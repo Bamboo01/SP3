@@ -20,6 +20,8 @@ public:
 	virtual void Exit();
 	virtual Scene* Clone() { return new SceneTest(*this); }
 
+	void renderImGui();
+
 	/*Systems of the scene*/
 	std::shared_ptr<TransformSystem> transformsystem;
 	std::shared_ptr<CameraSystem> camerasystem;

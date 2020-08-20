@@ -1,6 +1,10 @@
 #include "SceneTest.h"
 #include "Application.h"
 
+#include "../Dependencies/ImGui/imgui.h"
+#include "../Dependencies/ImGui/imgui_impl_glfw.h"
+#include "../Dependencies/ImGui/imgui_impl_opengl3.h"
+
 void SceneTest::Init()
 {
 	coordinator.Init();
@@ -92,6 +96,9 @@ void SceneTest::LateUpdate(double dt)
 
 void SceneTest::PreRender()
 {
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
 }
 
 void SceneTest::Render()
@@ -99,13 +106,23 @@ void SceneTest::Render()
 	rendersystem->Render();
 	camerasystem->Render();
 	canvasimagesystem->Render();
+	renderImGui();
 }
 
 void SceneTest::PostRender()
 {
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 void SceneTest::Exit()
 {
 	coordinator.Exit();
+}
+
+void SceneTest::renderImGui()
+{
+	ImGui::Begin("Demo window");
+	ImGui::Button("Hello!");
+	ImGui::End();
 }
