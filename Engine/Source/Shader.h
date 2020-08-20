@@ -199,7 +199,7 @@ public:
 		{
 			glActiveTexture(GL_TEXTURE0 + i);
 			glBindTexture(GL_TEXTURE_2D, material->colorTexture[i]);
-			setInt(MaterialUniforms[U_COLOR_TEXTURE0 + i], material->colorTexture[i]);
+			setInt(MaterialUniforms[U_COLOR_TEXTURE0 + i], i);
 		}
 		setInt(MaterialUniforms[U_MATERIAL_SPECULAR_MAP], material->specularMap);
 		setInt(MaterialUniforms[U_MATERIAL_SPECULAR_MAP_ENABLED], material->specularMapEnabled);

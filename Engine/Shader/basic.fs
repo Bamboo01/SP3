@@ -1,6 +1,6 @@
 #version 330 core
 layout(location = 0) out vec4 FragColor;
-layout(location = 1) out float FragDepth;
+//layout(location = 1) out float FragDepth;
 
 // Constant values
 const int MAX_LIGHTS = 32; //Add a +1 for shadow light
@@ -59,7 +59,7 @@ void main()
     else
     {
         vec4 color = vec4(0, 0, 0, 0);
-        for (int i = 0; i <= material.colorTextureNum; i++)
+        for (int i = 0; i < material.colorTextureNum; i++)
         {
             vec4 textureColor = texture2D( material.colorTexture[i], TexCoord );
             if (textureColor.a < 0.1)
