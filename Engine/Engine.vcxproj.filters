@@ -121,6 +121,9 @@
     <Filter Include="Systems\Grid Controller System">
       <UniqueIdentifier>{d2ebf183-ece5-4578-ae50-7c3ffd451832}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Core Components\Unit">
+      <UniqueIdentifier>{50ccbe11-77cc-45eb-9804-2a5e0958a6ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -310,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="Source\GridControllerSystem.h">
       <Filter>Systems\Grid Controller System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Unit.h">
+      <Filter>Core\Core Components\Unit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,12 +9,29 @@ void GridControllerSytem::CreateGrids()
 		for (int x = -500; x < 500; x += 50)
 		{
 			GridPosition[count] = glm::vec3(x, 2, y);
-			std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << std::endl;
+			GridCost[count] = 1;
+			CheckGridCost(count);
+			//std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << " ::::" << GridCost[count] << std::endl;
 			count++;
 		}
-		rendered = false;
+	
 	}
 }
+
+void GridControllerSytem::CheckGridCost(int GridNum)
+{
+	glm::vec3 GridTopLeft = GridPosition[GridNum];
+	glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+	for (auto const& entity : m_Entities)
+	{
+		auto& unit = coordinator.GetComponent<Unit>(entity);
+		if (unit.WorldPos.x >= GridTopLeft.x && unit.WorldPos.x <= GridBottomRight.x && unit.WorldPos.z <= GridTopLeft.z && unit.WorldPos.z >= GridBottomRight.z)
+		{
+			GridCost[GridNum] += unit.FlowFieldCost;
+		}
+	}
+}
+
 
 void GridControllerSytem::Update(float dt)
 {
@@ -28,9 +45,30 @@ void GridControllerSytem::Update(float dt)
 	}
 }
 
+void GridControllerSytem::CreatePath()
+{
+	//Check Which Grid the destination is at
+	for (int i = 0; i < 500; ++i)
+	{
+		glm::vec3 GridTopLeft = GridPosition[i];
+		glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+		if (CursorWorldPosition.x >= GridTopLeft.x && CursorWorldPosition.x <= GridBottomRight.x && CursorWorldPosition.z <= GridTopLeft.z && CursorWorldPosition.z >= GridBottomRight.z)
+		{
+			if (GridCost[i] == 1)
+			{
+				GridCost[i] = 0;
+				break;
+			}
+			else
+				break;
+		}
+	}
+}
+
 void GridControllerSytem::SetUp()
 {
 	Signature signature;
+	signature.set(coordinator.GetComponentType<Unit>());
 	coordinator.SetSystemSignature<GridControllerSytem>(signature);
 }
 

@@ -3,6 +3,7 @@
 //		of destination, this will be called to create a new flow field grid
 #include "Coordinator.h"
 #include "Application.h"
+#include "Unit.h"
 #include "glm.hpp"
 extern Coordinator coordinator;
 
@@ -15,9 +16,11 @@ private:
 	
 
 public:
-	virtual void CreateGrids();		// Creating of a new grid
-	virtual void Update(float dt);		//Getting Mouse Pressed for position of the unit's destination
+	virtual void CreateGrids();						// Creating of a new grid
+	virtual void CheckGridCost(int GridNum);		// Checking cost of each Grid
+	virtual void Update(float dt);					//Getting Mouse Pressed for position of the unit's destination
+	virtual void CreatePath();
 	virtual void SetUp();
 	glm::vec3 GridPosition[500];
-	bool rendered = true;
+	int GridCost[500];
 };
