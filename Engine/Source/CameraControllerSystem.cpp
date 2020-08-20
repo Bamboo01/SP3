@@ -33,13 +33,17 @@ void CameraControllerSystem::Update(float dt)
         }
         if (Application::mouse_current_y < 50)
         {
+            //Camera move down
             glm::vec3 dir = camera.up;
+            dir.y = 0;
             camera.position += dir * 500.f * (float)dt;
             camera.target += dir * 500.f * (float)dt;
         }
         if (Application::mouse_current_y > Application::GetWindowHeight() - 50)
         {
-            glm::vec3 dir = camera.up;;
+            //Camera move up
+            glm::vec3 dir = camera.up;
+            dir.y = 0;
             camera.position -= dir * 500.f * (float)dt;
             camera.target -= dir * 500.f * (float)dt;
         }
@@ -57,8 +61,27 @@ void CameraControllerSystem::Update(float dt)
             distanceTraveled.y = Application::mouse_current_y - StartPos.y /*- distanceTraveled.y*/;
             if (distanceTraveled.x != 0)
             {
-
+                auto& camera = coordinator.GetComponent<Camera>(entity);
+                glm::vec3 view = glm::normalize(camera.target - camera.position);
+                glm::vec3 right = glm::cross(view, camera.up);
+                right.z = 0;
+                right = glm::normalize(right);
+                camera.position += right * distanceTraveled.x * 0.2f * (float)dt;
             }
+            if (distanceTraveled.y != 0)
+            {
+                auto& camera = coordinator.GetComponent<Camera>(entity);
+                glm::vec3 view = glm::normalize(camera.target - camera.position);
+                glm::vec3 right = glm::cross(view, camera.up);
+                right.z = 0;
+                right = glm::normalize(right);
+                camera.position += right * distanceTraveled.y  * 0.2f* (float)dt;
+            }
+        }
+        else if (scrollUsed && !Application::IsMousePressed(2))
+        {
+            scrollUsed = false;
+            distanceTraveled = glm::vec3(0, 0, 0);
         }
     }
 }
