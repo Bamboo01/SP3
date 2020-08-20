@@ -11,7 +11,6 @@ private:
 	glm::vec3 distanceTraveled;
 	glm::vec3 StartPos;
 	bool scrollUsed;
-	Vector3 RotationChange;
 	float fZoom = 0;
 
 public:
