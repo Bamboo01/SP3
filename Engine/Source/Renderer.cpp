@@ -53,6 +53,11 @@ void Renderer::Init()
 	lightingManager.InitLights(shaderManager);
 
 	/*Initialise all your shaders here*/
+	Shader* test = new Shader("Shader//test.vs", "Shader//test.fs");
+	shaderManager.push_back(test);
+
+	Shader* whitey = new Shader("Shader//whitey.vs", "Shader//whitey.fs");
+	shaderManager.push_back(test);
 
 	/*Add your materials*/
 	Material* boxmat = new Material();
@@ -61,11 +66,15 @@ void Renderer::Init()
 	boxmat->AssignTexture("Images//grass.tga");
 	materialManager.push_back(boxmat);
 
+	Material* GUIWhite = new Material();
+
 	/*Assign your material their shaders here*/
-	addMaterial(boxmat);
+	addMaterial(boxmat, test);
+	addMaterial(GUIWhite, whitey);
 
 	/*Assign your meshes their materials here*/
 	assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
+	assignMaterialtoMesh(meshManager->meshList[GEO_GUIQUAD], GUIWhite);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)
@@ -144,6 +153,10 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 
 		for (auto mesh : meshManager->meshList)
 		{
+			if (mesh->DynamicTransformMatrices.size() + mesh->StaticTransformMatrices.size() <= 0)
+			{
+				continue;
+			}
 			Shader* shader;
 			Material* material;
 
@@ -172,7 +185,6 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
 		}
-
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
@@ -184,16 +196,51 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 	}
 }
 
+void Renderer::RenderCanvas()
+{
+	float aspectRatio = (float)Application::GetWindowWidth() / (float)Application::GetWindowHeight();
+	float shorterside = (float)((Application::GetWindowHeight() < Application::GetWindowWidth()) ? Application::GetWindowHeight() : Application::GetWindowWidth());
+	for (auto& canvasimage : CanvasImage)
+	{
+		glm::mat4 model(1.f);
+		model = glm::scale(model, glm::vec3(shorterside * 0.5f, shorterside * 0.5f, 1.f));
+		model = model * canvasimage.first;
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, canvasimage.second);
+		screenQuad->defaultScreenShader->UpdateShader(model);
+		screenQuad->RenderIndividually();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+	for (auto& canvasimage : CanvasText)
+	{
+
+	}
+
+	CanvasImage.clear();
+	CanvasImage.shrink_to_fit();
+	CanvasText.clear();
+	CanvasText.shrink_to_fit();
+}
+
 
 void Renderer::RenderScreenQuad()
 {
-	float longerside = (Application::GetWindowHeight() > Application::GetWindowHeight()) ? Application::GetWindowHeight() : Application::GetWindowWidth();
-	float offsetx = (Application::GetWindowWidth() - longerside) * 0.5f;
-	float offsety = (Application::GetWindowHeight() - longerside) * 0.5f;
+	glDisable(GL_DEPTH_TEST);
+	float aspectRatio = (float)Application::GetWindowWidth() / (float)Application::GetWindowHeight();
+	float shorterside = (float)((Application::GetWindowHeight() < Application::GetWindowWidth()) ? Application::GetWindowHeight() : Application::GetWindowWidth());
+	glViewport(0, 0, Application::GetWindowWidth(), Application::GetWindowHeight());
 
+	glm::mat4 proj;
+	glm::mat4 view;
 
-	glViewport(offsetx, offsety, longerside, longerside);
+	proj = glm::ortho((float)-Application::GetWindowWidth() * 0.5f, (float)Application::GetWindowWidth() * 0.5f, (float)-Application::GetWindowHeight() * 0.5f, (float)Application::GetWindowHeight() * 0.5f, -1.f, 1.f);
+	view = glm::mat4(1.f);
 
+	glBindBuffer(GL_UNIFORM_BUFFER, MatriceUBO);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(proj));
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -203,6 +250,9 @@ void Renderer::RenderScreenQuad()
 	glDisable(GL_DEPTH_TEST);
 
 	/*Code stink, SP3 rush. Organise for next Banbutech version thanks*/
+	//As much as I hate this, the post processing shader will be as ugly as the ACOMG one
+	//So if anyone decides to do one, best of luck :P
+	//Also change post processing shader to same type thanks
 	if (postProcessingShader)
 	{
 		postProcessingShader->UseShader();
@@ -212,12 +262,19 @@ void Renderer::RenderScreenQuad()
 		screenQuad->defaultScreenShader->UseShader();
 	}
 	/*Brute force, find a more elegant solution*/
-
+	glm::mat4 model(1.f);
+	model = glm::translate(model, glm::vec3(0, 0, 0));
+	model = glm::scale(model, glm::vec3(0.5f * shorterside, 0.5f * shorterside, 1.f));
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, screenQuad->screenTexture);
-	screenQuad->Render();
+	screenQuad->defaultScreenShader->UpdateShader(model);
+	screenQuad->RenderIndividually();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//I want to die, I am never using school classes again LOL
+	RenderCanvas();
+
 	glEnable(GL_DEPTH_TEST);
 }
 

@@ -193,8 +193,6 @@ void Application::Run()
 
 		scenemanager->Update();
 
-		std::cout << 1.f / timer << std::endl;
-
 		//Swap buffers
 		glfwSwapBuffers(m_window);
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...

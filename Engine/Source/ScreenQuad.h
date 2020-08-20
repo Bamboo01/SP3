@@ -1,14 +1,14 @@
 #include "Mesh.h"
 #include "MeshBuilder.h"
 #include "Shader.h"
+#include "ScreenQuadShader.h"
 #pragma once
 class ScreenQuad : public Mesh
 {
 public:
-	Shader* defaultScreenShader;
+	ScreenQuadShader* defaultScreenShader;
 	unsigned screenTexture;
 	virtual void Init();
-	virtual void Render();
 	ScreenQuad();
 	~ScreenQuad();
 };

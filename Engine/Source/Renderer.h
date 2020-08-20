@@ -7,6 +7,8 @@
 #include <glm.hpp>
 #include "LightingManager.h"
 #include "ScreenQuad.h"
+#include <string>
+
 
 #pragma once
 
@@ -27,8 +29,10 @@ private:
 	Material* defaultMaterial;
 	Shader* defaultShader;
 	Shader* postProcessingShader;
+
+	//Screen Quad
 	ScreenQuad* screenQuad;
-	
+
 	//Add-ons to the rendering pipeline
 	LightingManager lightingManager;
 
@@ -41,7 +45,12 @@ public:
 	void Init();
 	void Update(float dt);
 	void Render(Camera& camera, bool useCameraShader);
+	void RenderCanvas();
 	void RenderScreenQuad();
 	void BufferStaticModels();
+
+	//Canvas stuff
+	std::vector <std::pair<glm::mat4, unsigned>> CanvasImage;
+	std::vector <std::pair<glm::mat4, std::string>> CanvasText;
 };
 

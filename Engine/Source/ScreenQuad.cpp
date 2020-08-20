@@ -3,39 +3,9 @@
 
 void ScreenQuad::Init()
 {
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
-
-	glGenBuffers(1, &transformBuffer);
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-	glEnableVertexAttribArray(3);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Position));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color)));
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color) + sizeof(Vector3)));
-	glBindVertexArray(0);
-}
-
-void ScreenQuad::Render()
-{
-	if (!enableRender)
-	{
-		return;
-	}
-	glBindVertexArray(vertexArray);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	if (mode == DRAW_LINES)
-		glDrawElements(GL_LINES, indexSize, GL_UNSIGNED_INT, 0);
-	else if (mode == DRAW_TRIANGLE_STRIP)
-		glDrawElements(GL_TRIANGLE_STRIP, indexSize, GL_UNSIGNED_INT, 0);
-	else
-		glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	Mesh::Init();
+	defaultScreenShader->UseShader();
+	defaultScreenShader->InitShader();
 }
 
 ScreenQuad::ScreenQuad() : Mesh("ScreenQuad")
@@ -85,7 +55,7 @@ ScreenQuad::ScreenQuad() : Mesh("ScreenQuad")
 	this->indexSize = index_buffer_data.size();
 	this->mode = Mesh::DRAW_TRIANGLES;
 
-	defaultScreenShader = new Shader("Shader//screenquad.vs", "Shader//screenquad.fs");
+	defaultScreenShader = new ScreenQuadShader("Shader//screenquad.vs", "Shader//screenquad.fs");
 }
 
 ScreenQuad::~ScreenQuad()

@@ -23,6 +23,9 @@ public:
 	virtual void Init(int numberofstaticmodels = 1000);
 	virtual void BufferStaticModels();
 	virtual void Render();
+	virtual void RenderIndividually();
+	virtual void RenderIndividually(int count, int offset);
+
 
 	const std::string name;
 	DRAW_MODE mode;

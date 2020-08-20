@@ -90,3 +90,39 @@ void Mesh::Render()
 		glDrawElementsInstanced(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, 0, StaticTransformMatrices.size() + DynamicTransformMatrices.size());
 	glBindVertexArray(0);
 }
+
+void Mesh::RenderIndividually()
+{
+	if (!enableRender)
+	{
+		return;
+	}
+
+	glBindVertexArray(vertexArray);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	if (mode == DRAW_LINES)
+		glDrawElements(GL_LINES, indexSize, GL_UNSIGNED_INT, 0);
+	else if (mode == DRAW_TRIANGLE_STRIP)
+		glDrawElements(GL_TRIANGLE_STRIP, indexSize, GL_UNSIGNED_INT, 0);
+	else
+		glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+
+void Mesh::RenderIndividually(int count, int offset)
+{
+	if (!enableRender)
+	{
+		return;
+	}
+
+	glBindVertexArray(vertexArray);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	if (mode == DRAW_LINES)
+		glDrawElements(GL_LINES, count, GL_UNSIGNED_INT, (void*)(offset * sizeof(GLuint)));
+	else if (mode == DRAW_TRIANGLE_STRIP)
+		glDrawElements(GL_TRIANGLE_STRIP, count, GL_UNSIGNED_INT, (void*)(offset * sizeof(GLuint)));
+	else
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void*)(offset * sizeof(GLuint)));
+	glBindVertexArray(0);
+}

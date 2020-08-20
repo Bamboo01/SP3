@@ -11,6 +11,7 @@
 #include <GL/glew.h>
 #include <glm.hpp>
 #include "Material.h"
+#include <gtc/type_ptr.hpp>
 
 #ifndef SHADER_HPP
 #define SHADER_HPP
@@ -144,7 +145,6 @@ protected:
 		U_MATERIAL_SPECULAR_MAP,
 		U_MATERIAL_SPECULAR_MAP_ENABLED,
 
-		U_NUM_LIGHTS,
 		TOTAL_UNIFORMS
 	};
 
@@ -162,6 +162,7 @@ public:
 	//Essential, reminder to run these in your children shaders >:(
 	virtual void InitShader()
 	{
+		UseShader();
 		MaterialUniforms[U_MATERIAL_COLOR] = getUniformLocation("material.kColor");
 		MaterialUniforms[U_MATERIAL_AMBIENT] = getUniformLocation("material.kAmbient");
 		MaterialUniforms[U_MATERIAL_DIFFUSE] = getUniformLocation("material.kDiffuse");
@@ -273,17 +274,17 @@ public:
 
 	void setMat2(unsigned location, const glm::mat2& mat) const
 	{
-		glUniformMatrix2fv(location, 1, GL_FALSE, &mat[0][0]);
+		glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 	}
 
 	void setMat3(unsigned location, const glm::mat3& mat) const
 	{
-		glUniformMatrix3fv(location, 1, GL_FALSE, &mat[0][0]);
+		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 	}
 
 	void setMat4(unsigned location, const glm::mat4& mat) const
 	{
-		glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 	}
 
 	const PROCESS_TYPE &proccess_type = processtype;

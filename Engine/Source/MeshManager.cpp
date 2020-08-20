@@ -17,8 +17,15 @@ MeshManager::MeshManager()
 	meshList[GEO_AXES] =  MeshBuilder::GenerateAxes("reference");
 	meshList[GEO_AXES]->Init();
 
-	meshList[GEO_CUBE] =  MeshBuilder::GenerateQuad("cube", Color(1.f, 1.f, 1.f), 1.f);
+	meshList[GEO_CUBE] =  MeshBuilder::GenerateCube("cube", Color(1.f, 1.f, 1.f), 1.f);
 	meshList[GEO_CUBE]->Init(50000);
+
+	meshList[GEO_GUIQUAD] = MeshBuilder::GenerateQuad("cube", Color(1.f, 1.f, 1.f), 1.f);
+	meshList[GEO_GUIQUAD]->Init();
+
+	meshList[GEO_GRIDCUBE] = MeshBuilder::GenerateCube("GridCube", Color(1, 1, 1), 1);
+	meshList[GEO_GRIDCUBE]->Init();
+	meshList[GEO_GRIDCUBE]->mode = Mesh::DRAW_LINES;
 
 	for (int i = 0; i < NUM_MESH; i++)
 	{

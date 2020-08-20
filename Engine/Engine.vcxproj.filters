@@ -109,6 +109,24 @@
     <Filter Include="Meshes\TextMesh">
       <UniqueIdentifier>{0369c8e4-e705-4fb5-ba88-5c87598f4ed2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{e0148a22-e4b9-4180-a10e-fefffe405f43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{33f706f8-0ea4-4972-a6e6-aed2aa63675f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{b47efd8e-f754-447c-82ac-b8c25e9d72ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RenderData2D">
+      <UniqueIdentifier>{5c7f6a8d-8c39-4964-a663-762436681878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\CanvasImageSystem">
+      <UniqueIdentifier>{988497a9-e0ea-4eea-8c6b-1a2cd8ac7644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{750cc336-f1ed-4969-9c3f-37c1ed7439bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -172,7 +190,9 @@
     <ClCompile Include="Source\RenderSystem.cpp">
       <Filter>Core\Core Systems\RenderSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TextMesh.cpp" />
+    <ClCompile Include="Source\CanvasImageSystem.cpp">
+      <Filter>Systems\CanvasImageSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Timer.h">
@@ -283,6 +303,23 @@
     <ClInclude Include="Source\RenderData.h">
       <Filter>Core\Core Components\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Source\TextMesh.h" />
+    <ClInclude Include="Source\RenderData2D.h">
+      <Filter>Components\RenderData2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ScreenQuadShader.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIShader.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasImage.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasText.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasImageSystem.h">
+      <Filter>Systems\CanvasImageSystem</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
