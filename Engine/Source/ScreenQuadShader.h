@@ -42,6 +42,6 @@ public:
 	{
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureID);
-		setInt(ScreenQuadShaderUniforms[U_TEXTURE], textureID);
+		setInt(ScreenQuadShaderUniforms[U_TEXTURE], 0);
 	}
 };

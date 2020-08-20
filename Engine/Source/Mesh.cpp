@@ -109,7 +109,7 @@ void Mesh::RenderIndividually()
 	glBindVertexArray(0);
 }
 
-void Mesh::RenderIndividually(int count, int offset)
+void Mesh::RenderIndividually(int offset, int count)
 {
 	if (!enableRender)
 	{

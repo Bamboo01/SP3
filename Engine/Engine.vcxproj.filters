@@ -13,12 +13,6 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{2edd94ae-f5bf-4615-a7c5-8c957fbde004}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Meshes">
-      <UniqueIdentifier>{cf092f62-3074-466f-8d70-cd972bd376ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Meshes\AnimatedSprite">
-      <UniqueIdentifier>{dff78375-d62b-45ab-b1dd-5dfbb040d268}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{6f7f9e47-8f1d-4d87-9f8e-e477fca7fe50}</UniqueIdentifier>
     </Filter>
@@ -54,9 +48,6 @@
     </Filter>
     <Filter Include="Core\Core Modules\Renderer">
       <UniqueIdentifier>{193a6021-b3a8-4256-986d-96af8741a3ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Core Modules\Renderer\ScreenQuad">
-      <UniqueIdentifier>{a4065b8d-203f-4b8b-9751-55bd6f993526}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Core Modules\LightingManager">
       <UniqueIdentifier>{1a05b9a0-b647-43c9-bd18-1c6795570b92}</UniqueIdentifier>
@@ -106,9 +97,6 @@
     <Filter Include="Core\Mesh\MeshBuilder">
       <UniqueIdentifier>{fb25909a-eb97-4f6d-826d-65f7ac94a46f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Meshes\TextMesh">
-      <UniqueIdentifier>{0369c8e4-e705-4fb5-ba88-5c87598f4ed2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{e0148a22-e4b9-4180-a10e-fefffe405f43}</UniqueIdentifier>
     </Filter>
@@ -118,14 +106,17 @@
     <Filter Include="Modules">
       <UniqueIdentifier>{b47efd8e-f754-447c-82ac-b8c25e9d72ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\RenderData2D">
-      <UniqueIdentifier>{5c7f6a8d-8c39-4964-a663-762436681878}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems\CanvasImageSystem">
       <UniqueIdentifier>{988497a9-e0ea-4eea-8c6b-1a2cd8ac7644}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{750cc336-f1ed-4969-9c3f-37c1ed7439bb}</UniqueIdentifier>
+    <Filter Include="Core\Mesh\ScreenQuad">
+      <UniqueIdentifier>{a4065b8d-203f-4b8b-9751-55bd6f993526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Mesh\TextMesh">
+      <UniqueIdentifier>{31df89f2-7305-4e77-8f94-7a954a663768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\CanvasTextSystem">
+      <UniqueIdentifier>{1d601695-ebbc-4852-8ca7-f1d420540e4b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,9 +141,6 @@
     </ClCompile>
     <ClCompile Include="Source\LoadTGA.cpp">
       <Filter>Core\Core Modules\MeshManager\LoadTGA</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SpriteAnimation.cpp">
-      <Filter>Meshes\AnimatedSprite</Filter>
     </ClCompile>
     <ClCompile Include="Source\MeshManager.cpp">
       <Filter>Core\Core Modules\MeshManager</Filter>
@@ -179,7 +167,7 @@
       <Filter>Core\Mesh\MeshBuilder</Filter>
     </ClCompile>
     <ClCompile Include="Source\ScreenQuad.cpp">
-      <Filter>Core\Core Modules\Renderer\ScreenQuad</Filter>
+      <Filter>Core\Mesh\ScreenQuad</Filter>
     </ClCompile>
     <ClCompile Include="Source\CameraSystem.cpp">
       <Filter>Core\Core Systems\CameraSystem</Filter>
@@ -192,6 +180,12 @@
     </ClCompile>
     <ClCompile Include="Source\CanvasImageSystem.cpp">
       <Filter>Systems\CanvasImageSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CanvasTextSystem.cpp">
+      <Filter>Systems\CanvasTextSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpriteAnimation.cpp">
+      <Filter>Core\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -243,9 +237,6 @@
     <ClInclude Include="Source\LoadTGA.h">
       <Filter>Core\Core Modules\MeshManager\LoadTGA</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SpriteAnimation.h">
-      <Filter>Meshes\AnimatedSprite</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Vertex.h">
       <Filter>Core\Mesh</Filter>
     </ClInclude>
@@ -286,7 +277,7 @@
       <Filter>Core\Mesh\MeshBuilder</Filter>
     </ClInclude>
     <ClInclude Include="Source\ScreenQuad.h">
-      <Filter>Core\Core Modules\Renderer\ScreenQuad</Filter>
+      <Filter>Core\Mesh\ScreenQuad</Filter>
     </ClInclude>
     <ClInclude Include="Source\CameraSystem.h">
       <Filter>Core\Core Systems\CameraSystem</Filter>
@@ -303,23 +294,29 @@
     <ClInclude Include="Source\RenderData.h">
       <Filter>Core\Core Components\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Source\RenderData2D.h">
-      <Filter>Components\RenderData2D</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ScreenQuadShader.h">
       <Filter>Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Source\UIShader.h">
       <Filter>Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Source\CanvasImage.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\CanvasText.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\CanvasImageSystem.h">
       <Filter>Systems\CanvasImageSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasText.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasImage.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextShader.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasTextSystem.h">
+      <Filter>Systems\CanvasTextSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpriteAnimation.h">
+      <Filter>Core\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

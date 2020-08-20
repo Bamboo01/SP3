@@ -8,16 +8,19 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<Transform>();
 	coordinator.RegisterComponent<RenderData>();
 	coordinator.RegisterComponent<CanvasImage>();
+	coordinator.RegisterComponent<CanvasText>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
 	rendersystem = coordinator.RegisterSystem<RenderSystem>();
 	canvasimagesystem = coordinator.RegisterSystem<CanvasImageSystem>();
+	canvastextsystem = coordinator.RegisterSystem<CanvasTextSystem>();
 
 	transformsystem->Setup();
 	camerasystem->Setup();
 	rendersystem->Setup();
 	canvasimagesystem->Setup();
+	canvastextsystem->Setup();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
@@ -55,15 +58,21 @@ void SceneTest::Init()
 
 	Entity UI = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(UI, Transform());
-	coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.5, -0.25, 1);
+	coordinator.GetComponent<Transform>(UI).position = glm::vec3(0, 0, 0);
 	coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.5, 0.5, 1);
 	coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//crate.tga"));
+
+	Entity UIText = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(UIText, Transform());
+	coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.1, 0.1, 1);
+	coordinator.AddComponent<CanvasText>(UIText, CanvasText("12345", ALIGN_CENTER)); 
 
 	/*Init all systems*/
 	camerasystem->Init();
 	rendersystem->Init();
 	transformsystem->Init();
 	canvasimagesystem->Init();
+	canvastextsystem->Init();
 }
 
 void SceneTest::EarlyUpdate(double dt)
@@ -72,6 +81,7 @@ void SceneTest::EarlyUpdate(double dt)
 	camerasystem->EarlyUpdate(dt);
 	rendersystem->EarlyUpdate(dt);
 	canvasimagesystem->EarlyUpdate(dt);
+	canvastextsystem->EarlyUpdate(dt);
 }
 
 void SceneTest::Update(double dt)
@@ -80,6 +90,7 @@ void SceneTest::Update(double dt)
 	camerasystem->Update(dt);
 	rendersystem->Update(dt);
 	canvasimagesystem->Update(dt);
+	canvastextsystem->Update(dt);
 }
 
 void SceneTest::LateUpdate(double dt)
@@ -88,6 +99,7 @@ void SceneTest::LateUpdate(double dt)
 	camerasystem->LateUpdate(dt);
 	rendersystem->LateUpdate(dt);
 	canvasimagesystem->LateUpdate(dt);
+	canvastextsystem->LateUpdate(dt);
 }
 
 void SceneTest::PreRender()
@@ -99,6 +111,7 @@ void SceneTest::Render()
 	rendersystem->Render();
 	camerasystem->Render();
 	canvasimagesystem->Render();
+	canvastextsystem->Render();
 }
 
 void SceneTest::PostRender()

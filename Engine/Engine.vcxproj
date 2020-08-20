@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\CanvasTextSystem.cpp" />
     <ClCompile Include="Source\CanvasImageSystem.cpp" />
     <ClCompile Include="Source\RenderSystem.cpp" />
     <ClCompile Include="Source\CameraSystem.cpp" />
@@ -184,11 +185,11 @@
     <ClCompile Include="Source\TransformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\CanvasTextSystem.h" />
     <ClInclude Include="Source\CanvasImageSystem.h" />
     <ClInclude Include="Source\CanvasImage.h" />
     <ClInclude Include="Source\CanvasText.h" />
     <ClInclude Include="Source\ScreenQuadShader.h" />
-    <ClInclude Include="Source\RenderData2D.h" />
     <ClInclude Include="Source\RenderSystem.h" />
     <ClInclude Include="Source\CameraSystem.h" />
     <ClInclude Include="Source\RenderData.h" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Source\TransformSystem.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\UIShader.h" />
+    <ClInclude Include="Source\TextShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.vcxproj">

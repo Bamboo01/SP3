@@ -27,6 +27,13 @@ void Renderer::assignMaterialtoMesh(Mesh* mesh, Material* material)
 	MeshtoMaterial[mesh] = material;
 }
 
+unsigned Renderer::addFont(std::string filepath)
+{
+	unsigned id;
+	id = LoadTGA(filepath.c_str());
+	return id;
+}
+
 Mesh* Renderer::getMesh(GEO_TYPE type)
 {
 	return meshManager->meshList[type];
@@ -42,8 +49,19 @@ void Renderer::Init()
 	//Add a post processing shader here if you want
 	postProcessingShader = nullptr;
 
+	//Initialise the screenquad
 	screenQuad = new ScreenQuad;
 	screenQuad->Init();
+
+	//Initialise the textmesh
+	TextMesh = MeshBuilder::GenerateText("Text", 16, 16);
+	TextMesh->Init();
+
+	//Initialise all the fonts
+	Consolas = addFont("Fonts//Consolas.tga");
+	//Initialise the textmesh shader
+	textshader = new TextShader;
+	textshader->InitShader();
 
 	for (auto mesh : meshManager->meshList)
 	{
@@ -198,13 +216,25 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 
 void Renderer::RenderCanvas()
 {
+	if (Application::IsKeyPressed('1'))
+		glEnable(GL_CULL_FACE);
+	if (Application::IsKeyPressed('2'))
+		glDisable(GL_CULL_FACE);
+	if (Application::IsKeyPressed('3'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	if (Application::IsKeyPressed('4'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	float aspectRatio = (float)Application::GetWindowWidth() / (float)Application::GetWindowHeight();
 	float shorterside = (float)((Application::GetWindowHeight() < Application::GetWindowWidth()) ? Application::GetWindowHeight() : Application::GetWindowWidth());
+
+	screenQuad->defaultScreenShader->UseShader();
 	for (auto& canvasimage : CanvasImage)
 	{
 		glm::mat4 model(1.f);
 		model = glm::scale(model, glm::vec3(shorterside * 0.5f, shorterside * 0.5f, 1.f));
 		model = model * canvasimage.first;
+
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, canvasimage.second);
 		screenQuad->defaultScreenShader->UpdateShader(model);
@@ -212,10 +242,28 @@ void Renderer::RenderCanvas()
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
-	for (auto& canvasimage : CanvasText)
-	{
 
+	glDisable(GL_DEPTH_TEST);
+	textshader->UseShader();
+	for (auto& canvastext : CanvasText)
+	{
+		glm::mat4 model(1.f);
+		model = glm::scale(model, glm::vec3(shorterside * 0.5f, shorterside * 0.5f, 1.f));
+		model = model * canvastext.first;
+		textshader->UpdateShaderTexture(Consolas);
+		textshader->UpdateShader(model);
+		for (unsigned i = 0; i < canvastext.second.length(); ++i)
+		{
+			glm::mat4 characterspacing(1.f);
+			characterspacing = characterspacing * model;
+			characterspacing = glm::translate(characterspacing , glm::vec3(i * 1.f, 0, 0));
+			textshader->UpdateShader(characterspacing);
+			TextMesh->RenderIndividually((unsigned)canvastext.second[i] * 6, 6);
+		}
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+	glEnable(GL_DEPTH_TEST);
 
 	CanvasImage.clear();
 	CanvasImage.shrink_to_fit();
@@ -274,7 +322,6 @@ void Renderer::RenderScreenQuad()
 
 	//I want to die, I am never using school classes again LOL
 	RenderCanvas();
-
 	glEnable(GL_DEPTH_TEST);
 }
 

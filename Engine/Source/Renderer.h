@@ -8,6 +8,7 @@
 #include "LightingManager.h"
 #include "ScreenQuad.h"
 #include <string>
+#include "TextShader.h"
 
 
 #pragma once
@@ -33,11 +34,19 @@ private:
 	//Screen Quad
 	ScreenQuad* screenQuad;
 
+	//Text Mesh
+	Mesh* TextMesh;
+	//Text Shader
+	TextShader* textshader;
+	//Fonts
+	unsigned Consolas;
+
 	//Add-ons to the rendering pipeline
 	LightingManager lightingManager;
 
 	void addMaterial(Material* mat, Shader* shader = nullptr);
 	void assignMaterialtoMesh(Mesh* mesh, Material* material);
+	unsigned addFont(std::string filepath);
 
 public:
 	Mesh* getMesh(GEO_TYPE type);
