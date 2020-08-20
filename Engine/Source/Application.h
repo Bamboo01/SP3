@@ -23,6 +23,9 @@ public:
 	static double mouse_last_x, mouse_last_y, mouse_current_x, mouse_current_y, mouse_diff_x, mouse_diff_y;
 	static double camera_yaw, camera_pitch;
 
+	static bool IsMousePressed(unsigned short key);
+	static void GetCursorPos(double* xpos, double* ypos);
+
 	static int GetWindowHeight();
 	static int GetWindowWidth();
 

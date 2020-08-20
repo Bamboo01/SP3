@@ -127,6 +127,9 @@
     <Filter Include="Component">
       <UniqueIdentifier>{750cc336-f1ed-4969-9c3f-37c1ed7439bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\UnitSystem">
+      <UniqueIdentifier>{4494811b-fbfb-41e5-a054-70fbcd98d20f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -192,6 +195,9 @@
     </ClCompile>
     <ClCompile Include="Source\CanvasImageSystem.cpp">
       <Filter>Systems\CanvasImageSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UnitSystem.cpp">
+      <Filter>Systems\UnitSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +326,12 @@
     </ClInclude>
     <ClInclude Include="Source\CanvasImageSystem.h">
       <Filter>Systems\CanvasImageSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UnitSystem.h">
+      <Filter>Systems\UnitSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Unit.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

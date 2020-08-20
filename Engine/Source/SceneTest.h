@@ -3,6 +3,7 @@
 #include "CameraSystem.h"
 #include "RenderSystem.h"
 #include "CanvasImageSystem.h"
+#include "UnitSystem.h"
 
 #pragma once
 class SceneTest : public Scene
@@ -25,5 +26,6 @@ public:
 	std::shared_ptr<CameraSystem> camerasystem;
 	std::shared_ptr<RenderSystem> rendersystem;
 	std::shared_ptr<CanvasImageSystem> canvasimagesystem;
+	std::shared_ptr<UnitSystem> unitsystem;
 };
 
