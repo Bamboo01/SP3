@@ -48,13 +48,13 @@ void SceneTest::Init()
 	//	int y = Math::RandIntMinMax(-10, 10);
 	//	int z = Math::RandIntMinMax(-10, 10);
 
-	//	Entity cube = coordinator.CreateEntity();
-	//	coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
-	//	coordinator.AddComponent<Transform>(cube, Transform());
-	//	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
-	//	coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
-	//	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
-	//	coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+		Entity cube = coordinator.CreateEntity();
+		coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
+		coordinator.AddComponent<Transform>(cube, Transform());
+		coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
+		coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
+		coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
+		coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 	//}
 	camerasystem->Init();
 	rendersystem->Init();
