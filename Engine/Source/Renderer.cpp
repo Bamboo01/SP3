@@ -61,11 +61,16 @@ void Renderer::Init()
 	boxmat->AssignTexture("Images//grass.tga");
 	materialManager.push_back(boxmat);
 
+	Material* grid = new Material();
+	grid->kColor = glm::vec3(1.0f, 1.f, 1.f);
+	grid->AssignTexture("Images//grid.tga");
+	materialManager.push_back(grid);
 	/*Assign your material their shaders here*/
 	addMaterial(boxmat);
-
+	addMaterial(grid);
 	/*Assign your meshes their materials here*/
 	assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
+	assignMaterialtoMesh(meshManager->meshList[GEO_GRID], grid);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)

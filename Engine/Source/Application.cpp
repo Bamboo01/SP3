@@ -213,7 +213,7 @@ void Application::Run()
 
 		scenemanager->Update();
 
-		std::cout << 1.f / timer << std::endl;
+		//std::cout << 1.f / timer << std::endl;
 
 		//Swap buffers
 		glfwSwapBuffers(m_window);

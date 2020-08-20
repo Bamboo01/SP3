@@ -3,6 +3,7 @@
 #include "CameraSystem.h"
 #include "RenderSystem.h"
 #include "CameraControllerSystem.h"
+#include "GridControllerSystem.h"
 
 #pragma once
 class SceneTest : public Scene
@@ -25,6 +26,7 @@ public:
 	std::shared_ptr<CameraSystem> camerasystem;
 	std::shared_ptr<RenderSystem> rendersystem;
 	std::shared_ptr<CameraControllerSystem> cameracontrollersystem;
+	std::shared_ptr<GridControllerSytem> gridcontrollersystem;
 
 };
 

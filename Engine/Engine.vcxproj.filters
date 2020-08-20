@@ -118,6 +118,9 @@
     <Filter Include="Systems\Camera Contoller System">
       <UniqueIdentifier>{72524912-e2ee-4574-9b4f-5f5588a9c124}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Grid Controller System">
+      <UniqueIdentifier>{d2ebf183-ece5-4578-ae50-7c3ffd451832}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -184,6 +187,9 @@
     <ClCompile Include="Source\TextMesh.cpp" />
     <ClCompile Include="Source\CameraControllerSystem.cpp">
       <Filter>Systems\Camera Contoller System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GridControllerSystem.cpp">
+      <Filter>Systems\Grid Controller System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="Source\CameraControllerSystem.h">
       <Filter>Systems\Camera Contoller System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GridControllerSystem.h">
+      <Filter>Systems\Grid Controller System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

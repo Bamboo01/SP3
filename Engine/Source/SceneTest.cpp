@@ -8,15 +8,18 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<Transform>();
 	coordinator.RegisterComponent<RenderData>();
 	coordinator.RegisterComponent<CameraController>();
+	coordinator.RegisterComponent<GridControllerSytem>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
 	rendersystem = coordinator.RegisterSystem<RenderSystem>();
 	cameracontrollersystem = coordinator.RegisterSystem<CameraControllerSystem>();
+	gridcontrollersystem = coordinator.RegisterSystem<GridControllerSytem>();
 
 	transformsystem->Setup();
 	camerasystem->Setup();
 	rendersystem->Setup();
+	gridcontrollersystem->SetUp();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
@@ -32,21 +35,28 @@ void SceneTest::Init()
 	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));
 	coordinator.AddComponent<Transform>(axes, Transform());
 	Math::InitRNG();
-	for (int i = 0; i < 400; i++)
-	{
-		int x = Math::RandIntMinMax(-10, 10);
-		int y = Math::RandIntMinMax(-10, 10);
-		int z = Math::RandIntMinMax(-10, 10);
+	//for (int i = 0; i < 400; i++)
+	//{
+	//	int x = Math::RandIntMinMax(-10, 10);
+	//	int y = Math::RandIntMinMax(-10, 10);
+	//	int z = Math::RandIntMinMax(-10, 10);
+	//	Entity cube = coordinator.CreateEntity();
+	//	coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
+	//	coordinator.AddComponent<Transform>(cube, Transform());
+	//	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
+	//	coordinator.GetComponent<Transform>(cube).position = glm::vec3(x, y, z);
+	//	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(20, 20, 20);
+	//	coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	//}
+	/*Init all systes*/
 		Entity cube = coordinator.CreateEntity();
 		coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
 		coordinator.AddComponent<Transform>(cube, Transform());
 		coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
-		coordinator.GetComponent<Transform>(cube).position = glm::vec3(x, y, z);
-		coordinator.GetComponent<Transform>(cube).scale = glm::vec3(20, 20, 20);
+		coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
+		coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
 		coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
-	}
-	/*Init all systes*/
-
+		
 	camerasystem->Init();
 	rendersystem->Init();
 	transformsystem->Init();
@@ -63,6 +73,11 @@ void SceneTest::Update(double dt)
 	camerasystem->Update(dt);
 	cameracontrollersystem->Update(dt);
 	rendersystem->Update(dt);
+	gridcontrollersystem->Update(dt);
+	if (Application::IsKeyPressed('3'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	if (Application::IsKeyPressed('4'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void SceneTest::LateUpdate(double dt)

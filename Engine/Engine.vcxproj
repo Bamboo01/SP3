@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\CameraControllerSystem.cpp" />
+    <ClCompile Include="Source\GridControllerSystem.cpp" />
     <ClCompile Include="Source\RenderSystem.cpp" />
     <ClCompile Include="Source\CameraSystem.cpp" />
     <ClCompile Include="Source\ScreenQuad.cpp" />
@@ -187,6 +188,7 @@
   <ItemGroup>
     <ClInclude Include="Source\CameraController.h" />
     <ClInclude Include="Source\CameraControllerSystem.h" />
+    <ClInclude Include="Source\GridControllerSystem.h" />
     <ClInclude Include="Source\RenderSystem.h" />
     <ClInclude Include="Source\CameraSystem.h" />
     <ClInclude Include="Source\RenderData.h" />

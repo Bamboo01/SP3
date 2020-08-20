@@ -77,7 +77,8 @@ void CameraControllerSystem::Update(float dt)
                     glm::vec3 right = glm::cross(view, camera.up);
                     right.y = 0;
                     right = glm::normalize(right);
-                    camera.position += right * 0.2f * distanceTraveled.x * (float)dt;
+                    camera.position += right * 0.05f * distanceTraveled.x * (float)dt;
+                    //camera.position += camera.up * 1.f * distanceTraveled.x * (float)dt;
                 }
             }
             if (distanceTraveled.y != 0)
@@ -89,7 +90,8 @@ void CameraControllerSystem::Update(float dt)
                     glm::vec3 right = glm::cross(view, camera.up);
                     right.y = 0;
                     right = glm::normalize(right);
-                    camera.position += right * 0.2f * distanceTraveled.y * (float)dt;
+                    camera.position += right * 0.05f * distanceTraveled.y * (float)dt;
+                  //  camera.position += camera.up * 1.f * distanceTraveled.y * (float)dt;
                 }
             }
         }

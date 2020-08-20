@@ -8,6 +8,7 @@ enum GEO_TYPE
 {
 	GEO_AXES,
 	GEO_CUBE,
+	GEO_GRID,
 	NUM_MESH
 };
 
