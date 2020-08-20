@@ -21,6 +21,8 @@ void SceneTest::Init()
 	rendersystem->Setup();
 	gridcontrollersystem->SetUp();
 
+	cameracontrollersystem->Setup();
+
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
 		glm::vec3(0, 50, -3.f),
@@ -30,33 +32,30 @@ void SceneTest::Init()
 		CAMERA_TYPE::CAMERA_MAIN,
 		CAMERA_MODE::MODE_PERSPECTIVE
 	));
+	coordinator.AddComponent<CameraController>(maincamera, CameraController());
 
 	Entity axes = coordinator.CreateEntity();
 	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));
 	coordinator.AddComponent<Transform>(axes, Transform());
 	Math::InitRNG();
+
+
+	/*Init all systes*/
+
 	//for (int i = 0; i < 400; i++)
 	//{
 	//	int x = Math::RandIntMinMax(-10, 10);
 	//	int y = Math::RandIntMinMax(-10, 10);
 	//	int z = Math::RandIntMinMax(-10, 10);
+
 	//	Entity cube = coordinator.CreateEntity();
 	//	coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
 	//	coordinator.AddComponent<Transform>(cube, Transform());
 	//	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
-	//	coordinator.GetComponent<Transform>(cube).position = glm::vec3(x, y, z);
-	//	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(20, 20, 20);
+	//	coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
+	//	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
 	//	coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 	//}
-	/*Init all systes*/
-		Entity cube = coordinator.CreateEntity();
-		coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
-		coordinator.AddComponent<Transform>(cube, Transform());
-		coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
-		coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
-		coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
-		coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
-		
 	camerasystem->Init();
 	rendersystem->Init();
 	transformsystem->Init();
