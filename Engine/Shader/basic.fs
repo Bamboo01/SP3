@@ -1,6 +1,6 @@
 #version 330 core
 layout(location = 0) out vec4 FragColor;
-//layout(location = 1) out float FragDepth;
+layout(location = 1) out float FragDepth;
 
 // Constant values
 const int MAX_LIGHTS = 32; //Add a +1 for shadow light
@@ -76,5 +76,5 @@ void main()
 	{
 		discard;
 	}
-    //FragDepth = gl_FragCoord.z;
+    FragDepth = gl_FragCoord.z;
 }

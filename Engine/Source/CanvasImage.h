@@ -18,12 +18,4 @@ struct CanvasImage
 		ImagePath = path;
 		TextureID = -1;
 	}
-
-	~CanvasImage()
-	{
-		if (TextureID != unsigned(-1))
-		{
-			glDeleteTextures(1, &TextureID);
-		}
-	}
 };

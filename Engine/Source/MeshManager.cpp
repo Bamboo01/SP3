@@ -48,7 +48,7 @@ Mesh* MeshManager::CreateTerrain(GEO_TYPE type, const char* path)
 {
 	std::vector<unsigned char> m_heightMap;
 	Mesh* terrain = MeshBuilder::GenerateTerrain("Terrain", path, m_heightMap);
-	m_terrainList.insert({ meshList[type], m_heightMap });
+	m_terrainList.insert({ terrain, m_heightMap });
 	return terrain;
 }
 

@@ -63,6 +63,8 @@ void Renderer::Init()
 	{
 		MeshtoMaterial.insert({ mesh, nullptr });
 	}
+
+	//Initialising pipeline modules
 	lightingManager.InitLights(shaderManager);
 
 	/*Initialise all your shaders here*/
@@ -75,10 +77,12 @@ void Renderer::Init()
 	boxmat->AssignTexture("Images//crate.tga");
 	boxmat->AssignTexture("Images//grass.tga");
 	materialManager.push_back(boxmat);
+
 	Material* grass = new Material();
 	grass->AssignTexture("Images//grass.tga");
 	grass->kSpecular = glm::vec3(0, 0, 0);
 	grass->kShininess = 0.f;
+	materialManager.push_back(grass);
 
 	/*Assign your material their shaders here*/
 	addMaterial(boxmat, test);
@@ -114,6 +118,10 @@ void Renderer::Update(float dt)
 
 void Renderer::Render(Camera& camera, bool useCameraShader)
 {
+	//Buffer all your pipeline modules here
+
+	lightingManager.BufferLights();
+
 	if (useCameraShader)
 	{
 		camera.FBO->BindForWriting();
@@ -129,8 +137,6 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(camera.getProjectionMatrix()));
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(camera.getViewMatrix()));
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-		lightingManager.BufferLights();
 
 		if (!camera.getPostProcessingShader())
 		{
