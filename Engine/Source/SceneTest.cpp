@@ -60,7 +60,8 @@ void SceneTest::Init()
 	coordinator.AddComponent<Transform>(UI, Transform());
 	coordinator.GetComponent<Transform>(UI).position = glm::vec3(0, 0, 0);
 	coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.5, 0.5, 1);
-	coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//crate.tga"));
+	coordinator.AddComponent<CanvasImage>(UI, CanvasImage());
+	coordinator.GetComponent<Camera>(maincamera).assignTargetTexture(&coordinator.GetComponent<CanvasImage>(UI).TextureID);
 
 	Entity UIText = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(UIText, Transform());

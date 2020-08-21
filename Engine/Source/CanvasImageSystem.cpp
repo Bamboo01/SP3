@@ -13,7 +13,10 @@ void CanvasImageSystem::Init()
 	for (auto const& entity : m_Entities)
 	{
 		auto& canvasimage = coordinator.GetComponent<CanvasImage>(entity);
-		canvasimage.TextureID = LoadTGA(canvasimage.ImagePath.c_str());
+		if (canvasimage.ImagePath != "")
+		{
+			canvasimage.TextureID = LoadTGA(canvasimage.ImagePath.c_str());
+		}
 	}
 }
 
@@ -23,6 +26,10 @@ void CanvasImageSystem::Render()
 	{
 		auto& transform = coordinator.GetComponent<Transform>(entity);
 		auto& canvasimage = coordinator.GetComponent<CanvasImage>(entity);
+		if (canvasimage.TextureID == unsigned(-1))
+		{
+			continue;
+		}
 		glm::mat4 model(1.f);
 		glm::vec3 rot = glm::radians(transform.rotation);
 		model = glm::translate(model, transform.position);
