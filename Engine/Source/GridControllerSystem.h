@@ -23,6 +23,7 @@ public:
 	virtual void GetDestinationGrid();				// Get the Destination Grid
 	virtual void CreatePathTop(glm::vec2 Destination);		// Get Grid cost for Destination TOP ONLY
 	virtual void CreatePathBottom(glm::vec2 Destination);		// Get Grid cost for Destination BOTTOM ONLY
+	virtual void CheckSameLine(glm::vec2 Destination);		// If destination is on the same z axis as the grids and there is a wall
 	virtual void SetUp();
 	glm::vec3 GridPosition[20][20];
 	int GridCost[20][20];

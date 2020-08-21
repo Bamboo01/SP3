@@ -92,6 +92,8 @@ void GridControllerSystem::GetDestinationGrid()
 		CreatePathTop(destination);
 		
 		CreatePathBottom(destination);
+
+		CheckSameLine(destination);
 	}
 }
 
@@ -297,6 +299,26 @@ void GridControllerSystem::CreatePathBottom(glm::vec2 Destination)
 	if (west)
 	{
 		CreatePathBottom(glm::vec2(dX, dY - 1));
+	}
+}
+
+void GridControllerSystem::CheckSameLine(glm::vec2 Destination)
+{
+	int dX = Destination.x; //Same Line
+
+	for (int i = 0; i < 20; ++i)
+	{
+		if (GridCost[dX][i] == -1)
+		{
+			if (dX + 1 <= 19 && dX + 1 >= 0)
+			{
+				GridCost[dX][i] = GridCost[dX + 1][i] + 1;
+			}
+			else if (dX - 1 <= 19 && dX - 1 >= 0)
+			{
+				GridCost[dX][i] = GridCost[dX - 1][i] + 1;
+			}
+		}
 	}
 }
 
