@@ -9,12 +9,18 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<RenderData>();
 	coordinator.RegisterComponent<CanvasImage>();
 	coordinator.RegisterComponent<CanvasText>();
+	coordinator.RegisterComponent<Unit>();
+	coordinator.RegisterComponent<CameraController>();
+	coordinator.RegisterComponent<GridControllerSytem>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
 	rendersystem = coordinator.RegisterSystem<RenderSystem>();
 	canvasimagesystem = coordinator.RegisterSystem<CanvasImageSystem>();
 	canvastextsystem = coordinator.RegisterSystem<CanvasTextSystem>();
+	cameracontrollersystem = coordinator.RegisterSystem<CameraControllerSystem>();
+	gridcontrollersystem = coordinator.RegisterSystem<GridControllerSytem>();
+
 
 	transformsystem->Setup();
 	camerasystem->Setup();
@@ -27,10 +33,40 @@ void SceneTest::Init()
 		glm::vec3(0, 0, -3.f),
 		glm::vec3(0, 0, 0),
 		1080, 1080, //Lower this if the FPS stinks
-		45.f, 
+		45.f,
 		CAMERA_TYPE::CAMERA_MAIN,
 		CAMERA_MODE::MODE_PERSPECTIVE
 	));
+	coordinator.AddComponent<CameraController>(maincamera, CameraController());
+	gridcontrollersystem->SetUp();
+
+	cameracontrollersystem->Setup();
+
+	Entity testunit = coordinator.CreateEntity();
+	coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 500));
+	coordinator.AddComponent<RenderData>(testunit, RenderData(renderer.getMesh(GEO_GRID), false));
+	coordinator.AddComponent<Transform>(testunit, Transform());
+	coordinator.GetComponent<Transform>(testunit).position = glm::vec3(10, 2, 10);
+	coordinator.GetComponent<Transform>(testunit).scale = glm::vec3(30, 30, 30);
+	coordinator.GetComponent<Transform>(testunit).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	Entity testunit2 = coordinator.CreateEntity();
+	coordinator.AddComponent<Unit>(testunit2, Unit("Test2", 0, 0, 0, 0, 0, Unit::WALL, 500));
+	coordinator.AddComponent<RenderData>(testunit2, RenderData(renderer.getMesh(GEO_GRID), false));
+	coordinator.AddComponent<Transform>(testunit2, Transform());
+	coordinator.GetComponent<Transform>(testunit2).position = glm::vec3(60, 2, 150);
+	coordinator.GetComponent<Transform>(testunit2).scale = glm::vec3(30, 30, 30);
+	coordinator.GetComponent<Transform>(testunit2).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+
+	/*Entity maincamera = coordinator.CreateEntity();
+	coordinator.AddComponent<Camera>(maincamera, Camera(
+		glm::vec3(0, 50, -3.f),
+		glm::vec3(90, 0, 0),
+		800, 800,
+		90.f, 
+		CAMERA_TYPE::CAMERA_MAIN,
+		CAMERA_MODE::MODE_PERSPECTIVE
+	));*/
+	
 
 	Entity axes = coordinator.CreateEntity();
 	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));
@@ -46,7 +82,8 @@ void SceneTest::Init()
 		coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
 		coordinator.AddComponent<Transform>(cube, Transform());
 		coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
-		coordinator.GetComponent<Transform>(cube).position = glm::vec3(x, y, z);
+		coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
+		coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
 		coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 	}
 
@@ -89,9 +126,15 @@ void SceneTest::Update(double dt)
 {
 	transformsystem->Update(dt);
 	camerasystem->Update(dt);
+	cameracontrollersystem->Update(dt);
 	rendersystem->Update(dt);
 	canvasimagesystem->Update(dt);
 	canvastextsystem->Update(dt);
+	gridcontrollersystem->Update(dt);
+	if (Application::IsKeyPressed('3'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	if (Application::IsKeyPressed('4'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void SceneTest::LateUpdate(double dt)

@@ -118,6 +118,21 @@
     <Filter Include="Systems\CanvasTextSystem">
       <UniqueIdentifier>{1d601695-ebbc-4852-8ca7-f1d420540e4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{d03be200-4d18-4c98-ad11-3075c899aa1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{a4882746-b3ff-4dd9-97df-e46382c9e600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Camera Contoller System">
+      <UniqueIdentifier>{72524912-e2ee-4574-9b4f-5f5588a9c124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Grid Controller System">
+      <UniqueIdentifier>{d2ebf183-ece5-4578-ae50-7c3ffd451832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components\Unit">
+      <UniqueIdentifier>{50ccbe11-77cc-45eb-9804-2a5e0958a6ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -186,6 +201,12 @@
     </ClCompile>
     <ClCompile Include="Source\SpriteAnimation.cpp">
       <Filter>Core\Mesh</Filter>
+    <ClCompile Include="Source\TextMesh.cpp" />
+    <ClCompile Include="Source\CameraControllerSystem.cpp">
+      <Filter>Systems\Camera Contoller System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GridControllerSystem.cpp">
+      <Filter>Systems\Grid Controller System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,6 +338,18 @@
     </ClInclude>
     <ClInclude Include="Source\SpriteAnimation.h">
       <Filter>Core\Mesh</Filter>
+    <ClInclude Include="Source\TextMesh.h" />
+    <ClInclude Include="Source\CameraController.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraControllerSystem.h">
+      <Filter>Systems\Camera Contoller System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GridControllerSystem.h">
+      <Filter>Systems\Grid Controller System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Unit.h">
+      <Filter>Core\Core Components\Unit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
