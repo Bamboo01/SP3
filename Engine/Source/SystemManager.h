@@ -66,5 +66,38 @@ public:
 			}
 		}
 	}
+
+	void EntityDeactivated(Entity entity, Signature entitySignature)
+	{
+		for (auto const& pair : m_Systems)
+		{
+			auto const& typeName = pair.first;
+			auto const& system = pair.second;
+			auto const& systemSignature = m_Signatures[typeName];
+			if ((entitySignature & systemSignature) == systemSignature)
+			{
+				system->m_Entities.erase(entity);
+			}
+		}
+	}
+
+	void EntityActivated(Entity entity, Signature entitySignature)
+	{
+		for (auto const& pair : m_Systems)
+		{
+			auto const& typeName = pair.first;
+			auto const& system = pair.second;
+			auto const& systemSignature = m_Signatures[typeName];
+
+			if ((entitySignature & systemSignature) == systemSignature)
+			{
+				system->m_Entities.insert(entity);
+			}
+			else
+			{
+				system->m_Entities.erase(entity);
+			}
+		}
+	}
 };
 

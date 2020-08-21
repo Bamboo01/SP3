@@ -1,17 +1,16 @@
+#include "EntityState.h"
 #include "System.h"
-#include "Transform.h"
 #include "Coordinator.h"
+#pragma once
+
 extern Coordinator coordinator;
 
-#pragma once
-class TransformSystem  : public System
+class EntityStateSystem : public System
 {
 private:
-	std::vector<Entity> DynamicEntities;
-
+	std::map<Entity, EntityState> EntityToState;
 public:
 	virtual void Setup();
 	virtual void Init();
 	virtual void Update(float dt);
 };
-

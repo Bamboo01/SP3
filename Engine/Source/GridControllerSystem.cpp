@@ -85,6 +85,7 @@ void GridControllerSytem::SetUp()
 	Signature signature;
 	signature.set(coordinator.GetComponentType<Unit>());
 	signature.set(coordinator.GetComponentType<Transform>());
+	signature.set(coordinator.GetComponentType<EntityState>());
 	coordinator.SetSystemSignature<GridControllerSytem>(signature);
 }
 

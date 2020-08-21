@@ -57,10 +57,10 @@
       <Filter>Core\Core Modules\Mesh Manager\LoadTexture</Filter>
     </ClCompile>
     <ClCompile Include="Source\CanvasImageSystem.cpp">
-      <Filter>Core\Core Systems\CanvasImageSystem</Filter>
+      <Filter>Systems\CanvasImageSystem</Filter>
     </ClCompile>
     <ClCompile Include="Source\CanvasTextSystem.cpp">
-      <Filter>Core\Core Systems\CanvasTextSystem</Filter>
+      <Filter>Systems\CanvasTextSystem</Filter>
     </ClCompile>
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Core\Mesh\Mesh</Filter>
@@ -74,6 +74,9 @@
     <ClCompile Include="Source\FBO.cpp">
       <Filter>Core\Core Components\Camera\FBO</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EntityStateSystem.cpp">
+      <Filter>Core\Core Systems\EntityState System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\CameraController.h">
@@ -86,7 +89,7 @@
       <Filter>Core\Core Components\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Source\Unit.h">
-      <Filter>Core\Core Components\Unit</Filter>
+      <Filter>Components\Unit</Filter>
     </ClInclude>
     <ClInclude Include="Source\RenderData.h">
       <Filter>Core\Core Components\Render</Filter>
@@ -197,13 +200,13 @@
       <Filter>Core\Core Modules\Mesh Manager\LoadTexture</Filter>
     </ClInclude>
     <ClInclude Include="Source\CanvasImageSystem.h">
-      <Filter>Core\Core Systems\CanvasImageSystem</Filter>
+      <Filter>Systems\CanvasImageSystem</Filter>
     </ClInclude>
     <ClInclude Include="Source\CanvasImage.h">
       <Filter>Core\Core Components\CanvasImage</Filter>
     </ClInclude>
     <ClInclude Include="Source\CanvasTextSystem.h">
-      <Filter>Core\Core Systems\CanvasTextSystem</Filter>
+      <Filter>Systems\CanvasTextSystem</Filter>
     </ClInclude>
     <ClInclude Include="Source\CanvasText.h">
       <Filter>Core\Core Components\CanvasText</Filter>
@@ -217,11 +220,17 @@
     <ClInclude Include="Source\FBO.h">
       <Filter>Core\Core Components\Camera\FBO</Filter>
     </ClInclude>
+    <ClInclude Include="Source\EntityState.h">
+      <Filter>Core\Core Components\EntityState</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tag.h">
+      <Filter>Core\Core Components\Tag</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityStateSystem.h">
+      <Filter>Core\Core Systems\EntityState System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Components">
-      <UniqueIdentifier>{eab1891b-23c7-4c24-85c5-718418482fde}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{17c8c5c0-8373-4c6b-b190-73479998289e}</UniqueIdentifier>
     </Filter>
@@ -233,9 +242,6 @@
     </Filter>
     <Filter Include="Core\Core Components\Transform">
       <UniqueIdentifier>{60fc385e-5172-49ca-9587-a73ff1b3fb56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Core Components\Unit">
-      <UniqueIdentifier>{4a3acf5c-8245-44cf-b2ce-2410277e0435}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Core Components\Render">
       <UniqueIdentifier>{d98d8653-e153-46c8-a583-210db3c022bc}</UniqueIdentifier>
@@ -333,23 +339,38 @@
     <Filter Include="Core\Core Modules\Mesh Manager\LoadTexture">
       <UniqueIdentifier>{b63ee8a0-a314-4bba-9df4-125c504fcf8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Core Systems\CanvasImageSystem">
-      <UniqueIdentifier>{d8556202-bd81-46f6-aa18-87d04196bf97}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Core Systems\CanvasTextSystem">
-      <UniqueIdentifier>{dc176663-5f18-4d93-8c22-08fc256068e6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Core Components\CanvasImage">
       <UniqueIdentifier>{91d2a332-ca27-4e0f-a909-b76131e368fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Core Components\CanvasText">
-      <UniqueIdentifier>{7bac33bb-20e5-465e-94ba-50129031f16d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Core Modules\Renderer\ScreenQuad">
       <UniqueIdentifier>{e803f105-e93c-4a9d-b1a3-68c444fed9a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Core Components\Camera\FBO">
       <UniqueIdentifier>{6a56e379-5292-472f-b95e-9ab721b372f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{eab1891b-23c7-4c24-85c5-718418482fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\CanvasTextSystem">
+      <UniqueIdentifier>{dc176663-5f18-4d93-8c22-08fc256068e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\CanvasImageSystem">
+      <UniqueIdentifier>{d8556202-bd81-46f6-aa18-87d04196bf97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components\CanvasText">
+      <UniqueIdentifier>{7bac33bb-20e5-465e-94ba-50129031f16d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Unit">
+      <UniqueIdentifier>{4a3acf5c-8245-44cf-b2ce-2410277e0435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components\EntityState">
+      <UniqueIdentifier>{220917a0-a013-44b1-aa37-90ca4b466e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components\Tag">
+      <UniqueIdentifier>{52dc7c5a-fbb3-40c2-9706-ff55cfc71102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Systems\EntityState System">
+      <UniqueIdentifier>{5c5cadf9-5b3a-469e-9fa3-f339c479a08a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

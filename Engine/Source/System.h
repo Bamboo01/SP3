@@ -1,5 +1,6 @@
 #include <set>
 #include "Entity.h"
+#include "EntityState.h"
 #pragma once
 
 

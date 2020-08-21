@@ -6,6 +6,8 @@
 #include "CanvasTextSystem.h"
 #include "CameraControllerSystem.h"
 #include "GridControllerSystem.h"
+#include "EntityStateSystem.h"
+#include "Tag.h"
 
 #pragma once
 class SceneTest : public Scene
@@ -31,6 +33,6 @@ public:
 	std::shared_ptr<CanvasTextSystem> canvastextsystem;
 	std::shared_ptr<CameraControllerSystem> cameracontrollersystem;
 	std::shared_ptr<GridControllerSytem> gridcontrollersystem;
-
+	std::shared_ptr<EntityStateSystem> entitystatesystem;
 };
 

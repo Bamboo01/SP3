@@ -5,6 +5,7 @@ void CanvasImageSystem::Setup()
 	Signature signature;
 	signature.set(coordinator.GetComponentType<CanvasImage>());
 	signature.set(coordinator.GetComponentType<Transform>());
+	signature.set(coordinator.GetComponentType<EntityState>());
 	coordinator.SetSystemSignature<CanvasImageSystem>(signature);
 }
 

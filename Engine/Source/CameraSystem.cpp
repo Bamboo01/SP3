@@ -6,6 +6,7 @@ void CameraSystem::Setup()
 {
 	Signature signature;
 	signature.set(coordinator.GetComponentType<Camera>());
+	signature.set(coordinator.GetComponentType<EntityState>());
 	coordinator.SetSystemSignature<CameraSystem>(signature);
 }
 

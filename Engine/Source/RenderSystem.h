@@ -13,7 +13,6 @@ extern Renderer renderer;
 class RenderSystem : public System
 {
 private:
-	std::vector<Entity> DynamicEntities;
 
 public:
 	virtual void Setup();

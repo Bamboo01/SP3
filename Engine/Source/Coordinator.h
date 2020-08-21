@@ -122,4 +122,14 @@ public:
 	{
 		m_SystemManager->setSignature<T>(signature);
 	}
+
+	void ActivateEntity(Entity entity)
+	{
+		m_SystemManager->EntityActivated(entity, GetEntitySignature(entity));
+	}
+
+	void DeactivateEntity(Entity entity)
+	{
+		m_SystemManager->EntityDeactivated(entity, GetEntitySignature(entity));
+	}
 };

@@ -4,6 +4,7 @@ void TransformSystem::Setup()
 {
 	Signature signature;
 	signature.set(coordinator.GetComponentType<Transform>());
+    signature.set(coordinator.GetComponentType<EntityState>());
 	coordinator.SetSystemSignature<TransformSystem>(signature);
 }
 

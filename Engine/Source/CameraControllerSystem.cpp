@@ -121,6 +121,7 @@ void CameraControllerSystem::Setup()
     Signature signature;
     signature.set(coordinator.GetComponentType<Camera>());
     signature.set(coordinator.GetComponentType<CameraController>());
+    signature.set(coordinator.GetComponentType<EntityState>());
     coordinator.SetSystemSignature<CameraControllerSystem>(signature);
 }
 	
