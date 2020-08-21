@@ -4,9 +4,9 @@
 void RayCastingSystem::Setup()
 {
 	Signature signature;
-	signature.set(coordinator.GetComponentType<Transform>());
 	signature.set(coordinator.GetComponentType<Camera>());
 	signature.set(coordinator.GetComponentType<RayCasting>());
+	//signature.set(coordinator.GetComponentType<Transform>());
 	coordinator.SetSystemSignature<RayCastingSystem>(signature);
 }
 
@@ -24,14 +24,16 @@ void RayCastingSystem::Update(double dt)
 {
 	for (auto const& entity : m_Entities)
 	{
-		auto& transform = coordinator.GetComponent<Transform>(entity);
 		auto& camera = coordinator.GetComponent<Camera>(entity);
 		auto& ray = coordinator.GetComponent<RayCasting>(entity);
-		ray.viewMatrix = camera.getViewMatrix();
-		ray.Ray = calculateMouseRay();
-		std::cout << ray.Ray.x << " " << ray.Ray.y << " " << ray.Ray.z << std::endl;
-		ray.RayStartPos = glm::vec3(camera.position.x, camera.position.y, camera.position.z);
-		ray.RayEndPos = glm::vec3(camera.position.x, camera.position.y, camera.position.z);
+		if (camera.type == CAMERA_TYPE::CAMERA_MAIN)
+		{
+			ray.viewMatrix = camera.getViewMatrix();
+			ray.Ray = calculateMouseRay();
+			std::cout << ray.Ray.x << " " << ray.Ray.y << " " << ray.Ray.z << std::endl;
+			ray.RayStartPos = glm::vec3(camera.position.x, camera.position.y, camera.position.z);
+			ray.RayEndPos = glm::vec3(camera.position.x, camera.position.y, camera.position.z);
+		}
 	}
 }
 

@@ -71,7 +71,7 @@ void Camera::UpdateAssignedTextures()
 	{
 		if (a)
 		{
-			*a = FBO->GetFBO();
+			*a = FBO->GetFrame();
 		}
 	}
 }

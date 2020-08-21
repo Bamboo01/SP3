@@ -37,6 +37,8 @@ void SceneTest::Init()
 		CAMERA_TYPE::CAMERA_MAIN,
 		CAMERA_MODE::MODE_PERSPECTIVE
 	));
+	coordinator.AddComponent<RayCasting>(maincamera, RayCasting());
+	coordinator.AddComponent<Transform>(maincamera, Transform());
 
 	Entity axes = coordinator.CreateEntity();
 	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));
@@ -61,14 +63,6 @@ void SceneTest::Init()
 	coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
 	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
 	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(10, 10, 1);
-
-	//{
-	//	// Ray
-	//	Entity ray = coordinator.CreateEntity();
-	//	coordinator.AddComponent<Transform>(ray, Transform());
-	//	coordinator.AddComponent<RayCasting>(ray, RayCasting());
-	//	coordinator.AddComponent<Camera>(ray, Camera());
-	//}
 
 	{
 		// Test unit
