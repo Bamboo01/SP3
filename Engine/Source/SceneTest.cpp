@@ -30,8 +30,8 @@ void SceneTest::Init()
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
-		glm::vec3(0, 0, -3.f),
-		glm::vec3(0, 0, 0),
+		glm::vec3(0, 50, -3.f),
+		glm::vec3(90, 0, 0),
 		1080, 1080, //Lower this if the FPS stinks
 		45.f,
 		CAMERA_TYPE::CAMERA_MAIN,
@@ -73,19 +73,19 @@ void SceneTest::Init()
 	coordinator.AddComponent<Transform>(axes, Transform());
 
 	Math::InitRNG();
-	for (int i = 0; i < 400; i++)
-	{
-		int x = Math::RandIntMinMax(-20, 20);
-		int y = Math::RandIntMinMax(-10, 5);
-		int z = Math::RandIntMinMax(-20, 20);
-		Entity cube = coordinator.CreateEntity();
-		coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
-		coordinator.AddComponent<Transform>(cube, Transform());
-		coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
-		coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
-		coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
-		coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
-	}
+	//for (int i = 0; i < 400; i++)
+	//{
+	//	int x = Math::RandIntMinMax(-20, 20);
+	//	int y = Math::RandIntMinMax(-10, 5);
+	//	int z = Math::RandIntMinMax(-20, 20);
+	//	Entity cube = coordinator.CreateEntity();
+	//	coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
+	//	coordinator.AddComponent<Transform>(cube, Transform());
+	//	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
+	//	coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
+	//	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
+	//	coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	//}
 
 	Entity cube = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(cube, Transform());
@@ -93,7 +93,7 @@ void SceneTest::Init()
 	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
 	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(10, 10, 1);
 
-	Entity UI = coordinator.CreateEntity();
+	/*Entity UI = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(UI, Transform());
 	coordinator.GetComponent<Transform>(UI).position = glm::vec3(0, 0, 0);
 	coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.5, 0.5, 1);
@@ -103,7 +103,7 @@ void SceneTest::Init()
 	Entity UIText = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(UIText, Transform());
 	coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.1, 0.1, 1);
-	coordinator.AddComponent<CanvasText>(UIText, CanvasText("12345", ALIGN_CENTER)); 
+	coordinator.AddComponent<CanvasText>(UIText, CanvasText("12345", ALIGN_CENTER)); */
 
 	/*Init all systems*/
 	camerasystem->Init();
