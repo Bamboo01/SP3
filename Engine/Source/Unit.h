@@ -4,67 +4,64 @@
 
 struct Unit
 {
-	std::string Name;
-
-	// Base stats
-	int Level;			// Unit’s level will affect how much health, damage and defense a unit have
-	int Health;			// The amount of damage a unit can take before it dies
-	int Damage;			// The amount of damage a unit can inflict on the enemy units
-	int Defense;		// Mitigates a percentage of the damage the unit takes
-	float AttackSpeed;	// The interval between attacks for the unit
-	int FlowFieldCost;	// The cost of the unit [ONLY FOR UNPASSABLE OBJECTS/ REST ARE 1]
-
-	enum UnitTypes // This is arrange in a way to know what is rendered out for each unit when selected
+	enum UnitType // The Unit 
 	{
-		START = 0,
-
+		DEFAULT = 0,
 		// Units BELOW this category except for WALL, are able to attack, as such set all base stats
-
-		NORMALUNIT,
-		TANKUNIT,
-		RANGEUNIT,
-		TOWER,
-		WALL,
-
+		NORMAL = 1,
+		TANK = 2,
+		RANGE = 3,
+		TOWER = 4,
+		WALL = 5,
 		// Units BELOW this category are not able to attack, as such set base stats only for level, health, defense, set damage and attack speed as 0
-
-		NEXUS,			// Player/enemy main base, produce units
-		GENERATOR,		// Generate resources for player
-		LAB,			// Level units up
-		END
+		NEXUS = 6,			// Player/enemy main base, produce units
+		GENERATOR = 7,		// Generate resources for player
+		LAB = 8,			// Level units up
+		PROJECTILE = 9,
+		NUM_TYPE
 	};
 
-	UnitTypes unittype;
+	enum UnitFaction
+	{
+		UNDEFINED = 0,
+		PLAYER = 1,
+		ENEMY = 2,
+	};
+
+	std::string name; // Name of unit
+	int level; // Level of Unit, other statistics will scale accordingly to level
+	float health; // The maximum amount of net damage a unit can receive
+	float damage; // The amount of damage the unit can inflict on enemy units
+	float defense; // An amount that will mitigate the percentage of damage received
+	float attackRange; // The minimum distance for the unit to attack
+	float attackSpeed; // The interval between attacks for unit
+	float mass; // Reference mass used in colliderSystem
+	glm::vec3 colliderScale; // Reference colliderScale used in colliderSystem
+	bool active; // A boolean to check whether the unit is active or not, if it isn't active it won't be rendered/updated
+	double delay; // A double to keep track of attack resets
+	Entity target; // Current targeted enemy
+	UnitType unitType; // The type of unit
+	UnitFaction unitFaction; // The side/faction which the unit belongs to
+
+	Entity originUnit; // (PROJECTILE ONLY!) The unit that shot the projectile, it could be tower or ranged :D
+	Entity targetUnit; // (PROJECTILE ONLY!) The unit that is being traced by the projectile
 
 	Unit()
-		: Name("")
-		, Level(0)
-		, Health(0)
-		, Damage(0)
-		, Defense(0)
-		, AttackSpeed(0)
-		, unittype(Unit::START)
-		, FlowFieldCost(0)
+		: name("Default")
+		, level(1)
+		, health(0)
+		, damage(0)
+		, defense(0)
+		, attackSpeed(0)
+		, mass(1)
+		, colliderScale(glm::vec3(1, 1, 1))
+		, active(false)
+		, target(UINT_MAX)
+		, unitType(UnitType::DEFAULT)
+		, unitFaction(UnitFaction::UNDEFINED)
+		, originUnit(UINT_MAX)
+		, targetUnit(UINT_MAX)
 	{
 	}
-
-	// Max base health is 150
-	// Max base damage and defense is 100
-	// Calculation for health = (basehealth * 4 * level) / 100 + level + 10
-	// Calculation for damage/defense = (basedamage/basedefense * 4 * level) / 100 + 5
-	Unit(std::string name, int level, int basehealth, int damage, int defense, float attackspeed, UnitTypes type,int flowfieldcost)
-		: Name(name)
-		, Level(level)
-		, Health((basehealth * 4 * level) / 100 + level + 10)
-		, Damage((damage * 4 * level) / 100 + 5)
-		, Defense((defense * 4 * level) / 100 + 5)
-		, AttackSpeed(attackspeed)
-		, unittype(type)
-		, FlowFieldCost(flowfieldcost)
-
-	{
-	}
-
-	// Add functions for updating stats when taking damage
 
 };

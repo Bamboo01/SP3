@@ -84,9 +84,16 @@ void Renderer::Init()
 	grass->kShininess = 0.f;
 	materialManager.push_back(grass);
 
+	Material* playerMaterial = new Material();
+	playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
+	playerMaterial->AssignTexture("Images//player.tga");
+	materialManager.push_back(playerMaterial);
+
 	/*Assign your material their shaders here*/
 	addMaterial(boxmat, test);
 	addMaterial(grass);
+
+	addMaterial(playerMaterial);
 
 	/*Assign your meshes their materials here*/
 	assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);

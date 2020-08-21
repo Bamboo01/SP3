@@ -4,14 +4,14 @@
 
 struct CanvasImage
 {
-	std::string ImagePath;
-	unsigned TextureID;
+    std::string ImagePath;
+    unsigned TextureID;
 
-	CanvasImage()
-	{
-		ImagePath = "";
-		TextureID = -1;
-	}
+    CanvasImage()
+    {
+        ImagePath = "";
+        TextureID = -1;
+    }
 
 	CanvasImage(std::string path)
 	{

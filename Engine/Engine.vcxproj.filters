@@ -5,6 +5,146 @@
     <ClCompile Include="Source\Camera.cpp">
       <Filter>Core\Core Components\Camera</Filter>
     </ClCompile>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{d01c359d-6a92-4723-ab36-607683191e90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\SceneManager">
+      <UniqueIdentifier>{c2ffd5cb-8d3a-4c91-a6fc-0cef64cca290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\SceneTest">
+      <UniqueIdentifier>{0b820b90-305b-4f72-9649-c7b9e59409e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{2edd94ae-f5bf-4615-a7c5-8c957fbde004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Meshes">
+      <UniqueIdentifier>{cf092f62-3074-466f-8d70-cd972bd376ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Meshes\AnimatedSprite">
+      <UniqueIdentifier>{dff78375-d62b-45ab-b1dd-5dfbb040d268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{6f7f9e47-8f1d-4d87-9f8e-e477fca7fe50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules">
+      <UniqueIdentifier>{df8f84d2-32db-4a14-87a6-7fd0b159466e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\Application">
+      <UniqueIdentifier>{87a6bbab-17b3-4989-9d6b-2918f230b247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\MeshManager">
+      <UniqueIdentifier>{51547b29-8f45-446e-acfe-c92a917249ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\MeshManager\Heightmap">
+      <UniqueIdentifier>{6bfd3d60-0091-4ba5-950a-6163955c62e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\MeshManager\LoadOBJ">
+      <UniqueIdentifier>{408bbcad-94c0-43a5-a40f-e3653bf9bb33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\MeshManager\LoadTexture">
+      <UniqueIdentifier>{333b91ef-0ce9-4c80-af01-e4a685ec8056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\MeshManager\LoadTGA">
+      <UniqueIdentifier>{3aeaf02f-4bfc-4134-93d5-e8fedccb1fbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\Timer">
+      <UniqueIdentifier>{30f3bfbb-67d9-4f51-b005-8455cb832e1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\Shader">
+      <UniqueIdentifier>{ad0c1022-073c-422e-b278-bd26449692e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\Material">
+      <UniqueIdentifier>{52f21fc7-b236-46e4-ab72-490d2c05a37e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\Renderer">
+      <UniqueIdentifier>{193a6021-b3a8-4256-986d-96af8741a3ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\Renderer\ScreenQuad">
+      <UniqueIdentifier>{a4065b8d-203f-4b8b-9751-55bd6f993526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\LightingManager">
+      <UniqueIdentifier>{1a05b9a0-b647-43c9-bd18-1c6795570b92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\LightingManager\Light">
+      <UniqueIdentifier>{1783837c-aed5-49e7-bb44-d44b7b206c68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\Scene">
+      <UniqueIdentifier>{02289ff7-2a6e-4867-a580-7f970aeb21cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Systems">
+      <UniqueIdentifier>{743e7aeb-9440-4756-8914-bea48c4bd602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components">
+      <UniqueIdentifier>{be680ae1-540d-478b-8109-2089b030369c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\ECS">
+      <UniqueIdentifier>{822d8357-31f3-472d-baaf-6fad7f5be8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components\Camera">
+      <UniqueIdentifier>{1a7d1b4c-c967-4b96-aff8-d6897a67de54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components\Camera\FBO">
+      <UniqueIdentifier>{859fb4c3-944c-41f3-bf8d-f26cbf30b9e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Systems\TransformSystem">
+      <UniqueIdentifier>{c5866aeb-455f-4d50-973e-4e21f4e20913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Systems\CameraSystem">
+      <UniqueIdentifier>{d35bfef0-7aba-4d1d-99fd-217c38125830}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components\Transform">
+      <UniqueIdentifier>{0a5fafe4-4f2e-4fc5-b1a7-26f3b5a77468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components\Render">
+      <UniqueIdentifier>{55de5a15-4e80-4698-810a-be288ef78520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Systems\RenderSystem">
+      <UniqueIdentifier>{917e726b-6c70-4389-a8a8-2ce5834e5eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Mesh">
+      <UniqueIdentifier>{ab29f161-5347-4b97-be3e-56ee117bf094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Mesh\Mesh">
+      <UniqueIdentifier>{0ece835e-13cc-491d-83ea-258f418f2315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Mesh\MeshBuilder">
+      <UniqueIdentifier>{fb25909a-eb97-4f6d-826d-65f7ac94a46f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Meshes\TextMesh">
+      <UniqueIdentifier>{0369c8e4-e705-4fb5-ba88-5c87598f4ed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{e0148a22-e4b9-4180-a10e-fefffe405f43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{33f706f8-0ea4-4972-a6e6-aed2aa63675f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{b47efd8e-f754-447c-82ac-b8c25e9d72ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RenderData2D">
+      <UniqueIdentifier>{5c7f6a8d-8c39-4964-a663-762436681878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\CanvasImageSystem">
+      <UniqueIdentifier>{988497a9-e0ea-4eea-8c6b-1a2cd8ac7644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{750cc336-f1ed-4969-9c3f-37c1ed7439bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\UnitSystem">
+      <UniqueIdentifier>{4494811b-fbfb-41e5-a054-70fbcd98d20f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\RayCastingSystem">
+      <UniqueIdentifier>{2fea0da3-0ce9-435a-9fec-81831fe496ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\ColliderSystem">
+      <UniqueIdentifier>{ef6fefaa-1cb5-4d22-977d-59d262250c20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\ImGui">
+      <UniqueIdentifier>{22da2937-c611-49fb-bcff-4b2b446b57ae}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Core\Core Modules\Application</Filter>
     </ClCompile>
@@ -79,6 +219,35 @@
     </ClCompile>
     <ClCompile Include="Source\TerrainSystem.cpp">
       <Filter>Systems\Terrain System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UnitSystem.cpp">
+      <Filter>Systems\UnitSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RayCastingSystem.cpp">
+      <Filter>Systems\RayCastingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ColliderSystem.cpp">
+      <Filter>Systems\ColliderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CanvasImageUpdateSystem.cpp">
+      <Filter>Systems\CanvasImageSystem</Filter>
+    <ClCompile Include="..\Dependencies\ImGui\imgui.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_demo.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_draw.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_impl_glfw.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_impl_opengl3.cpp">
+      <Filter>Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\ImGui\imgui_widgets.cpp">
+      <Filter>Modules\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +406,56 @@
     </ClInclude>
     <ClInclude Include="Source\TerrainSystem.h">
       <Filter>Systems\Terrain System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UnitSystem.h">
+      <Filter>Systems\UnitSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Unit.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RayCasting.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RayCastingSystem.h">
+      <Filter>Systems\RayCastingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ColliderSystem.h">
+      <Filter>Systems\ColliderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasImageUpdate.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasImageUpdateSystem.h">
+      <Filter>Systems\CanvasImageSystem</Filter>
+    <ClInclude Include="Source\Unit_Data.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imconfig.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imgui.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imgui_impl_glfw.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imgui_impl_opengl3.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imgui_internal.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imstb_rectpack.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imstb_textedit.h">
+      <Filter>Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\ImGui\imstb_truetype.h">
+      <Filter>Modules\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

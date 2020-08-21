@@ -13,8 +13,7 @@ class CanvasImageSystem : public System
 private:
 
 public:
-	virtual void Setup();
-	virtual void Init();
-	virtual void Render();
+    virtual void Setup();
+    virtual void Init();
+    virtual void Render();
 };
-
