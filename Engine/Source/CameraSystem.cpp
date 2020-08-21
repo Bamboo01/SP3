@@ -24,6 +24,8 @@ void CameraSystem::Update(float dt)
 	{
 		auto& camera = coordinator.GetComponent<Camera>(entity);
 
+		//std::cout << camera.position.x << " " << camera.position.y << " " << camera.position.z << std::endl;
+
 		if (Application::IsKeyPressed('W'))
 		{
 			camera.position -= (camera.position - camera.target) * 50.f * dt;

@@ -130,6 +130,12 @@
     <Filter Include="Systems\UnitSystem">
       <UniqueIdentifier>{4494811b-fbfb-41e5-a054-70fbcd98d20f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\RayCastingSystem">
+      <UniqueIdentifier>{2fea0da3-0ce9-435a-9fec-81831fe496ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\ColliderSystem">
+      <UniqueIdentifier>{ef6fefaa-1cb5-4d22-977d-59d262250c20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -198,6 +204,12 @@
     </ClCompile>
     <ClCompile Include="Source\UnitSystem.cpp">
       <Filter>Systems\UnitSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RayCastingSystem.cpp">
+      <Filter>Systems\RayCastingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ColliderSystem.cpp">
+      <Filter>Systems\ColliderSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +344,18 @@
     </ClInclude>
     <ClInclude Include="Source\Unit.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RayCasting.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RayCastingSystem.h">
+      <Filter>Systems\RayCastingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ColliderSystem.h">
+      <Filter>Systems\ColliderSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

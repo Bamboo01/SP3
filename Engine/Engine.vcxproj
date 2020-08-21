@@ -161,6 +161,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\CanvasImageSystem.cpp" />
+    <ClCompile Include="Source\ColliderSystem.cpp" />
+    <ClCompile Include="Source\RayCastingSystem.cpp" />
     <ClCompile Include="Source\RenderSystem.cpp" />
     <ClCompile Include="Source\CameraSystem.cpp" />
     <ClCompile Include="Source\ScreenQuad.cpp" />
@@ -188,6 +190,10 @@
     <ClInclude Include="Source\CanvasImageSystem.h" />
     <ClInclude Include="Source\CanvasImage.h" />
     <ClInclude Include="Source\CanvasText.h" />
+    <ClInclude Include="Source\Collider.h" />
+    <ClInclude Include="Source\ColliderSystem.h" />
+    <ClInclude Include="Source\RayCasting.h" />
+    <ClInclude Include="Source\RayCastingSystem.h" />
     <ClInclude Include="Source\ScreenQuadShader.h" />
     <ClInclude Include="Source\RenderData2D.h" />
     <ClInclude Include="Source\RenderSystem.h" />

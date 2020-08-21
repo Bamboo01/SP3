@@ -295,8 +295,6 @@ bool CanvasImageSystem::CollideWithCanvas(float x, float y, float xscale, float 
 	else if (Application::GetWindowWidth() < Application::GetWindowHeight())
 		offsetx = 0;
 
-	std::cout << offsety << std::endl;
-
 	float newx = ((x + 1) / 2) * (Application::GetWindowWidth() - offsetx);
 	float newy = ((y + 1) / 2) * (Application::GetWindowHeight() + offsety);
 	float newxscale = (xscale) * (Application::GetWindowWidth() - offsetx);
@@ -310,7 +308,6 @@ bool CanvasImageSystem::CollideWithCanvas(float x, float y, float xscale, float 
 
 	double mousex, mousey;
 	Application::GetCursorPos(&mousex, &mousey);
-	//std::cout << "mousex: " << mousex << std::endl;
 	if (mousex > bottomleftx && mousex < toprightx && mousey > bottomlefty && mousey < toprighty)
 		return true;
 	return false;

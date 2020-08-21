@@ -4,6 +4,8 @@
 #include "RenderSystem.h"
 #include "CanvasImageSystem.h"
 #include "UnitSystem.h"
+#include "RayCastingSystem.h"
+#include "ColliderSystem.h"
 
 #pragma once
 class SceneTest : public Scene
@@ -27,5 +29,7 @@ public:
 	std::shared_ptr<RenderSystem> rendersystem;
 	std::shared_ptr<CanvasImageSystem> canvasimagesystem;
 	std::shared_ptr<UnitSystem> unitsystem;
+	std::shared_ptr<RayCastingSystem> raycastingsystem;
+	std::shared_ptr<ColliderSystem> collidersystem;
 };
 
