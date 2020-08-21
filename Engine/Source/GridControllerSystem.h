@@ -24,4 +24,5 @@ public:
 	virtual void SetUp();
 	glm::vec3 GridPosition[500];
 	int GridCost[500];
+	int DestinationGrid;
 };

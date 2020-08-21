@@ -4,12 +4,15 @@
 void GridControllerSytem::CreateGrids()
 {
 	int count = 0;
+	for (int i = 0; i < 500; ++i)
+	{
+		GridCost[i] = -1;
+	}
 	for (int y = 500; y > -500; y -= 50)
 	{
 		for (int x = -500; x < 500; x += 50)
 		{
 			GridPosition[count] = glm::vec3(x, 2, y);
-			GridCost[count] = 1;
 			CheckGridCost(count);
 			//std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << " ::::" << GridCost[count] << std::endl;
 			count++;
@@ -39,7 +42,7 @@ void GridControllerSytem::CheckGridCost(int GridNum)
 		glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
 		if (CursorWorldPosition.x >= GridTopLeft.x && CursorWorldPosition.x <= GridBottomRight.x && CursorWorldPosition.z <= GridTopLeft.z && CursorWorldPosition.z >= GridBottomRight.z)
 		{
-			if (GridCost[i] == 1)
+			if (GridCost[i] == -1)
 			{	// Set The Empty Grid To the Destination Point
 				GridCost[i] = 0;
 				destination = i;
@@ -71,13 +74,74 @@ void GridControllerSytem::Update(float dt)
 
 void GridControllerSytem::CreatePath(int Destination)
 {
-	bool changes = false;
+	glm::vec3 GridTopLeft = GridPosition[Destination];
+	glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+	// Check at the edge of the world space
+	// If not, Check if the grid around it is passable or not
+	// World Position is from -500,500 to 500,-500
 
-
-	if (changes == true)
+	//North
+	if (GridTopLeft.z != 500)
 	{
-
+		// There is a Grid in the North Direction!!
+		// Check the North Grid ID
+		for (int i = 0; i < 500; ++i)
+		{
+			if ((GridPosition[i].z == (GridTopLeft.z + 50)) && (GridPosition[i].x == GridTopLeft.x) && (GridCost[i] == -1)) // Checks if there is grid Cost is uninitialized
+			{
+				GridCost[i] = GridCost[Destination] + 1;
+				std::cout << GridCost[i] << std::endl;
+				CreatePath(i);
+				break;
+			}
+		}
 	}
+	// South
+	if (GridBottomRight.z != -500)
+	{
+		// There is a Grid in the South Direction!!
+		// Check the South Grid ID
+		for (int i = 0; i < 500; ++i)
+		{
+			if ((GridPosition[i].z == GridTopLeft.z - 50) && (GridPosition[i].x == GridTopLeft.x) && (GridCost[i] == -1)) // Checks if there is grid Cost is uninitialized
+			{
+				GridCost[i] = ++GridCost[Destination];
+				CreatePath(i);
+				break;
+			}
+		}
+	}
+	// East
+	if (GridBottomRight.x != 500)
+	{
+		// There is a Grid in the East Direction!
+		// Check East Grid ID
+		for (int i = 0; i < 500; ++i)
+		{
+			if ((GridPosition[i].x == GridBottomRight.x + 50) && (GridPosition[i].z == GridTopLeft.z) && (GridCost[i] == -1))// Checks if there is grid Cost is uninitialized
+			{
+				GridCost[i] = ++GridCost[Destination];
+				CreatePath(i);
+				break;
+			}
+		}
+	}
+	// West
+	if (GridTopLeft.x != -500)
+	{
+		// There is a Grid in the West Direction!
+		// Check West Grid ID
+		for (int i = 0; i < 500; ++i)
+		{
+			if ((GridPosition[i].x == GridTopLeft.x - 50) && (GridPosition[i].z == GridTopLeft.z) && (GridCost[i]) == -1) // Check if there is grid Cost is uninitialized
+			{
+				GridCost[i] = ++GridCost[Destination];
+				CreatePath(i);
+				break;
+			}
+		}
+	}
+	
 }
 
 void GridControllerSytem::SetUp()
