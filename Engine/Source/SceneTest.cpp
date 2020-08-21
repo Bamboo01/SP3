@@ -194,6 +194,7 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.3, 0.3, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//crate.tga"));
 		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::NONPOPUP, CanvasImageUpdate::START4, true));
+		coordinator.AddComponent<EntityState>(UI, EntityState());
 	}
 	{
 		// Unit Info Box
@@ -431,7 +432,7 @@ void SceneTest::UpdateImGui()
 void SceneTest::UpdateImGuiUnitSpawn()
 {
 	static float f = 0.0f;
-	static const char* unittypes[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
+	static const char* unitTypes[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
 	static const char* unitfaction[]{ "PLAYER","ENEMY" };
 	static int counter = 0;
 	static int selectedItem = 0;
@@ -444,7 +445,7 @@ void SceneTest::UpdateImGuiUnitSpawn()
 
 	ImGui::Begin("Debug");                          // Create a window called "Hello, world!" and append into it.
 
-	ImGui::Combo("UnitType", &selectedItem, unittypes, IM_ARRAYSIZE(unittypes));
+	ImGui::Combo("UnitType", &selectedItem, unitTypes, IM_ARRAYSIZE(unitTypes));
 	ImGui::Combo("UnitFaction", &selectedItem2, unitfaction, IM_ARRAYSIZE(unitfaction));
 
 	ImGui::SliderInt("UnitLevel", &levelOfUnit, 1, 50);
@@ -502,14 +503,14 @@ void SceneTest::UpdateImGuiEntityList()
 		auto& transform = coordinator.GetComponent<Transform>(testHandler);
 		auto& collider = coordinator.GetComponent<Collider>(testHandler);
 		auto& unit = coordinator.GetComponent<Unit>(testHandler);
-		static const char* unittypes2[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
+		static const char* unitTypes2[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
 		static const char* unitfaction2[]{ "PLAYER","ENEMY" };
 
 		if (ImGui::CollapsingHeader("Unit Data"))
 		{
 			ImGui::Text("EntityID: %d", testHandler);
 			ImGui::Text("UnitName: %s", unit.name.c_str());
-			ImGui::Text("UnitType: %s", unittypes2[unit.unitType - 1]);
+			ImGui::Text("UnitType: %s", unitTypes2[unit.unitType - 1]);
 			ImGui::Text("UnitFaction: %s", unitfaction2[unit.unitFaction - 1]);
 			ImGui::Text("Level: %d", unit.level);
 			ImGui::SliderFloat("Health", &unit.health, 0.f, 1000.f);

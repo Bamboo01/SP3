@@ -50,7 +50,6 @@ public:
 	std::shared_ptr<CanvasImageSystem> canvasimagesystem;
 	std::shared_ptr<CanvasTextSystem> canvastextsystem;
 	std::shared_ptr<CameraControllerSystem> cameracontrollersystem;
-	std::shared_ptr<GridControllerSytem> gridcontrollersystem;
 	std::shared_ptr<EntityStateSystem> entitystatesystem;
 	std::shared_ptr<TerrainSystem> terrainsystem;
 	std::shared_ptr<CanvasImageUpdateSystem> canvasimageupdatesystem;

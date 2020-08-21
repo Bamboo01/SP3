@@ -79,11 +79,6 @@ int Application::GetWindowWidth()
 	return m_width;
 }
 
-bool Application::IsMousePressed(unsigned short key)
-{
-	return ((GetAsyncKeyState(key) & 0x8001) != 0);
-}
-
 void Application::GetCursorPos(double* xpos, double* ypos)
 {
 	glfwGetCursorPos(m_window, xpos, ypos);

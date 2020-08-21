@@ -46,6 +46,9 @@ struct Unit
 	Entity originUnit; // (PROJECTILE ONLY!) The unit that shot the projectile, it could be tower or ranged :D
 	Entity targetUnit; // (PROJECTILE ONLY!) The unit that is being traced by the projectile
 
+	int FlowFieldCost;
+
+
 	Unit()
 		: name("Default")
 		, level(1)
@@ -61,6 +64,20 @@ struct Unit
 		, unitFaction(UnitFaction::UNDEFINED)
 		, originUnit(UINT_MAX)
 		, targetUnit(UINT_MAX)
+		, FlowFieldCost(0)
+	{
+	}
+
+	Unit(std::string name, int level, int basehealth, int damage, int defense, float attackspeed, UnitType type, int flowfieldcost)
+		: name(name)
+		, level(level)
+		, health((basehealth * 4 * level) / 100 + level + 10)
+		, damage((damage * 4 * level) / 100 + 5)
+		, defense((defense * 4 * level) / 100 + 5)
+		, attackSpeed(attackspeed)
+		, unitType(type)
+		, FlowFieldCost(flowfieldcost)
+
 	{
 	}
 
