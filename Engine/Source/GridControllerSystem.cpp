@@ -11,7 +11,7 @@ void GridControllerSytem::CreateGrids()
 			GridPosition[count] = glm::vec3(x, 2, y);
 			GridCost[count] = 1;
 			CheckGridCost(count);
-			std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << " ::::" << GridCost[count] << std::endl;
+			//std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << " ::::" << GridCost[count] << std::endl;
 			count++;
 		}
 	
@@ -31,6 +31,29 @@ void GridControllerSytem::CheckGridCost(int GridNum)
 			GridCost[GridNum] += unit.FlowFieldCost;
 		}
 	}
+	// Check Which Grid the destination is at
+	int destination = -1;	// If it is -1 at the end, means that destination is impossible
+	for (int i = 0; i < 500; ++i)
+	{
+		glm::vec3 GridTopLeft = GridPosition[i];
+		glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+		if (CursorWorldPosition.x >= GridTopLeft.x && CursorWorldPosition.x <= GridBottomRight.x && CursorWorldPosition.z <= GridTopLeft.z && CursorWorldPosition.z >= GridBottomRight.z)
+		{
+			if (GridCost[i] == 1)
+			{	// Set The Empty Grid To the Destination Point
+				GridCost[i] = 0;
+				destination = i;
+				break;
+			}
+			else
+				break;		// If there is a wall at the destination point, Destination is impossible to reach
+		}
+	}
+	if (destination != -1)
+	{
+		// A Grid that has been selected
+		CreatePath(destination);
+	}
 }
 
 
@@ -46,23 +69,14 @@ void GridControllerSytem::Update(float dt)
 	}
 }
 
-void GridControllerSytem::CreatePath()
+void GridControllerSytem::CreatePath(int Destination)
 {
-	//Check Which Grid the destination is at
-	for (int i = 0; i < 500; ++i)
+	bool changes = false;
+
+
+	if (changes == true)
 	{
-		glm::vec3 GridTopLeft = GridPosition[i];
-		glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
-		if (CursorWorldPosition.x >= GridTopLeft.x && CursorWorldPosition.x <= GridBottomRight.x && CursorWorldPosition.z <= GridTopLeft.z && CursorWorldPosition.z >= GridBottomRight.z)
-		{
-			if (GridCost[i] == 1)
-			{
-				GridCost[i] = 0;
-				break;
-			}
-			else
-				break;
-		}
+
 	}
 }
 

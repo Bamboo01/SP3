@@ -20,7 +20,7 @@ public:
 	virtual void CreateGrids();						// Creating of a new grid
 	virtual void CheckGridCost(int GridNum);		// Checking cost of each Grid
 	virtual void Update(float dt);					//Getting Mouse Pressed for position of the unit's destination
-	virtual void CreatePath();
+	virtual void CreatePath(int Destination);						// Get Grid cost for Destination
 	virtual void SetUp();
 	glm::vec3 GridPosition[500];
 	int GridCost[500];
