@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Source\FBO.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Camera.cpp">
       <Filter>Core\Core Components\Camera</Filter>
@@ -72,9 +71,11 @@
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Core\Core Modules\Timer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FBO.cpp">
+      <Filter>Core\Core Components\Camera\FBO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\FBO.h" />
     <ClInclude Include="Source\CameraController.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -213,6 +214,9 @@
     <ClInclude Include="Source\UIShader.h">
       <Filter>Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="Source\FBO.h">
+      <Filter>Core\Core Components\Camera\FBO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -343,6 +347,9 @@
     </Filter>
     <Filter Include="Core\Core Modules\Renderer\ScreenQuad">
       <UniqueIdentifier>{e803f105-e93c-4a9d-b1a3-68c444fed9a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Components\Camera\FBO">
+      <UniqueIdentifier>{6a56e379-5292-472f-b95e-9ab721b372f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
