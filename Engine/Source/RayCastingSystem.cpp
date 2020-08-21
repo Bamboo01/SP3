@@ -29,7 +29,6 @@ void RayCastingSystem::Update(double dt)
 		{
 			ray.viewMatrix = camera.getViewMatrix();
 			ray.Ray = calculateMouseRay();
-			//std::cout << ray.Ray.x << " " << ray.Ray.y << " " << ray.Ray.z << std::endl;
 			ray.RayStartPos = glm::vec3(camera.position.x, camera.position.y, camera.position.z);
 			ray.RayEndPos = glm::vec3(camera.position.x, camera.position.y, camera.position.z);
 		}

@@ -68,9 +68,16 @@ void Renderer::Init()
 
 	Material* GUIWhite = new Material();
 
+	Material* playerMaterial = new Material();
+	playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
+	playerMaterial->AssignTexture("Images//player.tga");
+	materialManager.push_back(playerMaterial);
+
 	/*Assign your material their shaders here*/
 	addMaterial(boxmat, test);
 	addMaterial(GUIWhite, whitey);
+
+	addMaterial(playerMaterial);
 
 	/*Assign your meshes their materials here*/
 	assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MatrixStack.h"
+#include "glm.hpp"
 
 struct Collider
 {

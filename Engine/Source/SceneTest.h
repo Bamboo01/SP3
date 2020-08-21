@@ -8,6 +8,11 @@
 #include "RayCastingSystem.h"
 #include "ColliderSystem.h"
 
+// Includes for ImGui
+#include "../Dependencies/ImGui/imgui.h"
+#include "../Dependencies/ImGui/imgui_impl_glfw.h"
+#include "../Dependencies/ImGui/imgui_impl_opengl3.h"
+
 #pragma once
 class SceneTest : public Scene
 {
@@ -21,8 +26,16 @@ public:
 	virtual void Render();
 	virtual void PostRender();
 
+
 	virtual void Exit();
 	virtual Scene* Clone() { return new SceneTest(*this); }
+
+	Entity testHandler; // An entity handler to control entities
+	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
+
+	void UpdateImGui();
+	void UpdateImGuiUnitSpawn();
+	void UpdateImGuiEntityList();
 
 	/*Systems of the scene*/
 	std::shared_ptr<TransformSystem> transformsystem;
