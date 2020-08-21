@@ -211,6 +211,9 @@
     <ClCompile Include="Source\ColliderSystem.cpp">
       <Filter>Systems\ColliderSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\CanvasImageUpdateSystem.cpp">
+      <Filter>Systems\CanvasImageSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Timer.h">
@@ -356,6 +359,12 @@
     </ClInclude>
     <ClInclude Include="Source\ColliderSystem.h">
       <Filter>Systems\ColliderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasImageUpdate.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanvasImageUpdateSystem.h">
+      <Filter>Systems\CanvasImageSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

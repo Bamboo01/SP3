@@ -52,45 +52,45 @@ void ColliderSystem::Update(double dt)
             // If ray overlapped with terrain y, break the loop
             //if (ray.RayEndPos.y < 350.f * ReadHeightMap(ray.m_heightMap, ray.RayEndPos.x / 4000, ray.RayEndPos.z / 4000))
             //{
-            //    // std::cout << "Overlapped with Terrain" << std::endl;
+                // std::cout << "Overlapped with Terrain" << std::endl;
 
-            //     // Add Code to get first left click position and position after you let go here
-            //    static bool bLButtonState = false;
-            //    if (Application::IsMousePressed(0) && !bLButtonState)
-            //    {
-            //        bLButtonState = true;
-            //        firstposclick = ray.RayEndPos;
-            //    }
-            //    else if (bLButtonState && !Application::IsMousePressed(0))
-            //    {
-            //        bLButtonState = false;
-            //        secondposclick = ray.RayEndPos;
-            //        //std::cout << "First Pos: " << firstposclick << std::endl;
-            //        //std::cout << "Second Pos: " << secondposclick << std::endl;
-            //        // Calculating BottomLeft and TopRight
-            //        if (firstposclick.x < secondposclick.x)
-            //        {
-            //            minX = firstposclick.x;
-            //            maxX = secondposclick.x;
-            //        }
-            //        else if (firstposclick.x > secondposclick.x)
-            //        {
-            //            minX = secondposclick.x;
-            //            maxX = firstposclick.x;
-            //        }
-            //        if (firstposclick.z < secondposclick.z)
-            //        {
-            //            minZ = firstposclick.z;
-            //            maxZ = secondposclick.z;
-            //        }
-            //        else if (firstposclick.z > secondposclick.z)
-            //        {
-            //            minZ = secondposclick.z;
-            //            maxZ = firstposclick.z;
-            //        }
-            //    }
-            //    break;
-            //}
+                 // Add Code to get first left click position and position after you let go here
+                static bool bLButtonState = false;
+                if (Application::IsMousePressed(VK_LBUTTON) && !bLButtonState)
+                {
+                    bLButtonState = true;
+                    firstposclick = ray.RayEndPos;
+                }
+                else if (bLButtonState && !Application::IsMousePressed(VK_LBUTTON))
+                {
+                    bLButtonState = false;
+                    secondposclick = ray.RayEndPos;
+                    //std::cout << "First Pos: " << firstposclick << std::endl;
+                    //std::cout << "Second Pos: " << secondposclick << std::endl;
+                    // Calculating BottomLeft and TopRight
+                    if (firstposclick.x < secondposclick.x)
+                    {
+                        minX = firstposclick.x;
+                        maxX = secondposclick.x;
+                    }
+                    else if (firstposclick.x > secondposclick.x)
+                    {
+                        minX = secondposclick.x;
+                        maxX = firstposclick.x;
+                    }
+                    if (firstposclick.z < secondposclick.z)
+                    {
+                        minZ = firstposclick.z;
+                        maxZ = secondposclick.z;
+                    }
+                    else if (firstposclick.z > secondposclick.z)
+                    {
+                        minZ = secondposclick.z;
+                        maxZ = firstposclick.z;
+                    }
+                //}
+                //break;
+            }
             ray.RayEndPos = glm::vec3(ray.RayEndPos.x + ray.Ray.x * 3, ray.RayEndPos.y + ray.Ray.y * 3, ray.RayEndPos.z + ray.Ray.z * 3);
             transform.position = glm::vec3(ray.RayEndPos.x, ray.RayEndPos.y, ray.RayEndPos.z);
         }
@@ -105,6 +105,7 @@ void ColliderSystem::Update(double dt)
         for (auto const& entity2 : entityset2)
         {
             auto& transform = coordinator.GetComponent<Transform>(entity2);
+            std::cout << minX << " " << maxX << " " << minZ << " " << maxZ << std::endl;
             if (transform.position.x > minX && transform.position.x < maxX && transform.position.z < minZ && transform.position.z > maxZ)
             {
                 ++counter;

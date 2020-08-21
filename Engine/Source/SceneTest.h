@@ -3,6 +3,7 @@
 #include "CameraSystem.h"
 #include "RenderSystem.h"
 #include "CanvasImageSystem.h"
+#include "CanvasImageUpdateSystem.h"
 #include "UnitSystem.h"
 #include "RayCastingSystem.h"
 #include "ColliderSystem.h"
@@ -28,6 +29,7 @@ public:
 	std::shared_ptr<CameraSystem> camerasystem;
 	std::shared_ptr<RenderSystem> rendersystem;
 	std::shared_ptr<CanvasImageSystem> canvasimagesystem;
+	std::shared_ptr<CanvasImageUpdateSystem> canvasimageupdatesystem;
 	std::shared_ptr<UnitSystem> unitsystem;
 	std::shared_ptr<RayCastingSystem> raycastingsystem;
 	std::shared_ptr<ColliderSystem> collidersystem;
