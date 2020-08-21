@@ -7,6 +7,7 @@
 #include "CameraControllerSystem.h"
 #include "GridControllerSystem.h"
 #include "EntityStateSystem.h"
+#include "TerrainSystem.h"
 #include "Tag.h"
 
 #pragma once
@@ -34,5 +35,6 @@ public:
 	std::shared_ptr<CameraControllerSystem> cameracontrollersystem;
 	std::shared_ptr<GridControllerSytem> gridcontrollersystem;
 	std::shared_ptr<EntityStateSystem> entitystatesystem;
+	std::shared_ptr<TerrainSystem> terrainsystem;
 };
 

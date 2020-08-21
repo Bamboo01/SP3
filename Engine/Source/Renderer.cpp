@@ -48,33 +48,25 @@ void Renderer::Init()
 
 	//Add a post processing shader here if you want
 	postProcessingShader = nullptr;
-
 	//Initialise the screenquad
 	screenQuad = new ScreenQuad;
 	screenQuad->Init();
-
 	//Initialise the textmesh
 	TextMesh = MeshBuilder::GenerateText("Text", 16, 16);
 	TextMesh->Init();
-
 	//Initialise all the fonts
 	Consolas = addFont("Fonts//Consolas.tga");
 	//Initialise the textmesh shader
 	textshader = new TextShader;
 	textshader->InitShader();
-
 	for (auto mesh : meshManager->meshList)
 	{
 		MeshtoMaterial.insert({ mesh, nullptr });
 	}
-
 	lightingManager.InitLights(shaderManager);
 
 	/*Initialise all your shaders here*/
 	Shader* test = new Shader("Shader//test.vs", "Shader//test.fs");
-	shaderManager.push_back(test);
-
-	Shader* whitey = new Shader("Shader//whitey.vs", "Shader//whitey.fs");
 	shaderManager.push_back(test);
 
 	/*Add your materials*/
@@ -83,16 +75,18 @@ void Renderer::Init()
 	boxmat->AssignTexture("Images//crate.tga");
 	boxmat->AssignTexture("Images//grass.tga");
 	materialManager.push_back(boxmat);
-
-	Material* GUIWhite = new Material();
+	Material* grass = new Material();
+	grass->AssignTexture("Images//grass.tga");
+	grass->kSpecular = glm::vec3(0, 0, 0);
+	grass->kShininess = 0.f;
 
 	/*Assign your material their shaders here*/
 	addMaterial(boxmat, test);
-	addMaterial(GUIWhite, whitey);
+	addMaterial(grass);
 
 	/*Assign your meshes their materials here*/
 	assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
-	assignMaterialtoMesh(meshManager->meshList[GEO_GUIQUAD], GUIWhite);
+	assignMaterialtoMesh(meshManager->meshList[GEO_TERRAIN], grass);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)
@@ -331,4 +325,9 @@ void Renderer::BufferStaticModels()
 	{
 		mesh->BufferStaticModels();
 	}
+}
+
+std::vector<unsigned char> Renderer::getHeightMap(Mesh* terrain)
+{
+	return meshManager->m_terrainList.at(terrain);
 }

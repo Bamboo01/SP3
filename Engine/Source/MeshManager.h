@@ -11,6 +11,7 @@ enum GEO_TYPE
 	GEO_GUIQUAD,
 	GEO_GRIDCUBE,
 	GEO_GRID,
+	GEO_TERRAIN,
 	NUM_MESH
 };
 
@@ -23,6 +24,7 @@ public:
 	Mesh* meshList[NUM_MESH];
 	std::unordered_map<Mesh*, SpriteAnimation> animList;
 	std::unordered_map <Mesh*, std::vector<unsigned char>> m_terrainList;
+	Mesh* CreateTerrain(GEO_TYPE type, const char* path);
 	void Update(float dt);
 };
 

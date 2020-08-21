@@ -77,6 +77,9 @@
     <ClCompile Include="Source\EntityStateSystem.cpp">
       <Filter>Core\Core Systems\EntityState System</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TerrainSystem.cpp">
+      <Filter>Systems\Terrain System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\CameraController.h">
@@ -229,6 +232,12 @@
     <ClInclude Include="Source\EntityStateSystem.h">
       <Filter>Core\Core Systems\EntityState System</Filter>
     </ClInclude>
+    <ClInclude Include="Source\TerrainData.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TerrainSystem.h">
+      <Filter>Systems\Terrain System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -371,6 +380,9 @@
     </Filter>
     <Filter Include="Core\Core Systems\EntityState System">
       <UniqueIdentifier>{5c5cadf9-5b3a-469e-9fa3-f339c479a08a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Terrain System">
+      <UniqueIdentifier>{29b3dd85-c2ce-4ebd-a45d-0119677cf4b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

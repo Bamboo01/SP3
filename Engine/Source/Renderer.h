@@ -57,6 +57,7 @@ public:
 	void RenderCanvas();
 	void RenderScreenQuad();
 	void BufferStaticModels();
+	std::vector<unsigned char> getHeightMap(Mesh* terrain);
 
 	//Canvas stuff
 	std::vector <std::pair<glm::mat4, unsigned>> CanvasImage;

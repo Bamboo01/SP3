@@ -13,6 +13,7 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<CameraController>();
 	//coordinator.RegisterComponent<GridControllerSytem>();
 	coordinator.RegisterComponent<EntityState>();
+	coordinator.RegisterComponent<TerrainData>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
@@ -21,6 +22,7 @@ void SceneTest::Init()
 	canvastextsystem = coordinator.RegisterSystem<CanvasTextSystem>();
 	cameracontrollersystem = coordinator.RegisterSystem<CameraControllerSystem>();
 	entitystatesystem = coordinator.RegisterSystem<EntityStateSystem>();
+	terrainsystem = coordinator.RegisterSystem<TerrainSystem>();
 	//gridcontrollersystem = coordinator.RegisterSystem<GridControllerSytem>();
 
 
@@ -32,6 +34,7 @@ void SceneTest::Init()
 	entitystatesystem->Setup();
 	//gridcontrollersystem->SetUp();
 	cameracontrollersystem->Setup();
+	terrainsystem->Setup();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
@@ -78,10 +81,18 @@ void SceneTest::Init()
 	Entity axes = coordinator.CreateEntity();
 	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));
 	coordinator.AddComponent<Transform>(axes, Transform());
-	coordinator.GetComponent<Transform>(axes).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
-	coordinator.AddComponent<EntityState>(axes, EntityState(false));
+	coordinator.GetComponent<Transform>(axes).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	coordinator.AddComponent<EntityState>(axes, EntityState());
 
-	Math::InitRNG();
+	Entity terrain = coordinator.CreateEntity();
+	coordinator.AddComponent<RenderData>(terrain, RenderData(renderer.getMesh(GEO_TERRAIN), false));
+	coordinator.AddComponent<Transform>(terrain, Transform());
+	coordinator.GetComponent<Transform>(terrain).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
+	coordinator.GetComponent<Transform>(terrain).scale = glm::vec3(400, 35, 400);
+	coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
+	coordinator.AddComponent<EntityState>(terrain, EntityState());
+
+	//Math::InitRNG();
 	//for (int i = 0; i < 400; i++)
 	//{
 	//	int x = Math::RandIntMinMax(-20, 20);
@@ -124,6 +135,7 @@ void SceneTest::Init()
 	canvasimagesystem->Init();
 	canvastextsystem->Init();
 	entitystatesystem->Init();
+	terrainsystem->Init();
 }
 
 void SceneTest::EarlyUpdate(double dt)

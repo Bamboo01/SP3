@@ -29,16 +29,27 @@ MeshManager::MeshManager()
 	meshList[GEO_GRIDCUBE]->Init();
 	meshList[GEO_GRIDCUBE]->mode = Mesh::DRAW_LINES;
 
+	meshList[GEO_TERRAIN] = CreateTerrain(GEO_TERRAIN, "Heightmaps//heightmap.raw");
+	meshList[GEO_TERRAIN]->Init();
+
 	for (int i = 0; i < NUM_MESH; i++)
 	{
 		if (meshList[i] == NULL)
 		{
-			std::cout << "Mesh ID: " << i << " not initialised!" << std::endl;
+			std::cout << "Mesh ID: " << i << " not initialised! This may cause errors during runtime!" << std::endl;
 			isfilled = false;
 		}
 	}
 
 	assert(isfilled == true && "Some meshes have not been initialised! Review the command window for more information.");
+}
+
+Mesh* MeshManager::CreateTerrain(GEO_TYPE type, const char* path)
+{
+	std::vector<unsigned char> m_heightMap;
+	Mesh* terrain = MeshBuilder::GenerateTerrain("Terrain", path, m_heightMap);
+	m_terrainList.insert({ meshList[type], m_heightMap });
+	return terrain;
 }
 
 void MeshManager::Update(float dt)

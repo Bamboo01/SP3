@@ -74,7 +74,7 @@ void main()
 
     if (FragColor.a < 0.1f)
 	{
-		FragColor = vec4(1,1,1,1);
+		discard;
 	}
     //FragDepth = gl_FragCoord.z;
 }

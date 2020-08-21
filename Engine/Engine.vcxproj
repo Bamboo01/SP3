@@ -186,6 +186,7 @@
     <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TransformSystem.cpp" />
+    <ClCompile Include="Source\TerrainSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EntityStateSystem.h" />
@@ -238,6 +239,8 @@
     <ClInclude Include="Source\UIShader.h" />
     <ClInclude Include="Source\TextShader.h" />
     <ClInclude Include="Source\Tag.h" />
+    <ClInclude Include="Source\TerrainData.h" />
+    <ClInclude Include="Source\TerrainSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.vcxproj">
