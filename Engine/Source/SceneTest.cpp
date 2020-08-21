@@ -18,6 +18,7 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<Unit>();
 	coordinator.RegisterComponent<RayCasting>();
 	coordinator.RegisterComponent<Collider>();
+//	coordinator.RegisterComponent<GridControllerSytem>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
@@ -78,6 +79,20 @@ void SceneTest::Init()
 	//coordinator.GetComponent<Transform>(testunit2).scale = glm::vec3(30, 30, 30);
 	//coordinator.GetComponent<Transform>(testunit2).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 	//coordinator.AddComponent<EntityState>(testunit2, EntityState());
+	Entity testunit = coordinator.CreateEntity();
+	coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 1000));
+	coordinator.AddComponent<RenderData>(testunit, RenderData(renderer.getMesh(GEO_GRID), false));
+	coordinator.AddComponent<Transform>(testunit, Transform());
+	coordinator.GetComponent<Transform>(testunit).position = glm::vec3(10, 2, 10);
+	coordinator.GetComponent<Transform>(testunit).scale = glm::vec3(30, 30, 30);
+	coordinator.GetComponent<Transform>(testunit).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	Entity testunit2 = coordinator.CreateEntity();
+	coordinator.AddComponent<Unit>(testunit2, Unit("Test2", 0, 0, 0, 0, 0, Unit::WALL, 1000));
+	coordinator.AddComponent<RenderData>(testunit2, RenderData(renderer.getMesh(GEO_GRID), false));
+	coordinator.AddComponent<Transform>(testunit2, Transform());
+	coordinator.GetComponent<Transform>(testunit2).position = glm::vec3(60, 2, 150);
+	coordinator.GetComponent<Transform>(testunit2).scale = glm::vec3(30, 30, 30);
+	coordinator.GetComponent<Transform>(testunit2).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 
 	/*Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(

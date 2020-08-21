@@ -57,5 +57,7 @@ public:
 	std::shared_ptr<UnitSystem> unitsystem;
 	std::shared_ptr<RayCastingSystem> raycastingsystem;
 	std::shared_ptr<ColliderSystem> collidersystem;
+	std::shared_ptr<GridControllerSystem> gridcontrollersystem;
+
 };
 

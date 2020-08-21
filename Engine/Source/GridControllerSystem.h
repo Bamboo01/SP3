@@ -8,7 +8,7 @@
 #include "Transform.h"
 extern Coordinator coordinator;
 
-class GridControllerSytem : public System
+class GridControllerSystem : public System
 {
 private:
 	glm::vec2 GridSize;
@@ -18,10 +18,13 @@ private:
 
 public:
 	virtual void CreateGrids();						// Creating of a new grid
-	virtual void CheckGridCost(int GridNum);		// Checking cost of each Grid
+	virtual void CheckGridCost(int GridNumX, int GridNumY);		// Checking cost of each Grid
 	virtual void Update(float dt);					//Getting Mouse Pressed for position of the unit's destination
-	virtual void CreatePath(int Destination);						// Get Grid cost for Destination
+	virtual void GetDestinationGrid();				// Get the Destination Grid
+	virtual void CreatePathTop(glm::vec2 Destination);		// Get Grid cost for Destination TOP ONLY
+	virtual void CreatePathBottom(glm::vec2 Destination);		// Get Grid cost for Destination BOTTOM ONLY
+	virtual void CheckSameLine(glm::vec2 Destination);		// If destination is on the same z axis as the grids and there is a wall
 	virtual void SetUp();
-	glm::vec3 GridPosition[500];
-	int GridCost[500];
+	glm::vec3 GridPosition[20][20];
+	int GridCost[20][20];
 };
