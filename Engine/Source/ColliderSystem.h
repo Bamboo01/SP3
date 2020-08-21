@@ -7,6 +7,7 @@
 #include "Unit.h"
 #include "RenderData.h"
 #include "RayCastingSystem.h"
+#include "UnitSystem.h"
 
 extern Coordinator coordinator;
 
@@ -23,10 +24,12 @@ public:
     float getOverlapMagnitude(glm::vec3 rPos, glm::vec3 axis, Transform& firstObject, Transform& secondObject, Collider& firstCollider, Collider& secondCollider);
     bool raycollisioncheck(Entity ray, Entity obj);
     bool rayplanecheck(glm::vec3 rPos, glm::vec3 axis, Transform& object, Collider& collider);
-    void SetRayCastSystem(std::shared_ptr<RayCastingSystem> raycastsystem);
+    void SetRayCastSystem(std::shared_ptr<RayCastingSystem> raycastSystem);
+    void SetUnitSystem(std::shared_ptr<UnitSystem> unitSystem);
 
 private:
-    std::shared_ptr<RayCastingSystem> raycastsystem;
+    std::shared_ptr<RayCastingSystem> raycastSystem;
+    std::shared_ptr<UnitSystem> unitSystem;
 
     glm::vec3 firstposclick;
     glm::vec3 secondposclick;

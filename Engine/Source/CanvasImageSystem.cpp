@@ -222,7 +222,7 @@ void CanvasImageSystem::Update(double dt)
 				auto& unit = coordinator.GetComponent<Unit>(entity2);
 
 				// If selected unit is a generator, render in popup button
-				if (unit.unittype == Unit::GENERATOR)
+				if (unit.unitType == Unit::GENERATOR)
 				{
 					if (canvas.buttontype == CanvasImage::GENERATORBUTTON)
 					{
@@ -230,7 +230,7 @@ void CanvasImageSystem::Update(double dt)
 					}
 				}
 				// If selected unit is a lab, render in popup button
-				else if (unit.unittype == Unit::LAB)
+				else if (unit.unitType == Unit::LAB)
 				{
 					if (canvas.buttontype == CanvasImage::LABBUTTON)
 					{
@@ -238,7 +238,7 @@ void CanvasImageSystem::Update(double dt)
 					}
 				}
 				// If selected unit is a nexus, render in popup button
-				else if (unit.unittype == Unit::NEXUS)
+				else if (unit.unitType == Unit::NEXUS)
 				{
 					if (canvas.buttontype == CanvasImage::NEXUSCREATEUNITBUTTON || canvas.buttontype == CanvasImage::NEXUSCREATEBUILDINGBUTTON)
 					{

@@ -12,24 +12,45 @@ void ColliderSystem::Update(double dt)
     {
         Entity firstObject = *it;
         auto& ObjectTransform = coordinator.GetComponent<Transform>(firstObject);
+        auto& ObjectUnit = coordinator.GetComponent<Unit>(firstObject);
 
         for (std::set<Entity>::iterator it2 = it; it2 != m_Entities.end(); it2++)
         {
-            if (it2 == it)
-                continue;
+			if (it2 == it)
+				continue;
 
-            Entity secondObject = *it2;
- 
-           if (collisionCheck(firstObject, secondObject))
-           {
-               std::cout << "ColliderSystem: Collision Detected" << std::endl;
-               collisionResponse(firstObject, secondObject);
-           }
+			Entity secondObject = *it2;
+			auto& ObjectTransform2 = coordinator.GetComponent<Transform>(secondObject);
+			auto& ObjectUnit2 = coordinator.GetComponent<Unit>(secondObject);
+
+			if (!ObjectUnit.active || !ObjectUnit2.active || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction))
+				continue;
+
+            if (glm::length(ObjectTransform.position - ObjectTransform2.position) <= 100)
+            {
+                if (collisionCheck(firstObject, secondObject))
+                {
+                    std::cout << "ColliderSystem: Collision Detected" << std::endl;
+
+                    if (ObjectUnit.unitType == Unit::PROJECTILE)
+                    {
+                        unitSystem->ApplyAttack(firstObject, secondObject);
+                        continue;
+                    }
+                    else if (ObjectUnit2.unitType == Unit::PROJECTILE)
+                    {
+                        unitSystem->ApplyAttack(secondObject, firstObject);
+                        continue;
+                    }
+
+                    collisionResponse(firstObject, secondObject);
+                }
+            }
         }
     }
 
     // Ray collision 
-    std::set<Entity> entityset1 = raycastsystem->m_Entities;
+    std::set<Entity> entityset1 = raycastSystem->m_Entities;
 
     for (auto const& entity : entityset1)
     {
@@ -45,10 +66,11 @@ void ColliderSystem::Update(double dt)
 
                 if (raycollisioncheck(entity, Object))
                 {
-                    std::cout << "Ray collided with object!" << std::endl;
+                    //std::cout << "Ray collided with object!" << std::endl;
                     break;
                 }
             }
+
             // If ray overlapped with terrain y, break the loop
             //if (ray.RayEndPos.y < 350.f * ReadHeightMap(ray.m_heightMap, ray.RayEndPos.x / 4000, ray.RayEndPos.z / 4000))
             //{
@@ -296,6 +318,11 @@ bool ColliderSystem::rayplanecheck(glm::vec3 rPos, glm::vec3 axis, Transform& ob
 
 void ColliderSystem::SetRayCastSystem(std::shared_ptr<RayCastingSystem> raycastsystem)
 {
-    this->raycastsystem = raycastsystem;
+    this->raycastSystem = raycastsystem;
+}
+
+void ColliderSystem::SetUnitSystem(std::shared_ptr<UnitSystem> unitSystem)
+{
+    this->unitSystem = unitSystem;
 }
 
