@@ -89,21 +89,21 @@ void GridControllerSystem::GetDestinationGrid()
 	if (destination.x != -1 && destination.y != -1)
 	{
 		// A Grid that has been selected
-		CreatePath(destination);
+		CreatePathTop(destination);
+		
+		CreatePathBottom(destination);
 	}
 }
 
-void GridControllerSystem::CreatePath(glm::vec2 Destination)
+void GridControllerSystem::CreatePathTop(glm::vec2 Destination)
 {
 	int dX = Destination.x;
 	int dY = Destination.y;
 	//glm::vec3 GridTopLeft = GridPosition[dX][dY];
 	glm::vec3 GridBottomRight = glm::vec3(GridPosition[dX][dY].x + 50, GridPosition[dX][dY].y, GridPosition[dX][dY].z - 50);
-	bool north, south, east, west;
+	bool north, east, west;
 	north = ((GridPosition[dX - 1][dY].z == (GridPosition[dX][dY].z + 50)) &&
 		(GridPosition[dX - 1][dY].x == GridPosition[dX][dY].x) && (GridCost[dX - 1][dY] == -1));
-	south = ((GridPosition[dX + 1][dY].z == GridPosition[dX][dY].z - 50) && (GridPosition[dX + 1][dY].x == GridPosition[dX][dY].x) &&
-		(GridCost[dX + 1][dY] == -1));
 	east = ((GridPosition[dX][dY + 1].z == GridBottomRight.z + 50) && (GridPosition[dX][dY + 1].x == GridBottomRight.x) &&
 		(GridCost[dX][dY + 1] == -1));
 	west = ((GridPosition[dX][dY - 1].x == GridPosition[dX][dY].x - 50) && (GridPosition[dX][dY - 1].z == GridPosition[dX][dY].z) &&
@@ -111,7 +111,8 @@ void GridControllerSystem::CreatePath(glm::vec2 Destination)
 	// Check at the edge of the world space
 	// If not, Check if the grid around it is passable or not
 	
-			//North
+	//North
+	
 	if (GridPosition[dX][dY].z != 500)
 	{
 		// There is a Grid in the North Direction!!
@@ -120,12 +121,12 @@ void GridControllerSystem::CreatePath(glm::vec2 Destination)
 		if (north) // Checks if there is grid Cost is uninitialized
 		{
 			// If the East is a smaller number
-			if ((dX - 1 >= 0 && dX - 1 <= 20) && (dY + 1 >= 0 && dY + 1 <= 20) &&(GridCost[dX - 1][dY + 1] >= 0) && (GridCost[dX-1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX-1][dY + 1] < GridCost[dX-1][dY - 1]))
+			if ((dX - 1 >= 0 && dX - 1 <= 19) && (dY + 1 >= 0 && dY + 1 <= 19) &&(GridCost[dX - 1][dY + 1] >= 0) && (GridCost[dX-1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX-1][dY + 1] < GridCost[dX-1][dY - 1]))
 			{
 				GridCost[dX - 1][dY] = GridCost[dX -1][dY+1]+1;
 			}
 			// If the West is a smaller number
-			else if ((dX - 1 >= 0 && dX - 1 <= 20) && (dY - 1 >= 0 && dY - 1 <= 20) && (GridCost[dX - 1][dY - 1] >= 0) && (GridCost[dX-1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX-1][dY - 1] < GridCost[dX-1][dY + 1]))
+			else if ((dX - 1 >= 0 && dX - 1 <= 19) && (dY - 1 >= 0 && dY - 1 <= 19) && (GridCost[dX - 1][dY - 1] >= 0) && (GridCost[dX-1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX-1][dY - 1] < GridCost[dX-1][dY + 1]))
 			{
 				GridCost[dX - 1][dY] = GridCost[dX-1][dY-1] + 1;
 			}
@@ -136,30 +137,6 @@ void GridControllerSystem::CreatePath(glm::vec2 Destination)
 		}
 
 	}
-	// South
-	if (GridBottomRight.z != -500)
-	{
-		// There is a Grid in the South Direction!!
-		// Check the South Grid ID
-
-		if (south) // Checks if there is grid Cost is uninitialized
-		{
-			// If the East is a smaller number
-			if ((dX + 1 >= 0 && dX +1 <= 20) && (dY + 1 >= 0 && dY + 1 <= 20) &&(GridCost[dX + 1][dY + 1] >= 0) && (GridCost[dX+1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX+1][dY + 1] < GridCost[dX+1][dY - 1]))
-			{
-				GridCost[dX + 1][dY] = GridCost[dX+1][dY+1] + 1;
-			}
-			// If the West is a smaller number
-			else if ((dX + 1 >= 0 && dX + 1 <= 20) && (dY - 1 >= 0 && dY - 1 <= 20) &&(GridCost[dX + 1][dY - 1] >= 0)&&(GridCost[dX+1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX+1][dY - 1] < GridCost[dX + 1][dY + 1]))
-			{
-				GridCost[dX + 1][dY] = GridCost[dX+1][dY-1] + 1;
-			}
-			else
-			{
-				GridCost[dX + 1][dY] = GridCost[dX][dY] + 1;
-			}
-		}
-	}
 	// East
 	if (GridBottomRight.x != 500)
 	{
@@ -169,12 +146,12 @@ void GridControllerSystem::CreatePath(glm::vec2 Destination)
 		if (east)// Checks if there is grid Cost is uninitialized
 		{
 			// If the south is a smaller number
-			if ((dX + 1 >= 0 && dX + 1 <= 20) && (dY + 1 >= 0 && dY + 1 <= 20) &&(GridCost[dX + 1][dY + 1] >= 0)&&(GridCost[dX + 1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX + 1][dY + 1] < GridCost[dX - 1][dY + 1]))
+			if ((dX + 1 >= 0 && dX + 1 <= 19) && (dY + 1 >= 0 && dY + 1 <= 19) &&(GridCost[dX + 1][dY + 1] >= 0)&&(GridCost[dX + 1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX + 1][dY + 1] < GridCost[dX - 1][dY + 1]))
 			{
 				GridCost[dX][dY + 1] = GridCost[dX + 1][dY + 1] + 1;
 			}
 			// If the North is a smaller number
-			else if ((dX - 1 >= 0 && dX -1 <= 20) && (dY + 1 >= 0 && dY + 1 <= 20) && (GridCost[dX - 1][dY + 1] >= 0)&& (GridCost[dX - 1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX - 1][dY + 1] < GridCost[dX + 1][dY + 1]))
+			else if ((dX - 1 >= 0 && dX -1 <= 19) && (dY + 1 >= 0 && dY + 1 <= 19) && (GridCost[dX - 1][dY + 1] >= 0)&& (GridCost[dX - 1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX - 1][dY + 1] < GridCost[dX + 1][dY + 1]))
 			{
 				GridCost[dX][dY + 1] = GridCost[dX - 1][dY + 1] + 1;
 			}
@@ -192,11 +169,11 @@ void GridControllerSystem::CreatePath(glm::vec2 Destination)
 		// Check West Grid ID
 		if(west) // Check if there is grid Cost is uninitialized
 		{// If the south is a smaller number
-			if ((dX + 1 >= 0 && dX + 1 <= 20)&&(dY - 1 >= 0 && dY - 1 <= 20) && (GridCost[dX + 1][dY - 1] >= 0)&&(GridCost[dX + 1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX + 1][dY - 1] < GridCost[dX - 1][dY - 1]))
+			if ((dX + 1 >= 0 && dX + 1 <= 19)&&(dY - 1 >= 0 && dY - 1 <= 19) && (GridCost[dX + 1][dY - 1] >= 0)&&(GridCost[dX + 1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX + 1][dY - 1] < GridCost[dX - 1][dY - 1]))
 			{
 				GridCost[dX][dY - 1] = GridCost[dX + 1][dY - 1] + 1;
 			}
-			else if ((dX + 1 >= 0 && dX - 1 <= 20) && (dY - 1 >= 0 && dY - 1 <= 20) &&(GridCost[dX - 1][dY - 1] >= 0) && (GridCost[dX - 1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX - 1][dY - 1] < GridCost[dX + 1][dY - 1]))
+			else if ((dX + 1 >= 0 && dX - 1 <= 19) && (dY - 1 >= 0 && dY - 1 <= 19) &&(GridCost[dX - 1][dY - 1] >= 0) && (GridCost[dX - 1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX - 1][dY - 1] < GridCost[dX + 1][dY - 1]))
 			{
 				GridCost[dX][dY - 1] = GridCost[dX - 1][dY - 1] + 1;
 			}
@@ -210,19 +187,116 @@ void GridControllerSystem::CreatePath(glm::vec2 Destination)
 	}
 	if (north)
 	{
-		CreatePath(glm::vec2(dX-1,dY));
-	}
-	if (south)
-	{
-		CreatePath(glm::vec2(dX+1,dY));
+		CreatePathTop(glm::vec2(dX-1,dY));
 	}
 	if (east)
 	{
-		CreatePath(glm::vec2(dX,dY+1));
+		CreatePathTop(glm::vec2(dX,dY+1));
 	}
 	if (west)
 	{
-		CreatePath(glm::vec2(dX,dY-1));
+		CreatePathTop(glm::vec2(dX,dY-1));
+	}
+}
+
+void GridControllerSystem::CreatePathBottom(glm::vec2 Destination)
+{
+	int dX = Destination.x;
+	int dY = Destination.y;
+	//glm::vec3 GridTopLeft = GridPosition[dX][dY];
+	glm::vec3 GridBottomRight = glm::vec3(GridPosition[dX][dY].x + 50, GridPosition[dX][dY].y, GridPosition[dX][dY].z - 50);
+	bool south, east, west;
+	south = ((GridPosition[dX + 1][dY].z == GridPosition[dX][dY].z - 50) && (GridPosition[dX + 1][dY].x == GridPosition[dX][dY].x) &&
+		(GridCost[dX + 1][dY] == -1));
+	east = ((GridPosition[dX][dY + 1].z == GridBottomRight.z + 50) && (GridPosition[dX][dY + 1].x == GridBottomRight.x) &&
+		(GridCost[dX][dY + 1] == -1));
+	west = ((GridPosition[dX][dY - 1].x == GridPosition[dX][dY].x - 50) && (GridPosition[dX][dY - 1].z == GridPosition[dX][dY].z) &&
+		(GridCost[dX][dY - 1] == -1));
+	// Check at the edge of the world space
+	// If not, Check if the grid around it is passable or not
+	// South
+	if (GridBottomRight.z != -500)
+	{
+		// There is a Grid in the South Direction!!
+		// Check the South Grid ID
+
+		if (south) // Checks if there is grid Cost is uninitialized
+		{
+			// If the East is a smaller number
+			if ((dX + 1 >= 0 && dX + 1 <= 19) && (dY + 1 >= 0 && dY + 1 <= 19) && (GridCost[dX + 1][dY + 1] >= 0) && (GridCost[dX + 1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX + 1][dY + 1] < GridCost[dX + 1][dY - 1]))
+			{
+				GridCost[dX + 1][dY] = GridCost[dX + 1][dY + 1] + 1;
+			}
+			// If the West is a smaller number
+			else if ((dX + 1 >= 0 && dX + 1 <= 19) && (dY - 1 >= 0 && dY - 1 <= 19) && (GridCost[dX + 1][dY - 1] >= 0) && (GridCost[dX + 1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX + 1][dY - 1] < GridCost[dX + 1][dY + 1]))
+			{
+				GridCost[dX + 1][dY] = GridCost[dX + 1][dY - 1] + 1;
+			}
+			else
+			{
+				GridCost[dX + 1][dY] = GridCost[dX][dY] + 1;
+			}
+		}
+	}
+	// East
+	if (GridBottomRight.x != 500)
+	{
+		// There is a Grid in the East Direction!
+		// Check East Grid ID
+
+		if (east)// Checks if there is grid Cost is uninitialized
+		{
+			// If the south is a smaller number
+			if ((dX + 1 >= 0 && dX + 1 <= 19) && (dY + 1 >= 0 && dY + 1 <= 19) && (GridCost[dX + 1][dY + 1] >= 0) && (GridCost[dX + 1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX + 1][dY + 1] < GridCost[dX - 1][dY + 1]))
+			{
+				GridCost[dX][dY + 1] = GridCost[dX + 1][dY + 1] + 1;
+			}
+			// If the North is a smaller number
+			else if ((dX - 1 >= 0 && dX - 1 <= 19) && (dY + 1 >= 0 && dY + 1 <= 19) && (GridCost[dX - 1][dY + 1] >= 0) && (GridCost[dX - 1][dY + 1] < GridCost[dX][dY]) && (GridCost[dX - 1][dY + 1] < GridCost[dX + 1][dY + 1]))
+			{
+				GridCost[dX][dY + 1] = GridCost[dX - 1][dY + 1] + 1;
+			}
+			else
+			{
+				GridCost[dX][dY + 1] = GridCost[dX][dY] + 1;
+			}
+		}
+
+	}
+	// West
+	if (GridPosition[dX][dY].x != -500)
+	{
+		// There is a Grid in the West Direction!
+		// Check West Grid ID
+		if (west) // Check if there is grid Cost is uninitialized
+		{// If the south is a smaller number
+			if ((dX + 1 >= 0 && dX + 1 <= 19) && (dY - 1 >= 0 && dY - 1 <= 19) && (GridCost[dX + 1][dY - 1] >= 0) && (GridCost[dX + 1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX + 1][dY - 1] < GridCost[dX - 1][dY - 1]))
+			{
+				GridCost[dX][dY - 1] = GridCost[dX + 1][dY - 1] + 1;
+			}
+			else if ((dX + 1 >= 0 && dX - 1 <= 19) && (dY - 1 >= 0 && dY - 1 <= 19) && (GridCost[dX - 1][dY - 1] >= 0) && (GridCost[dX - 1][dY - 1] < GridCost[dX][dY]) && (GridCost[dX - 1][dY - 1] < GridCost[dX + 1][dY - 1]))
+			{
+				GridCost[dX][dY - 1] = GridCost[dX - 1][dY - 1] + 1;
+			}
+			else
+			{
+				GridCost[dX][dY - 1] = GridCost[dX][dY] + 1;
+			}
+		}
+
+
+	}
+	if (south)
+	{
+		CreatePathBottom(glm::vec2(dX + 1, dY));
+	}
+	if (east)
+	{
+		CreatePathBottom(glm::vec2(dX, dY + 1));
+	}
+	if (west)
+	{
+		CreatePathBottom(glm::vec2(dX, dY - 1));
 	}
 }
 

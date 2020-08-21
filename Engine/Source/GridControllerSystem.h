@@ -21,7 +21,8 @@ public:
 	virtual void CheckGridCost(int GridNumX, int GridNumY);		// Checking cost of each Grid
 	virtual void Update(float dt);					//Getting Mouse Pressed for position of the unit's destination
 	virtual void GetDestinationGrid();				// Get the Destination Grid
-	virtual void CreatePath(glm::vec2 Destination);		// Get Grid cost for Destination
+	virtual void CreatePathTop(glm::vec2 Destination);		// Get Grid cost for Destination TOP ONLY
+	virtual void CreatePathBottom(glm::vec2 Destination);		// Get Grid cost for Destination BOTTOM ONLY
 	virtual void SetUp();
 	glm::vec3 GridPosition[20][20];
 	int GridCost[20][20];
