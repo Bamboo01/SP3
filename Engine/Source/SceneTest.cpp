@@ -11,7 +11,7 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<CanvasText>();
 	coordinator.RegisterComponent<Unit>();
 	coordinator.RegisterComponent<CameraController>();
-	coordinator.RegisterComponent<GridControllerSytem>();
+//	coordinator.RegisterComponent<GridControllerSytem>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
@@ -19,7 +19,7 @@ void SceneTest::Init()
 	canvasimagesystem = coordinator.RegisterSystem<CanvasImageSystem>();
 	canvastextsystem = coordinator.RegisterSystem<CanvasTextSystem>();
 	cameracontrollersystem = coordinator.RegisterSystem<CameraControllerSystem>();
-	gridcontrollersystem = coordinator.RegisterSystem<GridControllerSytem>();
+	gridcontrollersystem = coordinator.RegisterSystem<GridControllerSystem>();
 
 
 	transformsystem->Setup();

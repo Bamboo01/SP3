@@ -30,7 +30,7 @@ public:
 	std::shared_ptr<CanvasImageSystem> canvasimagesystem;
 	std::shared_ptr<CanvasTextSystem> canvastextsystem;
 	std::shared_ptr<CameraControllerSystem> cameracontrollersystem;
-	std::shared_ptr<GridControllerSytem> gridcontrollersystem;
+	std::shared_ptr<GridControllerSystem> gridcontrollersystem;
 
 };
 

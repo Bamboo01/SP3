@@ -1,29 +1,41 @@
 #include "GridControllerSystem.h"
 
 
-void GridControllerSytem::CreateGrids()
+void GridControllerSystem::CreateGrids()
 {
-	int count = 0;
-	for (int i = 0; i < 500; ++i)
+	for (int x = 0; x < 20; ++x)
 	{
-		GridCost[i] = -1;
-	}
-	for (int y = 500; y > -500; y -= 50)
-	{
-		for (int x = -500; x < 500; x += 50)
+		for (int y = 0; y < 20; ++y)
 		{
-			GridPosition[count] = glm::vec3(x, 2, y);
-			CheckGridCost(count);
-			//std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << " ::::" << GridCost[count] << std::endl;
-			count++;
+			GridCost[x][y] = -1;
 		}
-	
+	}
+	int y = 0;
+	for (int Posy = 500; Posy > -500; Posy -= 50)
+	{
+		int x = 0;
+		for (int Posx = -500; Posx < 500; Posx += 50)
+		{
+			GridPosition[x][y] = glm::vec3(Posx, 2, Posy);
+			CheckGridCost(x,y);
+			//std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << " ::::" << GridCost[count] << std::endl;
+			x++;
+		}
+		++y;
+	}
+	GetDestinationGrid();
+	for (int y = 0; y < 20; ++y)
+	{
+		for (int x = 0; x < 20; ++x)
+		{
+			std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].y << ", " << GridPosition[x][y].z << " ::::" << GridCost[x][y] << std::endl;
+		}
 	}
 }
 
-void GridControllerSytem::CheckGridCost(int GridNum)
+void GridControllerSystem::CheckGridCost(int GridNumX, int GridNumY)
 {
-	glm::vec3 GridTopLeft = GridPosition[GridNum];
+	glm::vec3 GridTopLeft = GridPosition[GridNumX][GridNumY];
 	glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
 	for (auto const& entity : m_Entities)
 	{
@@ -31,36 +43,14 @@ void GridControllerSytem::CheckGridCost(int GridNum)
 		auto& transform = coordinator.GetComponent<Transform>(entity);
 		if (transform.position.x + transform.scale.x>= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z+ transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 		{
-			GridCost[GridNum] += unit.FlowFieldCost;
+			GridCost[GridNumX][GridNumY] += unit.FlowFieldCost;
 		}
 	}
-	// Check Which Grid the destination is at
-	int destination = -1;	// If it is -1 at the end, means that destination is impossible
-	for (int i = 0; i < 500; ++i)
-	{
-		glm::vec3 GridTopLeft = GridPosition[i];
-		glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
-		if (CursorWorldPosition.x >= GridTopLeft.x && CursorWorldPosition.x <= GridBottomRight.x && CursorWorldPosition.z <= GridTopLeft.z && CursorWorldPosition.z >= GridBottomRight.z)
-		{
-			if (GridCost[i] == -1)
-			{	// Set The Empty Grid To the Destination Point
-				GridCost[i] = 0;
-				destination = i;
-				break;
-			}
-			else
-				break;		// If there is a wall at the destination point, Destination is impossible to reach
-		}
-	}
-	if (destination != -1)
-	{
-		// A Grid that has been selected
-		CreatePath(destination);
-	}
+	
 }
 
 
-void GridControllerSytem::Update(float dt)
+void GridControllerSystem::Update(float dt)
 {
 	if (Application::IsMousePressed(1))
 	{
@@ -72,84 +62,106 @@ void GridControllerSytem::Update(float dt)
 	}
 }
 
-void GridControllerSytem::CreatePath(int Destination)
+void GridControllerSystem::GetDestinationGrid()
 {
-	glm::vec3 GridTopLeft = GridPosition[Destination];
+	// Check Which Grid the destination is at
+	glm::vec2 destination = glm::vec2(-1,-1);	// If it is -1 at the end, means that destination is impossible
+	for (int y = 0; y < 20; ++y)
+	{
+		for (int x = 0; x < 20; ++x)
+		{
+			glm::vec3 GridTopLeft = GridPosition[x][y];
+			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+			if (CursorWorldPosition.x >= GridTopLeft.x && CursorWorldPosition.x <= GridBottomRight.x && CursorWorldPosition.z <= GridTopLeft.z && CursorWorldPosition.z >= GridBottomRight.z)
+			{
+				if (GridCost[x][y] == -1)
+				{	// Set The Empty Grid To the Destination Point
+					GridCost[x][y] = 0;
+					destination.x = x;
+					destination.y = y;
+					break;
+				}
+				else
+					break;		// If there is a wall at the destination point, Destination is impossible to reach
+			}
+		}
+	}
+	if (destination.x != -1 && destination.y != -1)
+	{
+		// A Grid that has been selected
+		CreatePath(destination);
+	}
+}
+
+void GridControllerSystem::CreatePath(glm::vec2 Destination)
+{
+	int dX = Destination.x;
+	int dY = Destination.y;
+	glm::vec3 GridTopLeft = GridPosition[dX][dY];
 	glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
 	// Check at the edge of the world space
 	// If not, Check if the grid around it is passable or not
 	// World Position is from -500,500 to 500,-500
+	for (int y = 0; y < 20; ++y)
+	{
+		for (int x = 0; x < 20; ++x)
+		{
+			//North
+			if (GridTopLeft.z != 500)
+			{
+				// There is a Grid in the North Direction!!
+				// Check the North Grid ID
 
-	//North
-	if (GridTopLeft.z != 500)
-	{
-		// There is a Grid in the North Direction!!
-		// Check the North Grid ID
-		for (int i = 0; i < 500; ++i)
-		{
-			if ((GridPosition[i].z == (GridTopLeft.z + 50)) && (GridPosition[i].x == GridTopLeft.x) && (GridCost[i] == -1)) // Checks if there is grid Cost is uninitialized
+				if ((GridPosition[x][y].z == (GridTopLeft.z + 50)) && (GridPosition[x][y].x == GridTopLeft.x) && (GridCost[x][y] == -1)) // Checks if there is grid Cost is uninitialized
+				{
+					GridCost[x][y] = GridCost[dX][dY] + 1;
+				}
+
+			}
+			// South
+			if (GridBottomRight.z != -500)
 			{
-				GridCost[i] = GridCost[Destination] + 1;
-				std::cout << GridCost[i] << std::endl;
-				CreatePath(i);
-				break;
+				// There is a Grid in the South Direction!!
+				// Check the South Grid ID
+
+				if ((GridPosition[x][y].z == GridTopLeft.z - 50) && (GridPosition[x][y].x == GridTopLeft.x) && (GridCost[x][y] == -1)) // Checks if there is grid Cost is uninitialized
+				{
+					GridCost[x][y] = GridCost[dX][dY] + 1;
+				}
+			}
+			// East
+			if (GridBottomRight.x != 500)
+			{
+				// There is a Grid in the East Direction!
+				// Check East Grid ID
+
+				if ((GridPosition[x][y].x == GridBottomRight.x + 50) && (GridPosition[x][y].z == GridTopLeft.z) && (GridCost[x][y] == -1))// Checks if there is grid Cost is uninitialized
+				{
+					GridCost[x][y] = GridCost[dX][dY] + 1;
+				}
+
+			}
+			// West
+			if (GridTopLeft.x != -500)
+			{
+				// There is a Grid in the West Direction!
+				// Check West Grid ID
+				if ((GridPosition[x][y].x == GridTopLeft.x - 50) && (GridPosition[x][y].z == GridTopLeft.z) && (GridCost[x][y]) == -1) // Check if there is grid Cost is uninitialized
+				{
+					GridCost[x][y] = GridCost[dX][dY] + 1;
+				}
+
 			}
 		}
 	}
-	// South
-	if (GridBottomRight.z != -500)
-	{
-		// There is a Grid in the South Direction!!
-		// Check the South Grid ID
-		for (int i = 0; i < 500; ++i)
-		{
-			if ((GridPosition[i].z == GridTopLeft.z - 50) && (GridPosition[i].x == GridTopLeft.x) && (GridCost[i] == -1)) // Checks if there is grid Cost is uninitialized
-			{
-				GridCost[i] = ++GridCost[Destination];
-				CreatePath(i);
-				break;
-			}
-		}
-	}
-	// East
-	if (GridBottomRight.x != 500)
-	{
-		// There is a Grid in the East Direction!
-		// Check East Grid ID
-		for (int i = 0; i < 500; ++i)
-		{
-			if ((GridPosition[i].x == GridBottomRight.x + 50) && (GridPosition[i].z == GridTopLeft.z) && (GridCost[i] == -1))// Checks if there is grid Cost is uninitialized
-			{
-				GridCost[i] = ++GridCost[Destination];
-				CreatePath(i);
-				break;
-			}
-		}
-	}
-	// West
-	if (GridTopLeft.x != -500)
-	{
-		// There is a Grid in the West Direction!
-		// Check West Grid ID
-		for (int i = 0; i < 500; ++i)
-		{
-			if ((GridPosition[i].x == GridTopLeft.x - 50) && (GridPosition[i].z == GridTopLeft.z) && (GridCost[i]) == -1) // Check if there is grid Cost is uninitialized
-			{
-				GridCost[i] = ++GridCost[Destination];
-				CreatePath(i);
-				break;
-			}
-		}
-	}
-	
 }
 
-void GridControllerSytem::SetUp()
+void GridControllerSystem::SetUp()
 {
 	Signature signature;
 	signature.set(coordinator.GetComponentType<Unit>());
 	signature.set(coordinator.GetComponentType<Transform>());
-	coordinator.SetSystemSignature<GridControllerSytem>(signature);
+	coordinator.SetSystemSignature<GridControllerSystem>(signature);
 }
 
 
