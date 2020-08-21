@@ -1,10 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Source\ScreenQuad.cpp" />
     <ClCompile Include="Source\FBO.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Camera.cpp">
       <Filter>Core\Core Components\Camera</Filter>
     </ClCompile>
@@ -68,11 +66,15 @@
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Core\Mesh\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ScreenQuad.cpp">
+      <Filter>Core\Core Modules\Renderer\ScreenQuad</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Core\Core Modules\Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\ScreenQuad.h" />
     <ClInclude Include="Source\FBO.h" />
-    <ClInclude Include="Source\UIShader.h" />
     <ClInclude Include="Source\CameraController.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -205,6 +207,12 @@
     <ClInclude Include="Source\CanvasText.h">
       <Filter>Core\Core Components\CanvasText</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ScreenQuad.h">
+      <Filter>Core\Core Modules\Renderer\ScreenQuad</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIShader.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -332,6 +340,9 @@
     </Filter>
     <Filter Include="Core\Core Components\CanvasText">
       <UniqueIdentifier>{7bac33bb-20e5-465e-94ba-50129031f16d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Core Modules\Renderer\ScreenQuad">
+      <UniqueIdentifier>{e803f105-e93c-4a9d-b1a3-68c444fed9a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
