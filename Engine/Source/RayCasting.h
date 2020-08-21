@@ -16,7 +16,7 @@ struct RayCasting
 
 	RayCasting() {}
 
-	void Init(Camera cam /*std::vector<unsigned char>& heightMap*/)
+	void Init(Camera& cam /*std::vector<unsigned char>& heightMap*/)
 	{
 		this->projectionMatrix = cam.getProjectionMatrix();
 		this->viewMatrix = cam.getViewMatrix();
