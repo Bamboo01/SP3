@@ -162,7 +162,6 @@
   <ItemGroup>
     <ClCompile Include="Source\EntityStateSystem.cpp" />
     <ClCompile Include="Source\CanvasTextSystem.cpp" />
-    <ClCompile Include="Source\CanvasImageSystem.cpp" />
     <ClCompile Include="Source\CameraControllerSystem.cpp" />
     <ClCompile Include="Source\GridControllerSystem.cpp" />
     <ClCompile Include="..\Dependencies\ImGui\imgui.cpp" />
