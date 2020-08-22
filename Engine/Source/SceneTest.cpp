@@ -183,7 +183,7 @@ void SceneTest::Init()
 		coordinator.AddComponent<Transform>(myObject3, Transform());
 		coordinator.AddComponent<RenderData>(myObject3, RenderData());
 		coordinator.AddComponent<Collider>(myObject3, Collider());
-		coordinator.AddComponent<Unit>(myObject3, Unit());
+		coordinator.AddComponent<Unit>(myObject3, Unit("Test", 1, 1, 1, 1, 1, Unit::NEXUS, 0));
 	}
 
 	{
@@ -193,8 +193,8 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.7, -0.7, 1);
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.3, 0.3, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//crate.tga"));
-		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::NONPOPUP, CanvasImageUpdate::START4, true));
-		coordinator.AddComponent<EntityState>(UI, EntityState());
+		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::NONPOPUP, CanvasImageUpdate::START4));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	{
 		// Unit Info Box
@@ -203,7 +203,8 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).position = glm::vec3(0.3, -0.75, 1);
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.7, 0.25, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//crate.tga"));
-		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::NONPOPUP, CanvasImageUpdate::START4, true));
+		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::NONPOPUP, CanvasImageUpdate::START4));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	{
 		// Resource Box
@@ -212,7 +213,8 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).position = glm::vec3(0, 0.9, 1);
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(1, 0.1, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//crate.tga"));
-		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::NONPOPUP, CanvasImageUpdate::START4, true));
+		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::NONPOPUP, CanvasImageUpdate::START4));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	{
 		// Generator Clickable box
@@ -221,7 +223,8 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).position = glm::vec3(0.7f, -0.85, 1);
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.15, 0.08, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//grass.tga"));
-		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::GENERATORBUTTON, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::GENERATORBUTTON, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	{
 		// Lab Clickable Box
@@ -230,7 +233,8 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).position = glm::vec3(0.7f, -0.85, 1);
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.15, 0.08, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//grass.tga"));
-		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::LABBUTTON, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::LABBUTTON, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	{
 		// Lab PopUp unit box
@@ -240,7 +244,8 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.5, 0.2, 1);
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.5, 0.6, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//crate.tga"));
-		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::POPUP, CanvasImageUpdate::LABUI, false));
+		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::POPUP, CanvasImageUpdate::LABUI));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	for (int i = 0; i < 3; ++i)
 	{
@@ -252,11 +257,12 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.11, 0.11, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//grass.tga"));
 		if (i == 0)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::LABNORMALUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::LABNORMALUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
 		else if (i == 1)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::LABRANGEUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::LABRANGEUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
 		else if (i == 2)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::LABTANKUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::LABTANKUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	for (int i = 0; i < 2; ++i)
 	{
@@ -267,9 +273,10 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.15, 0.08, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//grass.tga"));
 		if (i == 0)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSCREATEUNITBUTTON, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSCREATEUNITBUTTON, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
 		else if (i == 1)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	{
 		// Nexus PopUp unit box
@@ -279,7 +286,8 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.5, 0.2, 1);
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.5, 0.6, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//crate.tga"));
-		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::POPUP, CanvasImageUpdate::NEXUSUNITUI, false));
+		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::POPUP, CanvasImageUpdate::NEXUSUNITUI));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	for (int i = 0; i < 3; ++i)
 	{
@@ -291,11 +299,12 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.11, 0.11, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//grass.tga"));
 		if (i == 0)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSNORMALUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSNORMALUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
 		else if (i == 1)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSRANGEUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSRANGEUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
 		else if (i == 2)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSTANKUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSTANKUNIT, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	{
 		// Nexus PopUp building box
@@ -305,7 +314,8 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.5, 0.2, 1);
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.5, 0.6, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//crate.tga"));
-		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::POPUP, CanvasImageUpdate::NEXUSBUILDINGUI, false));
+		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::POPUP, CanvasImageUpdate::NEXUSBUILDINGUI));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 	for (int i = 0; i < 2; ++i)
 	{
@@ -317,9 +327,10 @@ void SceneTest::Init()
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.11, 0.11, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//grass.tga"));
 		if (i == 0)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSBUILDING, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSBUILDING, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
 		else if (i == 1)
-			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSWALL, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4, false));
+			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSWALL, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 
 	/*Init all systems*/
@@ -330,7 +341,7 @@ void SceneTest::Init()
 	canvastextsystem->Init();
 	entitystatesystem->Init();
 	terrainsystem->Init();
-	canvasimagesystem->Init();
+	canvasimageupdatesystem->Init();
 	unitsystem->Init();
 	raycastingsystem->Init();
 	collidersystem->Init();

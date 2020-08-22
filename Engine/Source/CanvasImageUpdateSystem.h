@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "CanvasImageUpdate.h"
+#include "EntityState.h"
 #include "CanvasImage.h"
 #include "System.h"
 #include "Coordinator.h"
@@ -15,20 +16,21 @@ class CanvasImageUpdateSystem : public System
 private:
 
 public:
-	virtual void Setup();
-	virtual void Init();
-	virtual void Update(double dt);
-	virtual void Render();
+    virtual void Setup();
+    virtual void Init();
+    virtual void Update(double dt);
+    virtual void Render();
 
-	void SetUnitSystem(std::shared_ptr<UnitSystem> unitsystem);
+    void SetUnitSystem(std::shared_ptr<UnitSystem> unitsystem);
 
 private:
 
-	bool CollideWithCanvas(float x, float y, float xscale, float yscale);
+    bool CollideWithCanvas(float x, float y, float xscale, float yscale);
 
-	double timer;
-	double clickdelay;
+    double timer;
+    double clickdelay;
 
-	std::shared_ptr<UnitSystem> unitsystem;
+    std::vector<Entity> ReferenceEntity;
+
+    std::shared_ptr<UnitSystem> unitsystem;
 };
-

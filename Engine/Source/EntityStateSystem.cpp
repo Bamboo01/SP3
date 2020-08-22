@@ -2,59 +2,58 @@
 
 void EntityStateSystem::Setup()
 {
-	Signature signature;
-	signature.set(coordinator.GetComponentType<EntityState>());
-	coordinator.SetSystemSignature<EntityStateSystem>(signature);
+    Signature signature;
+    signature.set(coordinator.GetComponentType<EntityState>());
+    coordinator.SetSystemSignature<EntityStateSystem>(signature);
 }
 
 void EntityStateSystem::Init()
 {
-	std::vector<Entity> InactiveEntities;
-	for (auto const& entity : m_Entities)
-	{
-		auto& entitystate = coordinator.GetComponent<EntityState>(entity);
-		EntityToState.insert({entity, entitystate});
-		if (!entitystate.active)
-		{
-			InactiveEntities.push_back(entity);
-		}
-	}
-	for (auto const& entity : InactiveEntities)
-	{
-		coordinator.DeactivateEntity(entity);
-	}
+
 }
 
 void EntityStateSystem::Update(float dt)
 {
-	std::vector<Entity> ActiveEntities;
+    std::vector<Entity> ActivateList;
+    std::vector<Entity> DeactivateList;
 
-    for (auto const& entity : m_Entities)
+    std::vector <std::vector<Entity>::iterator> inactivelistlist;
+
+    //Check all deactivated entities and see if they need to be activated
+    for (auto it = InactiveEntities.begin(); it != InactiveEntities.end(); it++)
     {
-		ActiveEntities.push_back(entity);
+        auto const& entitystate = coordinator.GetComponent<EntityState>(*it);
+        if (entitystate.active)
+        {
+            ActivateList.push_back(*it);
+            inactivelistlist.push_back(it);
+        }
     }
 
-	for (auto const& entity : ActiveEntities)
-	{
-		auto& storedentitystate = EntityToState[entity];
-		auto& entitystate = coordinator.GetComponent<EntityState>(entity);
-		if (entitystate.active != storedentitystate.active)
-		{
-			if (entitystate.active == false)
-			{
-				coordinator.DeactivateEntity(entity);
-			}
-			EntityToState[entity].active = false;
-		}
-	}
+    for (auto it : inactivelistlist)
+    {
+        InactiveEntities.erase(it);
+    }
 
-	for (auto const& entitytostate : EntityToState)
-	{
-		auto const& entity = entitytostate.first;
-		auto const& entitystate = coordinator.GetComponent<EntityState>(entity);
-		if (entitytostate.second.active != entitystate.active)
-		{
-			coordinator.ActivateEntity(entity);
-		}
-	}
+    //Checks if any entities that are not deactivated by the coordinator need to be deactivated
+    for (auto const& entity : m_Entities)
+    {
+        auto& entitystate = coordinator.GetComponent<EntityState>(entity);
+        if (!entitystate.active)
+        {
+            DeactivateList.push_back(entity);
+            InactiveEntities.push_back(entity);
+        }
+    }
+
+    //Activation and Deactivation
+    for (auto entity : ActivateList)
+    {
+        coordinator.ActivateEntity(entity);
+    }
+
+    for (auto entity : DeactivateList)
+    {
+        coordinator.DeactivateEntity(entity);
+    }
 }

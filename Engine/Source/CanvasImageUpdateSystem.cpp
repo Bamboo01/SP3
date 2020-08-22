@@ -7,6 +7,7 @@ void CanvasImageUpdateSystem::Setup()
 	signature.set(coordinator.GetComponentType<CanvasImage>());
 	signature.set(coordinator.GetComponentType<Transform>());
 	signature.set(coordinator.GetComponentType<CanvasImageUpdate>());
+	signature.set(coordinator.GetComponentType<EntityState>());
 	coordinator.SetSystemSignature<CanvasImageUpdateSystem>(signature);
 }
 
@@ -14,20 +15,37 @@ void CanvasImageUpdateSystem::Init()
 {
 	timer = 0;
 	clickdelay = 0;
+	for (auto const& entity : m_Entities)
+	{
+		auto& transform = coordinator.GetComponent<Transform>(entity);
+		auto& canvas = coordinator.GetComponent<CanvasImage>(entity);
+		auto& canvasupdate = coordinator.GetComponent<CanvasImageUpdate>(entity);
+		auto& entitystate = coordinator.GetComponent<EntityState>(entity);
+
+		if (canvasupdate.popuptype == CanvasImageUpdate::POPUP)
+		{
+			entitystate.active = false;
+		}
+		ReferenceEntity.push_back(entity);
+	}
 }
 
 void CanvasImageUpdateSystem::Update(double dt)
 {
 	timer += dt;
 
-	for (auto const& entity : m_Entities)
+	std::cout << m_Entities.size() << std::endl;
+
+
+	for (auto const& entity : ReferenceEntity)
 	{
 		auto& transform = coordinator.GetComponent<Transform>(entity);
 		auto& canvas = coordinator.GetComponent<CanvasImage>(entity);
 		auto& canvasupdate = coordinator.GetComponent<CanvasImageUpdate>(entity);
+		auto& entitystate = coordinator.GetComponent<EntityState>(entity);
 
 		// Check for clicking on clickable quad (Buttons)
-		if (canvasupdate.clicktype == CanvasImageUpdate::CLICKABLE && Application::IsMousePressed(VK_LBUTTON) && CollideWithCanvas(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y) && canvasupdate.active == true && clickdelay <= timer)
+		if (canvasupdate.clicktype == CanvasImageUpdate::CLICKABLE && Application::IsMousePressed(0) && CollideWithCanvas(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y) && entitystate.active == true && clickdelay <= timer)
 		{
 			clickdelay = timer + 0.3;
 			if (canvasupdate.buttontype == CanvasImageUpdate::GENERATORBUTTON)
@@ -38,39 +56,42 @@ void CanvasImageUpdateSystem::Update(double dt)
 			else if (canvasupdate.buttontype == CanvasImageUpdate::LABBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEUNITBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON)
 			{
 				std::cout << "Lab/Nexus Click!" << std::endl;
-				for (auto const& entity2 : m_Entities)
+				for (auto const& entity2 : ReferenceEntity)
 				{
 					auto& canvasupdate2 = coordinator.GetComponent<CanvasImageUpdate>(entity2);
+					auto& entitystate2 = coordinator.GetComponent<EntityState>(entity2);
 
 					// If lab button was clicked, open lab UI
 					if (canvasupdate.buttontype == CanvasImageUpdate::LABBUTTON)
 					{
-						if (canvasupdate2.uniquetype == CanvasImageUpdate::LABUI && canvasupdate2.active == false)
+						if (canvasupdate2.uniquetype == CanvasImageUpdate::LABUI && entitystate2.active == false)
 						{
-							canvasupdate2.active = true;
+							entitystate2.active = true;
 
 							// If lab UI is open, set unit buttons active to true
-							for (auto const& entity3 : m_Entities)
+							for (auto const& entity3 : ReferenceEntity)
 							{
 								auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
+								auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 								if (canvasupdate3.buttontype == CanvasImageUpdate::LABNORMALUNIT || canvasupdate3.buttontype == CanvasImageUpdate::LABTANKUNIT || canvasupdate3.buttontype == CanvasImageUpdate::LABRANGEUNIT)
 								{
-									canvasupdate3.active = true;
+									entitystate3.active = true;
 								}
 							}
 						}
 
 						// When click again, close lab UI
-						else if (canvasupdate2.uniquetype == CanvasImageUpdate::LABUI && canvasupdate2.active == true)
+						else if (canvasupdate2.uniquetype == CanvasImageUpdate::LABUI && entitystate2.active == true)
 						{
-							canvasupdate2.active = false;
+							entitystate2.active = false;
 							// If lab UI is close, set unit buttons active to false
-							for (auto const& entity3 : m_Entities)
+							for (auto const& entity3 : ReferenceEntity)
 							{
 								auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
+								auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 								if (canvasupdate3.buttontype == CanvasImageUpdate::LABNORMALUNIT || canvasupdate3.buttontype == CanvasImageUpdate::LABTANKUNIT || canvasupdate3.buttontype == CanvasImageUpdate::LABRANGEUNIT)
 								{
-									canvasupdate3.active = false;
+									entitystate3.active = false;
 								}
 							}
 						}
@@ -79,41 +100,44 @@ void CanvasImageUpdateSystem::Update(double dt)
 					if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEUNITBUTTON)
 					{
 						// Do a check if nexus create building is open, if it is, close it before opening nexus create unit
-						for (auto const& entity3 : m_Entities)
+						for (auto const& entity3 : ReferenceEntity)
 						{
 							auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
+							auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 							if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL || canvasupdate3.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI)
 							{
-								canvasupdate3.active = false;
+								entitystate3.active = false;
 							}
 						}
 
-						if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSUNITUI && canvasupdate2.active == false)
+						if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSUNITUI && entitystate2.active == false)
 						{
-							canvasupdate2.active = true;
+							entitystate2.active = true;
 
 							// If nexus create UI is open, set unit buttons active to true
-							for (auto const& entity3 : m_Entities)
+							for (auto const& entity3 : ReferenceEntity)
 							{
 								auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
+								auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 								if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSNORMALUNIT || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSTANKUNIT || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT)
 								{
-									canvasupdate3.active = true;
+									entitystate3.active = true;
 								}
 							}
 						}
 
 						// When click again, close nexus create unit UI
-						else if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSUNITUI && canvasupdate2.active == true)
+						else if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSUNITUI && entitystate2.active == true)
 						{
-							canvasupdate2.active = false;
+							entitystate2.active = false;
 							// If nexus create unit UI is close, set unit buttons active to false
-							for (auto const& entity3 : m_Entities)
+							for (auto const& entity3 : ReferenceEntity)
 							{
 								auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
+								auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 								if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSNORMALUNIT || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSTANKUNIT || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT)
 								{
-									canvasupdate3.active = false;
+									entitystate3.active = false;
 								}
 							}
 						}
@@ -122,41 +146,44 @@ void CanvasImageUpdateSystem::Update(double dt)
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON)
 					{
 						// Do a check if nexus create unit is open, if it is, close it before opening nexus create building
-						for (auto const& entity3 : m_Entities)
+						for (auto const& entity3 : ReferenceEntity)
 						{
 							auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
+							auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 							if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSNORMALUNIT || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSTANKUNIT || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT || canvasupdate3.uniquetype == CanvasImageUpdate::NEXUSUNITUI)
 							{
-								canvasupdate3.active = false;
+								entitystate3.active = false;
 							}
 						}
 
-						if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI && canvasupdate2.active == false)
+						if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI && entitystate2.active == false)
 						{
-							canvasupdate2.active = true;
+							entitystate2.active = true;
 
 							// If nexus create UI is open, set unit buttons active to true
-							for (auto const& entity3 : m_Entities)
+							for (auto const& entity3 : ReferenceEntity)
 							{
 								auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
+								auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 								if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL)
 								{
-									canvasupdate3.active = true;
+									entitystate3.active = true;
 								}
 							}
 						}
 
 						// When click again, close nexus create building UI
-						else if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI && canvasupdate2.active == true)
+						else if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI && entitystate2.active == true)
 						{
-							canvasupdate2.active = false;
+							entitystate2.active = false;
 							// If nexus create UI is close, set unit buttons active to false
-							for (auto const& entity3 : m_Entities)
+							for (auto const& entity3 : ReferenceEntity)
 							{
 								auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
+								auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 								if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL)
 								{
-									canvasupdate3.active = false;
+									entitystate3.active = false;
 								}
 							}
 						}
@@ -222,7 +249,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 				{
 					if (canvasupdate.buttontype == CanvasImageUpdate::GENERATORBUTTON)
 					{
-						canvasupdate.active = true;
+						entitystate.active = true;
 					}
 				}
 				// If selected unit is a lab, render in popup button
@@ -230,7 +257,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 				{
 					if (canvasupdate.buttontype == CanvasImageUpdate::LABBUTTON)
 					{
-						canvasupdate.active = true;
+						entitystate.active = true;
 					}
 				}
 				// If selected unit is a nexus, render in popup button
@@ -238,7 +265,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 				{
 					if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEUNITBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON)
 					{
-						canvasupdate.active = true;
+						entitystate.active = true;
 					}
 				}
 			}
@@ -248,7 +275,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 		{
 			if (canvasupdate.popuptype == CanvasImageUpdate::POPUP)
 			{
-				canvasupdate.active = false;
+				entitystate.active = false;
 			}
 		}
 	}
@@ -256,23 +283,6 @@ void CanvasImageUpdateSystem::Update(double dt)
 
 void CanvasImageUpdateSystem::Render()
 {
-	//for (auto const& entity : m_Entities)
-	//{
-	//	auto& transform = coordinator.GetComponent<Transform>(entity);
-	//	auto& canvasimage = coordinator.GetComponent<CanvasImage>(entity);
-	//	auto& canvasupdate = coordinator.GetComponent<CanvasImageUpdate>(entity);
-	//	if (canvasupdate.active == true)
-	//	{
-	//		glm::mat4 model(1.f);
-	//		glm::vec3 rot = glm::radians(transform.rotation);
-	//		model = glm::translate(model, transform.position);
-	//		model = glm::rotate(model, rot.x, glm::vec3(1, 0, 0));
-	//		model = glm::rotate(model, rot.y, glm::vec3(0, 1, 0));
-	//		model = glm::rotate(model, rot.z, glm::vec3(0, 0, 1));
-	//		model = glm::scale(model, transform.scale);
-	//		renderer.CanvasImage.push_back(std::make_pair(model, canvasimage.TextureID));
-	//	}
-	//}
 }
 
 void CanvasImageUpdateSystem::SetUnitSystem(std::shared_ptr<UnitSystem> unitsystem)

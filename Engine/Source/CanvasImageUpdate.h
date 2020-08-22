@@ -4,70 +4,66 @@
 
 struct CanvasImageUpdate
 {
-	bool active;
+    enum ClickType
+    {
+        START,
+        CLICKABLE,
+        NONCLICKABLE,
+        END
+    };
 
-	enum ClickType
-	{
-		START,
-		CLICKABLE,
-		NONCLICKABLE,
-		END
-	};
+    enum ButtonType
+    {
+        START2 = 0,
+        GENERATORBUTTON,
+        LABBUTTON,
+        LABNORMALUNIT,
+        LABTANKUNIT,
+        LABRANGEUNIT,
+        NEXUSCREATEUNITBUTTON,
+        NEXUSCREATEBUILDINGBUTTON,
+        NEXUSNORMALUNIT,
+        NEXUSTANKUNIT,
+        NEXUSRANGEUNIT,
+        NEXUSBUILDING,
+        NEXUSWALL,
+        END2
+    };
 
-	enum ButtonType
-	{
-		START2 = 0,
-		GENERATORBUTTON,
-		LABBUTTON,
-		LABNORMALUNIT,
-		LABTANKUNIT,
-		LABRANGEUNIT,
-		NEXUSCREATEUNITBUTTON,
-		NEXUSCREATEBUILDINGBUTTON,
-		NEXUSNORMALUNIT,
-		NEXUSTANKUNIT,
-		NEXUSRANGEUNIT,
-		NEXUSBUILDING,
-		NEXUSWALL,
-		END2
-	};
+    enum PopUpType
+    {
+        START3,
+        POPUP,
+        NONPOPUP,
+        END3
+    };
 
-	enum PopUpType
-	{
-		START3,
-		POPUP,
-		NONPOPUP,
-		END3
-	};
+    enum UniqueUI
+    {
+        START4,
+        LABUI,
+        NEXUSUNITUI,
+        NEXUSBUILDINGUI
+    };
 
-	enum UniqueUI
-	{
-		START4,
-		LABUI,
-		NEXUSUNITUI,
-		NEXUSBUILDINGUI
-	};
+    ClickType clicktype;
+    ButtonType buttontype;
+    PopUpType popuptype;
+    UniqueUI uniquetype;
 
-	ClickType clicktype;
-	ButtonType buttontype;
-	PopUpType popuptype;
-	UniqueUI uniquetype;
+    CanvasImageUpdate()
+    {
+        clicktype = START;
+        buttontype = START2;
+        popuptype = START3;
+        uniquetype = START4;
+    }
 
-	CanvasImageUpdate()
-	{
-		clicktype = START;
-		buttontype = START2;
-		popuptype = START3;
-		uniquetype = START4;
-		active = false;
-	}
-
-	CanvasImageUpdate(ClickType clicktype, ButtonType buttontype, PopUpType popuptype, UniqueUI uniquetype, bool active)
-	{
-		this->clicktype = clicktype;
-		this->buttontype = buttontype;
-		this->popuptype = popuptype;
-		this->uniquetype = uniquetype;
-		this->active = active;
-	}
+    CanvasImageUpdate(ClickType clicktype, ButtonType buttontype, PopUpType popuptype, UniqueUI uniquetype)
+    {
+        this->clicktype = clicktype;
+        this->buttontype = buttontype;
+        this->popuptype = popuptype;
+        this->uniquetype = uniquetype;
+    }
 };

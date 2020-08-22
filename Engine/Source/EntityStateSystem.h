@@ -8,9 +8,9 @@ extern Coordinator coordinator;
 class EntityStateSystem : public System
 {
 private:
-	std::map<Entity, EntityState> EntityToState;
+    std::vector<Entity> InactiveEntities;
 public:
-	virtual void Setup();
-	virtual void Init();
-	virtual void Update(float dt);
+    virtual void Setup();
+    virtual void Init();
+    virtual void Update(float dt);
 };
