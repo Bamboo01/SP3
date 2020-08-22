@@ -17,5 +17,6 @@ public:
 	virtual void LateUpdate(float dt) {}
 	virtual void Render() {}
 	virtual void OnCollision() {}
+	void GrabEntity(Entity entity) {}
 };
 
