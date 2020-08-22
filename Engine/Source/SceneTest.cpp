@@ -28,7 +28,7 @@ void SceneTest::Init()
 	cameracontrollersystem = coordinator.RegisterSystem<CameraControllerSystem>();
 	entitystatesystem = coordinator.RegisterSystem<EntityStateSystem>();
 	terrainsystem = coordinator.RegisterSystem<TerrainSystem>();
-	//gridcontrollersystem = coordinator.RegisterSystem<GridControllerSytem>();
+	gridcontrollersystem = coordinator.RegisterSystem<GridControllerSystem>();
 
 	canvasimageupdatesystem = coordinator.RegisterSystem<CanvasImageUpdateSystem>();
 	raycastingsystem = coordinator.RegisterSystem<RayCastingSystem>();
@@ -362,7 +362,7 @@ void SceneTest::Update(double dt)
 	canvasimagesystem->Update(dt);
 	canvastextsystem->Update(dt);
 	entitystatesystem->Update(dt);
-	//gridcontrollersystem->Update(dt);
+	gridcontrollersystem->Update(dt);
 	if (Application::IsKeyPressed('3'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if (Application::IsKeyPressed('4'))
