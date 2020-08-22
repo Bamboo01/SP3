@@ -37,7 +37,6 @@ struct Unit
 	float attackSpeed; // The interval between attacks for unit
 	float mass; // Reference mass used in colliderSystem
 	glm::vec3 colliderScale; // Reference colliderScale used in colliderSystem
-	bool active; // A boolean to check whether the unit is active or not, if it isn't active it won't be rendered/updated
 	double delay; // A double to keep track of attack resets
 	Entity target; // Current targeted enemy
 	UnitType unitType; // The type of unit
@@ -58,7 +57,6 @@ struct Unit
 		, attackSpeed(0)
 		, mass(1)
 		, colliderScale(glm::vec3(1, 1, 1))
-		, active(false)
 		, target(UINT_MAX)
 		, unitType(UnitType::DEFAULT)
 		, unitFaction(UnitFaction::UNDEFINED)

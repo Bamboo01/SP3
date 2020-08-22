@@ -176,16 +176,6 @@ void SceneTest::Init()
 	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
 	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(10, 10, 1);
 
-	for (int i = 0; i < 1; i++)
-	{
-		Entity myObject3;
-		myObject3 = coordinator.CreateEntity();
-		coordinator.AddComponent<Transform>(myObject3, Transform());
-		coordinator.AddComponent<RenderData>(myObject3, RenderData());
-		coordinator.AddComponent<Collider>(myObject3, Collider());
-		coordinator.AddComponent<Unit>(myObject3, Unit());
-	}
-
 	{
 		// Minimap
 		Entity UI = coordinator.CreateEntity();
@@ -470,7 +460,8 @@ void SceneTest::UpdateImGuiUnitSpawn()
 	{
 		for (int i = 0; i < numOfUnit; i++)
 		{
-			unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+			Entity newUnit = unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+			activeEntityList.push_back(newUnit);
 		}
 	}
 
@@ -481,7 +472,8 @@ void SceneTest::UpdateImGuiUnitSpawn()
 		{
 			translation[0] = Math::RandFloatMinMax(-2000, 2000);
 			translation[2] = Math::RandFloatMinMax(-2000, 2000);
-			unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+			Entity newUnit = unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+			activeEntityList.push_back(newUnit);
 		}
 	}
 
@@ -491,10 +483,25 @@ void SceneTest::UpdateImGuiUnitSpawn()
 
 void SceneTest::UpdateImGuiEntityList()
 {
+
 	ImGui::Begin("EntityList");
 	if (activeEntityList.empty())
-		ImGui::Text("No active entities");
-	else
+	{
+		std::set<Entity> entitySetTest = unitsystem->m_Entities;
+		if (entitySetTest.empty())
+		{
+			ImGui::Text("No active entities");
+		}
+		else
+		{
+			for (auto const& entity : entitySetTest)
+			{
+				activeEntityList.push_back(entity);
+			}
+		}
+	}
+	
+	if (!activeEntityList.empty())
 	{
 		static int selection = 0;
 		ImGui::SliderInt(("activeEntities: " + std::to_string(activeEntityList.size())).c_str(), &selection, 0, activeEntityList.size() - 1);
@@ -561,16 +568,10 @@ void SceneTest::UpdateImGuiEntityList()
 			ImGui::SliderFloat("Collider Scale Z", &collider.scale.z, -2000.0f, 2000.0f);
 		}
 
-		//if (ImGui::CollapsingHeader("Mesh"))
-		//{
-		//	ImGui::Text("MeshName: %s", render->name.c_str());
-		//	ImGui::Text("DrawMode: %s", std::to_string(mesh->mode).c_str());
-		//	ImGui::Text("TextureID: %u", std::to_string(mesh->mode).c_str());
-		//}
-
 		if (ImGui::Button("Set to inactive"))
 		{
-			unit.active = false;
+			activeEntityList.erase(activeEntityList.begin() + selection);
+			unitsystem->AddInactiveEntity(testHandler);	
 
 			if (selection == activeEntityList.size() - 1 && selection != 0)
 			{
@@ -584,12 +585,16 @@ void SceneTest::UpdateImGuiEntityList()
 		{
 			for (int i = 0; i < activeEntityList.size(); i++)
 			{
-				auto& testunit = coordinator.GetComponent<Unit>(activeEntityList[i]);
-				testunit.active = false;
-				selection = 0;
+				Entity tmp = activeEntityList[i];
+
+				unitsystem->AddInactiveEntity(tmp);
 			}
+
+			selection = 0;
 		}
 
+
+		activeEntityList.clear();
 	}
 
 	ImGui::End();

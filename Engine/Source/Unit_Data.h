@@ -47,7 +47,6 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = NORMAL;
 		unitFaction = unitFact;
@@ -97,7 +96,6 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = RANGE;
 		unitFaction = unitFact;
@@ -147,7 +145,6 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = TANK;
 		unitFaction = unitFact;
@@ -197,7 +194,6 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = TOWER;
 		unitFaction = unitFact;
@@ -247,7 +243,6 @@ public:
 		mass = unitMass;
 		colliderScale = collisionScale;
 		delay = 0.0;
-		active = true;
 		target = UINT_MAX;
 		unitType = WALL;
 		unitFaction = unitFact;
@@ -297,7 +292,6 @@ public:
 		mass = unitMass;
 		colliderScale = collisionScale;
 		delay = 0.0;
-		active = true;
 		target = UINT_MAX;
 		unitType = NEXUS;
 		unitFaction = unitFact;
@@ -347,7 +341,6 @@ public:
 		mass = unitMass;
 		colliderScale = collisionScale;
 		delay = 0.0;
-		active = true;
 		target = UINT_MAX;
 		unitType = GENERATOR;
 		unitFaction = unitFact;
@@ -397,7 +390,6 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = LAB;
 		unitFaction = unitFact;
@@ -439,7 +431,6 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = PROJECTILE;
 		unitFaction = UNDEFINED;

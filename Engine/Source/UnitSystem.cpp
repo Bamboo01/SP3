@@ -9,64 +9,98 @@ void UnitSystem::Setup()
     signature.set(coordinator.GetComponentType<Unit>());
     signature.set(coordinator.GetComponentType<Collider>());
     signature.set(coordinator.GetComponentType<RenderData>());
+    signature.set(coordinator.GetComponentType<EntityState>());
 
     coordinator.SetSystemSignature<UnitSystem>(signature);
 }
 
 void UnitSystem::Init()
 {
-    for (auto const& entity : m_Entities)
+    for (int i = 0; i < 100; i++) // Init xxx amount of inactive objects
     {
-        auto& unit = coordinator.GetComponent<Unit>(entity);
-        auto& transform = coordinator.GetComponent<Transform>(entity);
-
-        glm::mat4 mrot(1.f);
-
-        glm::vec3 rotation = glm::radians(transform.rotation);
-
-        mrot = glm::mat4(1.f);
-        mrot = glm::rotate(mrot, rotation.x, glm::vec3(1, 0, 0));
-        mrot = glm::rotate(mrot, rotation.y, glm::vec3(0, 1, 0));
-        mrot = glm::rotate(mrot, rotation.z, glm::vec3(0, 0, 1));
-
-        transform.AxisX = glm::vec3(mrot * glm::vec4(1, 0, 0, 0.f));
-        transform.AxisY = glm::vec3(mrot * glm::vec4(0, 1, 0, 0.f));
-        transform.AxisZ = glm::vec3(mrot * glm::vec4(0, 0, 1, 0.f));
+        Entity myObject3;
+        myObject3 = coordinator.CreateEntity();
+        coordinator.AddComponent<Transform>(myObject3, Transform());
+        coordinator.AddComponent<RenderData>(myObject3, RenderData());
+        coordinator.AddComponent<Collider>(myObject3, Collider());
+        coordinator.AddComponent<Unit>(myObject3, Unit());
+        coordinator.AddComponent<EntityState>(myObject3, EntityState(false));
+        AddInactiveEntity(myObject3);
     }
 }
 
 void UnitSystem::Update(double dt)
 {
+    d_elapsedTime += dt;
 
+    for (auto const& entity : m_Entities)
+    {
+        auto& transform = coordinator.GetComponent<Transform>(entity);
+        auto& unit = coordinator.GetComponent<Unit>(entity);
+        auto& entityState = coordinator.GetComponent<EntityState>(entity);
+
+        if (unit.health <= 0) // In the event the unit's health falls to/below 0, deactivate the unit.
+        {
+            AddInactiveEntity(entity);
+            continue;
+        }
+
+        switch (unit.unitType)
+        {
+        case Unit::NORMAL:
+            FetchNearbyTargetWithinRange(entity);
+            break;
+        case Unit::TANK:
+            FetchNearbyTargetWithinRange(entity);
+            break;
+        case Unit::RANGE:
+            FetchNearbyTargetWithinRange(entity);
+            break;
+        case Unit::PROJECTILE:
+            UpdateProjectile(entity);
+            break;
+        }
+
+        if (unit.target != UINT_MAX && unit.unitType != Unit::PROJECTILE)
+        {
+            ApplyAttack(entity, unit.target);
+        }
+    }
+}
+
+void UnitSystem::AddInactiveEntity(Entity entity)
+{
+    auto& entityState = coordinator.GetComponent<EntityState>(entity);
+    entityState.active = false;
+    inactiveEntityList.push_back(entity);
 }
 
 Entity UnitSystem::FetchInactiveUnit()
 {
-    for (auto const& entity : m_Entities) // Checks through the entity list and search for the next inactive object
+    Entity returnEntity = Entity();
+
+    if (inactiveEntityList.empty())
     {
-        auto& unit = coordinator.GetComponent<Unit>(entity);
-        if (!unit.active)
+        int numOfNewEntity = 20;
+        for (int i = 0; i < numOfNewEntity; i++) // If entity list does not have anymore inactive units, create 20 entities to store
         {
-            return entity;
+            Entity tempObject;
+            tempObject = coordinator.CreateEntity();
+            coordinator.AddComponent<Transform>(tempObject, Transform());
+            coordinator.AddComponent<Collider>(tempObject, Collider());
+            coordinator.AddComponent<RenderData>(tempObject, RenderData());
+            coordinator.AddComponent<Unit>(tempObject, Unit());
+            coordinator.AddComponent<EntityState>(tempObject, EntityState(false));
+            AddInactiveEntity(tempObject);
         }
     }
 
-    int numOfNewEntity = 20;
-    Entity returnEntity;
-
-    for (int i = 0; i < numOfNewEntity; i++) // If entity list does not have anymore inactive units, create 20 entities to store
+    if (!inactiveEntityList.empty())
     {
-        Entity tempObject;
-        tempObject = coordinator.CreateEntity();
-        coordinator.AddComponent<Transform>(tempObject, Transform());
-        coordinator.AddComponent<Collider>(tempObject, Collider());
-        coordinator.AddComponent<RenderData>(tempObject, RenderData());
-        coordinator.AddComponent<Unit>(tempObject, Unit());
-
-        if (i == 0)
-        {
-            returnEntity = tempObject;
-        }
+        returnEntity = inactiveEntityList.back();
+        auto& returnEntityState = coordinator.GetComponent<EntityState>(returnEntity);
+        returnEntityState.active = true;
+        inactiveEntityList.pop_back();
     }
 
     return returnEntity;
@@ -78,6 +112,8 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
     auto& unit = coordinator.GetComponent<Unit>(unitID);
     auto& currentTargetTransform = coordinator.GetComponent<Transform>(unit.target);
     auto& currentTargetUnit = coordinator.GetComponent<Unit>(unit.target);
+    auto& currentTargetEntityState = coordinator.GetComponent<EntityState>(unit.target);
+
     float distanceWithCurrentTarget = 0;
 
     if (unit.unitType == Unit::UnitType::WALL || unit.unitType == Unit::UnitType::NEXUS || unit.unitType == Unit::UnitType::GENERATOR || unit.unitType == Unit::UnitType::LAB || unit.unitType == Unit::UnitType::PROJECTILE) // These shouldn't call this method!
@@ -93,7 +129,7 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
 
     if (unit.target != UINT_MAX) // In the event there's a target entity stored
     {
-        if (!currentTargetUnit.active) // If the target entity is not active, we set the unit->target back to default
+        if (!currentTargetEntityState.active) // If the target entity is not active, we set the unit->target back to default
             unit.target = UINT_MAX;
     }
 
@@ -109,7 +145,7 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
     {
         auto& otherUnit = coordinator.GetComponent<Unit>(entity);
 
-        if (entity == unitID || !otherUnit.active) // If the for loops goes onto the same unit, skip this loop
+        if (entity == unitID) // If the for loops goes onto the same unit, skip this loop
             continue;
 
         auto& otherTransform = coordinator.GetComponent<Transform>(entity);
@@ -144,8 +180,8 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         std::cout << "UnitSystem: " << inactiveID << " initiated as DEFAULT type" << std::endl;
         break;
     case Unit::NORMAL:
-        UnitRenderData.mesh = renderer.getMesh(GEO_CUBE);
         UnitData = UNormal(level, faction);
+        UnitRenderData.mesh = renderer.getMesh(GEO_CUBE);
         std::cout << "UnitSystem: " << inactiveID << " initiated as NORMAL type" << std::endl;
         break;
     case Unit::TANK:
@@ -197,6 +233,7 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
     auto& UnitTransform = coordinator.GetComponent<Transform>(inactiveID);
     auto& UnitCollider = coordinator.GetComponent<Collider>(inactiveID);
     auto& UnitData = coordinator.GetComponent<Unit>(inactiveID);
+    auto& UnitRenderData = coordinator.GetComponent<RenderData>(inactiveID);
 
     auto& originTransform = coordinator.GetComponent<Transform>(origin);
     auto& originCollider = coordinator.GetComponent<Collider>(origin);
@@ -210,9 +247,11 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
     UnitData.unitFaction = originUnit.unitFaction;
     UnitCollider.mass = UnitData.mass;
     UnitCollider.scale = UnitData.colliderScale;
+    std::cout << "UnitSystem: " << inactiveID << " initiated as PROJECTILE type" << std::endl;
 
     if (originUnit.unitType == Unit::RANGE)
     {
+        UnitRenderData.mesh = renderer.getMesh(GEO_CUBE);
         UnitTransform = Transform(originTransform.position + originTransform.AxisZ, glm::vec3(0.5, 0.5, 0.5), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
     }
     else if (originUnit.unitType == Unit::TOWER)
@@ -227,8 +266,12 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
 {
     auto& attackerTransform = coordinator.GetComponent<Transform>(attacker);
     auto& attackerUnit = coordinator.GetComponent<Unit>(attacker);
+
     auto& receiverTransform = coordinator.GetComponent<Transform>(receiver);
     auto& receiverUnit = coordinator.GetComponent<Unit>(receiver);
+
+    if (receiverUnit.unitType == Unit::PROJECTILE) // In the event a unit targets a projectile, by right shouldnt happen but just incase it gets called
+        return;
 
     if (attackerUnit.unitType == Unit::PROJECTILE)
     {
@@ -241,7 +284,7 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
         std::cout << "------------------------------------------------------------" << std::endl;
         std::cout << "UnitSystem: EntityID(" << attackerUnit.originUnit << ")'s projectile attacked EntityID(" << receiver << ")" << std::endl;
         std::cout << "UnitSystem: EntityID(" << attackerUnit.originUnit << ")'s projectile dealt raw damage(" << originUnit.damage << ") and EntityID(" << receiver << ") received resultant mitigated damage(" << resultantDamage << ")" << std::endl;
-        attackerUnit.active = false;
+        AddInactiveEntity(attacker);
         return;
     }
 
@@ -270,19 +313,18 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
 void UnitSystem::UpdateProjectile(Entity projectile)
 {
     auto& UnitTransform = coordinator.GetComponent<Transform>(projectile);
-    auto& UnitCollider = coordinator.GetComponent<Collider>(projectile);
     auto& UnitData = coordinator.GetComponent<Unit>(projectile);
 
-    if (UnitData.unitType != Unit::PROJECTILE)
+    if (UnitData.unitType != Unit::PROJECTILE) // This method is specifically only for projectiles!
         return;
 
     auto& TargetTransform = coordinator.GetComponent<Transform>(UnitData.targetUnit);
-    auto& TargetCollider = coordinator.GetComponent<Collider>(UnitData.targetUnit);
     auto& TargetUnitData = coordinator.GetComponent<Unit>(UnitData.targetUnit);
+    auto& TargetEntityState = coordinator.GetComponent<EntityState>(UnitData.targetUnit);
 
-    if (!TargetUnitData.active)
+    if (!TargetEntityState.active)
     {
-        UnitData.active = false;
+        AddInactiveEntity(projectile);
         return;
     }
 

@@ -13,17 +13,20 @@ void ColliderSystem::Update(double dt)
         Entity firstObject = *it;
         auto& ObjectTransform = coordinator.GetComponent<Transform>(firstObject);
         auto& ObjectUnit = coordinator.GetComponent<Unit>(firstObject);
+        auto& ObjectEntityState = coordinator.GetComponent<EntityState>(firstObject);
 
         for (std::set<Entity>::iterator it2 = it; it2 != m_Entities.end(); it2++)
         {
-			if (it2 == it)
+			if (it2 == it) // Skips this loop if both loops are on the same entity
 				continue;
 
 			Entity secondObject = *it2;
 			auto& ObjectTransform2 = coordinator.GetComponent<Transform>(secondObject);
 			auto& ObjectUnit2 = coordinator.GetComponent<Unit>(secondObject);
+            auto& ObjectEntityState2 = coordinator.GetComponent<EntityState>(secondObject);
 
-			if (!ObjectUnit.active || !ObjectUnit2.active || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction))
+
+			if ((!ObjectEntityState.active) || (!ObjectEntityState2.active) || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction && ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE))
 				continue;
 
             if (glm::length(ObjectTransform.position - ObjectTransform2.position) <= 100)
@@ -34,16 +37,24 @@ void ColliderSystem::Update(double dt)
 
                     if (ObjectUnit.unitType == Unit::PROJECTILE)
                     {
-                        unitSystem->ApplyAttack(firstObject, secondObject);
+                        if (ObjectUnit.unitFaction != ObjectUnit2.unitFaction)
+                        {
+							unitSystem->ApplyAttack(firstObject, secondObject);
+                        }
                         continue;
                     }
                     else if (ObjectUnit2.unitType == Unit::PROJECTILE)
                     {
-                        unitSystem->ApplyAttack(secondObject, firstObject);
+                        if (ObjectUnit.unitFaction != ObjectUnit2.unitFaction)
+                        {
+                            unitSystem->ApplyAttack(secondObject, firstObject);
+                        }
                         continue;
                     }
-
-                    collisionResponse(firstObject, secondObject);
+                    else
+                    {
+                        collisionResponse(firstObject, secondObject);
+                    }
                 }
             }
         }
@@ -145,6 +156,7 @@ void ColliderSystem::Setup()
     signature.set(coordinator.GetComponentType<RenderData>());
     signature.set(coordinator.GetComponentType<Collider>());
     signature.set(coordinator.GetComponentType<Unit>());
+    signature.set(coordinator.GetComponentType<EntityState>());
     coordinator.SetSystemSignature<ColliderSystem>(signature);
 }
 

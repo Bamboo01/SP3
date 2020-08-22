@@ -17,6 +17,8 @@ public:
     virtual void Init();
     virtual void Update(double dt);
 
+    void AddInactiveEntity(Entity entity);
+
     Entity FetchInactiveUnit();
     void FetchNearbyTargetWithinRange(Entity unit);
 
@@ -27,4 +29,5 @@ public:
     void UpdateProjectile(Entity projectile);
 private:
     double d_elapsedTime;
+    std::vector<Entity> inactiveEntityList;
 };
