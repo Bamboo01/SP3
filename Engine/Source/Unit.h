@@ -49,6 +49,8 @@ struct Unit
 	int FlowFieldCost;	// Check the cost value of this unit
 	int StandingGridCost; // Check the grid that the unit is at cost
 
+	glm::vec2 nextGrid = glm::vec2(-1,-1);	//Store next grid here
+
 	glm::vec3 velocity;	// Velocity of the unit
 
 	Unit()

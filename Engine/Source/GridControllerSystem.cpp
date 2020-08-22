@@ -62,14 +62,25 @@ void GridControllerSystem::Update(float dt)
 		CursorWorldPosition = glm::vec3(0, 2, 0);
 		CreateGrids();
 	}
-	if (active == true )
+	if (active == true)
 	{
 		UpdateUnitPosition();
+		active = false;
 	}
 	for (auto const& entity : m_Entities)
 	{
 		auto& unit = coordinator.GetComponent<Unit>(entity);
 		auto& transform = coordinator.GetComponent<Transform>(entity);
+		if (unit.nextGrid != glm::vec2(-1, -1)) {
+			int GTLX = unit.nextGrid.x;
+			int GTLY = unit.nextGrid.y;
+			glm::vec3 GridTopLeft = GridPosition[GTLX][GTLY];
+			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+			if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
+			{
+				UpdateUnitPosition();
+			}
+		}
 		transform.position += unit.velocity;
 	//	std::cout << unit.velocity.x << ", " << unit.velocity.z << std::endl;
 	}
@@ -358,7 +369,7 @@ void GridControllerSystem::UpdateUnitPosition()
 						if (GridCost[x][y] == 0)
 						{
 							unit.velocity = glm::vec3(0, 0, 0);
-							x = 999; y = 999;
+							x = 20; y = 20;
 							break;
 						}
 						// Check which ditection has the smallest number
@@ -451,6 +462,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							//Set Unit Velocity
 							int dX = lowest.x;
 							int dY = lowest.y;
+							unit.nextGrid = glm::vec2(dX, dY);
 							glm::vec3 distance = GridPosition[dX][dY] - transform.position;
 							glm::vec3 direction = glm::normalize(distance);
 							float temp = direction.x;
