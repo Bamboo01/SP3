@@ -15,7 +15,7 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<EntityState>();
 	coordinator.RegisterComponent<TerrainData>();
 	coordinator.RegisterComponent<CanvasImageUpdate>();
-	coordinator.RegisterComponent<Unit>();
+//	coordinator.RegisterComponent<Unit>();
 	coordinator.RegisterComponent<RayCasting>();
 	coordinator.RegisterComponent<Collider>();
 //	coordinator.RegisterComponent<GridControllerSytem>();
@@ -108,20 +108,31 @@ void SceneTest::Init()
 	coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
 	coordinator.AddComponent<EntityState>(terrain, EntityState());
 
-	Entity testunit = coordinator.CreateEntity();
-	coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 1000));
-	coordinator.AddComponent<RenderData>(testunit, RenderData(renderer.getMesh(GEO_GRID), false));
-	coordinator.AddComponent<Transform>(testunit, Transform());
-	coordinator.GetComponent<Transform>(testunit).position = glm::vec3(10, 2, 10);
-	coordinator.GetComponent<Transform>(testunit).scale = glm::vec3(30, 30, 30);
-	coordinator.GetComponent<Transform>(testunit).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	//Entity testunit = coordinator.CreateEntity();
+	//coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 1000));
+	//coordinator.AddComponent<RenderData>(testunit, RenderData(renderer.getMesh(GEO_GRID), false));
+	//coordinator.AddComponent<Transform>(testunit, Transform());
+	//coordinator.GetComponent<Transform>(testunit).position = glm::vec3(10, 15, 10);
+	//coordinator.GetComponent<Transform>(testunit).scale = glm::vec3(30, 30, 30);
+	//coordinator.GetComponent<Transform>(testunit).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	//coordinator.AddComponent<EntityState>(testunit, EntityState());
 	Entity testunit2 = coordinator.CreateEntity();
 	coordinator.AddComponent<Unit>(testunit2, Unit("Test2", 0, 0, 0, 0, 0, Unit::WALL, 1000));
 	coordinator.AddComponent<RenderData>(testunit2, RenderData(renderer.getMesh(GEO_GRID), false));
 	coordinator.AddComponent<Transform>(testunit2, Transform());
-	coordinator.GetComponent<Transform>(testunit2).position = glm::vec3(60, 2, 150);
+	coordinator.GetComponent<Transform>(testunit2).position = glm::vec3(60, 15, 150);
 	coordinator.GetComponent<Transform>(testunit2).scale = glm::vec3(30, 30, 30);
 	coordinator.GetComponent<Transform>(testunit2).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	coordinator.AddComponent<EntityState>(testunit2, EntityState());
+
+	Entity testunit3 = coordinator.CreateEntity();
+	coordinator.AddComponent<Unit>(testunit3, Unit("Test3", 0, 0, 0, 0, 0, Unit::TANK, 0));
+	coordinator.AddComponent<RenderData>(testunit3, RenderData(renderer.getMesh(GEO_GRID), false));
+	coordinator.AddComponent<Transform>(testunit3, Transform());
+	coordinator.GetComponent<Transform>(testunit3).position = glm::vec3(100, 15, 150);
+	coordinator.GetComponent<Transform>(testunit3).scale = glm::vec3(30, 30, 30);
+	coordinator.GetComponent<Transform>(testunit3).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
+	coordinator.AddComponent<EntityState>(testunit3, EntityState());
 
 	//Math::InitRNG();
 	//for (int i = 0; i < 400; i++)
@@ -129,13 +140,13 @@ void SceneTest::Init()
 	//	int x = Math::RandIntMinMax(-20, 20);
 	//	int y = Math::RandIntMinMax(-10, 5);
 	//	int z = Math::RandIntMinMax(-20, 20);
-	//	Entity cube = coordinator.CreateEntity();
-	//	coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
-	//	coordinator.AddComponent<Transform>(cube, Transform());
-	//	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
-	//	coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
-	//	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
-	//	coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	/*	Entity cube = coordinator.CreateEntity();
+		coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
+		coordinator.AddComponent<Transform>(cube, Transform());
+		coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
+		coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
+		coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
+		coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;*/
 	//}
 
 	//Entity cube = coordinator.CreateEntity();
@@ -178,7 +189,7 @@ void SceneTest::Init()
 	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
 	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(10, 10, 1);
 
-	for (int i = 0; i < 1; i++)
+	/*for (int i = 0; i < 1; i++)
 	{
 		Entity myObject3;
 		myObject3 = coordinator.CreateEntity();
@@ -186,7 +197,7 @@ void SceneTest::Init()
 		coordinator.AddComponent<RenderData>(myObject3, RenderData());
 		coordinator.AddComponent<Collider>(myObject3, Collider());
 		coordinator.AddComponent<Unit>(myObject3, Unit());
-	}
+	}*/
 
 	{
 		// Minimap

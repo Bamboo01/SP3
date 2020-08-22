@@ -46,8 +46,10 @@ struct Unit
 	Entity originUnit; // (PROJECTILE ONLY!) The unit that shot the projectile, it could be tower or ranged :D
 	Entity targetUnit; // (PROJECTILE ONLY!) The unit that is being traced by the projectile
 
-	int FlowFieldCost;
+	int FlowFieldCost;	// Check the cost value of this unit
+	int StandingGridCost; // Check the grid that the unit is at cost
 
+	glm::vec3 velocity;	// Velocity of the unit
 
 	Unit()
 		: name("Default")
@@ -65,10 +67,12 @@ struct Unit
 		, originUnit(UINT_MAX)
 		, targetUnit(UINT_MAX)
 		, FlowFieldCost(0)
+		, StandingGridCost(0)
+		, velocity(0)
 	{
 	}
 
-	Unit(std::string name, int level, int basehealth, int damage, int defense, float attackspeed, UnitType type, int flowfieldcost)
+	Unit(std::string name, int level, int basehealth, int damage, int defense, float attackspeed, UnitType type, int flowfieldcost = 0, int StandingGridCost = 0, int vel = 0)
 		: name(name)
 		, level(level)
 		, health((basehealth * 4 * level) / 100 + level + 10)
@@ -77,6 +81,8 @@ struct Unit
 		, attackSpeed(attackspeed)
 		, unitType(type)
 		, FlowFieldCost(flowfieldcost)
+		, StandingGridCost(StandingGridCost)
+		,velocity(vel)
 
 	{
 	}
