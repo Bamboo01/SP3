@@ -421,7 +421,7 @@ void SceneTest::Exit()
 void SceneTest::UpdateImGui()
 {
 	UpdateImGuiUnitSpawn();
-	UpdateImGuiEntityList();
+	//UpdateImGuiEntityList();
 
 	ImGui::Begin("Main");
 	ImGui::Button("Hello!");

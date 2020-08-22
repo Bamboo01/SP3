@@ -21,7 +21,7 @@ struct TerrainData
 		terrain = t;
 	}
 
-	float ReadHeightMap(std::vector<unsigned char>& heightMap, float x, float z)
+	float ReadHeightMap(float x, float z)
 	{
 		x += transform.position.x;
 		z += transform.position.z;
@@ -30,14 +30,14 @@ struct TerrainData
 
 		if (x < -0.5f || x > 0.5f || z < -0.5f || z > 0.5f)
 			return 0;
-		if (heightMap.size() == 0)
+		if (heightmap.size() == 0)
 			return 0;
 
-		unsigned terrainSize = (unsigned)sqrt((double)heightMap.size());
+		unsigned terrainSize = (unsigned)sqrt((double)heightmap.size());
 
 		unsigned zCoord = (unsigned)((z + 0.5f) * terrainSize);
 		unsigned xCoord = (unsigned)((x + 0.5f) * terrainSize);
 
-		return (((float)heightMap[zCoord * terrainSize + xCoord] / 256.f) * transform.scale.y) + transform.position.y;
+		return (((float)heightmap[zCoord * terrainSize + xCoord] / 256.f) * transform.scale.y) + transform.position.y;
 	}
 };

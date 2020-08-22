@@ -41,7 +41,7 @@ public:
 
 	void UpdateImGui();
 	void UpdateImGuiUnitSpawn();
-	void UpdateImGuiEntityList();
+	//void UpdateImGuiEntityList();
 
 	/*Systems of the scene*/
 	std::shared_ptr<TransformSystem> transformsystem;
