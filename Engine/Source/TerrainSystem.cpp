@@ -14,7 +14,9 @@ void TerrainSystem::Init()
 {
 	for (auto const& entity : m_Entities)
 	{
+		auto& transform = coordinator.GetComponent<Transform>(entity);
 		auto& terrain = coordinator.GetComponent<TerrainData>(entity);
 		terrain.heightmap = renderer.getHeightMap(renderer.getMesh(terrain.terrain));
+		terrain.transform = transform;
 	}
 }
