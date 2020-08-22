@@ -284,7 +284,6 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
         std::cout << "------------------------------------------------------------" << std::endl;
         std::cout << "UnitSystem: EntityID(" << attackerUnit.originUnit << ")'s projectile attacked EntityID(" << receiver << ")" << std::endl;
         std::cout << "UnitSystem: EntityID(" << attackerUnit.originUnit << ")'s projectile dealt raw damage(" << originUnit.damage << ") and EntityID(" << receiver << ") received resultant mitigated damage(" << resultantDamage << ")" << std::endl;
-        AddInactiveEntity(attacker);
         return;
     }
 

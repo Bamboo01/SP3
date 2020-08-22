@@ -327,6 +327,7 @@ void SceneTest::Init()
 	
 	canvasimageupdatesystem->SetUnitSystem(unitsystem);
 	collidersystem->SetRayCastSystem(raycastingsystem);
+	collidersystem->SetUnitSystem(unitsystem);
 }
 
 void SceneTest::EarlyUpdate(double dt)
@@ -388,6 +389,7 @@ void SceneTest::PreRender()
 void SceneTest::Render()
 {
 	rendersystem->Render();
+	collidersystem->Render();
 	camerasystem->Render();
 	canvasimagesystem->Render();
 	canvastextsystem->Render();
