@@ -9,52 +9,44 @@ void EntityStateSystem::Setup()
 
 void EntityStateSystem::Init()
 {
-	std::vector<Entity> InactiveEntities;
-	for (auto const& entity : m_Entities)
-	{
-		auto& entitystate = coordinator.GetComponent<EntityState>(entity);
-		EntityToState.insert({entity, entitystate});
-		if (!entitystate.active)
-		{
-			InactiveEntities.push_back(entity);
-		}
-	}
-	for (auto const& entity : InactiveEntities)
-	{
-		coordinator.DeactivateEntity(entity);
-	}
+
 }
 
 void EntityStateSystem::Update(float dt)
 {
-	std::vector<Entity> ActiveEntities;
+	std::vector<Entity> ActivateList;
+	std::vector<Entity> DeactivateList;
 
-    for (auto const& entity : m_Entities)
-    {
-		ActiveEntities.push_back(entity);
-    }
-
-	for (auto const& entity : ActiveEntities)
+	//Check all deactivated entities and see if they need to be activated
+	for (auto it = InactiveEntities.begin(); it != InactiveEntities.end(); ++it)
 	{
-		auto& storedentitystate = EntityToState[entity];
-		auto& entitystate = coordinator.GetComponent<EntityState>(entity);
-		if (entitystate.active != storedentitystate.active)
+		auto const& entitystate = coordinator.GetComponent<EntityState>(*it);
+		if (entitystate.active)
 		{
-			if (entitystate.active == false)
-			{
-				coordinator.DeactivateEntity(entity);
-			}
-			EntityToState[entity].active = false;
+			ActivateList.push_back(*it);
+			InactiveEntities.erase(it);
 		}
 	}
 
-	for (auto const& entitytostate : EntityToState)
+	//Checks if any entities that are not deactivated by the coordinator need to be deactivated
+	for (auto const& entity : m_Entities)
 	{
-		auto const& entity = entitytostate.first;
-		auto const& entitystate = coordinator.GetComponent<EntityState>(entity);
-		if (entitytostate.second.active != entitystate.active)
+		auto& entitystate = coordinator.GetComponent<EntityState>(entity);
+		if (!entitystate.active)
 		{
-			coordinator.ActivateEntity(entity);
+			DeactivateList.push_back(entity);
+			InactiveEntities.push_back(entity);
 		}
+	}
+
+	//Activation and Deactivation
+	for (auto entity : ActivateList)
+	{
+		coordinator.ActivateEntity(entity);
+	}
+
+	for (auto entity : DeactivateList)
+	{
+		coordinator.DeactivateEntity(entity);
 	}
 }
