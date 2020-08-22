@@ -18,6 +18,8 @@ public:
     void Setup();
     void Init();
     void Update(double dt);
+    virtual void Render();
+
     bool collisionCheck(Entity obj1, Entity obj2);
     void collisionResponse(Entity obj1, Entity obj2);
     bool collisionOnAxis(glm::vec3 rPos, glm::vec3 axis, Transform& firstObject, Transform& secondObject, Collider& firstCollider, Collider& secondCollider);

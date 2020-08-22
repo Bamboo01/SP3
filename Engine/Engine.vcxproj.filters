@@ -110,6 +110,9 @@
     <ClCompile Include="Source\UnitSystem.cpp">
       <Filter>Auxillary\Systems\UnitSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ParticleSystem.cpp">
+      <Filter>Auxillary\Systems\ParticleSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -316,6 +319,12 @@
     <ClInclude Include="Source\Vertex.h">
       <Filter>Core\Modules\MeshManager\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Particle.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticleSystem.h">
+      <Filter>Auxillary\Systems\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -425,6 +434,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\UnitSystem">
       <UniqueIdentifier>{41a9766a-4d98-47e3-8b01-31008e7b818b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\ParticleSystem">
+      <UniqueIdentifier>{013c98b6-4e18-4936-be0e-3fc16be915d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

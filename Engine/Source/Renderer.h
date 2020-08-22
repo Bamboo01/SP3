@@ -50,6 +50,8 @@ private:
 
 public:
 	Mesh* getMesh(GEO_TYPE type);
+	Material* getMaterial(Mesh* mesh);
+	Material* getMaterial(GEO_TYPE type);
 
 	void Init();
 	void Update(float dt);

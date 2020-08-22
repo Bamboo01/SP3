@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ParticleSystem.cpp" />
     <ClCompile Include="Source\EntityStateSystem.cpp" />
     <ClCompile Include="Source\CanvasTextSystem.cpp" />
     <ClCompile Include="Source\CameraControllerSystem.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="Source\TerrainSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ParticleSystem.h" />
     <ClInclude Include="Source\EntityStateSystem.h" />
     <ClInclude Include="Source\EntityState.h" />
     <ClInclude Include="Source\CanvasTextSystem.h" />
@@ -219,6 +221,7 @@
     <ClInclude Include="Source\CanvasText.h" />
     <ClInclude Include="Source\Collider.h" />
     <ClInclude Include="Source\ColliderSystem.h" />
+    <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\RayCasting.h" />
     <ClInclude Include="Source\RayCastingSystem.h" />
     <ClInclude Include="Source\ScreenQuadShader.h" />

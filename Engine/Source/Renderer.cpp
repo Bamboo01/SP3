@@ -39,6 +39,16 @@ Mesh* Renderer::getMesh(GEO_TYPE type)
 	return meshManager->meshList[type];
 }
 
+Material* Renderer::getMaterial(Mesh* mesh)
+{
+	return MeshtoMaterial[mesh];
+}
+
+Material* Renderer::getMaterial(GEO_TYPE type)
+{
+	return MeshtoMaterial[getMesh(type)];
+}
+
 void Renderer::Init()
 {
 	addMaterial(new Material, new Shader("Shader///basic.vs", "Shader//basic.fs"));
