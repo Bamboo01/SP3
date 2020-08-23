@@ -110,9 +110,6 @@
     <ClCompile Include="Source\UnitSystem.cpp">
       <Filter>Auxillary\Systems\UnitSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ObjectPoolSystem.cpp">
-      <Filter>Auxillary\Systems\ObjectPoolSystem</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -319,12 +316,6 @@
     <ClInclude Include="Source\Vertex.h">
       <Filter>Core\Modules\MeshManager\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ObjectPool.h">
-      <Filter>Auxillary\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ObjectPoolSystem.h">
-      <Filter>Auxillary\Systems\ObjectPoolSystem</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -434,9 +425,6 @@
     </Filter>
     <Filter Include="Auxillary\Systems\UnitSystem">
       <UniqueIdentifier>{41a9766a-4d98-47e3-8b01-31008e7b818b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Auxillary\Systems\ObjectPoolSystem">
-      <UniqueIdentifier>{d7c0397b-fc55-4077-98fb-54213a34ec51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
