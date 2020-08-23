@@ -45,8 +45,8 @@ struct Unit
 	Entity originUnit; // (PROJECTILE ONLY!) The unit that shot the projectile, it could be tower or ranged :D
 	Entity targetUnit; // (PROJECTILE ONLY!) The unit that is being traced by the projectile
 
-	int FlowFieldCost;
-
+	int FlowFieldCost; // (FlowFieldPathfinding)
+	int StandingGridCost; // (FlowFieldPathfinding)
 
 	Unit()
 		: name("Default")
@@ -63,6 +63,7 @@ struct Unit
 		, originUnit(UINT_MAX)
 		, targetUnit(UINT_MAX)
 		, FlowFieldCost(0)
+		, StandingGridCost(0)
 	{
 	}
 
@@ -75,7 +76,7 @@ struct Unit
 		, attackSpeed(attackspeed)
 		, unitType(type)
 		, FlowFieldCost(flowfieldcost)
-
+		, StandingGridCost(0)
 	{
 	}
 

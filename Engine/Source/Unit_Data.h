@@ -52,6 +52,8 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
 	}
 
 	~UNormal() {}
@@ -101,6 +103,8 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
 	}
 
 	~URange() {}
@@ -150,6 +154,8 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
 	}
 
 	~UTank() {}
@@ -199,6 +205,8 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
 	}
 
 	~UTower() {}
@@ -248,6 +256,8 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
 	}
 
 	~UWall() {}
@@ -297,6 +307,8 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
 	}
 
 	~UNexus() {}
@@ -346,6 +358,8 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
 	}
 
 	~UGenerator() {}
@@ -395,6 +409,8 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
 	}
 
 	~ULab() {}
@@ -436,6 +452,8 @@ public:
 		unitFaction = UNDEFINED;
 		originUnit = attacking;
 		targetUnit = targeted;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
 	}
 
 	~UProjectile() {}
