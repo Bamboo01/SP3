@@ -26,59 +26,8 @@ void CameraSystem::Update(float dt)
 	{
 		auto& camera = coordinator.GetComponent<Camera>(entity);
 
-		//if (Application::IsKeyPressed('W'))
-		//{
-		//	camera.position -= (camera.position - camera.target) * 50.f * dt;
-		//}
-		//if (Application::IsKeyPressed('S'))
-		//{
-		//	camera.position += (camera.position - camera.target) * 50.f * dt;
-		//}
-		//if (Application::IsKeyPressed('D'))
-		//{
-		//	camera.position += camera.right * 50.f * dt;
-		//}
-		//if (Application::IsKeyPressed('A'))
-		//{
-		//	camera.position -= camera.right * 50.f * dt;
-		//}
-		//if (Application::IsKeyPressed(VK_SPACE))
-		//{
-		//	camera.position += camera.up * 50.f * dt;
-		//}
-		//if (Application::IsKeyPressed(VK_CONTROL))
-		//{
-		//	camera.position -= camera.up * 50.f * dt;
-		//}
-
-		//if (Application::IsKeyPressed('E'))
-		//{
-		//	camera.rotation.y += 50.f * dt;
-		//}
-		//if (Application::IsKeyPressed('Q'))
-		//{
-		//	camera.rotation.y -= 50.f * dt;
-		//}
-
-
-		//if (Application::IsKeyPressed('E'))
-		//{
-		//	camera.rotation.y += 50.f * dt;
-		//}
-		//if (Application::IsKeyPressed('Q'))
-		//{
-		//	camera.rotation.y -= 50.f * dt;
-		//}
-
-		glm::mat4 rot(1.f);
-		glm::vec3 rotation = glm::radians(camera.rotation);
-
-		rot = glm::rotate(rot, rotation.x, glm::vec3(1, 0, 0));
-		rot = glm::rotate(rot, rotation.y, glm::vec3(0, 1, 0));
-		rot = glm::rotate(rot, rotation.z, glm::vec3(0, 0, 1));
-		camera.up = rot * glm::vec4(0, 1, 0, 0);
-		//camera.target = camera.position + glm::vec3((rot * glm::vec4(0, 0, 1, 0)));
-		camera.right = glm::cross((camera.target - camera.position), camera.up);
+		camera.right = glm::normalize(glm::cross(glm::vec3(0, 1, 0), camera.target - camera.position));
+		camera.up = glm::normalize(glm::cross(camera.target - camera.position, camera.right));
 		camera.ViewMatrix = glm::lookAt(camera.position, camera.target, camera.up);
 
 		if (camera.mode == CAMERA_MODE::MODE_ORTHOGRAPHIC)

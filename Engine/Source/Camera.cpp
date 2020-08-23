@@ -18,9 +18,10 @@ Camera::Camera(
 	this->type = type;
 
 	glm::mat4 rot(1.f);
-	rot = glm::rotate(rot, rotation.x, glm::vec3(1, 0, 0));
-	rot = glm::rotate(rot, rotation.y, glm::vec3(0, 1, 0));
-	rot = glm::rotate(rot, rotation.z, glm::vec3(0, 0, 1));
+	glm::vec3 rotvec = glm::radians(rotation);
+	rot = glm::rotate(rot, rotvec.x, glm::vec3(1, 0, 0));
+	rot = glm::rotate(rot, rotvec.y, glm::vec3(0, 1, 0));
+	rot = glm::rotate(rot, rotvec.z, glm::vec3(0, 0, 1));
 
 	this->target = this->position + glm::vec3((rot * glm::vec4(0, 0, 1, 0)));
 	this->up = rot * glm::vec4(0, 1, 0, 0);

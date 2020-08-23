@@ -1,35 +1,42 @@
-#include <glm.hpp>
-#include "Mesh.h"
 #include "Particle.h"
 #include <list>
 #include <queue>
+#include "Mesh.h"
 
 #pragma once
+
 struct ParticleSystemParameters
 {
-	Mesh* mesh;
+	std::list<Particle> ActiveParticleList;
+	std::queue<Particle> ParticleQueue;
 
-	float particleLifetime;
-	float Timer;
-	float Gravity;
+	Mesh* particle_mesh;
+	float particle_lifespan;
 
-	bool billboard;
-	bool spawnParticles;
 	int spawnRate;
+	int spawnAmount;
+	float timer;
+	float particle_gravity;
 
-	glm::vec3 velMin;
-	glm::vec3 velMax;
+	bool spawnParticles;
 
-	glm::vec3 startScale;
-	glm::vec3 endScale;
+	glm::vec3 scaleDecay;
+	glm::vec3 velocityDecay;
+	glm::vec3 angularvelocityDecay;
 
-	glm::vec3 startRotate;
-	glm::vec3 endRotate;
+	glm::vec3 min_startVelocity;
+	glm::vec3 max_startVelocity;
+
+	glm::vec3 min_startAngularVelocity;
+	glm::vec3 max_startAngularVelocity;
+
+	glm::vec3 min_startScale;
+	glm::vec3 max_startScale;
+
+	glm::vec3 min_startRotation;
+	glm::vec3 max_startRotation;
 
 	glm::vec3 spawnArea;
-
-	std::vector<Particle>ParticleList;
-	std::queue<Particle>ParticleQueue;
 
 	ParticleSystemParameters()
 	{
@@ -37,39 +44,50 @@ struct ParticleSystemParameters
 	}
 
 	ParticleSystemParameters(
-		Mesh* mesh,
-		float particlelifetime,
-		float timer,
-		int spawnrate,
-		glm::vec3 velmin,
-		glm::vec3 velmax,
+		Mesh* mesh, float lifespan,
+		int spawnrate, int spawnamount,
 
-		glm::vec3 startscale,
-		glm::vec3 endscale,
+		//Decay Values
+		glm::vec3 scaledecay,
+		glm::vec3 veldecay,
+		glm::vec3 angveldecay,
 
-		glm::vec3 startrotate,
-		glm::vec3 endrotate,
+		//Starting values
+		glm::vec3 minstartvel, glm::vec3 maxstartvel,
+		glm::vec3 minstartscale, glm::vec3 maxstartscale,
+		glm::vec3 minstartangvel, glm::vec3 maxstartangvel,
+		glm::vec3 minstartrot, glm::vec3 maxstartrot,
 
-		glm::vec3 spawnarea,
-		bool billboard = true,
-		float gravity = 0.f,
-		bool spawnparticles = true
+		glm::vec3 spawnarea = glm::vec3(0.f),
+		bool spawnparticles = true,
+		float gravity = 0
 	)
 	{
-		this->mesh = mesh;
-		particleLifetime = particlelifetime;
-		Timer = 0;
-		Gravity = gravity;
-		velMin = velmin;
-		velMax = velmax;
-		startScale = startscale;
-		endScale = endscale;
-		startRotate = startrotate;
-		endRotate = endrotate;
-		spawnArea = spawnarea;
-		this->billboard = billboard;
-		spawnParticles = spawnparticles;
+		particle_mesh = mesh;
+		particle_lifespan = lifespan;
+
 		spawnRate = spawnrate;
+		spawnAmount = spawnamount;
+		timer = 0.f;
+		particle_gravity = gravity;
+		spawnParticles = spawnparticles;
+
+		spawnArea = spawnarea;
+
+		scaleDecay = scaledecay;
+		velocityDecay = veldecay;
+		angularvelocityDecay = angveldecay;
+
+		min_startVelocity = minstartvel;
+		max_startVelocity = maxstartangvel;
+
+		min_startScale = minstartscale;
+		max_startScale = maxstartscale;
+
+		min_startAngularVelocity = minstartangvel;
+		max_startAngularVelocity = maxstartangvel;
+
+		min_startRotation = minstartrot;
+		max_startRotation = maxstartrot;
 	}
 };
-

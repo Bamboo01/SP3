@@ -32,6 +32,12 @@ MeshManager::MeshManager()
 	meshList[GEO_TERRAIN] = CreateTerrain(GEO_TERRAIN, "Heightmaps//heightmap.raw");
 	meshList[GEO_TERRAIN]->Init();
 
+	meshList[GEO_TESTPARTICLE_CYLINDRICAL] = MeshBuilder::GenerateQuad("ParticleA", Color(1,1,1), 1);
+	meshList[GEO_TESTPARTICLE_CYLINDRICAL]->Init(100000);
+
+	meshList[GEO_TESTPARTICLE_SPHERICAL] = MeshBuilder::GenerateQuad("ParticleB", Color(1, 1, 1), 1);
+	meshList[GEO_TESTPARTICLE_SPHERICAL]->Init(100000);
+
 	for (int i = 0; i < NUM_MESH; i++)
 	{
 		if (meshList[i] == NULL)

@@ -1,12 +1,18 @@
-#include <glm.hpp>
+#include "glm.hpp"
 
 #pragma once
 
 struct Particle
 {
-	float timer;
-	glm::vec3 Position;
-	glm::vec3 Scale;
-	glm::vec3 Velocity;
-	glm::vec3 Rotation;
+	float lifetime;
+	glm::vec3 position;
+	glm::vec3 rotation;
+	glm::vec3 scale;
+	glm::vec3 velocity;
+	glm::vec3 angularvelocity;
+
+	Particle()
+	{
+		lifetime = 0;
+	}
 };

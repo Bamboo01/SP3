@@ -81,6 +81,12 @@ void Renderer::Init()
 	Shader* test = new Shader("Shader//test.vs", "Shader//test.fs");
 	shaderManager.push_back(test);
 
+	Shader* billboard_Cylindrical = new Shader("Shader//cylindricalbillboard.vs", "Shader//cylindricalbillboard.fs");
+	shaderManager.push_back(billboard_Cylindrical);
+
+	Shader* billboard_Spherical = new Shader("Shader//sphericalbillboard.vs", "Shader//sphericalbillboard.fs");
+	shaderManager.push_back(billboard_Spherical);
+
 	/*Add your materials*/
 	Material* boxmat = new Material();
 	boxmat->kColor = glm::vec3(0.1f, 1.f, 1.f);
@@ -94,20 +100,33 @@ void Renderer::Init()
 	grass->kShininess = 0.f;
 	materialManager.push_back(grass);
 
-	Material* playerMaterial = new Material();
-	playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
-	playerMaterial->AssignTexture("Images//player.tga");
-	materialManager.push_back(playerMaterial);
+	Material* testParticleA = new Material();
+	testParticleA->AssignTexture("Images//crate.tga");
+	//testParticleA->AssignTexture("Images//grass.tga");
+	materialManager.push_back(testParticleA);
+
+	Material* testParticleB = new Material();
+	testParticleB->AssignTexture("Images//crate.tga");
+	//testParticleB->AssignTexture("Images//grass.tga");
+	materialManager.push_back(testParticleB);
+
+	//Material* playerMaterial = new Material();
+	//playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
+	//playerMaterial->AssignTexture("Images//player.tga");
+	//materialManager.push_back(playerMaterial);
 
 	/*Assign your material their shaders here*/
 	addMaterial(boxmat, test);
 	addMaterial(grass);
-
-	addMaterial(playerMaterial);
+	//addMaterial(playerMaterial);
+	addMaterial(testParticleA, billboard_Cylindrical);
+	addMaterial(testParticleB, billboard_Spherical);
 
 	/*Assign your meshes their materials here*/
 	//assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TERRAIN], grass);
+	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_CYLINDRICAL], testParticleA);
+	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_SPHERICAL], testParticleB);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)
