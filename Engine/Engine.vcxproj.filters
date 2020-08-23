@@ -110,6 +110,9 @@
     <ClCompile Include="Source\UnitSystem.cpp">
       <Filter>Auxillary\Systems\UnitSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GUITextSystem.cpp">
+      <Filter>Auxillary\Systems\GUITextSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -316,6 +319,12 @@
     <ClInclude Include="Source\Vertex.h">
       <Filter>Core\Modules\MeshManager\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GUITextSystem.h">
+      <Filter>Auxillary\Systems\GUITextSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUIText.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -425,6 +434,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\UnitSystem">
       <UniqueIdentifier>{41a9766a-4d98-47e3-8b01-31008e7b818b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\GUITextSystem">
+      <UniqueIdentifier>{b81a285f-2a6c-42e4-86e5-fef5641a5e52}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

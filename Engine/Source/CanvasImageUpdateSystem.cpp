@@ -15,6 +15,11 @@ void CanvasImageUpdateSystem::Init()
 {
 	timer = 0;
 	clickdelay = 0;
+	CursorinGUI = false;
+	LabUIopen = false;
+	UnitUIopen = false;
+	BuildingUIopen = false;
+
 	for (auto const& entity : m_Entities)
 	{
 		auto& transform = coordinator.GetComponent<Transform>(entity);
@@ -33,9 +38,6 @@ void CanvasImageUpdateSystem::Init()
 void CanvasImageUpdateSystem::Update(double dt)
 {
 	timer += dt;
-
-	std::cout << m_Entities.size() << std::endl;
-
 
 	for (auto const& entity : ReferenceEntity)
 	{
@@ -66,6 +68,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 					{
 						if (canvasupdate2.uniquetype == CanvasImageUpdate::LABUI && entitystate2.active == false)
 						{
+							LabUIopen = true;
 							entitystate2.active = true;
 
 							// If lab UI is open, set unit buttons active to true
@@ -83,6 +86,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						// When click again, close lab UI
 						else if (canvasupdate2.uniquetype == CanvasImageUpdate::LABUI && entitystate2.active == true)
 						{
+							LabUIopen = false;
 							entitystate2.active = false;
 							// If lab UI is close, set unit buttons active to false
 							for (auto const& entity3 : ReferenceEntity)
@@ -102,6 +106,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						// Do a check if nexus create building is open, if it is, close it before opening nexus create unit
 						for (auto const& entity3 : ReferenceEntity)
 						{
+							BuildingUIopen = false;
 							auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
 							auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 							if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL || canvasupdate3.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI)
@@ -112,6 +117,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 
 						if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSUNITUI && entitystate2.active == false)
 						{
+							UnitUIopen = true;
 							entitystate2.active = true;
 
 							// If nexus create UI is open, set unit buttons active to true
@@ -129,6 +135,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						// When click again, close nexus create unit UI
 						else if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSUNITUI && entitystate2.active == true)
 						{
+							UnitUIopen = false;
 							entitystate2.active = false;
 							// If nexus create unit UI is close, set unit buttons active to false
 							for (auto const& entity3 : ReferenceEntity)
@@ -148,6 +155,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						// Do a check if nexus create unit is open, if it is, close it before opening nexus create building
 						for (auto const& entity3 : ReferenceEntity)
 						{
+							UnitUIopen = false;
 							auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
 							auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
 							if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSNORMALUNIT || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSTANKUNIT || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT || canvasupdate3.uniquetype == CanvasImageUpdate::NEXUSUNITUI)
@@ -158,6 +166,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 
 						if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI && entitystate2.active == false)
 						{
+							BuildingUIopen = true;
 							entitystate2.active = true;
 
 							// If nexus create UI is open, set unit buttons active to true
@@ -175,6 +184,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						// When click again, close nexus create building UI
 						else if (canvasupdate2.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI && entitystate2.active == true)
 						{
+							BuildingUIopen = false;
 							entitystate2.active = false;
 							// If nexus create UI is close, set unit buttons active to false
 							for (auto const& entity3 : ReferenceEntity)
@@ -236,11 +246,9 @@ void CanvasImageUpdateSystem::Update(double dt)
 
 		// This will be done by looping through the vector of selected unit,
 		// If there is only 1 unit, check the type of the unit, then render in whatever quad(button) is needed for that unit info
-		if (true)
+		if (selectedunitList.size() == 1)
 		{
-			std::set<Entity> entityset1 = unitsystem->m_Entities;
-
-			for (auto entity2 : entityset1)
+			for (auto entity2 : selectedunitList)
 			{
 				auto& unit = coordinator.GetComponent<Unit>(entity2);
 
@@ -270,13 +278,38 @@ void CanvasImageUpdateSystem::Update(double dt)
 				}
 			}
 		}
+		else if (selectedunitList.size() > 1)
+		{
+			// Add code to create GUI for each unit
+			std::cout << "Multiple unit selected!" << std::endl;
+		}
 		// If no unit is selected, make all pop up GUI active to false
 		else
 		{
+			LabUIopen = false;
+			UnitUIopen = false;
+			BuildingUIopen = false;
 			if (canvasupdate.popuptype == CanvasImageUpdate::POPUP)
 			{
 				entitystate.active = false;
 			}
+		}
+	}
+
+	for (auto const& entity : ReferenceEntity)
+	{
+		auto& transform = coordinator.GetComponent<Transform>(entity);
+		auto& entitystate = coordinator.GetComponent<EntityState>(entity);
+
+		// Check for whether is the mouse in the GUI, if it is, player can't interact with the map
+		if (CollideWithCanvas(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y) && entitystate.active)
+		{
+			CursorinGUI = true;
+			break;
+		}
+		else
+		{
+			CursorinGUI = false;
 		}
 	}
 }
@@ -285,9 +318,9 @@ void CanvasImageUpdateSystem::Render()
 {
 }
 
-void CanvasImageUpdateSystem::SetUnitSystem(std::shared_ptr<UnitSystem> unitsystem)
+void CanvasImageUpdateSystem::SetSelectedUnitList(std::vector<Entity> selectedunitList)
 {
-	this->unitsystem = unitsystem;
+	this->selectedunitList = selectedunitList;
 }
 
 bool CanvasImageUpdateSystem::CollideWithCanvas(float x, float y, float xscale, float yscale)

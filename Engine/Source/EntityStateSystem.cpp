@@ -17,22 +17,19 @@ void EntityStateSystem::Update(float dt)
     std::vector<Entity> ActivateList;
     std::vector<Entity> DeactivateList;
 
-    std::vector <std::vector<Entity>::iterator> inactivelistlist;
-
     //Check all deactivated entities and see if they need to be activated
-    for (auto it = InactiveEntities.begin(); it != InactiveEntities.end(); it++)
+    for (auto it = InactiveEntities.begin(); it != InactiveEntities.end();)
     {
         auto const& entitystate = coordinator.GetComponent<EntityState>(*it);
         if (entitystate.active)
         {
             ActivateList.push_back(*it);
-            inactivelistlist.push_back(it);
+            it = InactiveEntities.erase(it);
         }
-    }
-
-    for (auto it : inactivelistlist)
-    {
-        InactiveEntities.erase(it);
+        else
+        {
+            ++it;
+        }
     }
 
     //Checks if any entities that are not deactivated by the coordinator need to be deactivated

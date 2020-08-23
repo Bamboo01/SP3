@@ -9,7 +9,7 @@ void UnitSystem::Setup()
     signature.set(coordinator.GetComponentType<Unit>());
     signature.set(coordinator.GetComponentType<Collider>());
     signature.set(coordinator.GetComponentType<RenderData>());
-
+    signature.set(coordinator.GetComponentType<EntityState>());
     coordinator.SetSystemSignature<UnitSystem>(signature);
 }
 

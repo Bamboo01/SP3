@@ -3,11 +3,6 @@
 
 void ColliderSystem::Update(double dt)
 {
-    minX = 0;
-    maxX = 0;
-    minZ = 0;
-    maxZ = 0;
-
     for (std::set<Entity>::iterator it = m_Entities.begin(); it != m_Entities.end(); it++)
     {
         Entity firstObject = *it;
@@ -48,94 +43,6 @@ void ColliderSystem::Update(double dt)
             }
         }
     }
-
-    // Ray collision 
-    std::set<Entity> entityset1 = raycastSystem->m_Entities;
-
-    for (auto const& entity : entityset1)
-    {
-        auto& transform = coordinator.GetComponent<Transform>(entity);
-        auto& ray = coordinator.GetComponent<RayCasting>(entity);
-
-        for (int i = 0; i < 500; ++i)
-        {
-            for (std::set<Entity>::iterator it2 = m_Entities.begin(); it2 != m_Entities.end(); it2++)
-            {
-                Entity Object = *it2;
-                auto& ObjectTransform = coordinator.GetComponent<Transform>(Object);
-
-                if (raycollisioncheck(entity, Object))
-                {
-                    //std::cout << "Ray collided with object!" << std::endl;
-                    break;
-                }
-            }
-
-            // If ray overlapped with terrain y, break the loop
-            //if (ray.RayEndPos.y < 350.f * ReadHeightMap(ray.m_heightMap, ray.RayEndPos.x / 4000, ray.RayEndPos.z / 4000))
-            //{
-                // std::cout << "Overlapped with Terrain" << std::endl;
-
-                 // Add Code to get first left click position and position after you let go here
-                static bool bLButtonState = false;
-                if (Application::IsMousePressed(VK_LBUTTON) && !bLButtonState)
-                {
-                    bLButtonState = true;
-                    firstposclick = ray.RayEndPos;
-                }
-                else if (bLButtonState && !Application::IsMousePressed(VK_LBUTTON))
-                {
-                    bLButtonState = false;
-                    secondposclick = ray.RayEndPos;
-                    //std::cout << "First Pos: " << firstposclick << std::endl;
-                    //std::cout << "Second Pos: " << secondposclick << std::endl;
-                    // Calculating BottomLeft and TopRight
-                    if (firstposclick.x < secondposclick.x)
-                    {
-                        minX = firstposclick.x;
-                        maxX = secondposclick.x;
-                    }
-                    else if (firstposclick.x > secondposclick.x)
-                    {
-                        minX = secondposclick.x;
-                        maxX = firstposclick.x;
-                    }
-                    if (firstposclick.z < secondposclick.z)
-                    {
-                        minZ = firstposclick.z;
-                        maxZ = secondposclick.z;
-                    }
-                    else if (firstposclick.z > secondposclick.z)
-                    {
-                        minZ = secondposclick.z;
-                        maxZ = firstposclick.z;
-                    }
-                //}
-                //break;
-            }
-            ray.RayEndPos = glm::vec3(ray.RayEndPos.x + ray.Ray.x * 3, ray.RayEndPos.y + ray.Ray.y * 3, ray.RayEndPos.z + ray.Ray.z * 3);
-            transform.position = glm::vec3(ray.RayEndPos.x, ray.RayEndPos.y, ray.RayEndPos.z);
-        }
-    }
-
-    // Unit Selection Check
-    if (minX != 0 && maxX != 0 && minZ != 0 && maxZ != 0)
-    {
-        std::set<Entity> entityset2 = m_Entities;
-
-        int counter = 0;
-        for (auto const& entity2 : entityset2)
-        {
-            auto& transform = coordinator.GetComponent<Transform>(entity2);
-            std::cout << minX << " " << maxX << " " << minZ << " " << maxZ << std::endl;
-            if (transform.position.x > minX && transform.position.x < maxX && transform.position.z < minZ && transform.position.z > maxZ)
-            {
-                ++counter;
-            }
-        }
-        if (counter != 0)
-            std::cout << counter << std::endl;
-    }
 }
 
 void ColliderSystem::Setup()
@@ -145,6 +52,7 @@ void ColliderSystem::Setup()
     signature.set(coordinator.GetComponentType<RenderData>());
     signature.set(coordinator.GetComponentType<Collider>());
     signature.set(coordinator.GetComponentType<Unit>());
+    signature.set(coordinator.GetComponentType<EntityState>());
     coordinator.SetSystemSignature<ColliderSystem>(signature);
 }
 
@@ -276,8 +184,6 @@ bool ColliderSystem::collisionOnAxis(glm::vec3 rPos, glm::vec3 axis, Transform& 
             fabs(glm::dot(secondObject.AxisZ * glm::vec3(0.5, 0.5, 0.5) * secondCollider.scale.z, axis));
 }
 
-
-
 float ColliderSystem::getOverlapMagnitude(glm::vec3 rPos, glm::vec3 axis, Transform& firstObject, Transform& secondObject, Collider& firstCollider, Collider& secondCollider)
 {
     return (fabs(glm::dot(firstObject.AxisX * glm::vec3(0.5, 0.5, 0.5) * firstCollider.scale.x, axis)) +
@@ -286,40 +192,6 @@ float ColliderSystem::getOverlapMagnitude(glm::vec3 rPos, glm::vec3 axis, Transf
         fabs(glm::dot(secondObject.AxisX * glm::vec3(0.5, 0.5, 0.5) * secondCollider.scale.x, axis)) +
         fabs(glm::dot(secondObject.AxisY * glm::vec3(0.5, 0.5, 0.5) * secondCollider.scale.y, axis)) +
         fabs(glm::dot(secondObject.AxisZ * glm::vec3(0.5, 0.5, 0.5) * secondCollider.scale.z, axis))) - fabs(glm::dot(rPos, axis));
-}
-
-bool ColliderSystem::raycollisioncheck(Entity ray, Entity obj)
-{
-    auto& RayTransform = coordinator.GetComponent<Transform>(ray);
-    auto& Ray = coordinator.GetComponent<RayCasting>(ray);
-    auto& ObjectTransform = coordinator.GetComponent<Transform>(obj);
-    auto& ObjectCollider = coordinator.GetComponent<Collider>(obj);
-
-    glm::vec3 relativePos = ObjectTransform.position - RayTransform.position;
-
-    bool collided = !(rayplanecheck(relativePos, ObjectTransform.AxisX, ObjectTransform, ObjectCollider) ||
-        rayplanecheck(relativePos, ObjectTransform.AxisY, ObjectTransform, ObjectCollider) ||
-        rayplanecheck(relativePos, ObjectTransform.AxisZ, ObjectTransform, ObjectCollider));
-
-
-    if (!collided)
-        return collided;
-
-    return collided;
-    return false;
-}
-
-bool ColliderSystem::rayplanecheck(glm::vec3 rPos, glm::vec3 axis, Transform& object, Collider& collider)
-{
-    return (fabs(glm::dot(rPos, axis))) >
-        (fabs(glm::dot(object.AxisX * glm::vec3(0.5, 0.5, 0.5) * collider.scale.x, axis)) +
-            fabs(glm::dot(object.AxisY * glm::vec3(0.5, 0.5, 0.5) * collider.scale.y, axis)) +
-            fabs(glm::dot(object.AxisZ * glm::vec3(0.5, 0.5, 0.5) * collider.scale.z, axis)));
-}
-
-void ColliderSystem::SetRayCastSystem(std::shared_ptr<RayCastingSystem> raycastsystem)
-{
-    this->raycastSystem = raycastsystem;
 }
 
 void ColliderSystem::SetUnitSystem(std::shared_ptr<UnitSystem> unitSystem)

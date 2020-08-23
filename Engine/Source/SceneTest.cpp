@@ -18,8 +18,8 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<Unit>();
 	coordinator.RegisterComponent<RayCasting>();
 	coordinator.RegisterComponent<Collider>();
-//	coordinator.RegisterComponent<GridControllerSytem>();
-	
+	coordinator.RegisterComponent<GUIText>();
+
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
 	rendersystem = coordinator.RegisterSystem<RenderSystem>();
@@ -29,11 +29,11 @@ void SceneTest::Init()
 	entitystatesystem = coordinator.RegisterSystem<EntityStateSystem>();
 	terrainsystem = coordinator.RegisterSystem<TerrainSystem>();
 	//gridcontrollersystem = coordinator.RegisterSystem<GridControllerSytem>();
-
 	canvasimageupdatesystem = coordinator.RegisterSystem<CanvasImageUpdateSystem>();
 	raycastingsystem = coordinator.RegisterSystem<RayCastingSystem>();
 	collidersystem = coordinator.RegisterSystem<ColliderSystem>();
 	unitsystem = coordinator.RegisterSystem<UnitSystem>();
+	guitextsystem = coordinator.RegisterSystem<GUITextSystem>();
 
 	transformsystem->Setup();
 	camerasystem->Setup();
@@ -48,6 +48,7 @@ void SceneTest::Init()
 	unitsystem->Setup();
 	raycastingsystem->Setup();
 	collidersystem->Setup();
+	guitextsystem->Setup();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
@@ -59,8 +60,8 @@ void SceneTest::Init()
 		CAMERA_MODE::MODE_PERSPECTIVE
 	));
 	coordinator.AddComponent<CameraController>(maincamera, CameraController());
+	coordinator.AddComponent<RayCasting>(maincamera, RayCasting());
 	coordinator.AddComponent<EntityState>(maincamera, EntityState());
-	
 
 	//Entity testunit = coordinator.CreateEntity();
 	//coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 500));
@@ -94,19 +95,6 @@ void SceneTest::Init()
 	coordinator.GetComponent<Transform>(testunit2).scale = glm::vec3(30, 30, 30);
 	coordinator.GetComponent<Transform>(testunit2).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 
-	/*Entity maincamera = coordinator.CreateEntity();
-	coordinator.AddComponent<Camera>(maincamera, Camera(
-		glm::vec3(0, 50, -3.f),
-		glm::vec3(90, 0, 0),
-		800, 800,
-		90.f, 
-		CAMERA_TYPE::CAMERA_MAIN,
-		CAMERA_MODE::MODE_PERSPECTIVE
-	));*/
-	
-	coordinator.AddComponent<RayCasting>(maincamera, RayCasting());
-	coordinator.AddComponent<Transform>(maincamera, Transform());
-
 	Entity axes = coordinator.CreateEntity();
 	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));
 	coordinator.AddComponent<Transform>(axes, Transform());
@@ -121,27 +109,7 @@ void SceneTest::Init()
 	coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
 	coordinator.AddComponent<EntityState>(terrain, EntityState());
 
-	//Math::InitRNG();
-	//for (int i = 0; i < 400; i++)
-	//{
-	//	int x = Math::RandIntMinMax(-20, 20);
-	//	int y = Math::RandIntMinMax(-10, 5);
-	//	int z = Math::RandIntMinMax(-20, 20);
-	//	Entity cube = coordinator.CreateEntity();
-	//	coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
-	//	coordinator.AddComponent<Transform>(cube, Transform());
-	//	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
-	//	coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
-	//	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(500, 1, 500);
-	//	coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
-	//}
-
-	//Entity cube = coordinator.CreateEntity();
-	//coordinator.AddComponent<Transform>(cube, Transform());
-	//coordinator.GetComponent<Transform>(cube).position = glm::vec3(0, 0, 0);
-	//coordinator.GetComponent<Transform>(cube).rotation  = glm::vec3(0.f, 180.f, 0.f);
-	//coordinator.GetComponent<Transform>(cube).scale = glm::vec3(10, 10, 1);
-	//coordinator.AddComponent<EntityState>(testunit, EntityState());
+	Math::InitRNG();
 
 	//Entity UI = coordinator.CreateEntity();
 	//coordinator.AddComponent<Transform>(UI, Transform());
@@ -151,24 +119,161 @@ void SceneTest::Init()
 	//coordinator.GetComponent<Camera>(maincamera).assignTargetTexture(&coordinator.GetComponent<CanvasImage>(UI).TextureID);
 	//coordinator.AddComponent<EntityState>(UI, EntityState());
 
-	//Entity UIText = coordinator.CreateEntity();
-	//coordinator.AddComponent<Transform>(UIText, Transform());
-	//coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.1, 0.1, 1);
-	//coordinator.AddComponent<CanvasText>(UIText, CanvasText("12345", ALIGN_CENTER)); 
-	//coordinator.AddComponent<EntityState>(UIText, EntityState());
-	Math::InitRNG();
-	//for (int i = 0; i < 400; i++)
-	//{
-	//	int x = Math::RandIntMinMax(-20, 20);
-	//	int y = Math::RandIntMinMax(-10, 5);
-	//	int z = Math::RandIntMinMax(-20, 20);
-	//	Entity cube = coordinator.CreateEntity();
-	//	coordinator.AddComponent<RenderData>(cube, RenderData(renderer.getMesh(GEO_CUBE), false));
-	//	coordinator.AddComponent<Transform>(cube, Transform());
-	//	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
-	//	coordinator.GetComponent<Transform>(cube).position = glm::vec3(x, y, z);
-	//	coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
-	//}
+	// Resources Text
+	for (int i = 0; i < 2; ++i)
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-1.0f + (i * 1.4), 1.25, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Resources" + std::to_string(i + 1) + ": ", ALIGN_LEFT));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::RESOURCES));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Unit Name Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.45f, -0.8, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Name: ", ALIGN_LEFT));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::NAME));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Unit Level Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.45f, -0.9, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Level: ", ALIGN_LEFT));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::LEVEL));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Unit Health Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.45f, -1.0, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("HP: ", ALIGN_LEFT));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::HEALTH));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Unit Damage Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.45f, -1.1, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("ATK: ", ALIGN_LEFT));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::DAMAGE));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Unit Defense Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.45f, -1.2, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("DEF: ", ALIGN_LEFT));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::DEFENSE));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Unit Attack Speed Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.45f, -1.3, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("ATKSPD: ", ALIGN_LEFT));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::ATKSPD));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Nexus Building Button Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.1f, -0.9, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Build", ALIGN_CENTER));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::NEXUSBUTTON));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Nexus Unit Button Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.08f, -1.2, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Unit", ALIGN_CENTER));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::NEXUSBUTTON));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Lab Level Button Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.19f, -1.2, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Level Up", ALIGN_CENTER));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::LABBUTTON));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Generator Collect Button Text
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.17f, -1.2, 0);
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Collect", ALIGN_CENTER));
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::GENERATORBUTTON));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Unit Button Text
+	for (int i = 0; i < 3; ++i)
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		if (i == 0)
+		{
+			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-1.2f, 0.5, 0);
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("Normal", ALIGN_LEFT));
+		}
+		else if (i == 1)
+		{
+			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.8f, 0.5, 0);
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("Range", ALIGN_LEFT));
+		}
+		else if (i == 2)
+		{
+			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.4f, 0.5, 0);
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("Tank", ALIGN_LEFT));
+		}
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::UNITBUTTON));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+	// Building Button Text
+	for (int i = 0; i < 2; ++i)
+	{
+		Entity UIText = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UIText, Transform());
+		if (i == 0)
+		{
+			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-1.15f, 0.5, 0);
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("Tower", ALIGN_LEFT));
+		}
+		else if (i == 1)
+		{
+			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.75f, 0.5, 0);
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("Wall", ALIGN_LEFT));
+		}
+		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
+		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::BUILDINGBUTTON));
+		coordinator.AddComponent<EntityState>(UIText, EntityState());
+	}
+
 
 	Entity cube = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(cube, Transform());
@@ -176,14 +281,23 @@ void SceneTest::Init()
 	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
 	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(10, 10, 1);
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		Entity myObject3;
 		myObject3 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(myObject3, Transform());
-		coordinator.AddComponent<RenderData>(myObject3, RenderData());
-		coordinator.AddComponent<Collider>(myObject3, Collider());
-		coordinator.AddComponent<Unit>(myObject3, Unit("Test", 1, 1, 1, 1, 1, Unit::NEXUS, 0));
+		coordinator.GetComponent<Transform>(myObject3).position = glm::vec3(0 + i * 20, 20, 0);
+		coordinator.GetComponent<Transform>(myObject3).scale = glm::vec3(10, 10, 10);
+		coordinator.AddComponent<RenderData>(myObject3, RenderData(renderer.getMesh(GEO_CUBE), false));
+		coordinator.AddComponent<Collider>(myObject3, Collider(glm::vec3(10,10,10), 1));
+		if (i == 0)
+			coordinator.AddComponent<Unit>(myObject3, Unit("NEXUS", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::NEXUS, 0));
+		else if (i == 1)
+			coordinator.AddComponent<Unit>(myObject3, Unit("LAB", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::LAB, 0));
+		else if (i == 2)
+			coordinator.AddComponent<Unit>(myObject3, Unit("GENERATOR", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::GENERATOR, 0));
+
+		coordinator.AddComponent<EntityState>(myObject3, EntityState(true));
 	}
 
 	{
@@ -343,11 +457,11 @@ void SceneTest::Init()
 	terrainsystem->Init();
 	canvasimageupdatesystem->Init();
 	unitsystem->Init();
-	raycastingsystem->Init();
 	collidersystem->Init();
-	
-	canvasimageupdatesystem->SetUnitSystem(unitsystem);
-	collidersystem->SetRayCastSystem(raycastingsystem);
+	raycastingsystem->Init(&collidersystem->m_Entities);
+	guitextsystem->Init();
+
+	raycastingsystem->SetTerrainEntities(terrainsystem->m_Entities);
 }
 
 void SceneTest::EarlyUpdate(double dt)
@@ -362,6 +476,7 @@ void SceneTest::EarlyUpdate(double dt)
 	raycastingsystem->EarlyUpdate(dt);
 	collidersystem->EarlyUpdate(dt);
 	unitsystem->EarlyUpdate(dt);
+	guitextsystem->EarlyUpdate(dt);
 }
 
 void SceneTest::Update(double dt)
@@ -374,14 +489,21 @@ void SceneTest::Update(double dt)
 	canvastextsystem->Update(dt);
 	entitystatesystem->Update(dt);
 	//gridcontrollersystem->Update(dt);
-	if (Application::IsKeyPressed('3'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	if (Application::IsKeyPressed('4'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	canvasimageupdatesystem->Update(dt);
 	raycastingsystem->Update(dt);
 	collidersystem->Update(dt);
 	unitsystem->Update(dt);
+	guitextsystem->Update(dt);
+
+	canvasimageupdatesystem->SetSelectedUnitList(raycastingsystem->selectedunitlist);
+	guitextsystem->SetSelectedUnitList(raycastingsystem->selectedunitlist);
+	guitextsystem->SetUIopen(canvasimageupdatesystem->LabUIopen, canvasimageupdatesystem->UnitUIopen, canvasimageupdatesystem->BuildingUIopen);
+	raycastingsystem->GetCursorInGUI(canvasimageupdatesystem->CursorinGUI);
+
+	if (Application::IsKeyPressed('3'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	if (Application::IsKeyPressed('4'))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void SceneTest::LateUpdate(double dt)
@@ -395,6 +517,7 @@ void SceneTest::LateUpdate(double dt)
 	raycastingsystem->LateUpdate(dt);
 	collidersystem->LateUpdate(dt);
 	unitsystem->LateUpdate(dt);
+	guitextsystem->LateUpdate(dt);
 }
 
 void SceneTest::PreRender()
@@ -412,7 +535,6 @@ void SceneTest::Render()
 	camerasystem->Render();
 	canvasimagesystem->Render();
 	canvastextsystem->Render();
-	canvasimageupdatesystem->Render();
 	UpdateImGui();
 }
 
