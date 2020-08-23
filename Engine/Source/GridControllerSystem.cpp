@@ -25,13 +25,7 @@ void GridControllerSystem::CreateGrids()
 	}
 	GetDestinationGrid();
 	active = true;
-	for (int y = 0; y < 20; ++y)
-	{
-		for (int x = 0; x < 20; ++x)
-		{
-			std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].y << ", " << GridPosition[x][y].z << " ::::" << GridCost[x][y] << std::endl;
-		}
-	}
+
 }
 
 void GridControllerSystem::CheckGridCost(int GridNumX, int GridNumY)
@@ -57,15 +51,23 @@ void GridControllerSystem::Update(float dt)
 	{
 		int x = Application::GetWindowWidth();
 		int y = Application::GetWindowHeight();
-		//CursorScreenPosition = glm::vec2(Application::mouse_current_x, Application::mouse_current_y);
+		CursorScreenPosition = glm::vec2(Application::mouse_current_x, Application::mouse_current_y);
 		CursorWorldPosition = glm::vec3(CursorScreenPosition.x * (1000 / x), 0, (y - CursorScreenPosition.y) * (1000 / y));
-		CursorWorldPosition = glm::vec3(0, 2, 0);
+	/*	CursorWorldPosition = glm::vec3(0, 2, 0);*/
 		CreateGrids();
 	}
+	// Give the units a new update position sfter grids are created
 	if (active == true)
 	{
 		UpdateUnitPosition();
 		active = false;
+		/*for (int y = 0; y < 20; ++y)
+		{
+			for (int x = 0; x < 20; ++x)
+			{
+				std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].y << ", " << GridPosition[x][y].z << " ::::" << GridCost[x][y] << std::endl;
+			}
+		}*/
 	}
 	for (auto const& entity : m_Entities)
 	{
@@ -104,7 +106,7 @@ void GridControllerSystem::GetDestinationGrid()
 					GridCost[x][y] = 0;
 					destination.x = x;
 					destination.y = y;
-					std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+					//std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
 					break;
 				}
 				else
@@ -362,10 +364,12 @@ void GridControllerSystem::UpdateUnitPosition()
 				{
 					glm::vec3 GridTopLeft = GridPosition[x][y];
 					glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+					glm::vec3 distance = glm::vec3(0,0,0);
+					glm::vec3 direction;
 					if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 					{
-						std::cout << GridCost[x][y] << std::endl;
-						std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+						//std::cout << GridCost[x][y] << std::endl;
+					//	std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
 						if (GridCost[x][y] == 0)
 						{
 							unit.velocity = glm::vec3(0, 0, 0);
@@ -384,6 +388,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x - 1, y, cost);
+								distance = glm::vec3(0, 0, 50);
 							}
 						}
 						// Check for South
@@ -394,6 +399,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x + 1, y, cost);
+								distance = glm::vec3(0, 0, -50);
 							}
 						}
 						// Check for East
@@ -404,6 +410,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x, y+1, cost);
+								distance = glm::vec3(50, 0, 0);
 							}
 						}
 						// Check for West
@@ -414,6 +421,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x, y - 1, cost);
+								distance = glm::vec3(-50, 0, 0);
 							}
 						}
 						// Check for North East
@@ -424,6 +432,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x - 1, y + 1, cost);
+								distance = glm::vec3(25, 0, 25);
 							}
 						}
 						// Check for North West
@@ -434,6 +443,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x - 1, y - 1, cost);
+								distance = glm::vec3(25, 0, -25);
 							}
 						}
 						// Check for South East
@@ -444,6 +454,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x + 1, y + 1, cost);
+								distance = glm::vec3(-25, 0, 25);
 							}
 						}
 						// Check for North West
@@ -454,6 +465,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x + 1, y - 1, cost);
+								distance = glm::vec3(-25, 0, -25);
 							}
 						}
 
@@ -463,13 +475,18 @@ void GridControllerSystem::UpdateUnitPosition()
 							int dX = lowest.x;
 							int dY = lowest.y;
 							unit.nextGrid = glm::vec2(dX, dY);
-							glm::vec3 distance = GridPosition[dX][dY] - transform.position;
+							//glm::vec3 distance = GridPosition[dX][dY] + glm::vec3(15,15,15)- transform.position + (transform.scale);
+							//glm::vec3 direction = glm::normalize(distance);
+							//float temp = direction.x;
+							//direction.x = -direction.z;
+							//direction.z = temp;
+							distance = GridPosition[dX][dY] - transform.position + distance;
 							glm::vec3 direction = glm::normalize(distance);
-							float temp = direction.x;
-							direction.x = -direction.z;
-							direction.z = temp;
-							unit.velocity = 0.3f * direction;
+							unit.velocity = 1.3f * direction;
 							unit.velocity.y = 0;
+						/*	std::cout << GridCost[dX][dY] << std::endl;
+							std::cout << GridPosition[dX][dY].x << ", " << GridPosition[dX][dY].z << std::endl;
+							std::cout << direction.x << ", " << direction.z << std::endl;*/
 						}
 						else
 						{

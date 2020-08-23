@@ -130,9 +130,18 @@ void SceneTest::Init()
 	coordinator.AddComponent<RenderData>(testunit3, RenderData(renderer.getMesh(GEO_GRID), false));
 	coordinator.AddComponent<Transform>(testunit3, Transform());
 	coordinator.GetComponent<Transform>(testunit3).position = glm::vec3(100, 15, 150);
-	coordinator.GetComponent<Transform>(testunit3).scale = glm::vec3(30, 30, 30);
+	coordinator.GetComponent<Transform>(testunit3).scale = glm::vec3(5, 5, 5);
 	coordinator.GetComponent<Transform>(testunit3).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
 	coordinator.AddComponent<EntityState>(testunit3, EntityState());
+
+	Entity testunit4 = coordinator.CreateEntity();
+	coordinator.AddComponent<Unit>(testunit4, Unit("Test4", 0, 0, 0, 0, 0, Unit::TANK, 0));
+	coordinator.AddComponent<RenderData>(testunit4, RenderData(renderer.getMesh(GEO_GRID), false));
+	coordinator.AddComponent<Transform>(testunit4, Transform());
+	coordinator.GetComponent<Transform>(testunit4).position = glm::vec3(180, 15, -100);
+	coordinator.GetComponent<Transform>(testunit4).scale = glm::vec3(5, 5, 5);
+	coordinator.GetComponent<Transform>(testunit4).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
+	coordinator.AddComponent<EntityState>(testunit4, EntityState());
 
 	//Math::InitRNG();
 	//for (int i = 0; i < 400; i++)
