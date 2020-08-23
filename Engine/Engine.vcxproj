@@ -173,6 +173,7 @@
     <ClCompile Include="Source\CanvasImageSystem.cpp" />
     <ClCompile Include="Source\CanvasImageUpdateSystem.cpp" />
     <ClCompile Include="Source\ColliderSystem.cpp" />
+    <ClCompile Include="Source\ParticleSystem.cpp" />
     <ClCompile Include="Source\RayCastingSystem.cpp" />
     <ClCompile Include="Source\RenderSystem.cpp" />
     <ClCompile Include="Source\CameraSystem.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="Source\TerrainSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ParticleSystemParameters.h" />
     <ClInclude Include="Source\EntityStateSystem.h" />
     <ClInclude Include="Source\EntityState.h" />
     <ClInclude Include="Source\CanvasTextSystem.h" />
@@ -219,6 +221,8 @@
     <ClInclude Include="Source\CanvasText.h" />
     <ClInclude Include="Source\Collider.h" />
     <ClInclude Include="Source\ColliderSystem.h" />
+    <ClInclude Include="Source\Particle.h" />
+    <ClInclude Include="Source\ParticleSystem.h" />
     <ClInclude Include="Source\RayCasting.h" />
     <ClInclude Include="Source\RayCastingSystem.h" />
     <ClInclude Include="Source\ScreenQuadShader.h" />

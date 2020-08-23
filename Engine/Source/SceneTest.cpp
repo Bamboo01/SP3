@@ -19,6 +19,7 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<RayCasting>();
 	coordinator.RegisterComponent<Collider>();
 //	coordinator.RegisterComponent<GridControllerSytem>();
+	coordinator.RegisterComponent<ParticleSystemParameters>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
@@ -29,11 +30,11 @@ void SceneTest::Init()
 	entitystatesystem = coordinator.RegisterSystem<EntityStateSystem>();
 	terrainsystem = coordinator.RegisterSystem<TerrainSystem>();
 	//gridcontrollersystem = coordinator.RegisterSystem<GridControllerSytem>();
-
 	canvasimageupdatesystem = coordinator.RegisterSystem<CanvasImageUpdateSystem>();
 	raycastingsystem = coordinator.RegisterSystem<RayCastingSystem>();
 	collidersystem = coordinator.RegisterSystem<ColliderSystem>();
 	unitsystem = coordinator.RegisterSystem<UnitSystem>();
+	particlesystem = coordinator.RegisterSystem<ParticleSystem>();
 
 	transformsystem->Setup();
 	camerasystem->Setup();
@@ -48,11 +49,12 @@ void SceneTest::Init()
 	unitsystem->Setup();
 	raycastingsystem->Setup();
 	collidersystem->Setup();
+	particlesystem->Setup();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
 		glm::vec3(0, 50, -3.f),
-		glm::vec3(90, 0, 0),
+		glm::vec3(60, 0, 0),
 		1080, 1080, //Lower this if the FPS stinks
 		45.f,
 		CAMERA_TYPE::CAMERA_MAIN,
@@ -112,14 +114,22 @@ void SceneTest::Init()
 	coordinator.AddComponent<Transform>(axes, Transform());
 	coordinator.GetComponent<Transform>(axes).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 	coordinator.AddComponent<EntityState>(axes, EntityState());
+	coordinator.AddComponent<ParticleSystemParameters>(axes,
+		ParticleSystemParameters(
+			renderer.getMesh(GEO_TESTPARTICLE_SPHERICAL), 5, 50, 1,
+			glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
+			glm::vec3(-1, 15, -1), glm::vec3(1, 15, 1),
+			glm::vec3(10.f, 10.f, 1.f), glm::vec3(10.f, 10.f, 1.f ),
+			glm::vec3(0.f), glm::vec3(0.f),
+			glm::vec3(0.f), glm::vec3(0.f)));
 
-	Entity terrain = coordinator.CreateEntity();
-	coordinator.AddComponent<RenderData>(terrain, RenderData(renderer.getMesh(GEO_TERRAIN), false));
-	coordinator.AddComponent<Transform>(terrain, Transform());
-	coordinator.GetComponent<Transform>(terrain).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
-	coordinator.GetComponent<Transform>(terrain).scale = glm::vec3(400, 35, 400);
-	coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
-	coordinator.AddComponent<EntityState>(terrain, EntityState());
+	//Entity terrain = coordinator.CreateEntity();
+	//coordinator.AddComponent<RenderData>(terrain, RenderData(renderer.getMesh(GEO_TERRAIN), false));
+	//coordinator.AddComponent<Transform>(terrain, Transform());
+	//coordinator.GetComponent<Transform>(terrain).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
+	//coordinator.GetComponent<Transform>(terrain).scale = glm::vec3(400, 35, 400);
+	//coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
+	//coordinator.AddComponent<EntityState>(terrain, EntityState());
 
 	//Math::InitRNG();
 	//for (int i = 0; i < 400; i++)
@@ -334,6 +344,7 @@ void SceneTest::Init()
 	unitsystem->Init();
 	raycastingsystem->Init();
 	collidersystem->Init();
+	particlesystem->Init();
 	
 	canvasimageupdatesystem->SetUnitSystem(unitsystem);
 	collidersystem->SetRayCastSystem(raycastingsystem);
@@ -371,6 +382,7 @@ void SceneTest::Update(double dt)
 	raycastingsystem->Update(dt);
 	collidersystem->Update(dt);
 	unitsystem->Update(dt);
+	particlesystem->Update(dt);
 }
 
 void SceneTest::LateUpdate(double dt)
@@ -389,27 +401,28 @@ void SceneTest::LateUpdate(double dt)
 void SceneTest::PreRender()
 {
 	// ImGui PreRender
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
+	//ImGui_ImplOpenGL3_NewFrame();
+	//ImGui_ImplGlfw_NewFrame();
+	//ImGui::NewFrame();
 	// ImGui PreRender
 }
 
 void SceneTest::Render()
 {
 	rendersystem->Render();
+	particlesystem->Render();
 	camerasystem->Render();
 	canvasimagesystem->Render();
 	canvastextsystem->Render();
 	canvasimageupdatesystem->Render();
-	UpdateImGui();
+	//UpdateImGui();
 }
 
 void SceneTest::PostRender()
 {
 	//ImGui PostRender (Make sure this is called before swapBuffers
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//ImGui::Render();
+	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	//ImGui PostRender
 }
 
@@ -418,179 +431,179 @@ void SceneTest::Exit()
 	coordinator.Exit();
 }
 
-void SceneTest::UpdateImGui()
-{
-	UpdateImGuiUnitSpawn();
-	//UpdateImGuiEntityList();
-
-	ImGui::Begin("Main");
-	ImGui::Button("Hello!");
-	ImGui::End();
-
-}
-
-void SceneTest::UpdateImGuiUnitSpawn()
-{
-	static float f = 0.0f;
-	static const char* unitTypes[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
-	static const char* unitfaction[]{ "PLAYER","ENEMY" };
-	static int counter = 0;
-	static int selectedItem = 0;
-	static int selectedItem2 = 0;
-	static float translation[] = { 0.f, 0.f, 0.f };
-	static float rotation[] = { 0.f, 0.f, 0.f };
-	static float scale[] = { 1.f, 1.f, 1.f };
-	static int levelOfUnit = 1;
-	static int numOfUnit = 0;
-
-	ImGui::Begin("Debug");                          // Create a window called "Hello, world!" and append into it.
-
-	ImGui::Combo("UnitType", &selectedItem, unitTypes, IM_ARRAYSIZE(unitTypes));
-	ImGui::Combo("UnitFaction", &selectedItem2, unitfaction, IM_ARRAYSIZE(unitfaction));
-
-	ImGui::SliderInt("UnitLevel", &levelOfUnit, 1, 50);
-	ImGui::SliderInt("Number Of Units", &numOfUnit, 0, 100);
-
-	if (ImGui::CollapsingHeader("Transformation"))
-	{
-		ImGui::SliderFloat("Translation X", &translation[0], -2000.0f, 2000.0f);
-		ImGui::SliderFloat("Translation Y", &translation[1], -2000.0f, 2000.0f);
-		ImGui::SliderFloat("Translation Z", &translation[2], -2000.0f, 2000.0f);
-
-		ImGui::SliderFloat("Rotation X", &rotation[0], 0.f, 360.0f);
-		ImGui::SliderFloat("Rotation Y", &rotation[1], 0.f, 360.0f);
-		ImGui::SliderFloat("Rotation Z", &rotation[2], 0.f, 360.0f);
-
-		ImGui::SliderFloat("Scale X", &scale[0], 0.f, 500.0f);
-		ImGui::SliderFloat("Scale Y", &scale[1], 0.f, 500.0f);
-		ImGui::SliderFloat("Scale Z", &scale[2], 0.f, 500.0f);
-	}
-
-	if (ImGui::Button("Spawn Unit"))             // Display some text (you can use a format strings too)
-	{
-		for (int i = 0; i < numOfUnit; i++)
-		{
-			unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
-		}
-	}
-
-	ImGui::SameLine();
-	if (ImGui::Button("Spawn Unit (Random Pos)"))
-	{
-		for (int i = 0; i < numOfUnit; i++)
-		{
-			translation[0] = Math::RandFloatMinMax(-2000, 2000);
-			translation[2] = Math::RandFloatMinMax(-2000, 2000);
-			unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
-		}
-	}
-
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::End();
-}
-
-void SceneTest::UpdateImGuiEntityList()
-{
-	ImGui::Begin("EntityList");
-	if (activeEntityList.empty())
-		ImGui::Text("No active entities");
-	else
-	{
-		static int selection = 0;
-		ImGui::SliderInt(("activeEntities: " + std::to_string(activeEntityList.size())).c_str(), &selection, 0, activeEntityList.size() - 1);
-
-		testHandler = activeEntityList[selection];
-		auto& transform = coordinator.GetComponent<Transform>(testHandler);
-		auto& collider = coordinator.GetComponent<Collider>(testHandler);
-		auto& unit = coordinator.GetComponent<Unit>(testHandler);
-		static const char* unitTypes2[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
-		static const char* unitfaction2[]{ "PLAYER","ENEMY" };
-
-		if (ImGui::CollapsingHeader("Unit Data"))
-		{
-			ImGui::Text("EntityID: %d", testHandler);
-			ImGui::Text("UnitName: %s", unit.name.c_str());
-			ImGui::Text("UnitType: %s", unitTypes2[unit.unitType - 1]);
-			ImGui::Text("UnitFaction: %s", unitfaction2[unit.unitFaction - 1]);
-			ImGui::Text("Level: %d", unit.level);
-			ImGui::SliderFloat("Health", &unit.health, 0.f, 1000.f);
-			ImGui::SliderFloat("Damage", &unit.damage, 0.f, 2000.f);
-			ImGui::SliderFloat("Defense", &unit.defense, 0.f, 2000.f);
-			ImGui::SliderFloat("Attack Range", &unit.attackRange, -50.f, 50.f);
-			ImGui::SliderFloat("Attack Speed", &unit.attackSpeed, -50.f, 50.f);
-
-			if (ImGui::CollapsingHeader(("Targeted EntityID: " + std::to_string(unit.target)).c_str()))
-			{
-				if (unit.target != UINT_MAX)
-				{
-					auto& targetTransform = coordinator.GetComponent<Transform>(unit.target);
-					auto& targetUnit = coordinator.GetComponent<Unit>(unit.target);
-					ImGui::Text("[Target] EntityID: %d", targetUnit.target);
-					ImGui::Text("[Target] UnitName: %s", targetUnit.name.c_str());
-					ImGui::Text("[Target] UnitType: %d", targetUnit.unitType);
-					ImGui::Text("[Target] Level: %d", targetUnit.level);
-					ImGui::SliderFloat("[Target] Health", &targetUnit.health, 0.f, 1000.f);
-					ImGui::SliderFloat("[Target] Damage", &targetUnit.damage, 0.f, 2000.f);
-					ImGui::SliderFloat("[Target] Defense", &targetUnit.defense, 0.f, 2000.f);
-					ImGui::SliderFloat("[Target] Attack Range", &targetUnit.attackRange, -50.f, 50.f);
-					ImGui::SliderFloat("[Target] Attack Speed", &targetUnit.attackSpeed, -50.f, 50.f);
-				}
-			}
-		}
-
-		if (ImGui::CollapsingHeader("Transformation"))
-		{
-			ImGui::SliderFloat("Translation X", &transform.position.x, -2000.0f, 2000.0f);
-			ImGui::SliderFloat("Translation Y", &transform.position.y, -2000.0f, 2000.0f);
-			ImGui::SliderFloat("Translation Z", &transform.position.z, -2000.0f, 2000.0f);
-
-			ImGui::SliderFloat("Rotation X", &transform.rotation.x, -2000.f, 2000.0f);
-			ImGui::SliderFloat("Rotation Y", &transform.rotation.y, -2000.f, 2000.0f);
-			ImGui::SliderFloat("Rotation Z", &transform.rotation.z, -2000.f, 2000.0f);
-
-			ImGui::SliderFloat("Scale X", &transform.scale.x, -2000.f, 2000.0f);
-			ImGui::SliderFloat("Scale Y", &transform.scale.y, -2000.f, 2000.0f);
-			ImGui::SliderFloat("Scale Z", &transform.scale.z, -2000.f, 2000.0f);
-		}
-
-		if (ImGui::CollapsingHeader("Collider"))
-		{
-			ImGui::SliderFloat("Mass", &collider.mass, -1.f, 2000.0f);
-			ImGui::SliderFloat("Collider Scale X", &collider.scale.x, -2000.0f, 2000.0f);
-			ImGui::SliderFloat("Collider Scale Y", &collider.scale.y, -2000.0f, 2000.0f);
-			ImGui::SliderFloat("Collider Scale Z", &collider.scale.z, -2000.0f, 2000.0f);
-		}
-
-		//if (ImGui::CollapsingHeader("Mesh"))
-		//{
-		//	ImGui::Text("MeshName: %s", render->name.c_str());
-		//	ImGui::Text("DrawMode: %s", std::to_string(mesh->mode).c_str());
-		//	ImGui::Text("TextureID: %u", std::to_string(mesh->mode).c_str());
-		//}
-
-		if (ImGui::Button("Set to inactive"))
-		{
-			unit.active = false;
-
-			if (selection == activeEntityList.size() - 1 && selection != 0)
-			{
-				selection -= 1;
-			}
-		}
-
-		ImGui::SameLine();
-
-		if (ImGui::Button("Set all to inactive"))
-		{
-			for (int i = 0; i < activeEntityList.size(); i++)
-			{
-				auto& testunit = coordinator.GetComponent<Unit>(activeEntityList[i]);
-				testunit.active = false;
-				selection = 0;
-			}
-		}
-
-	}
-
-	ImGui::End();
-}
+//void SceneTest::UpdateImGui()
+//{
+//	UpdateImGuiUnitSpawn();
+//	//UpdateImGuiEntityList();
+//
+//	ImGui::Begin("Main");
+//	ImGui::Button("Hello!");
+//	ImGui::End();
+//
+//}
+//
+//void SceneTest::UpdateImGuiUnitSpawn()
+//{
+//	static float f = 0.0f;
+//	static const char* unitTypes[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
+//	static const char* unitfaction[]{ "PLAYER","ENEMY" };
+//	static int counter = 0;
+//	static int selectedItem = 0;
+//	static int selectedItem2 = 0;
+//	static float translation[] = { 0.f, 0.f, 0.f };
+//	static float rotation[] = { 0.f, 0.f, 0.f };
+//	static float scale[] = { 1.f, 1.f, 1.f };
+//	static int levelOfUnit = 1;
+//	static int numOfUnit = 0;
+//
+//	ImGui::Begin("Debug");                          // Create a window called "Hello, world!" and append into it.
+//
+//	ImGui::Combo("UnitType", &selectedItem, unitTypes, IM_ARRAYSIZE(unitTypes));
+//	ImGui::Combo("UnitFaction", &selectedItem2, unitfaction, IM_ARRAYSIZE(unitfaction));
+//
+//	ImGui::SliderInt("UnitLevel", &levelOfUnit, 1, 50);
+//	ImGui::SliderInt("Number Of Units", &numOfUnit, 0, 100);
+//
+//	if (ImGui::CollapsingHeader("Transformation"))
+//	{
+//		ImGui::SliderFloat("Translation X", &translation[0], -2000.0f, 2000.0f);
+//		ImGui::SliderFloat("Translation Y", &translation[1], -2000.0f, 2000.0f);
+//		ImGui::SliderFloat("Translation Z", &translation[2], -2000.0f, 2000.0f);
+//
+//		ImGui::SliderFloat("Rotation X", &rotation[0], 0.f, 360.0f);
+//		ImGui::SliderFloat("Rotation Y", &rotation[1], 0.f, 360.0f);
+//		ImGui::SliderFloat("Rotation Z", &rotation[2], 0.f, 360.0f);
+//
+//		ImGui::SliderFloat("Scale X", &scale[0], 0.f, 500.0f);
+//		ImGui::SliderFloat("Scale Y", &scale[1], 0.f, 500.0f);
+//		ImGui::SliderFloat("Scale Z", &scale[2], 0.f, 500.0f);
+//	}
+//
+//	if (ImGui::Button("Spawn Unit"))             // Display some text (you can use a format strings too)
+//	{
+//		for (int i = 0; i < numOfUnit; i++)
+//		{
+//			unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+//		}
+//	}
+//
+//	ImGui::SameLine();
+//	if (ImGui::Button("Spawn Unit (Random Pos)"))
+//	{
+//		for (int i = 0; i < numOfUnit; i++)
+//		{
+//			translation[0] = Math::RandFloatMinMax(-2000, 2000);
+//			translation[2] = Math::RandFloatMinMax(-2000, 2000);
+//			unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+//		}
+//	}
+//
+//	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+//	ImGui::End();
+//}
+//
+//void SceneTest::UpdateImGuiEntityList()
+//{
+//	ImGui::Begin("EntityList");
+//	if (activeEntityList.empty())
+//		ImGui::Text("No active entities");
+//	else
+//	{
+//		static int selection = 0;
+//		ImGui::SliderInt(("activeEntities: " + std::to_string(activeEntityList.size())).c_str(), &selection, 0, activeEntityList.size() - 1);
+//
+//		testHandler = activeEntityList[selection];
+//		auto& transform = coordinator.GetComponent<Transform>(testHandler);
+//		auto& collider = coordinator.GetComponent<Collider>(testHandler);
+//		auto& unit = coordinator.GetComponent<Unit>(testHandler);
+//		static const char* unitTypes2[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
+//		static const char* unitfaction2[]{ "PLAYER","ENEMY" };
+//
+//		if (ImGui::CollapsingHeader("Unit Data"))
+//		{
+//			ImGui::Text("EntityID: %d", testHandler);
+//			ImGui::Text("UnitName: %s", unit.name.c_str());
+//			ImGui::Text("UnitType: %s", unitTypes2[unit.unitType - 1]);
+//			ImGui::Text("UnitFaction: %s", unitfaction2[unit.unitFaction - 1]);
+//			ImGui::Text("Level: %d", unit.level);
+//			ImGui::SliderFloat("Health", &unit.health, 0.f, 1000.f);
+//			ImGui::SliderFloat("Damage", &unit.damage, 0.f, 2000.f);
+//			ImGui::SliderFloat("Defense", &unit.defense, 0.f, 2000.f);
+//			ImGui::SliderFloat("Attack Range", &unit.attackRange, -50.f, 50.f);
+//			ImGui::SliderFloat("Attack Speed", &unit.attackSpeed, -50.f, 50.f);
+//
+//			if (ImGui::CollapsingHeader(("Targeted EntityID: " + std::to_string(unit.target)).c_str()))
+//			{
+//				if (unit.target != UINT_MAX)
+//				{
+//					auto& targetTransform = coordinator.GetComponent<Transform>(unit.target);
+//					auto& targetUnit = coordinator.GetComponent<Unit>(unit.target);
+//					ImGui::Text("[Target] EntityID: %d", targetUnit.target);
+//					ImGui::Text("[Target] UnitName: %s", targetUnit.name.c_str());
+//					ImGui::Text("[Target] UnitType: %d", targetUnit.unitType);
+//					ImGui::Text("[Target] Level: %d", targetUnit.level);
+//					ImGui::SliderFloat("[Target] Health", &targetUnit.health, 0.f, 1000.f);
+//					ImGui::SliderFloat("[Target] Damage", &targetUnit.damage, 0.f, 2000.f);
+//					ImGui::SliderFloat("[Target] Defense", &targetUnit.defense, 0.f, 2000.f);
+//					ImGui::SliderFloat("[Target] Attack Range", &targetUnit.attackRange, -50.f, 50.f);
+//					ImGui::SliderFloat("[Target] Attack Speed", &targetUnit.attackSpeed, -50.f, 50.f);
+//				}
+//			}
+//		}
+//
+//		if (ImGui::CollapsingHeader("Transformation"))
+//		{
+//			ImGui::SliderFloat("Translation X", &transform.position.x, -2000.0f, 2000.0f);
+//			ImGui::SliderFloat("Translation Y", &transform.position.y, -2000.0f, 2000.0f);
+//			ImGui::SliderFloat("Translation Z", &transform.position.z, -2000.0f, 2000.0f);
+//
+//			ImGui::SliderFloat("Rotation X", &transform.rotation.x, -2000.f, 2000.0f);
+//			ImGui::SliderFloat("Rotation Y", &transform.rotation.y, -2000.f, 2000.0f);
+//			ImGui::SliderFloat("Rotation Z", &transform.rotation.z, -2000.f, 2000.0f);
+//
+//			ImGui::SliderFloat("Scale X", &transform.scale.x, -2000.f, 2000.0f);
+//			ImGui::SliderFloat("Scale Y", &transform.scale.y, -2000.f, 2000.0f);
+//			ImGui::SliderFloat("Scale Z", &transform.scale.z, -2000.f, 2000.0f);
+//		}
+//
+//		if (ImGui::CollapsingHeader("Collider"))
+//		{
+//			ImGui::SliderFloat("Mass", &collider.mass, -1.f, 2000.0f);
+//			ImGui::SliderFloat("Collider Scale X", &collider.scale.x, -2000.0f, 2000.0f);
+//			ImGui::SliderFloat("Collider Scale Y", &collider.scale.y, -2000.0f, 2000.0f);
+//			ImGui::SliderFloat("Collider Scale Z", &collider.scale.z, -2000.0f, 2000.0f);
+//		}
+//
+//		//if (ImGui::CollapsingHeader("Mesh"))
+//		//{
+//		//	ImGui::Text("MeshName: %s", render->name.c_str());
+//		//	ImGui::Text("DrawMode: %s", std::to_string(mesh->mode).c_str());
+//		//	ImGui::Text("TextureID: %u", std::to_string(mesh->mode).c_str());
+//		//}
+//
+//		if (ImGui::Button("Set to inactive"))
+//		{
+//			unit.active = false;
+//
+//			if (selection == activeEntityList.size() - 1 && selection != 0)
+//			{
+//				selection -= 1;
+//			}
+//		}
+//
+//		ImGui::SameLine();
+//
+//		if (ImGui::Button("Set all to inactive"))
+//		{
+//			for (int i = 0; i < activeEntityList.size(); i++)
+//			{
+//				auto& testunit = coordinator.GetComponent<Unit>(activeEntityList[i]);
+//				testunit.active = false;
+//				selection = 0;
+//			}
+//		}
+//
+//	}
+//
+//	ImGui::End();
+//}

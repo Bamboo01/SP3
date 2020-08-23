@@ -13,6 +13,7 @@
 #include "UnitSystem.h"
 #include "RayCastingSystem.h"
 #include "ColliderSystem.h"
+#include "ParticleSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -39,8 +40,8 @@ public:
 	Entity testHandler; // An entity handler to control entities
 	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
 
-	void UpdateImGui();
-	void UpdateImGuiUnitSpawn();
+	//void UpdateImGui();
+	//void UpdateImGuiUnitSpawn();
 	//void UpdateImGuiEntityList();
 
 	/*Systems of the scene*/
@@ -57,6 +58,7 @@ public:
 	std::shared_ptr<RayCastingSystem> raycastingsystem;
 	std::shared_ptr<ColliderSystem> collidersystem;
 	std::shared_ptr<GridControllerSystem> gridcontrollersystem;
+	std::shared_ptr<ParticleSystem> particlesystem;
 
 };
 
