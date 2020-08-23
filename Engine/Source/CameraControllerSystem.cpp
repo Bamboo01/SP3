@@ -12,40 +12,31 @@ void CameraControllerSystem::Update(float dt)
         if (Application::mouse_current_x < 50)
         {
             //Camera Move to the Left
-           // auto& camera = coordinator.GetComponent<Camera>(entity);
-            glm::vec3 view = glm::normalize(camera.target - camera.position);
-            glm::vec3 right = glm::cross(view, camera.up);
-            right.y = 0;
-            right = glm::normalize(right);
-            camera.position -= right * 100.f * (float)dt;
-            camera.target-= right * 100.f * (float)dt;
+          
+            camera.position += camera.right * 100.f * dt;
+            camera.target += camera.right * 100.f * dt;
         }
         if (Application::mouse_current_x > Application::GetWindowWidth() - 50)
         {
             //Camera move to the right
-          //  auto& camera = coordinator.GetComponent<Camera>(entity);
-            glm::vec3 view = glm::normalize(camera.target - camera.position);
-            glm::vec3 right = glm::cross(view, camera.up);
-            right.y = 0;
-            right = glm::normalize(right);
-            camera.position += right * 100.f * (float)dt;
-            camera.target += right * 100.f * (float)dt;
+            camera.position -= camera.right * 100.f * dt;
+            camera.target -= camera.right * 100.f * dt;
         }
         if (Application::mouse_current_y < 50)
         {
             //Camera move down
             glm::vec3 dir = camera.up;
             dir.y = 0;
-            camera.position += dir * 100.f * (float)dt;
-            camera.target += dir * 100.f * (float)dt;
+            camera.position += dir * 0.5f * (float)dt;
+            camera.target += dir * 0.5f * (float)dt;
         }
         if (Application::mouse_current_y > Application::GetWindowHeight() - 50)
         {
             //Camera move up
             glm::vec3 dir = camera.up;
             dir.y = 0;
-            camera.position -= dir * 100.f * (float)dt;
-            camera.target -= dir * 100.f * (float)dt;
+            camera.position -= dir * 0.5f * (float)dt;
+            camera.target -= dir * 0.5f * (float)dt;
         }
 
         if (!scrollUsed && Application::IsMousePressed(2)) // Middle Scroll
@@ -57,24 +48,25 @@ void CameraControllerSystem::Update(float dt)
                 /*for (auto const& entity : m_Entities)
                 {*/
                   //  auto& camera = coordinator.GetComponent<Camera>(entity);
-                    glm::vec3 view = glm::normalize(camera.target - camera.position);
+                 /*   glm::vec3 view = glm::normalize(camera.target - camera.position);
                     glm::vec3 right = glm::cross(view, camera.up);
                     right.y = 0;
                     right = glm::normalize(right);
-                    camera.position += right * 0.05f * distanceTraveled.x * (float)dt;
-                  
+                    camera.position += right * 0.05f * distanceTraveled.x * (float)dt;*/
               //  }
+                camera.position += camera.right * 1.f * dt * distanceTraveled.x;
             }
             if (distanceTraveled.y != 0)
             {
                /* for (auto const& entity : m_Entities)
                 {*/
                //     auto& camera = coordinator.GetComponent<Camera>(entity);
-                    glm::vec3 view = glm::normalize(camera.target - camera.position);
+                   /* glm::vec3 view = glm::normalize(camera.target - camera.position);
                     glm::vec3 right = glm::cross(view, camera.up);
                     right.y = 0;
                     right = glm::normalize(right);
-                    camera.position += right * 0.05f * distanceTraveled.y * (float)dt;
+                    camera.position += right * 0.05f * distanceTraveled.y * (float)dt;*/
+                camera.position += camera.right * 1.f * dt * distanceTraveled.y;
                   
                // }
             }
