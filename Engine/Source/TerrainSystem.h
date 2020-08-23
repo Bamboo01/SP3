@@ -13,7 +13,6 @@ extern Renderer renderer;
 class TerrainSystem : public System
 {
 public:
-	virtual void Setup();
-	virtual void Init();
+    virtual void Setup();
+    virtual void Init();
 };
-

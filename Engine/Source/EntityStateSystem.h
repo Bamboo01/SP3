@@ -10,7 +10,7 @@ class EntityStateSystem : public System
 private:
 	std::vector<Entity> InactiveEntities;
 public:
-	virtual void Setup();
-	virtual void Init();
-	virtual void Update(float dt);
+    virtual void Setup();
+    virtual void Init();
+    virtual void Update(float dt);
 };

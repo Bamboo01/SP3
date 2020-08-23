@@ -106,7 +106,7 @@ void Renderer::Init()
 	addMaterial(playerMaterial);
 
 	/*Assign your meshes their materials here*/
-	assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
+	//assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TERRAIN], grass);
 
 	/*Assignment of uniform blocks*/
@@ -265,7 +265,7 @@ void Renderer::RenderCanvas()
 	for (auto& canvastext : CanvasText)
 	{
 		glm::mat4 model(1.f);
-		model = glm::scale(model, glm::vec3(shorterside * 0.5f, shorterside * 0.5f, 1.f));
+		model = glm::scale(model, glm::vec3(shorterside * 0.35f, shorterside * 0.35f, 1.f));
 		model = model * canvastext.first;
 		textshader->UpdateShaderTexture(Consolas);
 		textshader->UpdateShader(model);
@@ -273,7 +273,7 @@ void Renderer::RenderCanvas()
 		{
 			glm::mat4 characterspacing(1.f);
 			characterspacing = characterspacing * model;
-			characterspacing = glm::translate(characterspacing , glm::vec3(i * 1.f, 0, 0));
+			characterspacing = glm::translate(characterspacing , glm::vec3(i * 0.5f, 0, 0));
 			textshader->UpdateShader(characterspacing);
 			TextMesh->RenderIndividually((unsigned)canvastext.second[i] * 6, 6);
 		}

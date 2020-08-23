@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "CameraController.h"
+#include "EntityState.h"
 #include "Coordinator.h"
 #include "Application.h"
 

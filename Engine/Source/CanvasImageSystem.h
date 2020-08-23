@@ -4,6 +4,7 @@
 #include "Coordinator.h"
 #include "Renderer.h"
 
+
 extern Coordinator coordinator;
 extern Renderer renderer;
 

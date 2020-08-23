@@ -13,6 +13,7 @@
 #include "UnitSystem.h"
 #include "RayCastingSystem.h"
 #include "ColliderSystem.h"
+#include "GUITextSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -57,6 +58,6 @@ public:
 	std::shared_ptr<RayCastingSystem> raycastingsystem;
 	std::shared_ptr<ColliderSystem> collidersystem;
 	std::shared_ptr<GridControllerSystem> gridcontrollersystem;
-
+	std::shared_ptr<GUITextSystem> guitextsystem;
 };
 

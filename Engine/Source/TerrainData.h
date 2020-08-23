@@ -2,42 +2,43 @@
 #include "Mesh.h"
 #include <vector>
 #include "Transform.h"
+#include "MeshManager.h"
 
 #pragma once
 
 struct TerrainData
 {
-	GEO_TYPE terrain;
-	std::vector<unsigned char> heightmap;
-	Transform transform;
+    GEO_TYPE terrain;
+    std::vector<unsigned char> heightmap;
+    Transform transform;
 
-	TerrainData()
-	{
-		
-	}
+    TerrainData()
+    {
 
-	TerrainData(GEO_TYPE t)
-	{
-		terrain = t;
-	}
+    }
 
-	float ReadHeightMap(std::vector<unsigned char>& heightMap, float x, float z)
-	{
-		x += transform.position.x;
-		z += transform.position.z;
-		x / transform.scale.x;
-		z / transform.scale.z;
+    TerrainData(GEO_TYPE t)
+    {
+        terrain = t;
+    }
 
-		if (x < -0.5f || x > 0.5f || z < -0.5f || z > 0.5f)
-			return 0;
-		if (heightMap.size() == 0)
-			return 0;
+    float ReadHeightMap(float x, float z)
+    {
+        x += transform.position.x;
+        z += transform.position.z;
+        x / transform.scale.x;
+        z / transform.scale.z;
 
-		unsigned terrainSize = (unsigned)sqrt((double)heightMap.size());
+        if (x < -0.5f || x > 0.5f || z < -0.5f || z > 0.5f)
+            return 0;
+        if (heightmap.size() == 0)
+            return 0;
 
-		unsigned zCoord = (unsigned)((z + 0.5f) * terrainSize);
-		unsigned xCoord = (unsigned)((x + 0.5f) * terrainSize);
+        unsigned terrainSize = (unsigned)sqrt((double)heightmap.size());
 
-		return (((float)heightMap[zCoord * terrainSize + xCoord] / 256.f) * transform.scale.y) + transform.position.y;
-	}
+        unsigned zCoord = (unsigned)((z + 0.5f) * terrainSize);
+        unsigned xCoord = (unsigned)((x + 0.5f) * terrainSize);
+
+        return (((float)heightmap[zCoord * terrainSize + xCoord] / 256.f) * transform.scale.y) + transform.position.y;
+    }
 };
