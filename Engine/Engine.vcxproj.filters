@@ -334,6 +334,9 @@
     <ClInclude Include="Source\GUIText.h">
       <Filter>Auxillary\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ParticleSystemParameters.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">

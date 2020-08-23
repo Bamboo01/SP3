@@ -491,9 +491,6 @@ void SceneTest::Init()
 
 	raycastingsystem->SetTerrainEntities(terrainsystem->m_Entities);
 	particlesystem->Init();
-	
-	canvasimageupdatesystem->SetUnitSystem(unitsystem);
-	collidersystem->SetRayCastSystem(raycastingsystem);
 }
 
 void SceneTest::EarlyUpdate(double dt)

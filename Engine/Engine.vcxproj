@@ -225,6 +225,7 @@
     <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\GUIText.h" />
     <ClInclude Include="Source\GUITextSystem.h" />
+    <ClInclude Include="Source\ParticleSystemParameters.h" />
     <ClInclude Include="Source\RayCasting.h" />
     <ClInclude Include="Source\RayCastingSystem.h" />
     <ClInclude Include="Source\ScreenQuadShader.h" />
