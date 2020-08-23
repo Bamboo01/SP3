@@ -446,6 +446,21 @@ void SceneTest::Init()
 			coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::CLICKABLE, CanvasImageUpdate::NEXUSWALL, CanvasImageUpdate::POPUP, CanvasImageUpdate::START4));
 		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
+	for (int i = 0; i < 10; ++i)
+	{
+		// Unit pictures in the unit box
+		Entity UI = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(UI, Transform());
+		if (i < 5)
+			coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.1f + (i * 0.2), -0.65, 1);
+		else if (5 <= i)
+			coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.1f + ((i - 5) * 0.2), -0.85, 1);
+		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.08, 0.08, 1);
+		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//grass.tga"));
+		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::POPUP, CanvasImageUpdate::PICUI));
+		coordinator.AddComponent<EntityState>(UI, EntityState(true));
+	}
+
 
 	/*Init all systems*/
 	camerasystem->Init();

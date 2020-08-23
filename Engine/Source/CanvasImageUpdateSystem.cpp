@@ -19,6 +19,8 @@ void CanvasImageUpdateSystem::Init()
 	LabUIopen = false;
 	UnitUIopen = false;
 	BuildingUIopen = false;
+	renderonce = false;
+	renderamount = 0;
 
 	for (auto const& entity : m_Entities)
 	{
@@ -280,8 +282,18 @@ void CanvasImageUpdateSystem::Update(double dt)
 		}
 		else if (selectedunitList.size() > 1)
 		{
-			// Add code to create GUI for each unit
-			std::cout << "Multiple unit selected!" << std::endl;
+			for (auto entity2 : selectedunitList)
+			{
+				auto& unit = coordinator.GetComponent<Unit>(entity2);
+				if (canvasupdate.uniquetype == CanvasImageUpdate::PICUI && !entitystate.active && !renderonce)
+				{
+					renderamount++;
+					entitystate.active = true;
+					// Add code here to change the texture based on the unit type
+				}
+			}
+			if (renderamount == selectedunitList.size())
+				renderonce = true;
 		}
 		// If no unit is selected, make all pop up GUI active to false
 		else
@@ -289,6 +301,8 @@ void CanvasImageUpdateSystem::Update(double dt)
 			LabUIopen = false;
 			UnitUIopen = false;
 			BuildingUIopen = false;
+			renderonce = false;
+			renderamount = 0;
 			if (canvasupdate.popuptype == CanvasImageUpdate::POPUP)
 			{
 				entitystate.active = false;

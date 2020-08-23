@@ -90,7 +90,8 @@ void RayCastingSystem::callRayCollision()
             for (auto const& entity2 : entityset2)
             {
                 auto& ObjectTransform = coordinator.GetComponent<Transform>(entity2);
-                if (raycollisioncheck(entity, entity2))
+                auto& ObjectEntityState = coordinator.GetComponent<EntityState>(entity2);
+                if (raycollisioncheck(entity, entity2) && ObjectEntityState.active)
                 {
                    // std::cout << "Ray collided with object!" << std::endl;
                     break;
@@ -173,17 +174,14 @@ void RayCastingSystem::unitSelection()
         for (auto const& entity2 : entityset2)
         {
             auto& transform = coordinator.GetComponent<Transform>(entity2);
+            auto& entitystate = coordinator.GetComponent<EntityState>(entity2);
 
-            if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ)
+            if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ && entitystate.active)
             {
                 std::cout << " Push! " << std::endl;
                 selectedunitlist.push_back(entity2);
             }
         }
-    }
-    if (selectedunitlist.size() != 0)
-    {
-        std::cout << selectedunitlist.size() << std::endl;
     }
 }
 

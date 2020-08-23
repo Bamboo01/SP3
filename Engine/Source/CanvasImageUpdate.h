@@ -43,7 +43,8 @@ struct CanvasImageUpdate
         START4,
         LABUI,
         NEXUSUNITUI,
-        NEXUSBUILDINGUI
+        NEXUSBUILDINGUI,
+        PICUI
     };
 
     ClickType clicktype;

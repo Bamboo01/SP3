@@ -34,6 +34,8 @@ private:
 
     double timer;
     double clickdelay;
+    bool renderonce;
+    int renderamount;
 
     std::vector<Entity> ReferenceEntity;
 
