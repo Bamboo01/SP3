@@ -47,12 +47,15 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = NORMAL;
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UNormal() {}
@@ -97,12 +100,15 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = RANGE;
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~URange() {}
@@ -147,12 +153,15 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = TANK;
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UTank() {}
@@ -197,12 +206,15 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = TOWER;
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UTower() {}
@@ -247,12 +259,15 @@ public:
 		mass = unitMass;
 		colliderScale = collisionScale;
 		delay = 0.0;
-		active = true;
 		target = UINT_MAX;
 		unitType = WALL;
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UWall() {}
@@ -297,12 +312,15 @@ public:
 		mass = unitMass;
 		colliderScale = collisionScale;
 		delay = 0.0;
-		active = true;
 		target = UINT_MAX;
 		unitType = NEXUS;
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UNexus() {}
@@ -347,12 +365,15 @@ public:
 		mass = unitMass;
 		colliderScale = collisionScale;
 		delay = 0.0;
-		active = true;
 		target = UINT_MAX;
 		unitType = GENERATOR;
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UGenerator() {}
@@ -397,12 +418,15 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = LAB;
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~ULab() {}
@@ -439,12 +463,15 @@ public:
 		delay = 0.0;
 		mass = unitMass;
 		colliderScale = collisionScale;
-		active = true;
 		target = UINT_MAX;
 		unitType = PROJECTILE;
 		unitFaction = UNDEFINED;
 		originUnit = attacking;
 		targetUnit = targeted;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UProjectile() {}

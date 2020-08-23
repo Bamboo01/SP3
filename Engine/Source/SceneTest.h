@@ -15,6 +15,7 @@
 #include "ColliderSystem.h"
 #include "GUITextSystem.h"
 #include "ParticleSystem.h"
+#include "ObjectPoolSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -41,9 +42,9 @@ public:
 	Entity testHandler; // An entity handler to control entities
 	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
 
-	//void UpdateImGui();
-	//void UpdateImGuiUnitSpawn();
-	//void UpdateImGuiEntityList();
+	void UpdateImGui();
+	void UpdateImGuiUnitSpawn();
+	void UpdateImGuiEntityList();
 
 	/*Systems of the scene*/
 	std::shared_ptr<TransformSystem> transformsystem;
@@ -62,5 +63,6 @@ public:
 	std::shared_ptr<GUITextSystem> guitextsystem;
 	std::shared_ptr<ParticleSystem> particlesystem;
 
+	std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
 };
 

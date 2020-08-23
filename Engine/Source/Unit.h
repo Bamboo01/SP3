@@ -37,7 +37,6 @@ struct Unit
 	float attackSpeed; // The interval between attacks for unit
 	float mass; // Reference mass used in colliderSystem
 	glm::vec3 colliderScale; // Reference colliderScale used in colliderSystem
-	bool active; // A boolean to check whether the unit is active or not, if it isn't active it won't be rendered/updated
 	double delay; // A double to keep track of attack resets
 	Entity target; // Current targeted enemy
 	UnitType unitType; // The type of unit
@@ -46,8 +45,10 @@ struct Unit
 	Entity originUnit; // (PROJECTILE ONLY!) The unit that shot the projectile, it could be tower or ranged :D
 	Entity targetUnit; // (PROJECTILE ONLY!) The unit that is being traced by the projectile
 
-	int FlowFieldCost;
-
+	int FlowFieldCost;    // Check the cost value of this unit
+	int StandingGridCost; // Check the grid that the unit is at cost
+	glm::vec2 nextGrid = glm::vec2(-1, -1);    //Store next grid here
+	glm::vec3 velocity;
 
 	Unit()
 		: name("Default")
@@ -58,13 +59,13 @@ struct Unit
 		, attackSpeed(0)
 		, mass(1)
 		, colliderScale(glm::vec3(1, 1, 1))
-		, active(false)
 		, target(UINT_MAX)
 		, unitType(UnitType::DEFAULT)
 		, unitFaction(UnitFaction::UNDEFINED)
 		, originUnit(UINT_MAX)
 		, targetUnit(UINT_MAX)
 		, FlowFieldCost(0)
+		, StandingGridCost(0)
 	{
 	}
 
@@ -77,7 +78,7 @@ struct Unit
 		, attackSpeed(attackspeed)
 		, unitType(type)
 		, FlowFieldCost(flowfieldcost)
-
+		, StandingGridCost(0)
 	{
 	}
 
