@@ -66,10 +66,11 @@ struct Unit
 		, targetUnit(UINT_MAX)
 		, FlowFieldCost(0)
 		, StandingGridCost(0)
+		, velocity(0)
 	{
 	}
 
-	Unit(std::string name, int level, int basehealth, int damage, int defense, float attackspeed, UnitType type, int flowfieldcost)
+	Unit(std::string name, int level, int basehealth, int damage, int defense, float attackspeed, UnitType type, int flowfieldcost = 0, int StandingGridCost = 0, int vel = 0)
 		: name(name)
 		, level(level)
 		, health((basehealth * 4 * level) / 100 + level + 10)
@@ -78,7 +79,9 @@ struct Unit
 		, attackSpeed(attackspeed)
 		, unitType(type)
 		, FlowFieldCost(flowfieldcost)
-		, StandingGridCost(0)
+		, StandingGridCost(StandingGridCost)
+		,velocity(vel)
+
 	{
 	}
 

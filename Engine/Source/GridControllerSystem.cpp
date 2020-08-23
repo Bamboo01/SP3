@@ -24,13 +24,8 @@ void GridControllerSystem::CreateGrids()
 		++y;
 	}
 	GetDestinationGrid();
-	for (int y = 0; y < 20; ++y)
-	{
-		for (int x = 0; x < 20; ++x)
-		{
-			std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].y << ", " << GridPosition[x][y].z << " ::::" << GridCost[x][y] << std::endl;
-		}
-	}
+	active = true;
+
 }
 
 void GridControllerSystem::CheckGridCost(int GridNumX, int GridNumY)
@@ -58,8 +53,40 @@ void GridControllerSystem::Update(float dt)
 		int y = Application::GetWindowHeight();
 		CursorScreenPosition = glm::vec2(Application::mouse_current_x, Application::mouse_current_y);
 		CursorWorldPosition = glm::vec3(CursorScreenPosition.x * (1000 / x), 0, (y - CursorScreenPosition.y) * (1000 / y));
+	/*	CursorWorldPosition = glm::vec3(0, 2, 0);*/
 		CreateGrids();
 	}
+	// Give the units a new update position sfter grids are created
+	if (active == true)
+	{
+		UpdateUnitPosition();
+		active = false;
+		/*for (int y = 0; y < 20; ++y)
+		{
+			for (int x = 0; x < 20; ++x)
+			{
+				std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].y << ", " << GridPosition[x][y].z << " ::::" << GridCost[x][y] << std::endl;
+			}
+		}*/
+	}
+	for (auto const& entity : m_Entities)
+	{
+		auto& unit = coordinator.GetComponent<Unit>(entity);
+		auto& transform = coordinator.GetComponent<Transform>(entity);
+		if (unit.nextGrid != glm::vec2(-1, -1)) {
+			int GTLX = unit.nextGrid.x;
+			int GTLY = unit.nextGrid.y;
+			glm::vec3 GridTopLeft = GridPosition[GTLX][GTLY];
+			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+			if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
+			{
+				UpdateUnitPosition();
+			}
+		}
+		transform.position += unit.velocity;
+	//	std::cout << unit.velocity.x << ", " << unit.velocity.z << std::endl;
+	}
+
 }
 
 void GridControllerSystem::GetDestinationGrid()
@@ -79,6 +106,7 @@ void GridControllerSystem::GetDestinationGrid()
 					GridCost[x][y] = 0;
 					destination.x = x;
 					destination.y = y;
+					//std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
 					break;
 				}
 				else
@@ -317,6 +345,158 @@ void GridControllerSystem::CheckSameLine(glm::vec2 Destination)
 			else if (dX - 1 <= 19 && dX - 1 >= 0)
 			{
 				GridCost[dX][i] = GridCost[dX - 1][i] + 1;
+			}
+		}
+	}
+}
+
+void GridControllerSystem::UpdateUnitPosition()
+{
+	for (auto const& entity : m_Entities)
+	{
+		auto& unit = coordinator.GetComponent<Unit>(entity);
+		auto& transform = coordinator.GetComponent<Transform>(entity);
+		if (unit.FlowFieldCost == 0)
+		{
+			for (int x = 0; x < 20; ++x)
+			{
+				for (int y = 0; y < 20; ++y)
+				{
+					glm::vec3 GridTopLeft = GridPosition[x][y];
+					glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+					glm::vec3 distance = glm::vec3(0,0,0);
+					glm::vec3 direction;
+					if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
+					{
+						//std::cout << GridCost[x][y] << std::endl;
+					//	std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+						if (GridCost[x][y] == 0)
+						{
+							unit.velocity = glm::vec3(0, 0, 0);
+							x = 20; y = 20;
+							break;
+						}
+						// Check which ditection has the smallest number
+						int cost = -1;
+						glm::vec3 lowest(0,0,-1); // x,y = array position; z = gridcost;
+					
+						// Check for North
+						if (x - 1 <= 19 && x - 1 >= 0)
+						{
+							//If North Grid Exist
+							cost = GridCost[x - 1][y];
+							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
+							{
+								lowest = glm::vec3(x - 1, y, cost);
+								distance = glm::vec3(0, 0, 50);
+							}
+						}
+						// Check for South
+						if (x + 1 <= 19 && x + 1 >= 0)
+						{
+							//If south Grid Exist
+							cost = GridCost[x + 1][y];
+							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
+							{
+								lowest = glm::vec3(x + 1, y, cost);
+								distance = glm::vec3(0, 0, -50);
+							}
+						}
+						// Check for East
+						if (y + 1 <= 19 && y + 1 >= 0)
+						{
+							//If East Grid Exist
+							cost = GridCost[x][y + 1];
+							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
+							{
+								lowest = glm::vec3(x, y+1, cost);
+								distance = glm::vec3(50, 0, 0);
+							}
+						}
+						// Check for West
+						if (y - 1 <= 19 && y - 1 >= 0)
+						{
+							//If West Grid Exist
+							cost = GridCost[x][y - 1];
+							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
+							{
+								lowest = glm::vec3(x, y - 1, cost);
+								distance = glm::vec3(-50, 0, 0);
+							}
+						}
+						// Check for North East
+						if (y + 1 <= 19 && y + 1 >= 0 && x - 1 <= 19 && x - 1 >= 0)
+						{
+							//If North East Grid Exist
+							cost = GridCost[x - 1][y + 1];
+							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
+							{
+								lowest = glm::vec3(x - 1, y + 1, cost);
+								distance = glm::vec3(25, 0, 25);
+							}
+						}
+						// Check for North West
+						if (y - 1 <= 19 && y - 1 >= 0 && x - 1 <= 19 && x - 1 >= 0)
+						{
+							//If North West Grid Exist
+							cost = GridCost[x - 1][y - 1];
+							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
+							{
+								lowest = glm::vec3(x - 1, y - 1, cost);
+								distance = glm::vec3(25, 0, -25);
+							}
+						}
+						// Check for South East
+						if (y + 1 <= 19 && y + 1 >= 0 && x + 1 <= 19 && x + 1 >= 0)
+						{
+							//If South East Grid Exist
+							cost = GridCost[x + 1][y + 1];
+							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
+							{
+								lowest = glm::vec3(x + 1, y + 1, cost);
+								distance = glm::vec3(-25, 0, 25);
+							}
+						}
+						// Check for North West
+						if (y - 1 <= 19 && y - 1 >= 0 && x + 1 <= 19 && x + 1 >= 0)
+						{
+							//If North West Grid Exist
+							cost = GridCost[x + 1][y - 1];
+							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
+							{
+								lowest = glm::vec3(x + 1, y - 1, cost);
+								distance = glm::vec3(-25, 0, -25);
+							}
+						}
+
+						if (lowest.z != -1)
+						{
+							//Set Unit Velocity
+							int dX = lowest.x;
+							int dY = lowest.y;
+							unit.nextGrid = glm::vec2(dX, dY);
+							//glm::vec3 distance = GridPosition[dX][dY] + glm::vec3(15,15,15)- transform.position + (transform.scale);
+							//glm::vec3 direction = glm::normalize(distance);
+							//float temp = direction.x;
+							//direction.x = -direction.z;
+							//direction.z = temp;
+							distance = GridPosition[dX][dY] - transform.position + distance;
+							glm::vec3 direction = glm::normalize(distance);
+							unit.velocity = 1.3f * direction;
+							unit.velocity.y = 0;
+						/*	std::cout << GridCost[dX][dY] << std::endl;
+							std::cout << GridPosition[dX][dY].x << ", " << GridPosition[dX][dY].z << std::endl;
+							std::cout << direction.x << ", " << direction.z << std::endl;*/
+						}
+						else
+						{
+							unit.velocity = glm::vec3(0, 0, 0);
+						}
+
+
+
+					}
+				}
 			}
 		}
 	}

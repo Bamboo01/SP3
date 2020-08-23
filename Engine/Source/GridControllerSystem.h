@@ -14,6 +14,10 @@ private:
 	glm::vec2 GridSize;
 	glm::vec2 CursorScreenPosition;
 	glm::vec3 CursorWorldPosition;
+	glm::vec3 GridPosition[20][20];
+	int GridCost[20][20];
+	float timer = 0;
+	bool active = false;
 	
 
 public:
@@ -24,7 +28,6 @@ public:
 	virtual void CreatePathTop(glm::vec2 Destination);		// Get Grid cost for Destination TOP ONLY
 	virtual void CreatePathBottom(glm::vec2 Destination);		// Get Grid cost for Destination BOTTOM ONLY
 	virtual void CheckSameLine(glm::vec2 Destination);		// If destination is on the same z axis as the grids and there is a wall
+	virtual void UpdateUnitPosition();				// Update unit position
 	virtual void SetUp();
-	glm::vec3 GridPosition[20][20];
-	int GridCost[20][20];
 };

@@ -116,7 +116,7 @@ void Renderer::Init()
 	//materialManager.push_back(playerMaterial);
 
 	/*Assign your material their shaders here*/
-	addMaterial(boxmat, test);
+	addMaterial(boxmat/*, test*/);
 	addMaterial(grass);
 	//addMaterial(playerMaterial);
 	addMaterial(testParticleA, billboard_Cylindrical);

@@ -22,23 +22,32 @@ void CameraSystem::Init()
 
 void CameraSystem::Update(float dt)
 {
-	for (auto const& entity : m_Entities)
-	{
-		auto& camera = coordinator.GetComponent<Camera>(entity);
+    for (auto const& entity : m_Entities)
+    {
+        auto& camera = coordinator.GetComponent<Camera>(entity);
+        glm::mat4 rot(1.f);
+        glm::vec3 rotation = glm::radians(camera.rotation);
 
-		camera.right = glm::normalize(glm::cross(glm::vec3(0, 1, 0), camera.target - camera.position));
-		camera.up = glm::normalize(glm::cross(camera.target - camera.position, camera.right));
-		camera.ViewMatrix = glm::lookAt(camera.position, camera.target, camera.up);
+        rot = glm::rotate(rot, rotation.x, glm::vec3(1, 0, 0));
+        rot = glm::rotate(rot, rotation.y, glm::vec3(0, 1, 0));
+        rot = glm::rotate(rot, rotation.z, glm::vec3(0, 0, 1));
 
-		if (camera.mode == CAMERA_MODE::MODE_ORTHOGRAPHIC)
-		{
-			camera.ProjectionMatrix = glm::ortho(0, camera.viewWidth, 0, camera.viewHeight);
-		}
-		else
-		{
-			camera.ProjectionMatrix = glm::perspective(camera.FOV, (float)(camera.viewWidth / camera.viewHeight), 0.1f, 1000.f);
-		}
-	}
+        camera.right = glm::normalize(glm::cross(glm::vec3(0, 1, 0), camera.target - camera.position));
+        camera.up = glm::cross(camera.target - camera.position, camera.right);
+
+        std::cout << camera.right.x << " " << camera.right.y << " " << camera.right.z << std::endl;
+
+        camera.ViewMatrix = glm::lookAt(camera.position, camera.target, camera.up);
+
+        if (camera.mode == CAMERA_MODE::MODE_ORTHOGRAPHIC)
+        {
+            camera.ProjectionMatrix = glm::ortho(0, camera.viewWidth, 0, camera.viewHeight);
+        }
+        else
+        {
+            camera.ProjectionMatrix = glm::perspective(camera.FOV, (float)(camera.viewWidth / camera.viewHeight), 0.1f, 1000.f);
+        }
+    }
 }
 
 void CameraSystem::Render()
