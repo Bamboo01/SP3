@@ -60,26 +60,6 @@ void ColliderSystem::Update(double dt)
 
 void ColliderSystem::Render()
 {
-    for (std::set<Entity>::iterator it = m_Entities.begin(); it != m_Entities.end(); it++)
-    {
-        Entity entity = *it;
-        auto& transform = coordinator.GetComponent<Transform>(entity);
-        auto& collider = coordinator.GetComponent<Collider>(entity);
-
-        glm::mat4 modelmat;
-        modelmat = glm::translate(modelmat, transform.position);
-        modelmat = glm::rotate(modelmat, transform.rotation.x, glm::vec3(1, 0, 0));
-        modelmat = glm::rotate(modelmat, transform.rotation.y, glm::vec3(0, 1, 0));
-        modelmat = glm::rotate(modelmat, transform.rotation.z, glm::vec3(0, 0, 1));
-        modelmat = glm::scale(modelmat, collider.scale);
-
-        
-        renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(modelmat);
-    }
-}
-
-void ColliderSystem::Render()
-{
     for (auto const& entity : m_Entities)
     {
         auto& transform = coordinator.GetComponent<Transform>(entity);

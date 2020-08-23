@@ -116,6 +116,9 @@
     <ClCompile Include="Source\GUITextSystem.cpp">
       <Filter>Auxillary\Systems\GUITextSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ObjectPoolSystem.cpp">
+      <Filter>Auxillary\Systems\ObjectPoolSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -337,6 +340,12 @@
     <ClInclude Include="Source\ParticleSystemParameters.h">
       <Filter>Auxillary\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ObjectPool.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectPoolSystem.h">
+      <Filter>Auxillary\Systems\ObjectPoolSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -452,6 +461,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\GUITextSystem">
       <UniqueIdentifier>{b81a285f-2a6c-42e4-86e5-fef5641a5e52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\ObjectPoolSystem">
+      <UniqueIdentifier>{ca070fcf-2e07-45ee-8976-1027bd8fb095}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

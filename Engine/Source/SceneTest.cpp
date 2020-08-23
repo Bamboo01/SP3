@@ -60,7 +60,7 @@ void SceneTest::Init()
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
-		glm::vec3(0, 50, -3.f),
+		glm::vec3(0, 100, -3.f),
 		glm::vec3(60, 0, 0),
 		1080, 1080, //Lower this if the FPS stinks
 		45.f,
@@ -117,13 +117,13 @@ void SceneTest::Init()
 			glm::vec3(0.f), glm::vec3(0.f),
 			glm::vec3(0.f), glm::vec3(0.f)));
 
-	//Entity terrain = coordinator.CreateEntity();
-	//coordinator.AddComponent<RenderData>(terrain, RenderData(renderer.getMesh(GEO_TERRAIN), false));
-	//coordinator.AddComponent<Transform>(terrain, Transform());
-	//coordinator.GetComponent<Transform>(terrain).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
-	//coordinator.GetComponent<Transform>(terrain).scale = glm::vec3(400, 35, 400);
-	//coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
-	//coordinator.AddComponent<EntityState>(terrain, EntityState());
+	Entity terrain = coordinator.CreateEntity();
+	coordinator.AddComponent<RenderData>(terrain, RenderData(renderer.getMesh(GEO_TERRAIN), false));
+	coordinator.AddComponent<Transform>(terrain, Transform());
+	coordinator.GetComponent<Transform>(terrain).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
+	coordinator.GetComponent<Transform>(terrain).scale = glm::vec3(400, 35, 400);
+	coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
+	coordinator.AddComponent<EntityState>(terrain, EntityState());
 
 	Math::InitRNG();
 
