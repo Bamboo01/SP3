@@ -45,8 +45,10 @@ struct Unit
 	Entity originUnit; // (PROJECTILE ONLY!) The unit that shot the projectile, it could be tower or ranged :D
 	Entity targetUnit; // (PROJECTILE ONLY!) The unit that is being traced by the projectile
 
-	int FlowFieldCost; // (FlowFieldPathfinding)
-	int StandingGridCost; // (FlowFieldPathfinding)
+	int FlowFieldCost;    // Check the cost value of this unit
+	int StandingGridCost; // Check the grid that the unit is at cost
+	glm::vec2 nextGrid = glm::vec2(-1, -1);    //Store next grid here
+	glm::vec3 velocity;
 
 	Unit()
 		: name("Default")

@@ -54,6 +54,8 @@ public:
 		targetUnit = UINT_MAX;
 		FlowFieldCost = 0;
 		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UNormal() {}
@@ -105,6 +107,8 @@ public:
 		targetUnit = UINT_MAX;
 		FlowFieldCost = 0;
 		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~URange() {}
@@ -156,6 +160,8 @@ public:
 		targetUnit = UINT_MAX;
 		FlowFieldCost = 0;
 		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UTank() {}
@@ -207,6 +213,8 @@ public:
 		targetUnit = UINT_MAX;
 		FlowFieldCost = 0;
 		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UTower() {}
@@ -258,6 +266,8 @@ public:
 		targetUnit = UINT_MAX;
 		FlowFieldCost = 0;
 		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UWall() {}
@@ -309,6 +319,8 @@ public:
 		targetUnit = UINT_MAX;
 		FlowFieldCost = 0;
 		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UNexus() {}
@@ -360,6 +372,8 @@ public:
 		targetUnit = UINT_MAX;
 		FlowFieldCost = 0;
 		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UGenerator() {}
@@ -411,6 +425,8 @@ public:
 		targetUnit = UINT_MAX;
 		FlowFieldCost = 0;
 		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~ULab() {}
@@ -454,6 +470,8 @@ public:
 		targetUnit = targeted;
 		FlowFieldCost = 0;
 		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
 	}
 
 	~UProjectile() {}
