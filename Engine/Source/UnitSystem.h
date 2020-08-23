@@ -5,6 +5,7 @@
 #include "Coordinator.h"
 #include "RenderData.h"
 #include "Renderer.h"
+#include "ObjectPoolSystem.h"
 
 extern Coordinator coordinator;
 extern Renderer renderer;
@@ -17,9 +18,11 @@ public:
     virtual void Init();
     virtual void Update(double dt);
 
-    void AddInactiveEntity(Entity entity);
+    void SetObjectPoolSystem(std::shared_ptr<ObjectPoolSystem> ptr);
 
+    void AddInactiveEntity(Entity entity);
     Entity FetchInactiveUnit();
+
     void FetchNearbyTargetWithinRange(Entity unit);
 
     Entity CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, int level, Transform transform);
@@ -30,4 +33,5 @@ public:
 private:
     double d_elapsedTime;
     std::vector<Entity> inactiveEntityList;
+    std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
 };

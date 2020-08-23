@@ -18,6 +18,7 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<Unit>();
 	coordinator.RegisterComponent<RayCasting>();
 	coordinator.RegisterComponent<Collider>();
+	coordinator.RegisterComponent<ObjectPoolSystem>();
 //	coordinator.RegisterComponent<GridControllerSytem>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
@@ -28,6 +29,7 @@ void SceneTest::Init()
 	cameracontrollersystem = coordinator.RegisterSystem<CameraControllerSystem>();
 	entitystatesystem = coordinator.RegisterSystem<EntityStateSystem>();
 	terrainsystem = coordinator.RegisterSystem<TerrainSystem>();
+	objectpoolsystem = coordinator.RegisterSystem<ObjectPoolSystem>();
 	//gridcontrollersystem = coordinator.RegisterSystem<GridControllerSytem>();
 
 	canvasimageupdatesystem = coordinator.RegisterSystem<CanvasImageUpdateSystem>();
@@ -48,6 +50,7 @@ void SceneTest::Init()
 	unitsystem->Setup();
 	raycastingsystem->Setup();
 	collidersystem->Setup();
+	objectpoolsystem->Setup();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
@@ -169,6 +172,14 @@ void SceneTest::Init()
 	//	coordinator.GetComponent<Transform>(cube).position = glm::vec3(x, y, z);
 	//	coordinator.GetComponent<Transform>(cube).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 	//}
+
+	Entity unitPoolPrefab = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(unitPoolPrefab, Transform());
+	coordinator.AddComponent<Collider>(unitPoolPrefab, Collider());
+	coordinator.AddComponent<RenderData>(unitPoolPrefab, RenderData());
+	coordinator.AddComponent<Unit>(unitPoolPrefab, Unit());
+	coordinator.AddComponent<EntityState>(unitPoolPrefab, EntityState(false));
+	objectpoolsystem->AddToPool(Pool(Tag::UNIT, unitPoolPrefab, 100));
 
 	Entity cube = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(cube, Transform());
@@ -324,10 +335,12 @@ void SceneTest::Init()
 	unitsystem->Init();
 	raycastingsystem->Init();
 	collidersystem->Init();
+	objectpoolsystem->Init();
 	
 	canvasimageupdatesystem->SetUnitSystem(unitsystem);
 	collidersystem->SetRayCastSystem(raycastingsystem);
 	collidersystem->SetUnitSystem(unitsystem);
+	unitsystem->SetObjectPoolSystem(objectpoolsystem);
 }
 
 void SceneTest::EarlyUpdate(double dt)
@@ -362,6 +375,7 @@ void SceneTest::Update(double dt)
 	raycastingsystem->Update(dt);
 	collidersystem->Update(dt);
 	unitsystem->Update(dt);
+	objectpoolsystem->Update(dt);
 }
 
 void SceneTest::LateUpdate(double dt)

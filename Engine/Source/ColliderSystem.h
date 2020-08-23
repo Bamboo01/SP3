@@ -11,7 +11,6 @@
 
 extern Coordinator coordinator;
 
-#pragma once
 class ColliderSystem : public System
 {
 public:

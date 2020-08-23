@@ -68,6 +68,11 @@ void UnitSystem::Update(double dt)
     }
 }
 
+void UnitSystem::SetObjectPoolSystem(std::shared_ptr<ObjectPoolSystem> ptr)
+{
+    objectpoolsystem = ptr;
+}
+
 void UnitSystem::AddInactiveEntity(Entity entity)
 {
     auto& entityState = coordinator.GetComponent<EntityState>(entity);
@@ -167,7 +172,7 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
 
 Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, int level, Transform transform)
 {
-    Entity inactiveID = FetchInactiveUnit();
+    Entity inactiveID = objectpoolsystem->FetchEntityFromPool(Tag::UNIT);
 
     auto& UnitTransform = coordinator.GetComponent<Transform>(inactiveID);
     auto& UnitCollider = coordinator.GetComponent<Collider>(inactiveID);
@@ -228,7 +233,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
 
 Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
 {
-    Entity inactiveID = FetchInactiveUnit();
+    Entity inactiveID = objectpoolsystem->FetchEntityFromPool(Tag::UNIT);
 
     auto& UnitTransform = coordinator.GetComponent<Transform>(inactiveID);
     auto& UnitCollider = coordinator.GetComponent<Collider>(inactiveID);

@@ -5,5 +5,7 @@
 enum Tag
 {
 	DEFAULT,
+	UNIT,
+	PROJECTILE,
 	TOTAL_TAGS
 };
