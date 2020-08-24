@@ -38,7 +38,7 @@ struct TerrainData
 
         unsigned zCoord = (unsigned)((z + 0.5f) * terrainSize);
         unsigned xCoord = (unsigned)((x + 0.5f) * terrainSize);
-
-        return (((float)heightmap[zCoord * terrainSize + xCoord] / 256.f) * transform.scale.y) + transform.position.y;
+        float height = (((float)heightmap[zCoord * terrainSize + xCoord] / 256.f) * transform.scale.y) + transform.position.y;
+        return height;
     }
 };
