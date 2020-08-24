@@ -36,7 +36,6 @@ public:
 
     std::vector<Entity> selectedunitlist;
 
-
     glm::vec3 calculateMouseRay();
 
 private:
