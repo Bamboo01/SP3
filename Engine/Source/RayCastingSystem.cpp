@@ -1,6 +1,7 @@
 #include "RayCastingSystem.h"
 #include <iostream>
 #include "Application.h"
+#include "GridControllerSystem.h"
 
 void RayCastingSystem::Setup()
 {
@@ -84,6 +85,7 @@ void RayCastingSystem::callRayCollision()
     {
         auto& transform = coordinator.GetComponent<Transform>(entity);
         auto& ray = coordinator.GetComponent<RayCasting>(entity);
+        auto& camera = coordinator.GetComponent<Camera>(entity);
 
         for (int i = 0; i < 500; ++i)
         {
@@ -97,7 +99,7 @@ void RayCastingSystem::callRayCollision()
                     break;
                 }
             }
-
+            
             // If ray overlapped with terrain y
             for (auto const& terrainmap : TerrainEntities)
             {
@@ -151,6 +153,8 @@ void RayCastingSystem::callRayCollision()
                             }
                             unitSelection();
                         }
+
+                       
                     }
                 }
             }
@@ -161,6 +165,7 @@ void RayCastingSystem::callRayCollision()
             renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
             transform.position = glm::vec3(ray.RayEndPos.x, ray.RayEndPos.y, ray.RayEndPos.z);
         }
+
     }
 }
 

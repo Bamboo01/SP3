@@ -1,6 +1,11 @@
 #include "GridControllerSystem.h"
 
 
+void GridControllerSystem::getRaycastingEntity(Entity raycast)
+{
+	raycastentity = raycast;
+}
+
 void GridControllerSystem::CreateGrids()
 {
 	for (int x = 0; x < 20; ++x)
@@ -49,10 +54,14 @@ void GridControllerSystem::Update(float dt)
 {
 	if (Application::IsMousePressed(1))
 	{
+
 		int x = Application::GetWindowWidth();
 		int y = Application::GetWindowHeight();
 		CursorScreenPosition = glm::vec2(Application::mouse_current_x, Application::mouse_current_y);
-		CursorWorldPosition = glm::vec3(CursorScreenPosition.x * (1000 / x), 0, (y - CursorScreenPosition.y) * (1000 / y));
+		auto& raycaster = coordinator.GetComponent<RayCasting>(raycastentity);
+		CursorWorldPosition = raycaster.RayEndPos;
+		std::cout << CursorWorldPosition.x << ", " << CursorWorldPosition.z << std::endl;
+		/*CursorWorldPosition = glm::vec3(CursorScreenPosition.x * (1000 / x), 0, (y - CursorScreenPosition.y) * (1000 / y));*/
 	/*	CursorWorldPosition = glm::vec3(0, 2, 0);*/
 		CreateGrids();
 	}

@@ -514,6 +514,7 @@ void SceneTest::Init()
 		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 
+	gridcontrollersystem->getRaycastingEntity(maincamera);
 
 	/*Init all systems*/
 	camerasystem->Init();
