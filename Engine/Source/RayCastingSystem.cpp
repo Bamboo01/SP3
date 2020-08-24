@@ -210,8 +210,16 @@ glm::vec3 RayCastingSystem::calculateMouseRay()
 
 glm::vec2 RayCastingSystem::getNormalizedDeviceCoords(double mousex, double mousey)
 {
-	double x = (2 * mousex) / Application::GetWindowWidth() - 1;
-	double y = (2 * mousey) / Application::GetWindowHeight() - 1;
+    float offsetx = Application::GetWindowWidth() - Application::GetWindowHeight();
+    float offsety = Application::GetWindowHeight() - Application::GetWindowWidth();
+
+    if (Application::GetWindowWidth() > Application::GetWindowHeight())
+        offsety = 0;
+    else if (Application::GetWindowWidth() < Application::GetWindowHeight())
+        offsetx = 0;
+
+    double x = (2 * (mousex - (offsetx / 2))) / (Application::GetWindowWidth() - offsetx) - 1;
+    double y = (2 * (mousey - (offsety / 2))) / (Application::GetWindowHeight() - offsety) - 1;
 	return glm::vec2(x, -y);
 }
 
