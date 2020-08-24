@@ -7,7 +7,9 @@ Camera::Camera(
 	unsigned width, unsigned height,
 	float FOV,
 	CAMERA_TYPE type,
-	CAMERA_MODE mode)
+	CAMERA_MODE mode,
+	std::string vspath, std::string fspath
+)
 {
 	this->position = pos;
 	this->rotation = rotation;
@@ -37,6 +39,9 @@ Camera::Camera(
 		ProjectionMatrix = glm::perspective(FOV, ((float)viewWidth / (float)viewHeight), 0.1f, 1000.f);
 	}
 
+	vertex_file_path = vspath;
+	fragment_file_path = fspath;
+
 	FBO = nullptr;
 	PostProcessingShader = nullptr;
 }
@@ -48,22 +53,7 @@ Camera::Camera()
 
 Camera::~Camera()
 {
-	if (PostProcessingShader)
-	{
-		delete PostProcessingShader;
-		PostProcessingShader = nullptr;
-	}
-	if (FBO)
-	{
-		delete FBO;
-		FBO = nullptr;
-	}
-}
 
-void Camera::Init()
-{
-	FBO = new FrameBufferObject;
-	FBO->Init(viewWidth, viewHeight);
 }
 
 void Camera::UpdateAssignedTextures()
@@ -74,28 +64,6 @@ void Camera::UpdateAssignedTextures()
 		{
 			*a = FBO->GetFrame();
 		}
-	}
-}
-
-void Camera::assignPostProcessingShader(const char* vertex_file_path, const char* fragment_file_path)
-{
-	if (PostProcessingShader)
-	{
-		return;
-	}
-	PostProcessingShader = new Shader(vertex_file_path, fragment_file_path);
-}
-
-Shader* Camera::getPostProcessingShader()
-{
-	return PostProcessingShader;
-}
-
-void Camera::deletePostProcessingShader()
-{
-	if (PostProcessingShader)
-	{
-		delete PostProcessingShader;
 	}
 }
 
