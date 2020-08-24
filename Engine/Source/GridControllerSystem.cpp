@@ -60,7 +60,7 @@ void GridControllerSystem::Update(float dt)
 		CursorScreenPosition = glm::vec2(Application::mouse_current_x, Application::mouse_current_y);
 		auto& raycaster = coordinator.GetComponent<RayCasting>(raycastentity);
 		CursorWorldPosition = raycaster.rightClick;
-		CursorWorldPosition.x = -CursorWorldPosition.x;
+		//CursorWorldPosition.x = -CursorWorldPosition.x;
 		/*float tempX = CursorWorldPosition.x;
 		CursorWorldPosition.x = -CursorWorldPosition.z;
 		CursorWorldPosition.z = -tempX;*/
