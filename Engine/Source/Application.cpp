@@ -38,6 +38,7 @@ SceneManager* SceneManager::instance;
 Coordinator coordinator;
 Renderer renderer;
 
+
 //Define an error callback
 static void error_callback(int error, const char* description)
 {

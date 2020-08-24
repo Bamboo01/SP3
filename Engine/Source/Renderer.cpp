@@ -156,7 +156,7 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 {
 	//Buffer all your pipeline modules here
 
-	lightingManager.BufferLights();
+	lightingManager.BufferLights(camera);
 
 	if (useCameraShader)
 	{
@@ -202,8 +202,6 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(camera.getProjectionMatrix()));
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(camera.getViewMatrix()));
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-		lightingManager.BufferLights();
 
 		for (auto mesh : meshManager->meshList)
 		{

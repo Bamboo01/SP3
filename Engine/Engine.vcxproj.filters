@@ -119,6 +119,9 @@
     <ClCompile Include="Source\ObjectPoolSystem.cpp">
       <Filter>Auxillary\Systems\ObjectPoolSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\LightingSystem.cpp">
+      <Filter>Auxillary\Systems\LightingSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -346,6 +349,12 @@
     <ClInclude Include="Source\ObjectPoolSystem.h">
       <Filter>Auxillary\Systems\ObjectPoolSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\LightSource.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LightingSystem.h">
+      <Filter>Auxillary\Systems\LightingSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -464,6 +473,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\ObjectPoolSystem">
       <UniqueIdentifier>{ca070fcf-2e07-45ee-8976-1027bd8fb095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\LightingSystem">
+      <UniqueIdentifier>{c2890982-86bb-4824-bb6a-8f67e9058001}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

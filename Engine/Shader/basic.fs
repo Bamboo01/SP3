@@ -102,38 +102,40 @@ void main()
 
     for (int i = 0; i < numLights; i++)
     {
-            // Light direction
-			float spotlightEffect = 1;
-			vec3 lightDirection_cameraspace;
-			if(lights[i].type == 1) {
-				lightDirection_cameraspace = lights[i].position_cameraspace;
-			}
-			else if(lights[i].type == 2) {
-				lightDirection_cameraspace = lights[i].position_cameraspace - vertexPosition_cameraspace;
-				spotlightEffect = getSpotlightEffect(lights[i], lightDirection_cameraspace);
-			}
-			else {
-				lightDirection_cameraspace = lights[i].position_cameraspace - vertexPosition_cameraspace;
-			}
-			// Distance to the light
-			float distance = length( lightDirection_cameraspace );
+            // // Light direction
+			// float spotlightEffect = 1;
+			// vec3 lightDirection_cameraspace;
+			// if(lights[i].type == 1) {
+			// 	lightDirection_cameraspace = lights[i].position_cameraspace;
+			// }
+			// else if(lights[i].type == 2) {
+			// 	lightDirection_cameraspace = lights[i].position_cameraspace - vertexPosition_cameraspace;
+			// 	spotlightEffect = getSpotlightEffect(lights[i], lightDirection_cameraspace);
+			// }
+			// else {
+			// 	lightDirection_cameraspace = lights[i].position_cameraspace - vertexPosition_cameraspace;
+			// }
+			// // Distance to the light
+			// float distance = length( lightDirection_cameraspace );
 			
-			// Light attenuation
-			float attenuationFactor = getAttenuation(lights[i], distance);
+			// // Light attenuation
+			// float attenuationFactor = getAttenuation(lights[i], distance);
 
-			vec3 L = normalize( lightDirection_cameraspace );
-			float cosTheta = clamp( dot( N, L ), 0, 1 );
+			// vec3 L = normalize( lightDirection_cameraspace );
+			// float cosTheta = clamp( dot( N, L ), 0, 1 );
 			
-			vec3 R = reflect(-L, N);
-			float cosAlpha = clamp( dot( E, R ), 0, 1 );
+			// vec3 R = reflect(-L, N);
+			// float cosAlpha = clamp( dot( E, R ), 0, 1 );
 			
-			FragColor += 
+			// FragColor += 
 				
-				// Diffuse : "color" of the object
-				FragColor * vec4(material.kDiffuse, 1) * vec4(lights[i].color, 1) * lights[i].power * cosTheta * attenuationFactor * spotlightEffect +
+			// 	// Diffuse : "color" of the object
+			// 	FragColor * vec4(material.kDiffuse, 1) * vec4(lights[i].color, 1) * lights[i].power * cosTheta * attenuationFactor * spotlightEffect +
 				
-				// Specular : reflective highlight, like a mirror
-				vec4(material.kSpecular, 1) * vec4(lights[i].color, 1) * lights[i].power * pow(cosAlpha, material.kShininess) * attenuationFactor * spotlightEffect;
+			// 	// Specular : reflective highlight, like a mirror
+			// 	vec4(material.kSpecular, 1) * vec4(lights[i].color, 1) * lights[i].power * pow(cosAlpha, material.kShininess) * attenuationFactor * spotlightEffect;
+
+			FragColor = vec4(1,1,1,1);
 
     }
 

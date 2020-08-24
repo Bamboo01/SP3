@@ -41,9 +41,6 @@ private:
 	//Fonts
 	unsigned Consolas;
 
-	//Add-ons to the rendering pipeline
-	LightingManager lightingManager;
-
 	void addMaterial(Material* mat, Shader* shader = nullptr);
 	void assignMaterialtoMesh(Mesh* mesh, Material* material);
 	unsigned addFont(std::string filepath);
@@ -64,5 +61,8 @@ public:
 	//Canvas stuff
 	std::vector <std::pair<glm::mat4, unsigned>> CanvasImage;
 	std::vector <std::pair<glm::mat4, std::string>> CanvasText;
+
+	//Modules
+	LightingManager lightingManager;
 };
 

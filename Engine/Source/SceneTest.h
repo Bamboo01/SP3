@@ -16,6 +16,7 @@
 #include "GUITextSystem.h"
 #include "ParticleSystem.h"
 #include "ObjectPoolSystem.h"
+#include "LightingSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -62,7 +63,7 @@ public:
 	std::shared_ptr<GridControllerSystem> gridcontrollersystem;
 	std::shared_ptr<GUITextSystem> guitextsystem;
 	std::shared_ptr<ParticleSystem> particlesystem;
-
 	std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
+	std::shared_ptr<LightingSystem> lightingsystem;
 };
 

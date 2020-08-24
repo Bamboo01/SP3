@@ -25,8 +25,6 @@ enum PROCESS_TYPE
 
 class Shader
 {
-protected:
-	unsigned ID;
     GLuint LoadShaders(const char* vertex_file_path, const char* fragment_file_path) {
 
 		// Create the shaders
@@ -151,6 +149,8 @@ protected:
 	unsigned MaterialUniforms[TOTAL_UNIFORMS];
 
 public:
+	unsigned ID;
+
 	Shader(const char* vertex_file_path, const char* fragment_file_path, PROCESS_TYPE type = NORMAL_PROCESS)
 		: processtype(NORMAL_PROCESS)
 	{ 

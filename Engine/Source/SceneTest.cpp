@@ -23,6 +23,7 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<ObjectPoolSystem>();
 //	coordinator.RegisterComponent<GridControllerSytem>();
 	coordinator.RegisterComponent<ParticleSystemParameters>();
+	coordinator.RegisterComponent<LightSource>();
 	
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
@@ -35,6 +36,7 @@ void SceneTest::Init()
 	objectpoolsystem = coordinator.RegisterSystem<ObjectPoolSystem>();
 	//gridcontrollersystem = coordinator.RegisterSystem<GridControllerSytem>();
 	gridcontrollersystem = coordinator.RegisterSystem<GridControllerSystem>();
+	lightingsystem = coordinator.RegisterSystem<LightingSystem>();
 
 	canvasimageupdatesystem = coordinator.RegisterSystem<CanvasImageUpdateSystem>();
 	raycastingsystem = coordinator.RegisterSystem<RayCastingSystem>();
@@ -59,6 +61,7 @@ void SceneTest::Init()
 	guitextsystem->Setup();
 	particlesystem->Setup();
 	objectpoolsystem->Setup();
+	lightingsystem->Setup();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
@@ -105,6 +108,7 @@ void SceneTest::Init()
 			glm::vec3(10.f, 10.f, 1.f), glm::vec3(10.f, 10.f, 1.f ),
 			glm::vec3(0.f), glm::vec3(0.f),
 			glm::vec3(0.f), glm::vec3(0.f)));
+	coordinator.AddComponent<LightSource>(axes, LightSource());
 
 	Entity terrain = coordinator.CreateEntity();
 	coordinator.AddComponent<RenderData>(terrain, RenderData(renderer.getMesh(GEO_TERRAIN), false));
@@ -112,7 +116,7 @@ void SceneTest::Init()
 	coordinator.GetComponent<Transform>(terrain).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
 	coordinator.GetComponent<Transform>(terrain).scale = glm::vec3(2000, 350, 2000);
 	coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
-	coordinator.AddComponent<EntityState>(terrain, EntityState());
+	coordinator.AddComponent<EntityState>(terrain, EntityState(false));
 
 	//Entity testunit = coordinator.CreateEntity();
 	//coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 1000));
@@ -550,6 +554,8 @@ void SceneTest::Init()
 	raycastingsystem->SetTerrainEntities(terrainsystem->m_Entities);
 	particlesystem->Init();
 	objectpoolsystem->Init();
+
+	lightingsystem->Init();
 	
 	collidersystem->SetUnitSystem(unitsystem);
 	unitsystem->SetObjectPoolSystem(objectpoolsystem);
@@ -572,6 +578,7 @@ void SceneTest::EarlyUpdate(double dt)
 
 void SceneTest::Update(double dt)
 {
+	lightingsystem->Update(dt);
 	transformsystem->Update(dt);
 	camerasystem->Update(dt);
 	cameracontrollersystem->Update(dt);

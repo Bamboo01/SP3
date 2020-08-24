@@ -16,16 +16,29 @@ void LightingManager::InitLights(std::vector<Shader*> shaders)
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void LightingManager::BufferLights()
+void LightingManager::BufferLights(Camera camera)
 {
 	glBindBuffer(GL_UNIFORM_BUFFER, LightUBO);
-	glBufferData(GL_UNIFORM_BUFFER, MAX_LIGHTS * sizeof(Light), NULL, GL_STATIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, MAX_LIGHTS * sizeof(Light) + sizeof(int), NULL, GL_STATIC_DRAW);
 	std::vector<Light> activelights;
-	for (auto light : lights)
+	for (auto& light : lights)
 	{
+		if (light.second.type == Light::LIGHT_DIRECTIONAL)
+		{
+			light.second.position = glm::vec3(camera.ViewMatrix * glm::vec4(light.second.position, 0));
+		}
+		else if (light.second.type == Light::LIGHT_SPOT)
+		{
+			light.second.position = glm::vec3(camera.ViewMatrix * glm::vec4(light.second.position, 1));
+			light.second.spotDirection = glm::vec3(camera.ViewMatrix * glm::vec4(light.second.spotDirection, 0));
+		}
+		else
+		{
+			light.second.position = glm::vec3(camera.ViewMatrix * glm::vec4(light.second.position, 1));
+		}
 		activelights.push_back(light.second);
 	}
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, activelights.size() * sizeof(Light), &activelights);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, activelights.size() * sizeof(Light), &activelights[0]);
 	glBufferSubData(GL_UNIFORM_BUFFER, MAX_LIGHTS * sizeof(Light), sizeof(int), &numLights);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
@@ -69,7 +82,7 @@ void LightingManager::returnLightByID(unsigned ID)
 	numLights--;
 }
 
-Light LightingManager::getLightByID(unsigned ID)
+Light& LightingManager::getLightByID(unsigned ID)
 {
 	assert(ID < MAX_LIGHTS, "Trying to get an invalid light ID!");
 	return lights.at(ID);

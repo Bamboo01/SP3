@@ -5,6 +5,7 @@
 #include <map>
 #include <iostream>
 #include "Shader.h"
+#include "Camera.h"
 
 #define MAX_LIGHTS 32
 
@@ -21,7 +22,7 @@ public:
 	~LightingManager();
 	unsigned getNewLightID();
 	void returnLightByID(unsigned ID);
-	Light getLightByID(unsigned ID);
+	Light& getLightByID(unsigned ID);
 	void InitLights(std::vector<Shader*> shaders);
-	void BufferLights();
+	void BufferLights(Camera camera);
 };
