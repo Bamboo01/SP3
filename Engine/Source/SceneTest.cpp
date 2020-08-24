@@ -114,14 +114,14 @@ void SceneTest::Init()
 	coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
 	coordinator.AddComponent<EntityState>(terrain, EntityState());
 
-	//Entity testunit = coordinator.CreateEntity();
-	//coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 1000));
-	//coordinator.AddComponent<RenderData>(testunit, RenderData(renderer.getMesh(GEO_GRID), false));
-	//coordinator.AddComponent<Transform>(testunit, Transform());
-	//coordinator.GetComponent<Transform>(testunit).position = glm::vec3(10, 15, 10);
-	//coordinator.GetComponent<Transform>(testunit).scale = glm::vec3(30, 30, 30);
-	//coordinator.GetComponent<Transform>(testunit).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
-	//coordinator.AddComponent<EntityState>(testunit, EntityState());
+	Entity testunit = coordinator.CreateEntity();
+	coordinator.AddComponent<Unit>(testunit, Unit("Test", 0, 0, 0, 0, 0, Unit::WALL, 1000));
+	coordinator.AddComponent<RenderData>(testunit, RenderData(renderer.getMesh(GEO_GRID), false));
+	coordinator.AddComponent<Transform>(testunit, Transform());
+	coordinator.GetComponent<Transform>(testunit).position = glm::vec3(-50, 15, 10);
+	coordinator.GetComponent<Transform>(testunit).scale = glm::vec3(30, 30, 30);
+	coordinator.GetComponent<Transform>(testunit).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
+	coordinator.AddComponent<EntityState>(testunit, EntityState());
 	Entity testunit2 = coordinator.CreateEntity();
 	coordinator.AddComponent<Unit>(testunit2, Unit("Test2", 0, 0, 0, 0, 0, Unit::WALL, 1000));
 	coordinator.AddComponent<RenderData>(testunit2, RenderData(renderer.getMesh(GEO_GRID), false));
@@ -130,24 +130,6 @@ void SceneTest::Init()
 	coordinator.GetComponent<Transform>(testunit2).scale = glm::vec3(30, 30, 30);
 	coordinator.GetComponent<Transform>(testunit2).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
 	coordinator.AddComponent<EntityState>(testunit2, EntityState());
-
-	Entity testunit3 = coordinator.CreateEntity();
-	coordinator.AddComponent<Unit>(testunit3, Unit("Test3", 0, 0, 0, 0, 0, Unit::TANK, 0));
-	coordinator.AddComponent<RenderData>(testunit3, RenderData(renderer.getMesh(GEO_GRID), false));
-	coordinator.AddComponent<Transform>(testunit3, Transform());
-	coordinator.GetComponent<Transform>(testunit3).position = glm::vec3(100, 15, 150);
-	coordinator.GetComponent<Transform>(testunit3).scale = glm::vec3(5, 5, 5);
-	coordinator.GetComponent<Transform>(testunit3).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
-	coordinator.AddComponent<EntityState>(testunit3, EntityState());
-
-	Entity testunit4 = coordinator.CreateEntity();
-	coordinator.AddComponent<Unit>(testunit4, Unit("Test4", 0, 0, 0, 0, 0, Unit::TANK, 0));
-	coordinator.AddComponent<RenderData>(testunit4, RenderData(renderer.getMesh(GEO_GRID), false));
-	coordinator.AddComponent<Transform>(testunit4, Transform());
-	coordinator.GetComponent<Transform>(testunit4).position = glm::vec3(180, 15, -100);
-	coordinator.GetComponent<Transform>(testunit4).scale = glm::vec3(5, 5, 5);
-	coordinator.GetComponent<Transform>(testunit4).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
-	coordinator.AddComponent<EntityState>(testunit4, EntityState());
 
 	//Math::InitRNG();
 	//for (int i = 0; i < 400; i++)
@@ -579,14 +561,13 @@ void SceneTest::Update(double dt)
 	canvasimagesystem->Update(dt);
 	canvastextsystem->Update(dt);
 	entitystatesystem->Update(dt);
-	//gridcontrollersystem->Update(dt);
-	gridcontrollersystem->Update(dt);
 	if (Application::IsKeyPressed('3'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	canvasimageupdatesystem->Update(dt);
 	raycastingsystem->Update(dt);
+	gridcontrollersystem->Update(dt);
 	collidersystem->Update(dt);
 	unitsystem->Update(dt);
 	guitextsystem->Update(dt);
