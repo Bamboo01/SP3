@@ -25,11 +25,3 @@ public:
 	void InitLights(std::vector<Shader*> shaders);
 	void BufferLights();
 };
-
-/*
-layout (std140) uniform LightBlock
-{
-	Light lights[MAX_LIGHTS];
-	int numLights;					
-};
-*/

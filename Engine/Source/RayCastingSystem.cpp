@@ -82,7 +82,6 @@ void RayCastingSystem::callRayCollision()
 
     for (auto const& entity : entityset1)
     {
-        auto& transform = coordinator.GetComponent<Transform>(entity);
         auto& ray = coordinator.GetComponent<RayCasting>(entity);
 
         for (int i = 0; i < 500; ++i)
@@ -159,7 +158,6 @@ void RayCastingSystem::callRayCollision()
             model = glm::translate(model, ray.RayEndPos);
             model = glm::scale(model, glm::vec3(0.1f));
             renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
-            transform.position = glm::vec3(ray.RayEndPos.x, ray.RayEndPos.y, ray.RayEndPos.z);
         }
     }
 }

@@ -110,7 +110,7 @@ void SceneTest::Init()
 	coordinator.AddComponent<RenderData>(terrain, RenderData(renderer.getMesh(GEO_TERRAIN), false));
 	coordinator.AddComponent<Transform>(terrain, Transform());
 	coordinator.GetComponent<Transform>(terrain).type = TRANSFORM_TYPE::DYNAMIC_TRANSFORM;
-	coordinator.GetComponent<Transform>(terrain).scale = glm::vec3(400, 35, 400);
+	coordinator.GetComponent<Transform>(terrain).scale = glm::vec3(2000, 350, 2000);
 	coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
 	coordinator.AddComponent<EntityState>(terrain, EntityState());
 
