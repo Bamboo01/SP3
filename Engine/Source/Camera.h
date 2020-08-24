@@ -21,7 +21,6 @@ enum CAMERA_MODE
 class Camera
 {
 private:
-	Shader* PostProcessingShader;
 	std::vector<unsigned*> targetTexture;
 	
 public:
@@ -35,10 +34,17 @@ public:
 	glm::mat4 ViewMatrix;
 	int viewWidth;
 	int viewHeight;
+	float FOV;
+
+	std::string vertex_file_path;
+	std::string fragment_file_path;
+
 	CAMERA_TYPE type;
 	CAMERA_MODE mode;
+
+	//These have to be intialised inside the camera system!!!
+	Shader* PostProcessingShader;
 	FrameBufferObject* FBO;
-	float FOV;
 
 	Camera(
 		const glm::vec3& pos,
@@ -46,14 +52,11 @@ public:
 		unsigned width, unsigned height,
 		float FOV,
 		CAMERA_TYPE type,
-		CAMERA_MODE mode);
+		CAMERA_MODE mode,
+		std::string vspath = "", std::string fspath = ""
+	);
 	Camera();
 	~Camera();
-
-	void Init();
-	void assignPostProcessingShader(const char* vertex_file_path, const char* fragment_file_path);
-	Shader* getPostProcessingShader();
-	void deletePostProcessingShader();
 
 	void UpdateAssignedTextures();
 	void assignTargetTexture(unsigned* target);

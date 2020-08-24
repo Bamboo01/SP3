@@ -16,7 +16,19 @@ void CameraSystem::Init()
 	{
 		auto& camera = coordinator.GetComponent<Camera>(entity);
 		camera.target = glm::vec3(0, 0, 0);
-		camera.Init();
+		
+		camera.FBO = new FrameBufferObject;
+		camera.FBO->Init(camera.viewWidth, camera.viewHeight);
+		FBOList.push_back(camera.FBO);
+
+		if (
+			camera.fragment_file_path.size() > 0 &&
+			camera.vertex_file_path.size() > 0
+			)
+		{
+			camera.PostProcessingShader = new Shader(camera.vertex_file_path.c_str(), camera.fragment_file_path.c_str());
+			shaderList.push_back(camera.PostProcessingShader);
+		}
 	}
 }
 
@@ -55,7 +67,7 @@ void CameraSystem::Render()
 	for (auto const& entity : m_Entities)
 	{
 		auto& camera = coordinator.GetComponent<Camera>(entity);
-		bool useShader = camera.getPostProcessingShader();
+		bool useShader = (camera.PostProcessingShader);
 		renderer.Render(camera, useShader);
 	}
 	renderer.RenderScreenQuad();

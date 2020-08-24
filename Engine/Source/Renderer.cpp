@@ -174,7 +174,7 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(camera.getViewMatrix()));
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-		if (!camera.getPostProcessingShader())
+		if (camera.PostProcessingShader)
 		{
 			std::cout << "Camera has no shader attached!" << std::endl;
 			return;
@@ -182,8 +182,8 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 
 		for (auto mesh : meshManager->meshList)
 		{
-			camera.getPostProcessingShader()->UseShader();
-			camera.getPostProcessingShader()->UpdateShader(nullptr);
+			camera.PostProcessingShader->UseShader();
+			camera.PostProcessingShader->UpdateShader(nullptr);
 			mesh->Render();
 		}
 	}
