@@ -22,8 +22,7 @@ public:
 	void PrintTree(QuadTree* quad);
 
 	QuadTree* GetNearbyEntityQuad(Entity entity);
-	void AddEntity(Entity entity);
-	void DeleteEntity(Entity entity, QuadTree* quad);
+	std::vector<Entity> GetEntityInQuad(QuadTree* quad);
 
 	void SortQuad(QuadTree* quad);
 	void SplitQuad(QuadTree* quad);

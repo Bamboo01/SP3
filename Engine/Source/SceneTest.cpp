@@ -556,6 +556,7 @@ void SceneTest::Init()
 	quadtreesystem->Init();
 	
 	collidersystem->SetUnitSystem(unitsystem);
+	collidersystem->SetQuadTreeSystem(quadtreesystem);
 	unitsystem->SetObjectPoolSystem(objectpoolsystem);
 	unitsystem->SetQuadTreeSystem(quadtreesystem);
 }
@@ -592,7 +593,6 @@ void SceneTest::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	canvasimageupdatesystem->Update(dt);
 	raycastingsystem->Update(dt);
-	collidersystem->Update(dt);
 	unitsystem->Update(dt);
 	guitextsystem->Update(dt);
 
@@ -609,6 +609,7 @@ void SceneTest::Update(double dt)
 	objectpoolsystem->Update(dt);
 	quadtreesystem->SetUnitSystemEntities(unitsystem->m_Entities);
 	quadtreesystem->Update(dt);
+	collidersystem->Update(dt);
 }
 
 void SceneTest::LateUpdate(double dt)
@@ -661,18 +662,46 @@ void SceneTest::Exit()
 
 void SceneTest::UpdateImGui()
 {
-	UpdateImGuiUnitSpawn();
-	UpdateImGuiEntityList();
+	static bool unitSpawner = false;
+	static bool entityList = false;
+	static bool raycastInfo = false;
+	
+	if (unitSpawner)
+	{
+		UpdateImGuiUnitSpawn();
+	}
+
+	if (entityList)
+	{
+		UpdateImGuiEntityList();
+	}
+	
+	if (raycastInfo)
+	{
+		UpdateImGuiRaycast();
+	}
 
 	ImGui::Begin("Main");
 	
+	ImGui::Checkbox(" Unit Spawn Menu", &unitSpawner);
+	ImGui::Checkbox(" Entity List", &entityList);
+	ImGui::Checkbox(" Raycast Info", &raycastInfo);
+
 	if (ImGui::Button("Print Quad Tree"))
 	{
 		quadtreesystem->PrintTree(quadtreesystem->root);
 	}
 
 	ImGui::End();
+}
 
+void SceneTest::UpdateImGuiRaycast()
+{
+	ImGui::Begin("Cursor");
+	ImGui::Text("X: %f", raycastingsystem->cursorOnHeightMapPosition.x);
+	ImGui::SameLine();
+	ImGui::Text("Y: %f", raycastingsystem->cursorOnHeightMapPosition.y);
+	ImGui::End();
 }
 
 void SceneTest::UpdateImGuiUnitSpawn()

@@ -88,6 +88,12 @@ QuadTree* QuadTreeSystem::GetNearbyEntityQuad(Entity entity)
 
 	while (true)
 	{
+		if (currentQuad->TopL == nullptr || currentQuad->TopR == nullptr || currentQuad->BotL == nullptr || currentQuad->BotR == nullptr)
+		{
+			searchedQuad = currentQuad;
+			break;
+		}
+
 		QUAD_TYPE nextQuad = findEntityQuad(entity, currentQuad);
 
 		switch (nextQuad)
@@ -105,19 +111,14 @@ QuadTree* QuadTreeSystem::GetNearbyEntityQuad(Entity entity)
 			currentQuad = currentQuad->BotR;
 			break;
 		}
-
-		if (currentQuad->TopL == nullptr || currentQuad->TopR == nullptr || currentQuad->BotL == nullptr || currentQuad->BotR == nullptr)
-		{
-			searchedQuad = currentQuad;
-			break;
-		}
 	}
 
-	return nullptr;
+	return searchedQuad;
 }
 
-void QuadTreeSystem::DeleteEntity(Entity entity, QuadTree* quad)
+std::vector<Entity> QuadTreeSystem::GetEntityInQuad(QuadTree* quad)
 {
+	return quad->EntityList;
 }
 
 void QuadTreeSystem::SortQuad(QuadTree* quad)
@@ -152,11 +153,9 @@ void QuadTreeSystem::SortQuad(QuadTree* quad)
 			quad->BotR->EntityList.push_back(tmpEntity);
 			break;
 		default:
-			std::cout << tmpEntity << "is an edge case" << std::endl;
+			std::cout << "Entity(" << tmpEntity << ") was in root quad but didn't get added into child quads, it could be out of specified x and z position(?)" << std::endl;
 			break;
 		}
-
-
 	}
 
 	SortQuad(quad->TopL);
@@ -209,17 +208,21 @@ QUAD_TYPE QuadTreeSystem::findEntityQuad(Entity entity, QuadTree* quad)
 {
 	auto& entityTransform = coordinator.GetComponent<Transform>(entity);
 
-	glm::vec2 TopL_TopBoundary = quad->TopL->topBoundary;
-	glm::vec2 TopL_BottomBoundary = quad->TopL->bottomBoundary;
+	float half_Width = quad->width / 2;
+	float half_Height = quad->height / 2;
+	float additionalOffset = 0.001f;
 
-	glm::vec2 TopR_TopBoundary = quad->TopR->topBoundary;
-	glm::vec2 TopR_BottomBoundary = quad->TopR->bottomBoundary;
+	glm::vec2 TopL_TopBoundary = quad->topBoundary;
+	glm::vec2 TopL_BottomBoundary = glm::vec2(TopL_TopBoundary.x + half_Width - additionalOffset, TopL_TopBoundary.y - half_Height - additionalOffset);
 
-	glm::vec2 BotL_TopBoundary = quad->BotL->topBoundary;
-	glm::vec2 BotL_BottomBoundary = quad->BotL->bottomBoundary;
+	glm::vec2 TopR_TopBoundary = glm::vec2(quad->topBoundary.x + half_Width, quad->topBoundary.y);
+	glm::vec2 TopR_BottomBoundary = glm::vec2(TopR_TopBoundary.x + half_Width - additionalOffset, TopR_TopBoundary.y - half_Height - additionalOffset);
 
-	glm::vec2 BotR_TopBoundary = quad->BotR->topBoundary;
-	glm::vec2 BotR_BottomBoundary = quad->BotR->bottomBoundary;
+	glm::vec2 BotL_TopBoundary = glm::vec2(quad->topBoundary.x, quad->topBoundary.y - half_Height);
+	glm::vec2 BotL_BottomBoundary = glm::vec2(BotL_TopBoundary.x + half_Width - additionalOffset, BotL_TopBoundary.y - half_Height - additionalOffset);
+
+	glm::vec2 BotR_TopBoundary = glm::vec2(quad->topBoundary.x + half_Width, quad->topBoundary.y - half_Height);
+	glm::vec2 BotR_BottomBoundary = glm::vec2(BotR_TopBoundary.x + half_Width - additionalOffset, BotR_TopBoundary.y - half_Height - additionalOffset);
 
 	if (entityTransform.position.x >= TopL_TopBoundary.x && entityTransform.position.x <= TopL_BottomBoundary.x && entityTransform.position.z >= TopL_BottomBoundary.y && entityTransform.position.z <= TopL_TopBoundary.y) // If GO is in UpL
 	{

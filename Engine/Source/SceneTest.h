@@ -45,6 +45,7 @@ public:
 	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
 
 	void UpdateImGui();
+	void UpdateImGuiRaycast();
 	void UpdateImGuiUnitSpawn();
 	void UpdateImGuiEntityList();
 
