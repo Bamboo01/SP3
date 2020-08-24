@@ -125,6 +125,7 @@ void RayCastingSystem::callRayCollision()
                             maxZ = 0;
                             std::cout << " Cleared! " << std::endl;
                             selectedunitlist.clear();
+                            ray.selectedunits.clear();
                             bLButtonState = true;
                             firstposclick = ray.RayEndPos;
                         }
@@ -156,6 +157,7 @@ void RayCastingSystem::callRayCollision()
                                 maxZ = firstposclick.z;
                             }
                             unitSelection();
+                            ray.selectedunits = selectedunitlist;
                         }
 
                        

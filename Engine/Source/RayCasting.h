@@ -12,6 +12,8 @@ struct RayCasting
 	glm::vec3 RayEndPos;
 	glm::vec3 rightClick;
 
+	std::vector<Entity> selectedunits;
+
 	RayCasting() {}
 
 	void Init(Camera& cam)
