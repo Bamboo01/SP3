@@ -105,7 +105,7 @@ void RayCastingSystem::callRayCollision()
             {
                 auto& terrain = coordinator.GetComponent<TerrainData>(terrainmap);
 
-                if (ray.RayEndPos.y < terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z))
+                if (fabs(ray.RayEndPos.y - terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z)) < 2.f)
                 {
                    // std::cout << "Overlapped with Terrain" << std::endl;
 
