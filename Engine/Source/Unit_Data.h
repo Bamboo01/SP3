@@ -56,6 +56,9 @@ public:
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 0.f;
+		generationdelay = 0;
 	}
 
 	~UNormal() {}
@@ -109,6 +112,9 @@ public:
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 0.f;
+		generationdelay = 0;
 	}
 
 	~URange() {}
@@ -162,6 +168,9 @@ public:
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 0.f;
+		generationdelay = 0;
 	}
 
 	~UTank() {}
@@ -215,6 +224,9 @@ public:
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 0.f;
+		generationdelay = 0;
 	}
 
 	~UTower() {}
@@ -268,6 +280,9 @@ public:
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 0.f;
+		generationdelay = 0;
 	}
 
 	~UWall() {}
@@ -321,19 +336,22 @@ public:
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 0.f;
+		generationdelay = 0;
 	}
 
 	~UNexus() {}
 };
 
-class UGenerator : public Unit
+class UGenerator1 : public Unit
 {
 public:
-	UGenerator() {}
+	UGenerator1() {}
 
-	UGenerator(int unitLevel, UnitFaction unitFact)
+	UGenerator1(int unitLevel, UnitFaction unitFact)
 	{
-		std::string unitName = "Generator";
+		std::string unitName = "Generator1";
 
 		float baseHealth = 500;
 		float healthGrowth = 100;
@@ -366,7 +384,7 @@ public:
 		colliderScale = collisionScale;
 		delay = 0.0;
 		target = UINT_MAX;
-		unitType = GENERATOR;
+		unitType = GENERATOR1;
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
@@ -374,9 +392,68 @@ public:
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 10.f;
+		generationdelay = 0;
 	}
 
-	~UGenerator() {}
+	~UGenerator1() {}
+};
+
+class UGenerator2 : public Unit
+{
+public:
+	UGenerator2() {}
+
+	UGenerator2(int unitLevel, UnitFaction unitFact)
+	{
+		std::string unitName = "Generator2";
+
+		float baseHealth = 500;
+		float healthGrowth = 100;
+		float additionalHealthOffset = 0.7025;
+		float multiplierHealthOffset = 0.0175;
+
+		float baseDefense = 0;
+		float defenseGrowth = 0;
+		float additionalDefenseOffset = 0.7025;
+		float multiplierDefenseOffset = 0.0175;
+
+		float baseDamage = 0;
+		float damageGrowth = 0;
+		float additionalDamageOffset = 0.7025;
+		float multiplierDamageOffset = 0.0175;
+
+		float baseAttackSpeed = 1.0;
+		float baseAttackRange = 1.0;
+		float unitMass = -1;
+		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+
+		name = unitName;
+		level = unitLevel;
+		health = baseHealth + healthGrowth * (unitLevel - 1) * (additionalHealthOffset + multiplierHealthOffset * (unitLevel - 1));
+		defense = baseDefense + defenseGrowth * (unitLevel - 1) * (additionalDefenseOffset + multiplierDefenseOffset * (unitLevel - 1));
+		damage = baseDamage + damageGrowth * (unitLevel - 1) * (additionalDamageOffset + multiplierDamageOffset * (unitLevel - 1));
+		attackRange = baseAttackRange;
+		attackSpeed = baseAttackSpeed;
+		mass = unitMass;
+		colliderScale = collisionScale;
+		delay = 0.0;
+		target = UINT_MAX;
+		unitType = GENERATOR2;
+		unitFaction = unitFact;
+		originUnit = UINT_MAX;
+		targetUnit = UINT_MAX;
+		FlowFieldCost = 0;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 10.f;
+		generationdelay = 0;
+	}
+
+	~UGenerator2() {}
 };
 
 class ULab : public Unit
@@ -427,6 +504,9 @@ public:
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 0.f;
+		generationdelay = 0;
 	}
 
 	~ULab() {}
@@ -439,7 +519,7 @@ public:
 
 	UProjectile(Entity attacking, Entity targeted)
 	{
-		std::string unitName = "Lab";
+		std::string unitName = "Projectile";
 
 		float baseHealth = 100.0f;
 
@@ -472,6 +552,9 @@ public:
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 0.f;
+		generationdelay = 0;
 	}
 
 	~UProjectile() {}

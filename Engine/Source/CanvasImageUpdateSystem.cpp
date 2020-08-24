@@ -1,6 +1,19 @@
 #include "CanvasImageUpdateSystem.h"
 #include "Application.h"
 
+CanvasImageUpdateSystem::~CanvasImageUpdateSystem()
+{
+	glDeleteTextures(1, &nexustexture);
+	glDeleteTextures(1, &labtexture);
+	glDeleteTextures(1, &generator1texture);
+	glDeleteTextures(1, &generator2texture);
+	glDeleteTextures(1, &towertexture);
+	glDeleteTextures(1, &walltexture);
+	glDeleteTextures(1, &normalunittexture);
+	glDeleteTextures(1, &rangeunittexture);
+	glDeleteTextures(1, &tankunittexture);
+}
+
 void CanvasImageUpdateSystem::Setup()
 {
 	Signature signature;
@@ -11,7 +24,7 @@ void CanvasImageUpdateSystem::Setup()
 	coordinator.SetSystemSignature<CanvasImageUpdateSystem>(signature);
 }
 
-void CanvasImageUpdateSystem::Init()
+void CanvasImageUpdateSystem::Init(std::set<Entity>* controllerentity)
 {
 	timer = 0;
 	clickdelay = 0;
@@ -21,6 +34,19 @@ void CanvasImageUpdateSystem::Init()
 	BuildingUIopen = false;
 	renderonce = false;
 	renderamount = 0;
+	increment = 0;
+
+	this->controllerentity = controllerentity;
+
+	nexustexture = LoadTGA("Images//nexus.tga");
+	labtexture = LoadTGA("Images//lab.tga");
+	generator1texture = LoadTGA("Images//generator1.tga");
+	generator2texture = LoadTGA("Images//generator2.tga");
+	towertexture = LoadTGA("Images//tower.tga");
+	walltexture = LoadTGA("Images//wall.tga");
+	normalunittexture = LoadTGA("Images//normal.tga");
+	rangeunittexture = LoadTGA("Images//range.tga");
+	tankunittexture = LoadTGA("Images//tank.tga");
 
 	for (auto const& entity : m_Entities)
 	{
@@ -51,13 +77,8 @@ void CanvasImageUpdateSystem::Update(double dt)
 		// Check for clicking on clickable quad (Buttons)
 		if (canvasupdate.clicktype == CanvasImageUpdate::CLICKABLE && Application::IsMousePressed(0) && CollideWithCanvas(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y) && entitystate.active == true && clickdelay <= timer)
 		{
-			clickdelay = timer + 0.3;
-			if (canvasupdate.buttontype == CanvasImageUpdate::GENERATORBUTTON)
-			{
-				// When click, collect resources
-				std::cout << "Generator Click!" << std::endl;
-			}
-			else if (canvasupdate.buttontype == CanvasImageUpdate::LABBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEUNITBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON)
+			clickdelay = timer + 0.2;
+			if (canvasupdate.buttontype == CanvasImageUpdate::LABBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEUNITBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON)
 			{
 				std::cout << "Lab/Nexus Click!" << std::endl;
 				for (auto const& entity2 : ReferenceEntity)
@@ -111,7 +132,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 							BuildingUIopen = false;
 							auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
 							auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
-							if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL || canvasupdate3.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI)
+							if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL || canvasupdate3.uniquetype == CanvasImageUpdate::NEXUSBUILDINGUI || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSGENERATOR1 || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
 							{
 								entitystate3.active = false;
 							}
@@ -176,7 +197,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 							{
 								auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
 								auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
-								if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL)
+								if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSGENERATOR1 || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
 								{
 									entitystate3.active = true;
 								}
@@ -193,7 +214,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 							{
 								auto& canvasupdate3 = coordinator.GetComponent<CanvasImageUpdate>(entity3);
 								auto& entitystate3 = coordinator.GetComponent<EntityState>(entity3);
-								if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL)
+								if (canvasupdate3.buttontype == CanvasImageUpdate::NEXUSBUILDING || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSWALL || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSGENERATOR1 || canvasupdate3.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
 								{
 									entitystate3.active = false;
 								}
@@ -202,47 +223,96 @@ void CanvasImageUpdateSystem::Update(double dt)
 					}
 				}
 			}
-			// Lab unit button clicks to level up unit
-			else if (canvasupdate.buttontype == CanvasImageUpdate::LABNORMALUNIT)
+
+			for (auto const& control : *controllerentity)
 			{
-				// Add code to Level up normal unit (Check whether is there enough resources)
-				std::cout << "Normal unit leveled up" << std::endl;
-			}
-			else if (canvasupdate.buttontype == CanvasImageUpdate::LABTANKUNIT)
-			{
-				// Add code to Level up tank unit (Check whether is there enough resources)
-				std::cout << "Tank unit leveled up" << std::endl;
-			}
-			else if (canvasupdate.buttontype == CanvasImageUpdate::LABRANGEUNIT)
-			{
-				// Add code to Level up range unit (Check whether is there enough resources)
-				std::cout << "Range unit leveled up" << std::endl;
-			}
-			// Nexus unit button clicks to create unit
-			else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSNORMALUNIT)
-			{
-				// Add code to spawn normal unit (Check whether is there enough resources)
-				std::cout << "Normal unit created" << std::endl;
-			}
-			else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSTANKUNIT)
-			{
-				// Add code to spawn tank unit (Check whether is there enough resources)
-				std::cout << "Tank unit created" << std::endl;
-			}
-			else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT)
-			{
-				// Add code to spawn range unit (Check whether is there enough resources)
-				std::cout << "Range unit created" << std::endl;
-			}
-			else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSBUILDING)
-			{
-				// Add code to spawn building (Check whether is there enough resources)
-				std::cout << "Tower created" << std::endl;
-			}
-			else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSWALL)
-			{
-				// Add code to spawn wall (Check whether is there enough resources)
-				std::cout << "Wall created" << std::endl;
+				auto& controller = coordinator.GetComponent<Controller>(control);
+				if (controller.controllertype == Controller::PLAYER)
+				{
+					for (auto entity2 : selectedunitList)
+					{
+						auto& unit = coordinator.GetComponent<Unit>(entity2);
+						if (canvasupdate.buttontype == CanvasImageUpdate::GENERATOR1BUTTON && unit.unitType == Unit::GENERATOR1 && unit.resourcesgenerated != 0)
+						{
+							// When click, collect resources
+							controller.resource1 += unit.resourcesgenerated;
+							unit.resourcesgenerated = 0;
+						}
+						else if (canvasupdate.buttontype == CanvasImageUpdate::GENERATOR2BUTTON && unit.unitType == Unit::GENERATOR2 && unit.resourcesgenerated != 0)
+						{
+							// When click, collect resources
+							controller.resource2 += unit.resourcesgenerated;
+							unit.resourcesgenerated = 0;
+						}
+					}
+					// Lab unit button clicks to level up unit
+					if (canvasupdate.buttontype == CanvasImageUpdate::LABNORMALUNIT)
+					{
+						if (controller.resource1 >= controller.normalunitcost)
+						{
+							// Add code to Level up normal unit (Check whether is there enough resources)
+							std::cout << "Normal unit leveled up" << std::endl;
+							controller.normalunitlevel += 1;
+							controller.resource1 -= controller.normalunitcost;
+						}
+					}
+					else if (canvasupdate.buttontype == CanvasImageUpdate::LABTANKUNIT)
+					{
+						if (controller.resource1 >= controller.tankunitcost)
+						{
+							// Add code to Level up tank unit (Check whether is there enough resources)
+							std::cout << "Tank unit leveled up" << std::endl;
+							controller.tankunitlevel += 1;
+							controller.resource1 -= controller.tankunitcost;
+						}
+					}
+					else if (canvasupdate.buttontype == CanvasImageUpdate::LABRANGEUNIT)
+					{
+						if (controller.resource1 >= controller.rangeunitcost)
+						{
+							// Add code to Level up range unit (Check whether is there enough resources)
+							std::cout << "Range unit leveled up" << std::endl;
+							controller.rangeunitlevel += 1;
+							controller.resource1 -= controller.rangeunitcost;
+						}
+					}
+					// Nexus unit button clicks to create unit
+					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSNORMALUNIT)
+					{
+						// Add code to spawn normal unit (Check whether is there enough resources)
+						std::cout << "Normal unit created" << std::endl;
+					}
+					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSTANKUNIT)
+					{
+						// Add code to spawn tank unit (Check whether is there enough resources)
+						std::cout << "Tank unit created" << std::endl;
+					}
+					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT)
+					{
+						// Add code to spawn range unit (Check whether is there enough resources)
+						std::cout << "Range unit created" << std::endl;
+					}
+					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSBUILDING)
+					{
+						// Add code to spawn building (Check whether is there enough resources)
+						std::cout << "Tower created" << std::endl;
+					}
+					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSWALL)
+					{
+						// Add code to spawn wall (Check whether is there enough resources)
+						std::cout << "Wall created" << std::endl;
+					}
+					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR1)
+					{
+						// Add code to spawn generator1 (Check whether is there enough resources)
+						std::cout << "Generator1 created" << std::endl;
+					}
+					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
+					{
+						// Add code to spawn generator2 (Check whether is there enough resources)
+						std::cout << "Generator2 created" << std::endl;
+					}
+				}
 			}
 		}
 
@@ -255,9 +325,16 @@ void CanvasImageUpdateSystem::Update(double dt)
 				auto& unit = coordinator.GetComponent<Unit>(entity2);
 
 				// If selected unit is a generator, render in popup button
-				if (unit.unitType == Unit::GENERATOR)
+				if (unit.unitType == Unit::GENERATOR1)
 				{
-					if (canvasupdate.buttontype == CanvasImageUpdate::GENERATORBUTTON)
+					if (canvasupdate.buttontype == CanvasImageUpdate::GENERATOR1BUTTON)
+					{
+						entitystate.active = true;
+					}
+				}
+				else if (unit.unitType == Unit::GENERATOR2)
+				{
+					if (canvasupdate.buttontype == CanvasImageUpdate::GENERATOR2BUTTON)
 					{
 						entitystate.active = true;
 					}
@@ -282,18 +359,76 @@ void CanvasImageUpdateSystem::Update(double dt)
 		}
 		else if (selectedunitList.size() > 1)
 		{
-			for (auto entity2 : selectedunitList)
+			if (increment < selectedunitList.size())
 			{
-				auto& unit = coordinator.GetComponent<Unit>(entity2);
-				if (canvasupdate.uniquetype == CanvasImageUpdate::PICUI && !entitystate.active && !renderonce)
+				for (int i = 0 + increment; i < selectedunitList.size(); ++i)
 				{
-					renderamount++;
-					entitystate.active = true;
-					// Add code here to change the texture based on the unit type
+					Entity temp = selectedunitList[i];
+					auto& unit = coordinator.GetComponent<Unit>(temp);
+					if (canvasupdate.uniquetype == CanvasImageUpdate::PICUI && !entitystate.active && !renderonce)
+					{
+						renderamount++;
+						entitystate.active = true;
+						// Add code here to change the texture based on the unit type
+						if (unit.unitType == Unit::NEXUS)
+						{
+							canvas.TextureID = nexustexture;
+							++increment;
+							break;
+						}
+						if (unit.unitType == Unit::LAB)
+						{
+							canvas.TextureID = labtexture;
+							++increment;
+							break;
+						}
+						if (unit.unitType == Unit::GENERATOR1)
+						{
+							canvas.TextureID = generator1texture;
+							++increment;
+							break;
+						}
+						if (unit.unitType == Unit::GENERATOR2)
+						{
+							canvas.TextureID = generator2texture;
+							++increment;
+							break;
+						}
+						if (unit.unitType == Unit::TOWER)
+						{
+							canvas.TextureID = towertexture;
+							++increment;
+							break;
+						}
+						if (unit.unitType == Unit::WALL)
+						{
+							canvas.TextureID = walltexture;
+							++increment;
+							break;
+						}
+						if (unit.unitType == Unit::NORMAL)
+						{
+							canvas.TextureID = normalunittexture;
+							++increment;
+							break;
+						}
+						if (unit.unitType == Unit::RANGE)
+						{
+							canvas.TextureID = rangeunittexture;
+							++increment;
+							break;
+						}
+						if (unit.unitType == Unit::TANK)
+						{
+							canvas.TextureID = tankunittexture;
+							++increment;
+							break;
+						}
+					}
 				}
+				if (renderamount == selectedunitList.size())
+					renderonce = true;
 			}
-			if (renderamount == selectedunitList.size())
-				renderonce = true;
 		}
 		// If no unit is selected, make all pop up GUI active to false
 		else
@@ -303,6 +438,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 			BuildingUIopen = false;
 			renderonce = false;
 			renderamount = 0;
+			increment = 0;
 			if (canvasupdate.popuptype == CanvasImageUpdate::POPUP)
 			{
 				entitystate.active = false;

@@ -13,6 +13,9 @@ void RayCastingSystem::Setup()
 
 void RayCastingSystem::Init(std::set<Entity>* colliderentitylist)
 {
+
+    unitlimit = 10;
+
 	this->colliderentitylist = colliderentitylist;
 
 	for (auto const& entity : m_Entities)
@@ -82,7 +85,6 @@ void RayCastingSystem::callRayCollision()
 
     for (auto const& entity : entityset1)
     {
-        auto& transform = coordinator.GetComponent<Transform>(entity);
         auto& ray = coordinator.GetComponent<RayCasting>(entity);
 
         for (int i = 0; i < 500; ++i)
@@ -113,11 +115,11 @@ void RayCastingSystem::callRayCollision()
                         // Add Code to get first left click position and position after you let go here
                         if (Application::IsMousePressed(0) && !bLButtonState)
                         {
+                            unitlimit = 10;
                             minX = 0;
                             maxX = 0;
                             minZ = 0;
                             maxZ = 0;
-                            std::cout << " Cleared! " << std::endl;
                             selectedunitlist.clear();
                             bLButtonState = true;
                             firstposclick = ray.RayEndPos;
@@ -159,7 +161,6 @@ void RayCastingSystem::callRayCollision()
             model = glm::translate(model, ray.RayEndPos);
             model = glm::scale(model, glm::vec3(0.1f));
             renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
-            transform.position = glm::vec3(ray.RayEndPos.x, ray.RayEndPos.y, ray.RayEndPos.z);
         }
     }
 }
@@ -175,10 +176,11 @@ void RayCastingSystem::unitSelection()
         {
             auto& transform = coordinator.GetComponent<Transform>(entity2);
             auto& entitystate = coordinator.GetComponent<EntityState>(entity2);
+            auto& unit = coordinator.GetComponent<Unit>(entity2);
 
-            if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ && entitystate.active)
+            if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ && entitystate.active && unit.unitFaction == Unit::PLAYER && unitlimit != 0)
             {
-                std::cout << " Push! " << std::endl;
+                unitlimit--;
                 selectedunitlist.push_back(entity2);
             }
         }
@@ -204,7 +206,6 @@ glm::vec3 RayCastingSystem::calculateMouseRay()
 	glm::vec3 worldCoords = toWorldCoords(clipCoords);
 
 	glm::vec3 dir = glm::normalize(worldCoords);
-   // dir.x = dir.x * -1.f;
 	return dir;
 }
 

@@ -6,6 +6,7 @@
 #include "System.h"
 #include "Coordinator.h"
 #include "Unit.h"
+#include "Controller.h"
 
 extern Coordinator coordinator;
 
@@ -15,7 +16,7 @@ private:
 
 public:
     virtual void Setup();
-    virtual void Init();
+    virtual void Init(std::set<Entity>* controllerentitylist);
     virtual void Update(double dt);
     virtual void Render();
 
@@ -28,6 +29,8 @@ private:
     std::vector<Entity> ReferenceEntity;
 
     std::vector<Entity> selectedunitList;
+
+    std::set<Entity>* controllerentitylist;
 
     bool LabUIopen;
     bool UnitUIopen;

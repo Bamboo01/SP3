@@ -65,6 +65,16 @@ void UnitSystem::Update(double dt)
         {
             ApplyAttack(entity, unit.target);
         }
+
+        // Generate resources if the unit is an generator
+        if (unit.unitType == Unit::GENERATOR1 || unit.unitType == Unit::GENERATOR2)
+        {
+            if (unit.generationdelay < d_elapsedTime)
+            {
+                unit.resourcesgenerated += 50;
+                unit.generationdelay = d_elapsedTime + unit.timeforgeneration;
+            }
+        }
     }
 }
 
@@ -121,7 +131,7 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
 
     float distanceWithCurrentTarget = 0;
 
-    if (unit.unitType == Unit::UnitType::WALL || unit.unitType == Unit::UnitType::NEXUS || unit.unitType == Unit::UnitType::GENERATOR || unit.unitType == Unit::UnitType::LAB || unit.unitType == Unit::UnitType::PROJECTILE) // These shouldn't call this method!
+    if (unit.unitType == Unit::UnitType::WALL || unit.unitType == Unit::UnitType::NEXUS || unit.unitType == Unit::UnitType::GENERATOR1 || unit.unitType == Unit::UnitType::GENERATOR2 || unit.unitType == Unit::UnitType::LAB || unit.unitType == Unit::UnitType::PROJECTILE) // These shouldn't call this method!
         return;
 
     Unit::UnitFaction targetFactionRequirement; // A variable to make sure the unit does not target it's own units
@@ -210,9 +220,13 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         UnitData = UNexus(level, faction);
         std::cout << "UnitSystem: " << inactiveID << " initiated as NEXUS type" << std::endl;
         break;
-    case Unit::GENERATOR:
-        UnitData = UGenerator(level, faction);
-        std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR type" << std::endl;
+    case Unit::GENERATOR1:
+        UnitData = UGenerator1(level, faction);
+        std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR1 type" << std::endl;
+        break;
+    case Unit::GENERATOR2:
+        UnitData = UGenerator2(level, faction);
+        std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR2 type" << std::endl;
         break;
     case Unit::LAB:
         UnitData = ULab(level, faction);

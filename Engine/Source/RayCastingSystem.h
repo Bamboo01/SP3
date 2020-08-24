@@ -6,6 +6,7 @@
 #include "Collider.h"
 #include "RenderData.h"
 #include "TerrainData.h"
+#include "Unit.h"
 
 #include "Renderer.h"
 extern Renderer renderer;
@@ -49,4 +50,6 @@ private:
 
     float maxX, minX;
     float maxZ, minZ;
+
+    int unitlimit;
 };

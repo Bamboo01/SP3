@@ -15,9 +15,10 @@ struct Unit
 		WALL = 5,
 		// Units BELOW this category are not able to attack, as such set base stats only for level, health, defense, set damage and attack speed as 0
 		NEXUS = 6,			// Player/enemy main base, produce units
-		GENERATOR = 7,		// Generate resources for player
-		LAB = 8,			// Level units up
-		PROJECTILE = 9,
+		GENERATOR1 = 7,		// Generate resources for player
+		GENERATOR2 = 8,		// Generate resources for player
+		LAB = 9,			// Level units up
+		PROJECTILE = 10,
 		NUM_TYPE
 	};
 
@@ -50,6 +51,10 @@ struct Unit
 	glm::vec2 nextGrid = glm::vec2(-1, -1);    //Store next grid here
 	glm::vec3 velocity;
 
+	float resourcesgenerated;
+	float timeforgeneration;
+	double generationdelay;
+
 	Unit()
 		: name("Default")
 		, level(1)
@@ -67,6 +72,9 @@ struct Unit
 		, FlowFieldCost(0)
 		, StandingGridCost(0)
 		, velocity(0)
+		, resourcesgenerated(0)
+		, timeforgeneration(10)
+		, generationdelay(0)
 	{
 	}
 
@@ -81,7 +89,10 @@ struct Unit
 		, FlowFieldCost(flowfieldcost)
 		, StandingGridCost(StandingGridCost)
 		,velocity(vel)
-
+		, unitFaction(UnitFaction::PLAYER)
+		, resourcesgenerated(0)
+		, timeforgeneration(10)
+		, generationdelay(0)
 	{
 	}
 

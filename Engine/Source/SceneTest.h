@@ -16,6 +16,7 @@
 #include "GUITextSystem.h"
 #include "ParticleSystem.h"
 #include "ObjectPoolSystem.h"
+#include "ControllerSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -64,5 +65,6 @@ public:
 	std::shared_ptr<ParticleSystem> particlesystem;
 
 	std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
+	std::shared_ptr<ControllerSystem> controllersystem;
 };
 

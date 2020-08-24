@@ -15,7 +15,8 @@ struct CanvasImageUpdate
     enum ButtonType
     {
         START2 = 0,
-        GENERATORBUTTON,
+        GENERATOR1BUTTON,
+        GENERATOR2BUTTON,
         LABBUTTON,
         LABNORMALUNIT,
         LABTANKUNIT,
@@ -27,6 +28,8 @@ struct CanvasImageUpdate
         NEXUSRANGEUNIT,
         NEXUSBUILDING,
         NEXUSWALL,
+        NEXUSGENERATOR1,
+        NEXUSGENERATOR2,
         END2
     };
 
