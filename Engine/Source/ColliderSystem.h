@@ -8,6 +8,7 @@
 #include "RenderData.h"
 #include "UnitSystem.h"
 
+
 extern Coordinator coordinator;
 
 class ColliderSystem : public System

@@ -73,42 +73,15 @@ void UnitSystem::SetObjectPoolSystem(std::shared_ptr<ObjectPoolSystem> ptr)
     objectpoolsystem = ptr;
 }
 
+void UnitSystem::SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> ptr)
+{
+    quadtreesystem = ptr;
+}
+
 void UnitSystem::AddInactiveEntity(Entity entity)
 {
     auto& entityState = coordinator.GetComponent<EntityState>(entity);
     entityState.active = false;
-    inactiveEntityList.push_back(entity);
-}
-
-Entity UnitSystem::FetchInactiveUnit()
-{
-    Entity returnEntity = Entity();
-
-    if (inactiveEntityList.empty())
-    {
-        int numOfNewEntity = 20;
-        for (int i = 0; i < numOfNewEntity; i++) // If entity list does not have anymore inactive units, create 20 entities to store
-        {
-            Entity tempObject;
-            tempObject = coordinator.CreateEntity();
-            coordinator.AddComponent<Transform>(tempObject, Transform());
-            coordinator.AddComponent<Collider>(tempObject, Collider());
-            coordinator.AddComponent<RenderData>(tempObject, RenderData());
-            coordinator.AddComponent<Unit>(tempObject, Unit());
-            coordinator.AddComponent<EntityState>(tempObject, EntityState(false));
-            AddInactiveEntity(tempObject);
-        }
-    }
-
-    if (!inactiveEntityList.empty())
-    {
-        returnEntity = inactiveEntityList.back();
-        auto& returnEntityState = coordinator.GetComponent<EntityState>(returnEntity);
-        returnEntityState.active = true;
-        inactiveEntityList.pop_back();
-    }
-
-    return returnEntity;
 }
 
 void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
@@ -263,7 +236,6 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
     {
 
     }
-
     return inactiveID;
 }
 

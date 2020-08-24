@@ -119,6 +119,9 @@
     <ClCompile Include="Source\ObjectPoolSystem.cpp">
       <Filter>Auxillary\Systems\ObjectPoolSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\QuadTreeSystem.cpp">
+      <Filter>Auxillary\Systems\QuadTreeSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -346,6 +349,12 @@
     <ClInclude Include="Source\ObjectPoolSystem.h">
       <Filter>Auxillary\Systems\ObjectPoolSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\QuadTree.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\QuadTreeSystem.h">
+      <Filter>Auxillary\Systems\QuadTreeSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -464,6 +473,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\ObjectPoolSystem">
       <UniqueIdentifier>{ca070fcf-2e07-45ee-8976-1027bd8fb095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\QuadTreeSystem">
+      <UniqueIdentifier>{5c2f9c2c-463a-4aa8-8d60-30404199a088}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

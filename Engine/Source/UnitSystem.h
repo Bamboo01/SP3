@@ -6,6 +6,7 @@
 #include "RenderData.h"
 #include "Renderer.h"
 #include "ObjectPoolSystem.h"
+#include "QuadTreeSystem.h"
 
 extern Coordinator coordinator;
 extern Renderer renderer;
@@ -19,9 +20,9 @@ public:
     virtual void Update(double dt);
 
     void SetObjectPoolSystem(std::shared_ptr<ObjectPoolSystem> ptr);
+    void SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> ptr);
 
     void AddInactiveEntity(Entity entity);
-    Entity FetchInactiveUnit();
 
     void FetchNearbyTargetWithinRange(Entity unit);
 
@@ -32,6 +33,6 @@ public:
     void UpdateProjectile(Entity projectile);
 private:
     double d_elapsedTime;
-    std::vector<Entity> inactiveEntityList;
     std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
+    std::shared_ptr<QuadTreeSystem> quadtreesystem;
 };

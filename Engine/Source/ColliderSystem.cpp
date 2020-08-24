@@ -28,7 +28,7 @@ void ColliderSystem::Update(double dt)
             {
                 if (collisionCheck(firstObject, secondObject))
                 {
-                    std::cout << "ColliderSystem: Collision Detected" << std::endl;
+                    //std::cout << "ColliderSystem: Collision Detected" << std::endl;
 
                     if (ObjectUnit.unitType == Unit::PROJECTILE)
                     {

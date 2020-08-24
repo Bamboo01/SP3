@@ -35,8 +35,6 @@ void CameraSystem::Update(float dt)
         camera.right = glm::normalize(glm::cross(glm::vec3(0, 1, 0), camera.target - camera.position));
         camera.up = glm::cross(camera.target - camera.position, camera.right);
 
-        std::cout << camera.right.x << " " << camera.right.y << " " << camera.right.z << std::endl;
-
         camera.ViewMatrix = glm::lookAt(camera.position, camera.target, camera.up);
 
         if (camera.mode == CAMERA_MODE::MODE_ORTHOGRAPHIC)

@@ -19,11 +19,12 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<RayCasting>();
 	coordinator.RegisterComponent<Collider>();
 	coordinator.RegisterComponent<GUIText>();
+	coordinator.RegisterComponent<QuadTree>();
 
-	coordinator.RegisterComponent<ObjectPoolSystem>();
+	coordinator.RegisterComponent<Pool>();
 //	coordinator.RegisterComponent<GridControllerSytem>();
 	coordinator.RegisterComponent<ParticleSystemParameters>();
-	
+
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
 	rendersystem = coordinator.RegisterSystem<RenderSystem>();
@@ -42,6 +43,7 @@ void SceneTest::Init()
 	unitsystem = coordinator.RegisterSystem<UnitSystem>();
 	guitextsystem = coordinator.RegisterSystem<GUITextSystem>();
 	particlesystem = coordinator.RegisterSystem<ParticleSystem>();
+	quadtreesystem = coordinator.RegisterSystem<QuadTreeSystem>();
 
 	transformsystem->Setup();
 	camerasystem->Setup();
@@ -59,6 +61,7 @@ void SceneTest::Init()
 	guitextsystem->Setup();
 	particlesystem->Setup();
 	objectpoolsystem->Setup();
+	quadtreesystem->Setup();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
@@ -349,27 +352,27 @@ void SceneTest::Init()
 	coordinator.GetComponent<Transform>(cube).rotation = glm::vec3(0.f, 180.f, 0.f);
 	coordinator.GetComponent<Transform>(cube).scale = glm::vec3(10, 10, 1);
 
-	for (int i = 0; i < 3; i++)
-	{
-		Entity myObject3;
-		myObject3 = coordinator.CreateEntity();
-		coordinator.AddComponent<Transform>(myObject3, Transform());
-		coordinator.GetComponent<Transform>(myObject3).position = glm::vec3(0 + i * 20, 20, 0);
-		coordinator.GetComponent<Transform>(myObject3).scale = glm::vec3(10, 10, 10);
-		coordinator.AddComponent<RenderData>(myObject3, RenderData(renderer.getMesh(GEO_CUBE), false));
-		coordinator.AddComponent<Collider>(myObject3, Collider(glm::vec3(10,10,10), 1));
-		if (i == 0)
-			coordinator.AddComponent<Unit>(myObject3, Unit("NEXUS", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::NEXUS, 0));
-		else if (i == 1)
-			coordinator.AddComponent<Unit>(myObject3, Unit("LAB", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::LAB, 0));
-		else if (i == 2)
-			coordinator.AddComponent<Unit>(myObject3, Unit("GENERATOR", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::GENERATOR, 0));
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	Entity myObject3;
+	//	myObject3 = coordinator.CreateEntity();
+	//	coordinator.AddComponent<Transform>(myObject3, Transform());
+	//	coordinator.GetComponent<Transform>(myObject3).position = glm::vec3(0 + i * 20, 20, 0);
+	//	coordinator.GetComponent<Transform>(myObject3).scale = glm::vec3(10, 10, 10);
+	//	coordinator.AddComponent<RenderData>(myObject3, RenderData(renderer.getMesh(GEO_CUBE), false));
+	//	coordinator.AddComponent<Collider>(myObject3, Collider(glm::vec3(10,10,10), 1));
+	//	if (i == 0)
+	//		coordinator.AddComponent<Unit>(myObject3, Unit("NEXUS", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::NEXUS, 0));
+	//	else if (i == 1)
+	//		coordinator.AddComponent<Unit>(myObject3, Unit("LAB", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::LAB, 0));
+	//	else if (i == 2)
+	//		coordinator.AddComponent<Unit>(myObject3, Unit("GENERATOR", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::GENERATOR, 0));
 
-		coordinator.AddComponent<EntityState>(myObject3, EntityState(true));
-	/*	coordinator.AddComponent<RenderData>(myObject3, RenderData());
-		coordinator.AddComponent<Collider>(myObject3, Collider());
-		coordinator.AddComponent<Unit>(myObject3, Unit());*/
-	}
+	//	coordinator.AddComponent<EntityState>(myObject3, EntityState(true));
+	///*	coordinator.AddComponent<RenderData>(myObject3, RenderData());
+	//	coordinator.AddComponent<Collider>(myObject3, Collider());
+	//	coordinator.AddComponent<Unit>(myObject3, Unit());*/
+	//}
 
 	{
 		// Minimap
@@ -550,9 +553,11 @@ void SceneTest::Init()
 	raycastingsystem->SetTerrainEntities(terrainsystem->m_Entities);
 	particlesystem->Init();
 	objectpoolsystem->Init();
+	quadtreesystem->Init();
 	
 	collidersystem->SetUnitSystem(unitsystem);
 	unitsystem->SetObjectPoolSystem(objectpoolsystem);
+	unitsystem->SetQuadTreeSystem(quadtreesystem);
 }
 
 void SceneTest::EarlyUpdate(double dt)
@@ -602,6 +607,8 @@ void SceneTest::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	particlesystem->Update(dt);
 	objectpoolsystem->Update(dt);
+	quadtreesystem->SetUnitSystemEntities(unitsystem->m_Entities);
+	quadtreesystem->Update(dt);
 }
 
 void SceneTest::LateUpdate(double dt)
@@ -621,10 +628,10 @@ void SceneTest::LateUpdate(double dt)
 void SceneTest::PreRender()
 {
 	// ImGui PreRender
-	//ImGui_ImplOpenGL3_NewFrame();
-	//ImGui_ImplGlfw_NewFrame();
-	//ImGui::NewFrame();
-	// ImGui PreRender
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+	//ImGui PreRender
 }
 
 void SceneTest::Render()
@@ -636,14 +643,14 @@ void SceneTest::Render()
 	canvasimagesystem->Render();
 	canvastextsystem->Render();
 	canvasimageupdatesystem->Render();
-	//UpdateImGui();
+	UpdateImGui();
 }
 
 void SceneTest::PostRender()
 {
 	//ImGui PostRender (Make sure this is called before swapBuffers
-	//ImGui::Render();
-	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	//ImGui PostRender
 }
 
@@ -658,7 +665,12 @@ void SceneTest::UpdateImGui()
 	UpdateImGuiEntityList();
 
 	ImGui::Begin("Main");
-	ImGui::Button("Hello!");
+	
+	if (ImGui::Button("Print Quad Tree"))
+	{
+		quadtreesystem->PrintTree(quadtreesystem->root);
+	}
+
 	ImGui::End();
 
 }
@@ -714,8 +726,8 @@ void SceneTest::UpdateImGuiUnitSpawn()
 	{
 		for (int i = 0; i < numOfUnit; i++)
 		{
-			translation[0] = Math::RandFloatMinMax(-2000, 2000);
-			translation[2] = Math::RandFloatMinMax(-2000, 2000);
+			translation[0] = Math::RandFloatMinMax(-200, 200);
+			translation[2] = Math::RandFloatMinMax(-200, 200);
 			Entity newUnit = unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
 			activeEntityList.push_back(newUnit);
 		}
