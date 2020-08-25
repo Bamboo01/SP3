@@ -160,7 +160,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SceneMenu.cpp" />
+    <ClCompile Include="Source\MenuCamera.cpp" />
+    <ClCompile Include="Source\MenuCameraSystem.cpp" />
+    <ClCompile Include="Source\MenuNexusSystem.cpp" />
+    <ClCompile Include="Source\MenuUnitSystem.cpp" />
+    <ClCompile Include="Source\SceneIntro.cpp" />
+    <ClCompile Include="Source\SceneMenu.cpp" />
     <ClCompile Include="Source\SceneCombat.cpp" />
     <ClCompile Include="Source\ControllerSystem.cpp" />
     <ClCompile Include="Source\ObjectPoolSystem.cpp" />
@@ -207,7 +212,13 @@
     <ClCompile Include="Source\TerrainSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneMenu.h" />
+    <ClInclude Include="Source\MenuCameraSystem.h" />
+    <ClInclude Include="Source\MenuNexus.h" />
+    <ClInclude Include="Source\MenuNexusSystem.h" />
+    <ClInclude Include="Source\MenuUnit.h" />
+    <ClInclude Include="Source\MenuUnitSystem.h" />
+    <ClInclude Include="Source\SceneIntro.h" />
+    <ClInclude Include="Source\SceneMenu.h" />
     <ClInclude Include="Source\SceneCombat.h" />
     <ClInclude Include="Source\Controller.h" />
     <ClInclude Include="Source\ControllerSystem.h" />

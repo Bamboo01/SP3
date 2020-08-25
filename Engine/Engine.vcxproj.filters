@@ -134,8 +134,23 @@
     <ClCompile Include="Source\SceneCombat.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMenu.cpp">
+    <ClCompile Include="Source\SceneIntro.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneMenu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MenuCamera.cpp">
+      <Filter>Auxillary\Components\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MenuCameraSystem.cpp">
+      <Filter>Auxillary\Systems\Menu\MenuCameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MenuNexusSystem.cpp">
+      <Filter>Auxillary\Systems\Menu\MenuNexusSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MenuUnitSystem.cpp">
+      <Filter>Auxillary\Systems\Menu\MenuUnitSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,8 +403,26 @@
     <ClInclude Include="Source\SceneCombat.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="SceneMenu.h">
+    <ClInclude Include="Source\SceneIntro.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneMenu.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MenuNexus.h">
+      <Filter>Auxillary\Components\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MenuUnit.h">
+      <Filter>Auxillary\Components\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MenuCameraSystem.h">
+      <Filter>Auxillary\Systems\Menu\MenuCameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MenuNexusSystem.h">
+      <Filter>Auxillary\Systems\Menu\MenuNexusSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MenuUnitSystem.h">
+      <Filter>Auxillary\Systems\Menu\MenuUnitSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -518,6 +551,21 @@
     </Filter>
     <Filter Include="Core\Modules\SoundController">
       <UniqueIdentifier>{985bf271-6ce9-4c73-b4bc-3433266cc230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\Menu">
+      <UniqueIdentifier>{c72c68c5-773c-4c47-8a56-73ebad95dc8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Components\Menu">
+      <UniqueIdentifier>{7de3036c-576e-4e59-808b-2920bbcde9a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\Menu\MenuCameraSystem">
+      <UniqueIdentifier>{149530a3-9b55-499d-9b02-d0a556ac7343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\Menu\MenuNexusSystem">
+      <UniqueIdentifier>{b24b5ba9-2710-4cc9-a87a-9d6bfd7291ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\Menu\MenuUnitSystem">
+      <UniqueIdentifier>{42ad383a-ac02-4f7c-9b1a-6dff465dd441}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

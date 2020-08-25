@@ -38,6 +38,21 @@ MeshManager::MeshManager()
 	meshList[GEO_TESTPARTICLE_SPHERICAL] = MeshBuilder::GenerateQuad("ParticleB", Color(1, 1, 1), 1);
 	meshList[GEO_TESTPARTICLE_SPHERICAL]->Init(100000);
 
+	meshList[GEO_MENU_NEXUS] = MeshBuilder::GenerateOBJ("MenuNexus", "OBJ//nexus.obj");
+	meshList[GEO_MENU_NEXUS]->Init(10);
+
+	meshList[GEO_CODEPARTICLE] = MeshBuilder::GenerateQuad("CodeParticle", Color(1, 1, 1), 1);
+	meshList[GEO_CODEPARTICLE]->Init(50000);
+
+	meshList[GEO_MENU_UNIT1] = MeshBuilder::GenerateOBJ("MenuUnit1", "OBJ//nexus.obj");
+	meshList[GEO_MENU_UNIT1]->Init(10);
+
+	meshList[GEO_MENU_UNIT2] = MeshBuilder::GenerateOBJ("MenuUnit2", "OBJ//nexus.obj");
+	meshList[GEO_MENU_UNIT2]->Init(10);
+
+	meshList[GEO_MENU_UNIT3] = MeshBuilder::GenerateOBJ("MenuUnit3", "OBJ//nexus.obj");
+	meshList[GEO_MENU_UNIT3]->Init(10);
+
 	for (int i = 0; i < NUM_MESH; i++)
 	{
 		if (meshList[i] == NULL)

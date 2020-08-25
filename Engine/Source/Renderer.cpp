@@ -103,31 +103,37 @@ void Renderer::Init()
 
 	Material* testParticleA = new Material();
 	testParticleA->AssignTexture("Images//crate.tga");
-	//testParticleA->AssignTexture("Images//grass.tga");
 	materialManager.push_back(testParticleA);
 
 	Material* testParticleB = new Material();
 	testParticleB->AssignTexture("Images//crate.tga");
-	//testParticleB->AssignTexture("Images//grass.tga");
 	materialManager.push_back(testParticleB);
 
-	//Material* playerMaterial = new Material();
-	//playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
-	//playerMaterial->AssignTexture("Images//player.tga");
-	//materialManager.push_back(playerMaterial);
+	Material* codeParticle = new Material();
+	codeParticle->AssignTexture("Images//codeparticle.tga");
+	materialManager.push_back(codeParticle);
+
+	Material* menuunit = new Material();
+	menuunit->AssignTexture("Images//player.tga");
 
 	/*Assign your material their shaders here*/
 	addMaterial(boxmat/*, test*/);
 	addMaterial(grass);
-	//addMaterial(playerMaterial);
 	addMaterial(testParticleA, billboard_Cylindrical);
 	addMaterial(testParticleB, billboard_Spherical);
+	addMaterial(codeParticle, billboard_Cylindrical);
+	addMaterial(menuunit, test);
 
 	/*Assign your meshes their materials here*/
 	//assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TERRAIN], grass);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_CYLINDRICAL], testParticleA);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_SPHERICAL], testParticleB);
+	assignMaterialtoMesh(meshManager->meshList[GEO_CODEPARTICLE], codeParticle);
+	assignMaterialtoMesh(meshManager->meshList[GEO_MENU_NEXUS], menuunit);
+	assignMaterialtoMesh(meshManager->meshList[GEO_MENU_UNIT1], menuunit);
+	assignMaterialtoMesh(meshManager->meshList[GEO_MENU_UNIT2], menuunit);
+	assignMaterialtoMesh(meshManager->meshList[GEO_MENU_UNIT3], menuunit);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)

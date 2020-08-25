@@ -1,11 +1,13 @@
 #include "SceneManager.h"
 #include "SceneTest.h"
 #include "SceneCombat.h"
+#include "SceneMenu.h"
 
 SceneManager::SceneManager()
 {
 	sceneList[SCENE_TEST] = new SceneTest;
 	sceneList[SCENE_COMBAT] = new SceneCombat;
+	sceneList[SCENE_MENU] = new SceneMenu;
 	scene = nullptr;
 	swap = false;
 }
