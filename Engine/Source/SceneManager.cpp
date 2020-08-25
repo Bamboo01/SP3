@@ -3,6 +3,7 @@
 SceneManager::SceneManager()
 {
 	sceneList[SCENE_TEST] = new SceneTest;
+	sceneList[SCENE_COMBAT] = new SceneCombat;
 	scene = nullptr;
 	swap = false;
 }
