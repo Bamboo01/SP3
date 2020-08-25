@@ -55,7 +55,9 @@ bool RayCastingSystem::raycollisioncheck(Entity ray, Entity obj)
 	auto& ObjectTransform = coordinator.GetComponent<Transform>(obj);
 	auto& ObjectCollider = coordinator.GetComponent<Collider>(obj);
 
-	glm::vec3 relativePos = ObjectTransform.position - Ray.RayEndPos;
+    glm::vec3 rayendpos = Ray.RayEndPos;
+    rayendpos.y = ObjectTransform.position.y;
+    glm::vec3 relativePos = ObjectTransform.position - rayendpos;
 
 	bool collided = !(rayplanecheck(relativePos, ObjectTransform.AxisX, ObjectTransform, ObjectCollider) ||
 		rayplanecheck(relativePos, ObjectTransform.AxisY, ObjectTransform, ObjectCollider) ||
@@ -154,8 +156,8 @@ void RayCastingSystem::callRayCollision()
                             unitSelection();
                             ray.selectedunits = selectedunitlist;
                         }
-
-                       
+                        i = 10000;
+                        break;
                     }
                 }
             }
@@ -166,36 +168,44 @@ void RayCastingSystem::callRayCollision()
             model = glm::scale(model, glm::vec3(0.1f));
             renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
 
-            if (quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->quadType == QUAD_TYPE::ROOT)
-            {
-                entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos));
-            }
-            else
-            {
-                entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->parent);
-            }
-
-            if (entitiesInQuadVector.size() <= 1)
-                continue;
-
-            for (int j = 0; j < entitiesInQuadVector.size(); j++)
-            {
-                Entity tmp = entitiesInQuadVector[j];
-
-                if (tmp == entity)
-                    continue;
-
-                auto& ObjectTransform = coordinator.GetComponent<Transform>(tmp);
-                auto& ObjectEntityState = coordinator.GetComponent<EntityState>(tmp);
-                if (raycollisioncheck(entity, tmp) && ObjectEntityState.active)
-                {
-                    // std::cout << "Ray collided with object!" << std::endl;
-                    break;
-                }
-
-            }
         }
 
+        if (
+            fabs(ray.RayEndPos.x) > quadTreeSystem->rootHalfWidth ||
+            fabs(ray.RayEndPos.z) > quadTreeSystem->rootHalfHeight
+            )
+        {
+            return;
+        }
+
+        if (quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->quadType == QUAD_TYPE::ROOT)
+        {
+            entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos));
+        }
+        else
+        {
+            entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->parent);
+        }
+
+        if (entitiesInQuadVector.size() <= 1)
+            continue;
+
+        for (int j = 0; j < entitiesInQuadVector.size(); j++)
+        {
+            Entity tmp = entitiesInQuadVector[j];
+
+            if (tmp == entity)
+                continue;
+
+            auto& ObjectTransform = coordinator.GetComponent<Transform>(tmp);
+            auto& ObjectEntityState = coordinator.GetComponent<EntityState>(tmp);
+            if (raycollisioncheck(entity, tmp) && ObjectEntityState.active)
+            {
+                std::cout << "Ray collided with object!" << std::endl;
+                break;
+            }
+
+        }
     }
 }
 

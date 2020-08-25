@@ -34,6 +34,9 @@ public:
 
 	void DeleteQuad(QuadTree* quad);
 
+	float rootHalfWidth;
+	float rootHalfHeight;
+
 private:
 	std::set<Entity> unitEntities;
 };

@@ -11,6 +11,8 @@ void QuadTreeSystem::Setup()
 
 void QuadTreeSystem::Init()
 {
+	rootHalfWidth = 200;
+	rootHalfHeight = 200;
 }
 
 void QuadTreeSystem::Update(double dt)
@@ -109,6 +111,9 @@ QuadTree* QuadTreeSystem::GetNearbyEntityQuad(Entity entity)
 		case QUAD_TYPE::BOT_R:
 			currentQuad = currentQuad->BotR;
 			break;
+		default:
+			currentQuad = root;
+			break;
 		}
 	}
 
@@ -144,6 +149,9 @@ QuadTree* QuadTreeSystem::GetNearbyEntityQuad(glm::vec3 pos)
 			break;
 		case QUAD_TYPE::BOT_R:
 			currentQuad = currentQuad->BotR;
+			break;
+		default:
+			currentQuad = root;
 			break;
 		}
 	}
