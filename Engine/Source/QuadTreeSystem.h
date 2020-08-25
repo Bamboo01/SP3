@@ -22,6 +22,7 @@ public:
 	void PrintTree(QuadTree* quad);
 
 	QuadTree* GetNearbyEntityQuad(Entity entity);
+	QuadTree* GetNearbyEntityQuad(glm::vec3 pos);
 	std::vector<Entity> GetEntityInQuad(QuadTree* quad);
 
 	void SortQuad(QuadTree* quad);
@@ -29,6 +30,7 @@ public:
 	bool CheckEntityExist(Entity entity, QuadTree* quad);
 
 	QUAD_TYPE findEntityQuad(Entity entity, QuadTree* quad);
+	QUAD_TYPE findEntityQuad(glm::vec3 pos, QuadTree* quad);
 
 	void DeleteQuad(QuadTree* quad);
 

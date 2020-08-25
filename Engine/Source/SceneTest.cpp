@@ -715,6 +715,7 @@ void SceneTest::Init()
 	guitextsystem->Init(&controllersystem->m_Entities);
 
 	raycastingsystem->SetTerrainEntities(terrainsystem->m_Entities);
+	raycastingsystem->SetQuadTreeSystem(quadtreesystem);
 	particlesystem->Init();
 	objectpoolsystem->Init();
 	quadtreesystem->Init();
@@ -755,7 +756,6 @@ void SceneTest::Update(double dt)
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	canvasimageupdatesystem->Update(dt);
-	raycastingsystem->Update(dt);
 	gridcontrollersystem->Update(dt);
 	unitsystem->Update(dt);
 	guitextsystem->Update(dt);
@@ -771,6 +771,7 @@ void SceneTest::Update(double dt)
 	quadtreesystem->SetUnitSystemEntities(unitsystem->m_Entities);
 	quadtreesystem->Update(dt);
 	collidersystem->Update(dt);
+	raycastingsystem->Update(dt);
 }
 
 void SceneTest::LateUpdate(double dt)

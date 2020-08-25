@@ -7,6 +7,7 @@
 #include "RenderData.h"
 #include "TerrainData.h"
 #include "Unit.h"
+#include "QuadTreeSystem.h"
 
 #include "Renderer.h"
 extern Renderer renderer;
@@ -23,8 +24,6 @@ public:
     virtual void Update(double dt);
     virtual void Render();
 
- 
-
     bool raycollisioncheck(Entity ray, Entity obj);
     bool rayplanecheck(glm::vec3 rPos, glm::vec3 axis, Transform object, Collider collider);
     void callRayCollision();
@@ -40,6 +39,8 @@ public:
     glm::vec3 calculateMouseRay();
     glm::vec2 cursorOnHeightMapPosition;
 
+    void SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> system);
+
 private:
     glm::vec2 getNormalizedDeviceCoords(double mousex, double mousey);
     glm::vec3 toWorldCoords(glm::vec4 clipCoords);
@@ -51,12 +52,12 @@ private:
     glm::vec3 firstposclick;
     glm::vec3 secondposclick;
 
-  
-
     bool CursorInGUI;
 
     float maxX, minX;
     float maxZ, minZ;
 
     int unitlimit;
+
+    std::shared_ptr<QuadTreeSystem> quadTreeSystem;
 };

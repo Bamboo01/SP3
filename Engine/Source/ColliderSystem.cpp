@@ -10,14 +10,23 @@ void ColliderSystem::Update(double dt)
         auto& ObjectUnit = coordinator.GetComponent<Unit>(firstObject);
         auto& ObjectEntityState = coordinator.GetComponent<EntityState>(firstObject);
 
-        std::vector<Entity> entityInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(firstObject));
+        std::vector<Entity> entitiesInQuadVector;
 
-        if (entityInQuadVector.size() <= 1)
+        if (quadTreeSystem->GetNearbyEntityQuad(firstObject)->quadType == QUAD_TYPE::ROOT)
+        {
+            entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(firstObject));
+        }
+        else
+        {
+            entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(firstObject)->parent);
+        }
+
+        if (entitiesInQuadVector.size() <= 1)
             break;
 
-        for (int i = 0; i < entityInQuadVector.size(); i++)
+        for (int i = 0; i < entitiesInQuadVector.size(); i++)
         {
-            Entity tmp = entityInQuadVector[i];
+            Entity tmp = entitiesInQuadVector[i];
 
             if (tmp == firstObject)
                 continue;
@@ -33,7 +42,7 @@ void ColliderSystem::Update(double dt)
             {
                 if (collisionCheck(firstObject, tmp))
                 {
-                    //std::cout << "ColliderSystem: Collision Detected" << std::endl;
+                    std::cout << "ColliderSystem: Collision Detected" << std::endl;
 
                     if (ObjectUnit.unitType == Unit::PROJECTILE)
                     {
@@ -77,7 +86,7 @@ void ColliderSystem::Update(double dt)
 
    //         if (collisionCheck(firstObject, secondObject))
    //         {
-   //             //std::cout << "ColliderSystem: Collision Detected" << std::endl;
+   //             std::cout << "ColliderSystem: Collision Detected" << std::endl;
 
    //             if (ObjectUnit.unitType == Unit::PROJECTILE)
    //             {
