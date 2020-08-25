@@ -536,6 +536,9 @@ void SceneTest::Init()
 	
 	collidersystem->SetUnitSystem(unitsystem);
 	unitsystem->SetObjectPoolSystem(objectpoolsystem);
+
+	gridcontrollersystem->Init();
+	gridcontrollersystem->getUnitEntity(&unitsystem->m_Entities);
 }
 
 void SceneTest::EarlyUpdate(double dt)

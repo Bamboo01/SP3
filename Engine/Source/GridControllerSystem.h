@@ -16,9 +16,12 @@ private:
 	glm::vec2 CursorScreenPosition;
 
 	glm::vec3 GridPosition[20][20];
+	std::queue<unsigned> FlowfieldIDs;
+	std::map<unsigned,std::pair<int, std::vector <std::vector<int>>>> IDtoFlowfield; // unsigned = ID , int = num of units inside
+	std::set<Entity>* UnitList;
 	int GridCost[20][20];
 	float timer = 0;
-	bool active = false;
+	//bool active = false;
 	
 
 public:
@@ -32,7 +35,9 @@ public:
 	virtual void GetDestinationGrid();				// Get the Destination Grid
 	virtual void CreatePathTop(glm::vec2 Destination);		// Get Grid cost for Destination TOP ONLY
 	virtual void CreatePathBottom(glm::vec2 Destination);		// Get Grid cost for Destination BOTTOM ONLY
-	virtual void CheckSameLine(glm::vec2 Destination);		// If destination is on the same z axis as the grids and there is a wall
+	virtual void SafetyPathCheck(glm::vec2 Destination);		// Just in case there is a -1
 	virtual void UpdateUnitPosition();				// Update unit position
 	virtual void SetUp();
+	virtual void Init();
+	void getUnitEntity(std::set<Entity>* entitylist);
 };

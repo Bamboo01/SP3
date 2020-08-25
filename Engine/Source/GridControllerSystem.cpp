@@ -29,7 +29,7 @@ void GridControllerSystem::CreateGrids()
 		++y;
 	}
 	GetDestinationGrid();
-	active = true;
+	//active = true;
 
 }
 
@@ -67,23 +67,52 @@ void GridControllerSystem::Update(float dt)
 		//CursorWorldPosition = glm::vec3(150, 10, -100);
 		
 	//	CursorWorldPosition = glm::vec3(CursorScreenPosition.x * (800 / x), 0, (y - CursorScreenPosition.y) * (600 / y));
-		std::cout << CursorWorldPosition.x << ", " << CursorWorldPosition.z << std::endl;
+	//	std::cout << CursorWorldPosition.x << ", " << CursorWorldPosition.z << std::endl;
 	/*	CursorWorldPosition = glm::vec3(0, 2, 0);*/
 		CreateGrids();
+		std::vector <std::vector<int>> temp;
+		temp.resize(20);
+		for (auto& vec : temp)
+		{
+			vec.resize(20);
+		}
+
+		for (int x = 0; x < 20; ++x)
+		{
+			for (int y = 0; y < 20; ++y)
+			{
+				temp[x][y] = GridCost[x][y];
+			}
+		}
+		
+		IDtoFlowfield.insert({ FlowfieldIDs.front(),std::make_pair(raycaster.selectedunits.size(), temp) });
+		for (auto e : raycaster.selectedunits)
+		{
+			auto& a = coordinator.GetComponent<Unit>(e);
+			if (a.UnitID != INT_MAX)
+			{
+				IDtoFlowfield.at(a.UnitID).first--;
+			}
+			a.UnitID = FlowfieldIDs.front();
+		}
+		FlowfieldIDs.pop();
+		UpdateUnitPosition();
+		
 	}
 	// Give the units a new update position sfter grids are created
-	if (active == true)
-	{
-		UpdateUnitPosition();
-		active = false;
-	/*	for (int y = 0; y < 20; ++y)
-		{
-			for (int x = 0; x < 20; ++x)
-			{
-				std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].y << ", " << GridPosition[x][y].z << " ::::" << GridCost[x][y] << std::endl;
-			}
-		}*/
-	}
+	//if (active == true)
+	//{
+	//	
+
+	//	active = false;
+	//	//for (int y = 0; y < 20; ++y)
+	//	//{
+	//	//	for (int x = 0; x < 20; ++x)
+	//	//	{
+	//	//		std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].y << ", " << GridPosition[x][y].z << " ::::" << GridCost[x][y] << std::endl;
+	//	//	}
+	//	//}
+	//}
 	for (auto const& entity : m_Entities)
 	{
 		auto& unit = coordinator.GetComponent<Unit>(entity);
@@ -101,12 +130,13 @@ void GridControllerSystem::Update(float dt)
 		transform.position += unit.velocity;
 	//	std::cout << unit.velocity.x << ", " << unit.velocity.z << std::endl;
 	}
+	UpdateUnitPosition();
 
 }
 
 void GridControllerSystem::GetDestinationGrid()
 {
-	std::cout << CursorWorldPosition.x << " " << CursorWorldPosition.z << std::endl;
+//	std::cout << CursorWorldPosition.x << " " << CursorWorldPosition.z << std::endl;
 	// Check Which Grid the destination is at
 	glm::vec2 destination = glm::vec2(-1,-1);	// If it is -1 at the end, means that destination is impossible
 	for (int x = 0; x < 20; ++x)
@@ -137,7 +167,7 @@ void GridControllerSystem::GetDestinationGrid()
 		
 		CreatePathBottom(destination);
 
-		CheckSameLine(destination);
+		SafetyPathCheck(destination);
 	}
 }
 
@@ -346,25 +376,33 @@ void GridControllerSystem::CreatePathBottom(glm::vec2 Destination)
 	}
 }
 
-void GridControllerSystem::CheckSameLine(glm::vec2 Destination)
+void GridControllerSystem::SafetyPathCheck(glm::vec2 Destination)
 {
-	int dX = Destination.x; //Same Line
-
-	for (int i = 0; i < 20; ++i)
+	for (int x = 0; x < 20; ++x)
 	{
-		if (GridCost[dX][i] == -1)
-		{
-			if (dX + 1 <= 19 && dX + 1 >= 0)
+		for (int y = 0; y < 20; ++y)
+			if (GridCost[x][y] == -1)
 			{
-				GridCost[dX][i] = GridCost[dX + 1][i] + 1;
+				if (x + 1 <= 19 && x + 1 >= 0 && GridCost[x + 1][y] != -1)
+				{
+					GridCost[x][y] = GridCost[x + 1][y] + 1;
+				}
+				else if (x - 1 <= 19 && x - 1 >= 0 && GridCost[x - 1][y] != -1)
+				{
+					GridCost[x][y] = GridCost[x - 1][y] + 1;
+				}
+				else if (y + 1 <= 19 && y + 1 >= 0 && GridCost[x][y + 1] != -1)
+				{
+					GridCost[x][y] = GridCost[x][y + 1] + 1;
+				}
+				else if (y - 1 <= 19 && y - 1 >= 0 && GridCost[x][y - 1] != -1)
+				{
+					GridCost[x][y] = GridCost[x][y - 1] + 1;
+				}
 			}
-			else if (dX - 1 <= 19 && dX - 1 >= 0)
-			{
-				GridCost[dX][i] = GridCost[dX - 1][i] + 1;
-			}
-		}
 	}
 }
+
 
 void GridControllerSystem::UpdateUnitPosition()
 {
@@ -372,8 +410,23 @@ void GridControllerSystem::UpdateUnitPosition()
 	{
 		auto& unit = coordinator.GetComponent<Unit>(entity);
 		auto& transform = coordinator.GetComponent<Transform>(entity);
-		if (unit.FlowFieldCost == 0)
+		if (unit.FlowFieldCost == 0 && unit.UnitID != INT_MAX)
 		{
+			std::vector <std::vector<int>> temp;
+			temp.resize(20);
+			for (auto& vec : temp)
+			{
+				vec.resize(20);
+			}
+			temp = IDtoFlowfield.at(unit.UnitID).second;
+			for (int x = 0; x < 20; ++x)
+			{
+				for (int y = 0; y < 20; ++y)
+				{
+					GridCost[x][y] = temp[x][y];
+				}
+			}
+
 			for (int x = 0; x < 20; ++x)
 			{
 				for (int y = 0; y < 20; ++y)
@@ -384,8 +437,8 @@ void GridControllerSystem::UpdateUnitPosition()
 					glm::vec3 direction;
 					if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 					{
-						std::cout << GridCost[x][y] << std::endl;
-						std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+					//	std::cout << GridCost[x][y] << std::endl;
+					//	std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
 						if (GridCost[x][y] == 0)
 						{
 							unit.velocity = glm::vec3(0, 0, 0);
@@ -525,6 +578,19 @@ void GridControllerSystem::SetUp()
 	signature.set(coordinator.GetComponentType<Transform>());
 	signature.set(coordinator.GetComponentType<EntityState>());
 	coordinator.SetSystemSignature<GridControllerSystem>(signature);
+}
+
+void GridControllerSystem::Init()
+{
+	for (int i = 0; i < 1000; ++i)
+	{
+		FlowfieldIDs.push(i);
+	}
+}
+
+void GridControllerSystem::getUnitEntity(std::set<Entity> *entitylist)
+{
+	UnitList = entitylist;
 }
 
 
