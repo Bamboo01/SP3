@@ -38,6 +38,7 @@ public:
     std::vector<Entity> selectedunitlist;
 
     glm::vec3 calculateMouseRay();
+    glm::vec2 cursorOnHeightMapPosition;
 
 private:
     glm::vec2 getNormalizedDeviceCoords(double mousex, double mousey);

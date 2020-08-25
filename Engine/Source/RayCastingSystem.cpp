@@ -109,6 +109,8 @@ void RayCastingSystem::callRayCollision()
 
                 if (fabs(ray.RayEndPos.y - terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z)) < 2.f)
                 {
+                    cursorOnHeightMapPosition = glm::vec2(ray.RayEndPos.x, ray.RayEndPos.z);
+
                    // std::cout << "Overlapped with Terrain" << std::endl;
 
                     if (CursorInGUI == false)

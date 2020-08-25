@@ -35,7 +35,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = 1;
-		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+		glm::vec3 collisionScale = glm::vec3(10, 10, 10);
 
 		name = unitName;
 		level = unitLevel;
@@ -91,7 +91,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 5.0;
 		float unitMass = 1;
-		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+		glm::vec3 collisionScale = glm::vec3(10, 10, 10);
 
 		name = unitName;
 		level = unitLevel;
@@ -147,7 +147,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = 1;
-		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+		glm::vec3 collisionScale = glm::vec3(10, 10, 10);
 
 		name = unitName;
 		level = unitLevel;
@@ -203,7 +203,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(50, 100, 50);
+		glm::vec3 collisionScale = glm::vec3(10, 20, 10);
 
 		name = unitName;
 		level = unitLevel;
@@ -259,7 +259,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+		glm::vec3 collisionScale = glm::vec3(10, 10, 10);
 
 		name = unitName;
 		level = unitLevel;
@@ -315,7 +315,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+		glm::vec3 collisionScale = glm::vec3(10, 10, 10);
 
 		name = unitName;
 		level = unitLevel;
@@ -371,7 +371,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+		glm::vec3 collisionScale = glm::vec3(10, 10, 10);
 
 		name = unitName;
 		level = unitLevel;
@@ -483,7 +483,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+		glm::vec3 collisionScale = glm::vec3(10, 10, 10);
 
 		name = unitName;
 		level = unitLevel;

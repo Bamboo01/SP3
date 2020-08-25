@@ -18,11 +18,14 @@ void SceneTest::Init()
 	coordinator.RegisterComponent<RayCasting>();
 	coordinator.RegisterComponent<Collider>();
 	coordinator.RegisterComponent<GUIText>();
+	coordinator.RegisterComponent<QuadTree>();
 
 	coordinator.RegisterComponent<ObjectPoolSystem>();
 	coordinator.RegisterComponent<ParticleSystemParameters>();
 	coordinator.RegisterComponent<Controller>();
 	
+	coordinator.RegisterComponent<Pool>();
+
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
 	camerasystem = coordinator.RegisterSystem<CameraSystem>();
 	rendersystem = coordinator.RegisterSystem<RenderSystem>();
@@ -40,6 +43,7 @@ void SceneTest::Init()
 	guitextsystem = coordinator.RegisterSystem<GUITextSystem>();
 	particlesystem = coordinator.RegisterSystem<ParticleSystem>();
 	controllersystem = coordinator.RegisterSystem<ControllerSystem>();
+	quadtreesystem = coordinator.RegisterSystem<QuadTreeSystem>();
 
 	transformsystem->Setup();
 	camerasystem->Setup();
@@ -58,6 +62,7 @@ void SceneTest::Init()
 	particlesystem->Setup();
 	objectpoolsystem->Setup();
 	controllersystem->Setup();
+	quadtreesystem->Setup();
 
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
@@ -712,9 +717,12 @@ void SceneTest::Init()
 	raycastingsystem->SetTerrainEntities(terrainsystem->m_Entities);
 	particlesystem->Init();
 	objectpoolsystem->Init();
+	quadtreesystem->Init();
 	
 	collidersystem->SetUnitSystem(unitsystem);
+	collidersystem->SetQuadTreeSystem(quadtreesystem);
 	unitsystem->SetObjectPoolSystem(objectpoolsystem);
+	unitsystem->SetQuadTreeSystem(quadtreesystem);
 }
 
 void SceneTest::EarlyUpdate(double dt)
@@ -749,7 +757,6 @@ void SceneTest::Update(double dt)
 	canvasimageupdatesystem->Update(dt);
 	raycastingsystem->Update(dt);
 	gridcontrollersystem->Update(dt);
-	collidersystem->Update(dt);
 	unitsystem->Update(dt);
 	guitextsystem->Update(dt);
 	controllersystem->Update(dt);
@@ -761,6 +768,9 @@ void SceneTest::Update(double dt)
 
 	particlesystem->Update(dt);
 	objectpoolsystem->Update(dt);
+	quadtreesystem->SetUnitSystemEntities(unitsystem->m_Entities);
+	quadtreesystem->Update(dt);
+	collidersystem->Update(dt);
 }
 
 void SceneTest::LateUpdate(double dt)
@@ -781,10 +791,10 @@ void SceneTest::LateUpdate(double dt)
 void SceneTest::PreRender()
 {
 	// ImGui PreRender
-	//ImGui_ImplOpenGL3_NewFrame();
-	//ImGui_ImplGlfw_NewFrame();
-	//ImGui::NewFrame();
-	// ImGui PreRender
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+	//ImGui PreRender
 }
 
 void SceneTest::Render()
@@ -796,14 +806,14 @@ void SceneTest::Render()
 	canvasimagesystem->Render();
 	canvastextsystem->Render();
 	canvasimageupdatesystem->Render();
-	//UpdateImGui();
+	UpdateImGui();
 }
 
 void SceneTest::PostRender()
 {
 	//ImGui PostRender (Make sure this is called before swapBuffers
-	//ImGui::Render();
-	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	//ImGui PostRender
 }
 
@@ -814,13 +824,46 @@ void SceneTest::Exit()
 
 void SceneTest::UpdateImGui()
 {
-	UpdateImGuiUnitSpawn();
-	UpdateImGuiEntityList();
+	static bool unitSpawner = false;
+	static bool entityList = false;
+	static bool raycastInfo = false;
+	
+	if (unitSpawner)
+	{
+		UpdateImGuiUnitSpawn();
+	}
+
+	if (entityList)
+	{
+		UpdateImGuiEntityList();
+	}
+	
+	if (raycastInfo)
+	{
+		UpdateImGuiRaycast();
+	}
 
 	ImGui::Begin("Main");
-	ImGui::Button("Hello!");
-	ImGui::End();
+	
+	ImGui::Checkbox(" Unit Spawn Menu", &unitSpawner);
+	ImGui::Checkbox(" Entity List", &entityList);
+	ImGui::Checkbox(" Raycast Info", &raycastInfo);
 
+	if (ImGui::Button("Print Quad Tree"))
+	{
+		quadtreesystem->PrintTree(quadtreesystem->root);
+	}
+
+	ImGui::End();
+}
+
+void SceneTest::UpdateImGuiRaycast()
+{
+	ImGui::Begin("Cursor");
+	ImGui::Text("X: %f", raycastingsystem->cursorOnHeightMapPosition.x);
+	ImGui::SameLine();
+	ImGui::Text("Y: %f", raycastingsystem->cursorOnHeightMapPosition.y);
+	ImGui::End();
 }
 
 void SceneTest::UpdateImGuiUnitSpawn()
@@ -874,8 +917,8 @@ void SceneTest::UpdateImGuiUnitSpawn()
 	{
 		for (int i = 0; i < numOfUnit; i++)
 		{
-			translation[0] = Math::RandFloatMinMax(-2000, 2000);
-			translation[2] = Math::RandFloatMinMax(-2000, 2000);
+			translation[0] = Math::RandFloatMinMax(-200, 200);
+			translation[2] = Math::RandFloatMinMax(-200, 200);
 			Entity newUnit = unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
 			activeEntityList.push_back(newUnit);
 		}

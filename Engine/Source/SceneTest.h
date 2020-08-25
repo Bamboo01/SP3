@@ -17,6 +17,7 @@
 #include "ParticleSystem.h"
 #include "ObjectPoolSystem.h"
 #include "ControllerSystem.h"
+#include "QuadTreeSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -24,6 +25,7 @@
 #include "../Dependencies/ImGui/imgui_impl_opengl3.h"
 
 #pragma once
+
 class SceneTest : public Scene
 {
 public:
@@ -44,6 +46,7 @@ public:
 	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
 
 	void UpdateImGui();
+	void UpdateImGuiRaycast();
 	void UpdateImGuiUnitSpawn();
 	void UpdateImGuiEntityList();
 
@@ -63,8 +66,8 @@ public:
 	std::shared_ptr<GridControllerSystem> gridcontrollersystem;
 	std::shared_ptr<GUITextSystem> guitextsystem;
 	std::shared_ptr<ParticleSystem> particlesystem;
-
 	std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
 	std::shared_ptr<ControllerSystem> controllersystem;
+	std::shared_ptr<QuadTreeSystem> quadtreesystem;
 };
 

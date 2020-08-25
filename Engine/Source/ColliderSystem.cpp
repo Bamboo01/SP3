@@ -10,23 +10,28 @@ void ColliderSystem::Update(double dt)
         auto& ObjectUnit = coordinator.GetComponent<Unit>(firstObject);
         auto& ObjectEntityState = coordinator.GetComponent<EntityState>(firstObject);
 
-        for (std::set<Entity>::iterator it2 = it; it2 != m_Entities.end(); it2++)
+        std::vector<Entity> entityInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(firstObject));
+
+        if (entityInQuadVector.size() <= 1)
+            break;
+
+        for (int i = 0; i < entityInQuadVector.size(); i++)
         {
-			if (it2 == it) // Skips this loop if both loops are on the same entity
-				continue;
+            Entity tmp = entityInQuadVector[i];
 
-			Entity secondObject = *it2;
-			auto& ObjectTransform2 = coordinator.GetComponent<Transform>(secondObject);
-			auto& ObjectUnit2 = coordinator.GetComponent<Unit>(secondObject);
-            auto& ObjectEntityState2 = coordinator.GetComponent<EntityState>(secondObject);
+            if (tmp == firstObject)
+                continue;
 
+            auto& ObjectTransform2 = coordinator.GetComponent<Transform>(tmp);
+            auto& ObjectUnit2 = coordinator.GetComponent<Unit>(tmp);
+            auto& ObjectEntityState2 = coordinator.GetComponent<EntityState>(tmp);
 
-			if ((!ObjectEntityState.active) || (!ObjectEntityState2.active) || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction && ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE))
-				continue;
+            if ((!ObjectEntityState.active) || (!ObjectEntityState2.active) || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction && ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE))
+                continue;
 
             if (glm::length(ObjectTransform.position - ObjectTransform2.position) <= 100)
             {
-                if (collisionCheck(firstObject, secondObject))
+                if (collisionCheck(firstObject, tmp))
                 {
                     //std::cout << "ColliderSystem: Collision Detected" << std::endl;
 
@@ -34,7 +39,7 @@ void ColliderSystem::Update(double dt)
                     {
                         if (ObjectUnit.unitFaction != ObjectUnit2.unitFaction)
                         {
-							unitSystem->ApplyAttack(firstObject, secondObject);
+                            unitSystem->ApplyAttack(firstObject, tmp);
                             unitSystem->AddInactiveEntity(firstObject);
                         }
                         continue;
@@ -43,18 +48,61 @@ void ColliderSystem::Update(double dt)
                     {
                         if (ObjectUnit.unitFaction != ObjectUnit2.unitFaction)
                         {
-                            unitSystem->ApplyAttack(secondObject, firstObject);
-                            unitSystem->AddInactiveEntity(secondObject);
+                            unitSystem->ApplyAttack(tmp, firstObject);
+                            unitSystem->AddInactiveEntity(tmp);
                         }
                         continue;
                     }
                     else
                     {
-                        collisionResponse(firstObject, secondObject);
+                        collisionResponse(firstObject, tmp);
                     }
                 }
             }
         }
+
+   //     for (std::set<Entity>::iterator it2 = it; it2 != m_Entities.end(); it2++)
+   //     {
+			//if (it2 == it) // Skips this loop if both loops are on the same entity
+			//	continue;
+
+			//Entity secondObject = *it2;
+			//auto& ObjectTransform2 = coordinator.GetComponent<Transform>(secondObject);
+			//auto& ObjectUnit2 = coordinator.GetComponent<Unit>(secondObject);
+   //         auto& ObjectEntityState2 = coordinator.GetComponent<EntityState>(secondObject);
+
+
+			//if ((!ObjectEntityState.active) || (!ObjectEntityState2.active) || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction && ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE))
+			//	continue;
+
+   //         if (collisionCheck(firstObject, secondObject))
+   //         {
+   //             //std::cout << "ColliderSystem: Collision Detected" << std::endl;
+
+   //             if (ObjectUnit.unitType == Unit::PROJECTILE)
+   //             {
+   //                 if (ObjectUnit.unitFaction != ObjectUnit2.unitFaction)
+   //                 {
+   //                     unitSystem->ApplyAttack(firstObject, secondObject);
+   //                     unitSystem->AddInactiveEntity(firstObject);
+   //                 }
+   //                 continue;
+   //             }
+   //             else if (ObjectUnit2.unitType == Unit::PROJECTILE)
+   //             {
+   //                 if (ObjectUnit.unitFaction != ObjectUnit2.unitFaction)
+   //                 {
+   //                     unitSystem->ApplyAttack(secondObject, firstObject);
+   //                     unitSystem->AddInactiveEntity(secondObject);
+   //                 }
+   //                 continue;
+   //             }
+   //             else
+   //             {
+   //                 collisionResponse(firstObject, secondObject);
+   //             }
+   //         }
+   //     }
     }
 }
 
@@ -229,5 +277,10 @@ float ColliderSystem::getOverlapMagnitude(glm::vec3 rPos, glm::vec3 axis, Transf
 void ColliderSystem::SetUnitSystem(std::shared_ptr<UnitSystem> unitSystem)
 {
     this->unitSystem = unitSystem;
+}
+
+void ColliderSystem::SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> quadTreeSystem)
+{
+    this->quadTreeSystem = quadTreeSystem;
 }
 

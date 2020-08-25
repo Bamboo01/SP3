@@ -177,6 +177,7 @@
     <ClCompile Include="Source\CanvasImageUpdateSystem.cpp" />
     <ClCompile Include="Source\ColliderSystem.cpp" />
     <ClCompile Include="Source\GUITextSystem.cpp" />
+    <ClCompile Include="Source\QuadTreeSystem.cpp" />
     <ClCompile Include="Source\RayCastingSystem.cpp" />
     <ClCompile Include="Source\RenderSystem.cpp" />
     <ClCompile Include="Source\CameraSystem.cpp" />
@@ -232,6 +233,8 @@
     <ClInclude Include="Source\GUIText.h" />
     <ClInclude Include="Source\GUITextSystem.h" />
     <ClInclude Include="Source\ParticleSystemParameters.h" />
+    <ClInclude Include="Source\QuadTree.h" />
+    <ClInclude Include="Source\QuadTreeSystem.h" />
     <ClInclude Include="Source\RayCasting.h" />
     <ClInclude Include="Source\RayCastingSystem.h" />
     <ClInclude Include="Source\ScreenQuadShader.h" />
