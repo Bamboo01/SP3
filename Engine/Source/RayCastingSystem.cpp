@@ -140,6 +140,16 @@ void RayCastingSystem::callRayCollision()
                             //std::cout << "First Pos: " << firstposclick << std::endl;
                             //std::cout << "Second Pos: " << secondposclick << std::endl;
                             // Calculating BottomLeft and TopRight
+
+                            std::vector <std::vector<int>> Gridcost;
+                            Gridcost.resize(20);
+                            for (auto& vec : Gridcost)
+                            {
+                                vec.resize(20);
+                            }
+
+                            Gridcost[0][0];
+
                             if (firstposclick.x < secondposclick.x)
                             {
                                 minX = firstposclick.x;

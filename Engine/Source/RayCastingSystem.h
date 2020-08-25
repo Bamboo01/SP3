@@ -34,6 +34,8 @@ public:
     void SetTerrainEntities(std::set<Entity> terrain);
 
     void GetCursorInGUI(bool cursoringui);
+    
+    std::vector<int> Gridcost;
 
     std::vector<Entity> selectedunitlist;
 

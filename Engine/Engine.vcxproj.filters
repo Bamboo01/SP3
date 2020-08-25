@@ -125,6 +125,12 @@
     <ClCompile Include="Source\QuadTreeSystem.cpp">
       <Filter>Auxillary\Systems\QuadTreeSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SoundController.cpp">
+      <Filter>Core\Modules\SoundController</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundInfo.cpp">
+      <Filter>Core\Modules\SoundController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -364,6 +370,15 @@
     <ClInclude Include="Source\QuadTreeSystem.h">
       <Filter>Auxillary\Systems\QuadTreeSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SingletonTemplate.h">
+      <Filter>Core\Modules\SoundController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundController.h">
+      <Filter>Core\Modules\SoundController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundInfo.h">
+      <Filter>Core\Modules\SoundController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -488,6 +503,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\QuadTreeSystem">
       <UniqueIdentifier>{c2959eff-597b-429c-8d1d-943d8f2cd2bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Modules\SoundController">
+      <UniqueIdentifier>{985bf271-6ce9-4c73-b4bc-3433266cc230}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -197,6 +197,8 @@
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\MeshManager.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
+    <ClCompile Include="Source\SoundController.cpp" />
+    <ClCompile Include="Source\SoundInfo.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TransformSystem.cpp" />
@@ -270,6 +272,9 @@
     <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\Signature.h" />
+    <ClInclude Include="Source\SingletonTemplate.h" />
+    <ClInclude Include="Source\SoundController.h" />
+    <ClInclude Include="Source\SoundInfo.h" />
     <ClInclude Include="Source\SpriteAnimation.h" />
     <ClInclude Include="Source\System.h" />
     <ClInclude Include="Source\SystemManager.h" />
