@@ -69,7 +69,6 @@ void SceneCombat::Init()
 	InitTerrain();
 	InitGUIText();
 	InitPoolPrefab();
-	InitUnit();
 	InitCanvasGUI();
 
 	// Initialising of all System
@@ -98,6 +97,7 @@ void SceneCombat::Init()
 	collidersystem->SetQuadTreeSystem(quadtreesystem);
 	unitsystem->SetObjectPoolSystem(objectpoolsystem);
 	unitsystem->SetQuadTreeSystem(quadtreesystem);
+	InitUnit();
 
 	gridcontrollersystem->Init();
 	gridcontrollersystem->getUnitEntity(&unitsystem->m_Entities);
@@ -731,30 +731,39 @@ void SceneCombat::InitCanvasGUI()
 
 void SceneCombat::InitUnit()
 {
-	for (int i = 0; i < 4; i++)
-	{
-		Entity myObject3;
-		myObject3 = coordinator.CreateEntity();
-		coordinator.AddComponent<Transform>(myObject3, Transform());
-		coordinator.GetComponent<Transform>(myObject3).position = glm::vec3(0 + i * 20, 20, 0);
-		coordinator.GetComponent<Transform>(myObject3).scale = glm::vec3(10, 10, 10);
-		coordinator.AddComponent<RenderData>(myObject3, RenderData(renderer.getMesh(GEO_CUBE), false));
-		coordinator.AddComponent<Collider>(myObject3, Collider(glm::vec3(10, 10, 10), 1));
-		if (i == 0)
-		{
-			coordinator.AddComponent<Unit>(myObject3, Unit("NEXUS", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::NEXUS, 0));
-			// Player
-			coordinator.AddComponent<Controller>(myObject3, Controller(Controller::PLAYER));
-		}
-		else if (i == 1)
-			coordinator.AddComponent<Unit>(myObject3, Unit("LAB", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::LAB, 0));
-		else if (i == 2)
-			coordinator.AddComponent<Unit>(myObject3, Unit("GENERATOR1", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::GENERATOR1, 0));
-		else if (i == 3)
-			coordinator.AddComponent<Unit>(myObject3, Unit("GENERATOR2", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::GENERATOR2, 0));
+	unitsystem->CreateUnit(Unit::UnitType::NEXUS, Unit::UnitFaction::PLAYER, 1, Transform(glm::vec3(130, 30, 130), glm::vec3(3, 3, 3), glm::vec3(0, -45, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+	unitsystem->CreateUnit(Unit::UnitType::NEXUS, Unit::UnitFaction::ENEMY, 1, Transform(glm::vec3(-130, 30, -130), glm::vec3(3, 3, 3), glm::vec3(0, -45, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+	unitsystem->CreateUnit(Unit::UnitType::LAB, Unit::UnitFaction::PLAYER, 1, Transform(glm::vec3(100, 30, 130), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+	unitsystem->CreateUnit(Unit::UnitType::LAB, Unit::UnitFaction::ENEMY, 1, Transform(glm::vec3(-100, 30, -130), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+	unitsystem->CreateUnit(Unit::UnitType::GENERATOR1, Unit::UnitFaction::PLAYER, 1, Transform(glm::vec3(100, 30, 100), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+	unitsystem->CreateUnit(Unit::UnitType::GENERATOR1, Unit::UnitFaction::ENEMY, 1, Transform(glm::vec3(-100, 30, -100), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
 
-		coordinator.AddComponent<EntityState>(myObject3, EntityState(true));
-	}
+
+
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	Entity myObject3;
+	//	myObject3 = coordinator.CreateEntity();
+	//	coordinator.AddComponent<Transform>(myObject3, Transform());
+	//	coordinator.GetComponent<Transform>(myObject3).position = glm::vec3(0 + i * 20, 20, 0);
+	//	coordinator.GetComponent<Transform>(myObject3).scale = glm::vec3(10, 10, 10);
+	//	coordinator.AddComponent<RenderData>(myObject3, RenderData(renderer.getMesh(GEO_CUBE), false));
+	//	coordinator.AddComponent<Collider>(myObject3, Collider(glm::vec3(10, 10, 10), 1));
+	//	if (i == 0)
+	//	{
+	//		coordinator.AddComponent<Unit>(myObject3, Unit("NEXUS", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::NEXUS, 0));
+	//		// Player
+	//		coordinator.AddComponent<Controller>(myObject3, Controller(Controller::PLAYER));
+	//	}
+	//	else if (i == 1)
+	//		coordinator.AddComponent<Unit>(myObject3, Unit("LAB", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::LAB, 0));
+	//	else if (i == 2)
+	//		coordinator.AddComponent<Unit>(myObject3, Unit("GENERATOR1", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::GENERATOR1, 0));
+	//	else if (i == 3)
+	//		coordinator.AddComponent<Unit>(myObject3, Unit("GENERATOR2", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::GENERATOR2, 0));
+
+	//	coordinator.AddComponent<EntityState>(myObject3, EntityState(true));
+	//}
 }
 
 void SceneCombat::InitPoolPrefab()
