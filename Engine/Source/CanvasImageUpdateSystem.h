@@ -33,6 +33,9 @@ public:
     bool UnitUIopen;
     bool BuildingUIopen;
 
+    int selectedbuilding; // 0 = None, 1 = tower, 2 = wall, 3 = gen1, 4 = gen4;
+    double buildingclickdelay;
+
 private:
 
     bool CollideWithCanvas(float x, float y, float xscale, float yscale);
