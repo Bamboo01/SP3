@@ -40,6 +40,7 @@ private:
 	TextShader* textshader;
 	//Fonts
 	unsigned Consolas;
+	unsigned DOSFont;
 
 	//Add-ons to the rendering pipeline
 	LightingManager lightingManager;

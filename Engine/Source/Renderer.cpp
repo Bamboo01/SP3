@@ -66,6 +66,7 @@ void Renderer::Init()
 	TextMesh->Init();
 	//Initialise all the fonts
 	Consolas = addFont("Fonts//Consolas.tga");
+	DOSFont = addFont("Fonts//DOSFont.tga");
 	//Initialise the textmesh shader
 	textshader = new TextShader;
 	textshader->InitShader();
@@ -286,7 +287,7 @@ void Renderer::RenderCanvas()
 		glm::mat4 model(1.f);
 		model = glm::scale(model, glm::vec3(shorterside * 0.35f, shorterside * 0.35f, 1.f));
 		model = model * std::get<0>(canvastext);
-		textshader->UpdateShaderTexture(Consolas);
+		textshader->UpdateShaderTexture(DOSFont);
 		textshader->UpdateShader(model);
 		for (unsigned i = 0; i < std::get<1>(canvastext).size(); ++i)
 		{
