@@ -97,6 +97,8 @@ QuadTree* QuadTreeSystem::GetNearbyEntityQuad(Entity entity)
 
 		QUAD_TYPE nextQuad = findEntityQuad(entity, currentQuad);
 
+		bool breakout = false;
+
 		switch (nextQuad)
 		{
 		case QUAD_TYPE::TOP_L:
@@ -112,7 +114,13 @@ QuadTree* QuadTreeSystem::GetNearbyEntityQuad(Entity entity)
 			currentQuad = currentQuad->BotR;
 			break;
 		default:
-			currentQuad = root;
+			searchedQuad = currentQuad;
+			breakout = true;
+			break;
+		}
+
+		if (breakout)
+		{
 			break;
 		}
 	}
@@ -196,6 +204,8 @@ void QuadTreeSystem::SortQuad(QuadTree* quad)
 			quad->BotR->EntityList.push_back(tmpEntity);
 			break;
 		default:
+			quad->EntityList.push_back(tmpEntity);
+			return;
 			std::cout << "Warning: Entity(" << tmpEntity << ") was in root quad but didn't get added into any child quads, it could be out of specified x and z position(?)" << std::endl;
 			break;
 		}

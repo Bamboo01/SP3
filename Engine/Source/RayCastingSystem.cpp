@@ -201,7 +201,7 @@ void RayCastingSystem::callRayCollision()
             auto& ObjectEntityState = coordinator.GetComponent<EntityState>(tmp);
             if (raycollisioncheck(entity, tmp) && ObjectEntityState.active)
             {
-                std::cout << "Ray collided with object!" << std::endl;
+                //std::cout << "Ray collided with object!" << std::endl;
                 break;
             }
 
