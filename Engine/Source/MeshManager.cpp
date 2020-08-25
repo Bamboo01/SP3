@@ -14,6 +14,7 @@ MeshManager::MeshManager()
 	}
 
 	//Initialise your meshes here
+
 	meshList[GEO_AXES] =  MeshBuilder::GenerateAxes("reference");
 	meshList[GEO_AXES]->Init();
 
@@ -37,6 +38,66 @@ MeshManager::MeshManager()
 
 	meshList[GEO_TESTPARTICLE_SPHERICAL] = MeshBuilder::GenerateQuad("ParticleB", Color(1, 1, 1), 1);
 	meshList[GEO_TESTPARTICLE_SPHERICAL]->Init(100000);
+
+	meshList[GEO_UNIT_NORMAL_PLAYER] = MeshBuilder::GenerateOBJ("Normal Unit", "OBJ//normalunit.obj");
+	meshList[GEO_UNIT_NORMAL_PLAYER]->Init();
+
+	meshList[GEO_UNIT_RANGE_PLAYER] = MeshBuilder::GenerateOBJ("Ranged Unit", "OBJ//rangeunit.obj");
+	meshList[GEO_UNIT_RANGE_PLAYER]->Init();
+
+	meshList[GEO_UNIT_TANK_PLAYER] = MeshBuilder::GenerateOBJ("Tank Unit", "OBJ//tankunit.obj");
+	meshList[GEO_UNIT_TANK_PLAYER]->Init();
+
+	meshList[GEO_UNIT_NEXUS_PLAYER] = MeshBuilder::GenerateOBJ("Nexus Unit", "OBJ//nexus.obj");
+	meshList[GEO_UNIT_NEXUS_PLAYER]->Init();
+
+	meshList[GEO_UNIT_TOWER_PLAYER] = MeshBuilder::GenerateOBJ("Tower Unit", "OBJ//tower.obj");
+	meshList[GEO_UNIT_TOWER_PLAYER]->Init();
+
+	meshList[GEO_UNIT_GENERATOR1_PLAYER] = MeshBuilder::GenerateOBJ("Generator1 Unit", "OBJ//generator1.obj");
+	meshList[GEO_UNIT_GENERATOR1_PLAYER]->Init();
+	
+	meshList[GEO_UNIT_GENERATOR2_PLAYER] = MeshBuilder::GenerateOBJ("Generator2 Unit", "OBJ//generator2.obj");
+	meshList[GEO_UNIT_GENERATOR2_PLAYER]->Init();
+
+	meshList[GEO_LAB_PLAYER] = MeshBuilder::GenerateOBJ("Lab Unit", "OBJ//lab.obj");
+	meshList[GEO_LAB_PLAYER]->Init();
+
+	meshList[GEO_UNIT_WALL_PLAYER] = MeshBuilder::GenerateOBJ("Wall Unit", "OBJ//wall.obj");
+	meshList[GEO_UNIT_WALL_PLAYER]->Init();
+
+	meshList[GEO_PROJECTILE_PLAYER] = MeshBuilder::GenerateOBJ("Projectile Unit", "OBJ//projectile.obj");
+	meshList[GEO_PROJECTILE_PLAYER]->Init();
+
+	meshList[GEO_UNIT_NORMAL_ENEMY] = MeshBuilder::GenerateOBJ("Normal Unit", "OBJ//normalunit.obj");
+	meshList[GEO_UNIT_NORMAL_ENEMY]->Init();
+
+	meshList[GEO_UNIT_RANGE_ENEMY] = MeshBuilder::GenerateOBJ("Ranged Unit", "OBJ//rangeunit.obj");
+	meshList[GEO_UNIT_RANGE_ENEMY]->Init();
+
+	meshList[GEO_UNIT_TANK_ENEMY] = MeshBuilder::GenerateOBJ("Tank Unit", "OBJ//tankunit.obj");
+	meshList[GEO_UNIT_TANK_ENEMY]->Init();
+
+	meshList[GEO_UNIT_NEXUS_ENEMY] = MeshBuilder::GenerateOBJ("Nexus Unit", "OBJ//nexus.obj");
+	meshList[GEO_UNIT_NEXUS_ENEMY]->Init();
+
+	meshList[GEO_UNIT_TOWER_ENEMY] = MeshBuilder::GenerateOBJ("Tower Unit", "OBJ//tower.obj");
+	meshList[GEO_UNIT_TOWER_ENEMY]->Init();
+
+	meshList[GEO_UNIT_GENERATOR1_ENEMY] = MeshBuilder::GenerateOBJ("Generator1 Unit", "OBJ//generator1.obj");
+	meshList[GEO_UNIT_GENERATOR1_ENEMY]->Init();
+
+	meshList[GEO_UNIT_GENERATOR2_ENEMY] = MeshBuilder::GenerateOBJ("Generator2 Unit", "OBJ//generator2.obj");
+	meshList[GEO_UNIT_GENERATOR2_ENEMY]->Init();
+
+	meshList[GEO_UNIT_WALL_ENEMY] = MeshBuilder::GenerateOBJ("Wall Unit", "OBJ//wall.obj");
+	meshList[GEO_UNIT_WALL_ENEMY]->Init();
+
+	meshList[GEO_LAB_ENEMY] = MeshBuilder::GenerateOBJ("Lab Unit", "OBJ//lab.obj");
+	meshList[GEO_LAB_ENEMY]->Init();
+
+	meshList[GEO_PROJECTILE_ENEMY] = MeshBuilder::GenerateOBJ("Projectile Unit", "OBJ//projectile.obj");
+	meshList[GEO_PROJECTILE_ENEMY]->Init();
 
 	for (int i = 0; i < NUM_MESH; i++)
 	{

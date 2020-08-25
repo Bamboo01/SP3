@@ -177,46 +177,112 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         break;
     case Unit::NORMAL:
         UnitData = UNormal(level, faction);
-        UnitRenderData.mesh = renderer.getMesh(GEO_CUBE);
+        if (faction == Unit::PLAYER)
+        {
+			UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NORMAL_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NORMAL_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as NORMAL type" << std::endl;
         break;
     case Unit::TANK:
         UnitData = UTank(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TANK_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TANK_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as TANK type" << std::endl;
         break;
     case Unit::RANGE:
         UnitRenderData.mesh = renderer.getMesh(GEO_GRIDCUBE);
         UnitData = URange(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_RANGE_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_RANGE_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as RANGE type" << std::endl;
         break;
     case Unit::TOWER:
         UnitData = UTower(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TOWER_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TOWER_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as TOWER type" << std::endl;
         break;
     case Unit::WALL:
         UnitData = UWall(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_WALL_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_WALL_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as WALL type" << std::endl;
         break;
     case Unit::NEXUS:
         UnitData = UNexus(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NEXUS_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NEXUS_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as NEXUS type" << std::endl;
         break;
     case Unit::GENERATOR1:
         UnitData = UGenerator1(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR1_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR1_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR1 type" << std::endl;
         break;
     case Unit::GENERATOR2:
         UnitData = UGenerator2(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR2_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR2_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR2 type" << std::endl;
         break;
     case Unit::LAB:
         UnitData = ULab(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_LAB_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_LAB_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as LAB type" << std::endl;
-        break;
-    case Unit::PROJECTILE:
-        break;
-    default:
-        std::cout << "UnitSystem: Unable to init " << inactiveID << " due to undefined unit type" << std::endl;
         break;
     }
 
@@ -251,12 +317,29 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
 
     if (originUnit.unitType == Unit::RANGE)
     {
-        UnitRenderData.mesh = renderer.getMesh(GEO_CUBE);
+        if (originUnit.unitFaction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_ENEMY);
+        }
+
         UnitTransform = Transform(originTransform.position + originTransform.AxisZ, glm::vec3(0.5, 0.5, 0.5), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
     }
     else if (originUnit.unitType == Unit::TOWER)
     {
+        if (originUnit.unitFaction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_ENEMY);
+        }
 
+        UnitTransform = Transform(originTransform.position + originTransform.AxisZ, glm::vec3(0.5, 0.5, 0.5), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
     }
     return inactiveID;
 }
