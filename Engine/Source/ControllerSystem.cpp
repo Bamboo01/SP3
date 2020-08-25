@@ -30,7 +30,7 @@ void ControllerSystem::Update(double dt)
 		controller.leveluprangecost = controller.rangeunitlevel * 130;
 		controller.leveluptankcost = controller.tankunitlevel * 200;
 		controller.levelupnormalcost2 = controller.normalunitlevel * 70;
-		controller.leveluprangecost2 = controller.rangeunitlevel * 160;
-		controller.leveluptankcost2 = controller.tankunitlevel * 230;
+		controller.leveluprangecost2 = controller.rangeunitlevel * 120;
+		controller.leveluptankcost2 = controller.tankunitlevel * 160;
 	}
 }

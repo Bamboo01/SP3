@@ -248,69 +248,130 @@ void CanvasImageUpdateSystem::Update(double dt)
 					// Lab unit button clicks to level up unit
 					if (canvasupdate.buttontype == CanvasImageUpdate::LABNORMALUNIT)
 					{
-						if (controller.resource1 >= controller.normalunitcost)
+						//Level up normal unit (Check whether is there enough resources)
+						if (controller.normalunitlevel <= 3)
 						{
-							// Add code to Level up normal unit (Check whether is there enough resources)
-							std::cout << "Normal unit leveled up" << std::endl;
-							controller.normalunitlevel += 1;
-							controller.resource1 -= controller.normalunitcost;
+							if (controller.resource1 >= controller.levelupnormalcost)
+							{
+								controller.normalunitlevel += 1;
+								controller.resource1 -= controller.levelupnormalcost;
+							}
+						}
+						else if (controller.normalunitlevel > 3)
+						{
+							if (controller.resource1 >= controller.levelupnormalcost && controller.resource2 >= controller.levelupnormalcost2)
+							{
+								controller.normalunitlevel += 1;
+								controller.resource1 -= controller.levelupnormalcost;
+								controller.resource2 -= controller.levelupnormalcost2;
+							}
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::LABTANKUNIT)
 					{
-						if (controller.resource1 >= controller.tankunitcost)
+						//Level up tank unit (Check whether is there enough resources)
+						if (controller.tankunitlevel <= 3)
 						{
-							// Add code to Level up tank unit (Check whether is there enough resources)
-							std::cout << "Tank unit leveled up" << std::endl;
-							controller.tankunitlevel += 1;
-							controller.resource1 -= controller.tankunitcost;
+							if (controller.resource1 >= controller.leveluptankcost)
+							{
+								controller.tankunitlevel += 1;
+								controller.resource1 -= controller.leveluptankcost;
+							}
+						}
+						else if (controller.tankunitlevel > 3)
+						{
+							if (controller.resource1 >= controller.leveluptankcost && controller.resource2 >= controller.leveluptankcost2)
+							{
+								controller.tankunitlevel += 1;
+								controller.resource1 -= controller.leveluptankcost;
+								controller.resource2 -= controller.leveluptankcost2;
+							}
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::LABRANGEUNIT)
 					{
-						if (controller.resource1 >= controller.rangeunitcost)
+						//Level up normal unit (Check whether is there enough resources)
+						if (controller.rangeunitlevel <= 3)
 						{
-							// Add code to Level up range unit (Check whether is there enough resources)
-							std::cout << "Range unit leveled up" << std::endl;
-							controller.rangeunitlevel += 1;
-							controller.resource1 -= controller.rangeunitcost;
+							if (controller.resource1 >= controller.leveluprangecost)
+							{
+								controller.rangeunitlevel += 1;
+								controller.resource1 -= controller.leveluprangecost;
+							}
+						}
+						else if (controller.rangeunitlevel > 3)
+						{
+							if (controller.resource1 >= controller.leveluprangecost && controller.resource2 >= controller.leveluprangecost2)
+							{
+								controller.rangeunitlevel += 1;
+								controller.resource1 -= controller.leveluprangecost;
+								controller.resource2 -= controller.leveluprangecost2;
+							}
 						}
 					}
 					// Nexus unit button clicks to create unit
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSNORMALUNIT)
 					{
 						// Add code to spawn normal unit (Check whether is there enough resources)
-						std::cout << "Normal unit created" << std::endl;
+						if (controller.resource1 >= controller.normalunitcost)
+						{
+							std::cout << "Normal unit created" << std::endl;
+							controller.resource1 -= controller.normalunitcost;
+						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSTANKUNIT)
 					{
 						// Add code to spawn tank unit (Check whether is there enough resources)
-						std::cout << "Tank unit created" << std::endl;
+						if (controller.resource1 >= controller.tankunitcost)
+						{
+							std::cout << "Tank unit created" << std::endl;
+							controller.resource1 -= controller.tankunitcost;
+						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT)
 					{
-						// Add code to spawn range unit (Check whether is there enough resources)
-						std::cout << "Range unit created" << std::endl;
+						if (controller.resource1 >= controller.rangeunitcost)
+						{
+							// Add code to spawn range unit (Check whether is there enough resources)
+							std::cout << "Range unit created" << std::endl;
+							controller.resource1 -= controller.rangeunitcost;
+						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSBUILDING)
 					{
-						// Add code to spawn building (Check whether is there enough resources)
-						std::cout << "Tower created" << std::endl;
+						if (controller.resource1 >= controller.towercost)
+						{
+							// Add code to spawn building (Check whether is there enough resources)
+							std::cout << "Tower created" << std::endl;
+							controller.resource1 -= controller.towercost;
+						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSWALL)
 					{
-						// Add code to spawn wall (Check whether is there enough resources)
-						std::cout << "Wall created" << std::endl;
+						if (controller.resource1 >= controller.wallcost)
+						{
+							// Add code to spawn wall (Check whether is there enough resources)
+							std::cout << "Wall created" << std::endl;
+							controller.resource1 -= controller.wallcost;
+						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR1)
 					{
-						// Add code to spawn generator1 (Check whether is there enough resources)
-						std::cout << "Generator1 created" << std::endl;
+						if (controller.resource1 >= controller.generator1cost)
+						{
+							// Add code to spawn generator1 (Check whether is there enough resources)
+							std::cout << "Generator1 created" << std::endl;
+							controller.resource1 -= controller.generator1cost;
+						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
 					{
-						// Add code to spawn generator2 (Check whether is there enough resources)
-						std::cout << "Generator2 created" << std::endl;
+						if (controller.resource1 >= controller.generator2cost)
+						{
+							// Add code to spawn generator2 (Check whether is there enough resources)
+							std::cout << "Generator2 created" << std::endl;
+							controller.resource1 -= controller.generator2cost;
+						}
 					}
 				}
 			}

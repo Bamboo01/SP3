@@ -481,7 +481,11 @@ void SceneTest::Init()
 		coordinator.AddComponent<RenderData>(myObject3, RenderData(renderer.getMesh(GEO_CUBE), false));
 		coordinator.AddComponent<Collider>(myObject3, Collider(glm::vec3(10,10,10), 1));
 		if (i == 0)
+		{
 			coordinator.AddComponent<Unit>(myObject3, Unit("NEXUS", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::NEXUS, 0));
+			// Player
+			coordinator.AddComponent<Controller>(myObject3, Controller(Controller::PLAYER));
+		}
 		else if (i == 1)
 			coordinator.AddComponent<Unit>(myObject3, Unit("LAB", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::LAB, 0));
 		else if (i == 2)

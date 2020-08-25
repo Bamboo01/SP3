@@ -67,11 +67,19 @@ void UnitSystem::Update(double dt)
         }
 
         // Generate resources if the unit is an generator
-        if (unit.unitType == Unit::GENERATOR1 || unit.unitType == Unit::GENERATOR2)
+        if (unit.unitType == Unit::GENERATOR1)
         {
             if (unit.generationdelay < d_elapsedTime)
             {
                 unit.resourcesgenerated += 50;
+                unit.generationdelay = d_elapsedTime + unit.timeforgeneration;
+            }
+        }
+        else if (unit.unitType == Unit::GENERATOR2)
+        {
+            if (unit.generationdelay < d_elapsedTime)
+            {
+                unit.resourcesgenerated += 10;
                 unit.generationdelay = d_elapsedTime + unit.timeforgeneration;
             }
         }
