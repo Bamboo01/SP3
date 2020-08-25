@@ -10,6 +10,9 @@ struct RayCasting
 	glm::mat4 projectionMatrix;
 	glm::mat4 viewMatrix;
 	glm::vec3 RayEndPos;
+	glm::vec3 rightClick;
+
+	std::vector<Entity> selectedunits;
 
 	RayCasting() {}
 

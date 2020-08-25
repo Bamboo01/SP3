@@ -1,6 +1,11 @@
 #include "GridControllerSystem.h"
 
 
+void GridControllerSystem::getRaycastingEntity(Entity raycast)
+{
+	raycastentity = raycast;
+}
+
 void GridControllerSystem::CreateGrids()
 {
 	for (int x = 0; x < 20; ++x)
@@ -49,10 +54,20 @@ void GridControllerSystem::Update(float dt)
 {
 	if (Application::IsMousePressed(1))
 	{
+
 		int x = Application::GetWindowWidth();
 		int y = Application::GetWindowHeight();
 		CursorScreenPosition = glm::vec2(Application::mouse_current_x, Application::mouse_current_y);
-		CursorWorldPosition = glm::vec3(CursorScreenPosition.x * (1000 / x), 0, (y - CursorScreenPosition.y) * (1000 / y));
+		auto& raycaster = coordinator.GetComponent<RayCasting>(raycastentity);
+		CursorWorldPosition = raycaster.rightClick;
+		//CursorWorldPosition.x = -CursorWorldPosition.x;
+		/*float tempX = CursorWorldPosition.x;
+		CursorWorldPosition.x = -CursorWorldPosition.z;
+		CursorWorldPosition.z = -tempX;*/
+		//CursorWorldPosition = glm::vec3(150, 10, -100);
+		
+	//	CursorWorldPosition = glm::vec3(CursorScreenPosition.x * (800 / x), 0, (y - CursorScreenPosition.y) * (600 / y));
+		std::cout << CursorWorldPosition.x << ", " << CursorWorldPosition.z << std::endl;
 	/*	CursorWorldPosition = glm::vec3(0, 2, 0);*/
 		CreateGrids();
 	}
@@ -61,7 +76,7 @@ void GridControllerSystem::Update(float dt)
 	{
 		UpdateUnitPosition();
 		active = false;
-		/*for (int y = 0; y < 20; ++y)
+	/*	for (int y = 0; y < 20; ++y)
 		{
 			for (int x = 0; x < 20; ++x)
 			{
@@ -91,6 +106,7 @@ void GridControllerSystem::Update(float dt)
 
 void GridControllerSystem::GetDestinationGrid()
 {
+	std::cout << CursorWorldPosition.x << " " << CursorWorldPosition.z << std::endl;
 	// Check Which Grid the destination is at
 	glm::vec2 destination = glm::vec2(-1,-1);	// If it is -1 at the end, means that destination is impossible
 	for (int x = 0; x < 20; ++x)
@@ -368,8 +384,8 @@ void GridControllerSystem::UpdateUnitPosition()
 					glm::vec3 direction;
 					if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 					{
-						//std::cout << GridCost[x][y] << std::endl;
-					//	std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+						std::cout << GridCost[x][y] << std::endl;
+						std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
 						if (GridCost[x][y] == 0)
 						{
 							unit.velocity = glm::vec3(0, 0, 0);

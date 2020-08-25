@@ -16,10 +16,14 @@ extern Coordinator coordinator;
 class RayCastingSystem : public System
 {
 public:
+
+    
     virtual void Setup();
     virtual void Init(std::set<Entity>* colliderentitylist);
     virtual void Update(double dt);
     virtual void Render();
+
+ 
 
     bool raycollisioncheck(Entity ray, Entity obj);
     bool rayplanecheck(glm::vec3 rPos, glm::vec3 axis, Transform object, Collider collider);
@@ -45,6 +49,8 @@ private:
 
     glm::vec3 firstposclick;
     glm::vec3 secondposclick;
+
+  
 
     bool CursorInGUI;
 

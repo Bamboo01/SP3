@@ -1,6 +1,7 @@
 #include "RayCastingSystem.h"
 #include <iostream>
 #include "Application.h"
+#include "GridControllerSystem.h"
 
 void RayCastingSystem::Setup()
 {
@@ -86,6 +87,7 @@ void RayCastingSystem::callRayCollision()
     for (auto const& entity : entityset1)
     {
         auto& ray = coordinator.GetComponent<RayCasting>(entity);
+        auto& camera = coordinator.GetComponent<Camera>(entity);
 
         for (int i = 0; i < 500; ++i)
         {
@@ -99,18 +101,22 @@ void RayCastingSystem::callRayCollision()
                     break;
                 }
             }
-
+            
             // If ray overlapped with terrain y
             for (auto const& terrainmap : TerrainEntities)
             {
                 auto& terrain = coordinator.GetComponent<TerrainData>(terrainmap);
 
-                if (ray.RayEndPos.y < terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z))
+                if (fabs(ray.RayEndPos.y - terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z)) < 2.f)
                 {
                    // std::cout << "Overlapped with Terrain" << std::endl;
 
                     if (CursorInGUI == false)
                     {
+                        if (Application::IsMousePressed(1))
+                        {
+                            ray.rightClick = ray.RayEndPos;
+                        }
                         static bool bLButtonState = false;
                         // Add Code to get first left click position and position after you let go here
                         if (Application::IsMousePressed(0) && !bLButtonState)
@@ -121,6 +127,7 @@ void RayCastingSystem::callRayCollision()
                             minZ = 0;
                             maxZ = 0;
                             selectedunitlist.clear();
+                            ray.selectedunits.clear();
                             bLButtonState = true;
                             firstposclick = ray.RayEndPos;
                         }
@@ -152,7 +159,10 @@ void RayCastingSystem::callRayCollision()
                                 maxZ = firstposclick.z;
                             }
                             unitSelection();
+                            ray.selectedunits = selectedunitlist;
                         }
+
+                       
                     }
                 }
             }
@@ -162,6 +172,7 @@ void RayCastingSystem::callRayCollision()
             model = glm::scale(model, glm::vec3(0.1f));
             renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
         }
+
     }
 }
 
