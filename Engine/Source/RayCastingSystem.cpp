@@ -55,7 +55,9 @@ bool RayCastingSystem::raycollisioncheck(Entity ray, Entity obj)
 	auto& ObjectTransform = coordinator.GetComponent<Transform>(obj);
 	auto& ObjectCollider = coordinator.GetComponent<Collider>(obj);
 
-	glm::vec3 relativePos = ObjectTransform.position - Ray.RayEndPos;
+    glm::vec3 rayendpos = Ray.RayEndPos;
+    rayendpos.y = ObjectTransform.position.y;
+    glm::vec3 relativePos = ObjectTransform.position - rayendpos;
 
 	bool collided = !(rayplanecheck(relativePos, ObjectTransform.AxisX, ObjectTransform, ObjectCollider) ||
 		rayplanecheck(relativePos, ObjectTransform.AxisY, ObjectTransform, ObjectCollider) ||
@@ -89,19 +91,10 @@ void RayCastingSystem::callRayCollision()
         auto& ray = coordinator.GetComponent<RayCasting>(entity);
         auto& camera = coordinator.GetComponent<Camera>(entity);
 
+        std::vector<Entity> entitiesInQuadVector;
+
         for (int i = 0; i < 500; ++i)
-        {
-            for (auto const& entity2 : entityset2)
-            {
-                auto& ObjectTransform = coordinator.GetComponent<Transform>(entity2);
-                auto& ObjectEntityState = coordinator.GetComponent<EntityState>(entity2);
-                if (raycollisioncheck(entity, entity2) && ObjectEntityState.active)
-                {
-                   // std::cout << "Ray collided with object!" << std::endl;
-                    break;
-                }
-            }
-            
+        { 
             // If ray overlapped with terrain y
             for (auto const& terrainmap : TerrainEntities)
             {
@@ -173,18 +166,56 @@ void RayCastingSystem::callRayCollision()
                             unitSelection();
                             ray.selectedunits = selectedunitlist;
                         }
-
-                       
+                        i = 10000;
+                        break;
                     }
                 }
             }
+
             ray.RayEndPos += ray.Ray * 3.f;
             glm::mat4 model(1.0);
             model = glm::translate(model, ray.RayEndPos);
             model = glm::scale(model, glm::vec3(0.1f));
             renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
+
         }
 
+        if (
+            fabs(ray.RayEndPos.x) > quadTreeSystem->rootHalfWidth ||
+            fabs(ray.RayEndPos.z) > quadTreeSystem->rootHalfHeight
+            )
+        {
+            return;
+        }
+
+        if (quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->quadType == QUAD_TYPE::ROOT)
+        {
+            entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos));
+        }
+        else
+        {
+            entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->parent);
+        }
+
+        if (entitiesInQuadVector.size() <= 1)
+            continue;
+
+        for (int j = 0; j < entitiesInQuadVector.size(); j++)
+        {
+            Entity tmp = entitiesInQuadVector[j];
+
+            if (tmp == entity)
+                continue;
+
+            auto& ObjectTransform = coordinator.GetComponent<Transform>(tmp);
+            auto& ObjectEntityState = coordinator.GetComponent<EntityState>(tmp);
+            if (raycollisioncheck(entity, tmp) && ObjectEntityState.active)
+            {
+                //std::cout << "Ray collided with object!" << std::endl;
+                break;
+            }
+
+        }
     }
 }
 
@@ -230,6 +261,11 @@ glm::vec3 RayCastingSystem::calculateMouseRay()
 
 	glm::vec3 dir = glm::normalize(worldCoords);
 	return dir;
+}
+
+void RayCastingSystem::SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> system)
+{
+    quadTreeSystem = system;
 }
 
 glm::vec2 RayCastingSystem::getNormalizedDeviceCoords(double mousex, double mousey)

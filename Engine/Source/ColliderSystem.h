@@ -28,5 +28,4 @@ public:
 private:
     std::shared_ptr<UnitSystem> unitSystem;
     std::shared_ptr<QuadTreeSystem> quadTreeSystem;
-
 };

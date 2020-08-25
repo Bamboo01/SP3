@@ -11,12 +11,13 @@ void QuadTreeSystem::Setup()
 
 void QuadTreeSystem::Init()
 {
+	rootHalfWidth = 200;
+	rootHalfHeight = 200;
 }
 
 void QuadTreeSystem::Update(double dt)
 {
 	DeleteQuad(root);
-
 	root = new QuadTree(glm::vec2(-200.f, 200.f), 400.f, 400.f, 0, QUAD_TYPE::ROOT);
 
 	for (auto const& entity : unitEntities)
@@ -96,6 +97,8 @@ QuadTree* QuadTreeSystem::GetNearbyEntityQuad(Entity entity)
 
 		QUAD_TYPE nextQuad = findEntityQuad(entity, currentQuad);
 
+		bool breakout = false;
+
 		switch (nextQuad)
 		{
 		case QUAD_TYPE::TOP_L:
@@ -109,6 +112,54 @@ QuadTree* QuadTreeSystem::GetNearbyEntityQuad(Entity entity)
 			break;
 		case QUAD_TYPE::BOT_R:
 			currentQuad = currentQuad->BotR;
+			break;
+		default:
+			searchedQuad = currentQuad;
+			breakout = true;
+			break;
+		}
+
+		if (breakout)
+		{
+			break;
+		}
+	}
+
+	return searchedQuad;
+}
+
+QuadTree* QuadTreeSystem::GetNearbyEntityQuad(glm::vec3 pos)
+{
+	QuadTree* searchedQuad = nullptr;
+
+	QuadTree* currentQuad = root;
+
+	while (true)
+	{
+		if (currentQuad->TopL == nullptr || currentQuad->TopR == nullptr || currentQuad->BotL == nullptr || currentQuad->BotR == nullptr)
+		{
+			searchedQuad = currentQuad;
+			break;
+		}
+
+		QUAD_TYPE nextQuad = findEntityQuad(pos, currentQuad);
+
+		switch (nextQuad)
+		{
+		case QUAD_TYPE::TOP_L:
+			currentQuad = currentQuad->TopL;
+			break;
+		case QUAD_TYPE::TOP_R:
+			currentQuad = currentQuad->TopR;
+			break;
+		case QUAD_TYPE::BOT_L:
+			currentQuad = currentQuad->BotL;
+			break;
+		case QUAD_TYPE::BOT_R:
+			currentQuad = currentQuad->BotR;
+			break;
+		default:
+			currentQuad = root;
 			break;
 		}
 	}
@@ -153,7 +204,9 @@ void QuadTreeSystem::SortQuad(QuadTree* quad)
 			quad->BotR->EntityList.push_back(tmpEntity);
 			break;
 		default:
-			std::cout << "Entity(" << tmpEntity << ") was in root quad but didn't get added into child quads, it could be out of specified x and z position(?)" << std::endl;
+			quad->EntityList.push_back(tmpEntity);
+			return;
+			std::cout << "Warning: Entity(" << tmpEntity << ") was in root quad but didn't get added into any child quads, it could be out of specified x and z position(?)" << std::endl;
 			break;
 		}
 	}
@@ -237,6 +290,42 @@ QUAD_TYPE QuadTreeSystem::findEntityQuad(Entity entity, QuadTree* quad)
 		return QUAD_TYPE::BOT_L;
 	}
 	else if (entityTransform.position.x >= BotR_TopBoundary.x && entityTransform.position.x <= BotR_BottomBoundary.x && entityTransform.position.z >= BotR_BottomBoundary.y && entityTransform.position.z <= BotR_TopBoundary.y) // If GO is in BotR
+	{
+		return QUAD_TYPE::BOT_R;
+	}
+}
+
+QUAD_TYPE QuadTreeSystem::findEntityQuad(glm::vec3 pos, QuadTree* quad)
+{
+	float half_Width = quad->width / 2;
+	float half_Height = quad->height / 2;
+	float additionalOffset = 0.001f;
+
+	glm::vec2 TopL_TopBoundary = quad->topBoundary;
+	glm::vec2 TopL_BottomBoundary = glm::vec2(quad->topBoundary.x + half_Width - additionalOffset, quad->topBoundary.y - half_Height - additionalOffset);
+
+	glm::vec2 TopR_TopBoundary = glm::vec2(quad->topBoundary.x + half_Width, quad->topBoundary.y);
+ 	glm::vec2 TopR_BottomBoundary = glm::vec2(quad->topBoundary.x + half_Width + half_Width - additionalOffset, quad->topBoundary.y - half_Height - additionalOffset);
+
+	glm::vec2 BotL_TopBoundary = glm::vec2(quad->topBoundary.x, quad->topBoundary.y - half_Height);
+	glm::vec2 BotL_BottomBoundary = glm::vec2(quad->topBoundary.x + half_Width - additionalOffset, quad->topBoundary.y - half_Height - half_Height - additionalOffset);
+
+	glm::vec2 BotR_TopBoundary = glm::vec2(quad->topBoundary.x + half_Width, quad->topBoundary.y - half_Height);
+	glm::vec2 BotR_BottomBoundary = glm::vec2(quad->topBoundary.x + half_Width + half_Width - additionalOffset, quad->topBoundary.y - half_Height - half_Height - additionalOffset);
+
+	if (pos.x >= TopL_TopBoundary.x && pos.x <= TopL_BottomBoundary.x && pos.z >= TopL_BottomBoundary.y && pos.z <= TopL_TopBoundary.y) // If GO is in UpL
+	{
+		return QUAD_TYPE::TOP_L;
+	}
+	else if (pos.x >= TopR_TopBoundary.x && pos.x <= TopR_BottomBoundary.x && pos.z >= TopR_BottomBoundary.y && pos.z <= TopR_TopBoundary.y) // If GO is in UpR
+	{
+		return QUAD_TYPE::TOP_R;
+	}
+	else if (pos.x >= BotL_TopBoundary.x && pos.x <= BotL_BottomBoundary.x && pos.z >= BotL_BottomBoundary.y && pos.z <= BotL_TopBoundary.y) // If GO is in BotL
+	{
+		return QUAD_TYPE::BOT_L;
+	}
+	else if (pos.x >= BotR_TopBoundary.x && pos.x <= BotR_BottomBoundary.x && pos.z >= BotR_BottomBoundary.y && pos.z <= BotR_TopBoundary.y) // If GO is in BotR
 	{
 		return QUAD_TYPE::BOT_R;
 	}
