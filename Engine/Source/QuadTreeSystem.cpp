@@ -123,7 +123,7 @@ std::vector<Entity> QuadTreeSystem::GetEntityInQuad(QuadTree* quad)
 
 void QuadTreeSystem::SortQuad(QuadTree* quad)
 {
-	int entityPerQuadThreshold = 3;
+	int entityPerQuadThreshold = 5;
 
 	if (quad == nullptr || quad->EntityList.size() < entityPerQuadThreshold)
 	{
