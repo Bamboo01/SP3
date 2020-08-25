@@ -8,6 +8,9 @@
 #include "Unit.h"
 #include "Controller.h"
 
+#ifndef CANVASIMAGEUPDATESYSTEM_H
+#define CANVASIMAGEUPDATESYSTEM_H
+
 extern Coordinator coordinator;
 extern Renderer renderer;
 
@@ -56,3 +59,5 @@ private:
     unsigned rangeunittexture;
     unsigned tankunittexture;
 };
+
+#endif

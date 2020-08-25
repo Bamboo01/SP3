@@ -45,11 +45,6 @@ class SceneCombat : public Scene
 	Entity testHandler; // An entity handler to control entities
 	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
 
-	void UpdateImGui();
-	void UpdateImGuiRaycast();
-	void UpdateImGuiUnitSpawn();
-	void UpdateImGuiEntityList();
-
 	/*Systems of the scene*/
 	std::shared_ptr<TransformSystem> transformsystem;
 	std::shared_ptr<CameraSystem> camerasystem;

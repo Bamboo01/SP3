@@ -2,7 +2,10 @@
 #include "CameraController.h"
 #include "EntityState.h"
 #include "Coordinator.h"
-#include "Application.h"
+
+#ifndef CAMERACONTROLLER_H
+#define CAMERACONTROLLER_H
+
 
 extern Coordinator coordinator;
 
@@ -19,3 +22,5 @@ public:
 	virtual void Setup();
 
 };
+
+#endif

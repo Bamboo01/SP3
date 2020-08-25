@@ -1,6 +1,4 @@
 #include "Scene.h"
-#include "SceneTest.h"
-#include "SceneCombat.h"
 
 #pragma once
 

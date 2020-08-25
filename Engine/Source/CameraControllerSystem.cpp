@@ -1,5 +1,6 @@
 #include "CameraControllerSystem.h"
 #include "gtc/constants.hpp"
+#include "Application.h"
 
 void CameraControllerSystem::Update(float dt)
 {

@@ -1,4 +1,6 @@
 #include "SceneManager.h"
+#include "SceneTest.h"
+#include "SceneCombat.h"
 
 SceneManager::SceneManager()
 {
