@@ -16,7 +16,8 @@ void RayCastingSystem::Init(std::set<Entity>* colliderentitylist)
 {
 
     unitlimit = 10;
-
+    buildingclickdelay = 0;
+    timer = 0;
 	this->colliderentitylist = colliderentitylist;
 
 	for (auto const& entity : m_Entities)
@@ -29,6 +30,8 @@ void RayCastingSystem::Init(std::set<Entity>* colliderentitylist)
 
 void RayCastingSystem::Update(double dt)
 {
+    timer += dt;
+
 	for (auto const& entity : m_Entities)
 	{
 		auto& camera = coordinator.GetComponent<Camera>(entity);
@@ -176,7 +179,46 @@ void RayCastingSystem::callRayCollision()
             glm::mat4 model(1.0);
             model = glm::translate(model, ray.RayEndPos);
             model = glm::scale(model, glm::vec3(0.1f));
-            renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
+            if (selectedbuilding == 1)
+            {
+                renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
+                if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                {
+                    // Code to create tower (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
+                    std::cout << "Tower Placed!" << std::endl;
+                    selectedbuilding = 0;
+                }
+            }
+            else if (selectedbuilding == 2)
+            {
+                renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
+                if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                {
+                    // Code to create wall (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
+                    std::cout << "Wall Placed!" << std::endl;
+                    selectedbuilding = 0;
+                }
+            }
+            else if (selectedbuilding == 3)
+            {
+                renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
+                if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                {
+                    // Code to create gen1 (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
+                    std::cout << "Gen1 Placed!" << std::endl;
+                    selectedbuilding = 0;
+                }
+            }
+            else if (selectedbuilding == 4)
+            {
+                renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
+                if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                {
+                    // Code to create gen2 (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
+                    std::cout << "Gen2 Placed!" << std::endl;
+                    selectedbuilding = 0;
+                }
+            }
 
         }
 
@@ -232,7 +274,12 @@ void RayCastingSystem::unitSelection()
             auto& entitystate = coordinator.GetComponent<EntityState>(entity2);
             auto& unit = coordinator.GetComponent<Unit>(entity2);
 
-            if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ && entitystate.active && unit.unitFaction == Unit::PLAYER && unitlimit != 0)
+            if (unitlimit == 0)
+            {
+                unitlimit = 10;
+                break;
+            }
+            if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ && entitystate.active && unit.unitFaction == Unit::PLAYER)
             {
                 unitlimit--;
                 selectedunitlist.push_back(entity2);

@@ -142,6 +142,8 @@ void SceneCombat::Update(double dt)
 	guitextsystem->SetSelectedUnitList(raycastingsystem->selectedunitlist);
 	guitextsystem->SetUIopen(canvasimageupdatesystem->LabUIopen, canvasimageupdatesystem->UnitUIopen, canvasimageupdatesystem->BuildingUIopen);
 	raycastingsystem->GetCursorInGUI(canvasimageupdatesystem->CursorinGUI);
+	raycastingsystem->selectedbuilding = canvasimageupdatesystem->selectedbuilding;
+	raycastingsystem->buildingclickdelay = canvasimageupdatesystem->buildingclickdelay;
 
 	particlesystem->Update(dt);
 	objectpoolsystem->Update(dt);
@@ -149,6 +151,7 @@ void SceneCombat::Update(double dt)
 	quadtreesystem->Update(dt);
 	collidersystem->Update(dt);
 	raycastingsystem->Update(dt);
+	canvasimageupdatesystem->selectedbuilding = raycastingsystem->selectedbuilding;
 }
 
 void SceneCombat::LateUpdate(double dt)

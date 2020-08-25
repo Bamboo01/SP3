@@ -17,7 +17,6 @@ extern Coordinator coordinator;
 class RayCastingSystem : public System
 {
 public:
-
     
     virtual void Setup();
     virtual void Init(std::set<Entity>* colliderentitylist);
@@ -43,6 +42,9 @@ public:
 
     void SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> system);
 
+    int selectedbuilding; // 0 = None, 1 = tower, 2 = wall, 3 = gen1, 4 = gen2
+    double buildingclickdelay;
+
 private:
     glm::vec2 getNormalizedDeviceCoords(double mousex, double mousey);
     glm::vec3 toWorldCoords(glm::vec4 clipCoords);
@@ -60,6 +62,8 @@ private:
     float maxZ, minZ;
 
     int unitlimit;
+
+    double timer;
 
     std::shared_ptr<QuadTreeSystem> quadTreeSystem;
 };

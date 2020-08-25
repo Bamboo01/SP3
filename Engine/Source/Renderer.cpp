@@ -100,6 +100,12 @@ void Renderer::Init()
 	grass->kShininess = 0.f;
 	materialManager.push_back(grass);
 
+	Material* terrain = new Material();
+	terrain->AssignTexture("Images//terrain.tga");
+	terrain->kSpecular = glm::vec3(0, 0, 0);
+	terrain->kShininess = 0.f;
+	materialManager.push_back(terrain);
+
 	Material* testParticleA = new Material();
 	testParticleA->AssignTexture("Images//crate.tga");
 	//testParticleA->AssignTexture("Images//grass.tga");
@@ -135,7 +141,7 @@ void Renderer::Init()
 
 	/*Assign your meshes their materials here*/
 	//assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
-	assignMaterialtoMesh(meshManager->meshList[GEO_TERRAIN], grass);
+	assignMaterialtoMesh(meshManager->meshList[GEO_TERRAIN], terrain);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_CYLINDRICAL], testParticleA);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_SPHERICAL], testParticleB);
 
