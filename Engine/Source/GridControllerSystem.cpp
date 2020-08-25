@@ -67,7 +67,7 @@ void GridControllerSystem::Update(float dt)
 		//CursorWorldPosition = glm::vec3(150, 10, -100);
 		
 	//	CursorWorldPosition = glm::vec3(CursorScreenPosition.x * (800 / x), 0, (y - CursorScreenPosition.y) * (600 / y));
-		std::cout << CursorWorldPosition.x << ", " << CursorWorldPosition.z << std::endl;
+		//std::cout << CursorWorldPosition.x << ", " << CursorWorldPosition.z << std::endl;
 	/*	CursorWorldPosition = glm::vec3(0, 2, 0);*/
 		CreateGrids();
 	}
@@ -106,7 +106,7 @@ void GridControllerSystem::Update(float dt)
 
 void GridControllerSystem::GetDestinationGrid()
 {
-	std::cout << CursorWorldPosition.x << " " << CursorWorldPosition.z << std::endl;
+	//std::cout << CursorWorldPosition.x << " " << CursorWorldPosition.z << std::endl;
 	// Check Which Grid the destination is at
 	glm::vec2 destination = glm::vec2(-1,-1);	// If it is -1 at the end, means that destination is impossible
 	for (int x = 0; x < 20; ++x)
@@ -384,8 +384,8 @@ void GridControllerSystem::UpdateUnitPosition()
 					glm::vec3 direction;
 					if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 					{
-						std::cout << GridCost[x][y] << std::endl;
-						std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+						//std::cout << GridCost[x][y] << std::endl;
+						//std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
 						if (GridCost[x][y] == 0)
 						{
 							unit.velocity = glm::vec3(0, 0, 0);

@@ -229,30 +229,6 @@ void GUITextSystem::Update(double dt)
 									unitguientitystate = true;
 									unittext.Text = "Lvl " + std::to_string(controller.tankunitlevel);
 								}
-								if (controller.normalunitlevel > 3)
-								{
-									if (unitguitype.texttype == GUIText::NORMALUNITCOST2)
-									{
-										unitguientitystate = true;
-										unittext.Text = std::to_string(controller.normalunitcost2).substr(0, std::to_string(controller.normalunitcost2).find('.'));
-									}
-								}
-								if (controller.rangeunitlevel > 3)
-								{
-									if (unitguitype.texttype == GUIText::RANGEUNITCOST2)
-									{
-										unitguientitystate = true;
-										unittext.Text = std::to_string(controller.rangeunitcost2).substr(0, std::to_string(controller.rangeunitcost2).find('.'));
-									}
-								}
-								if (controller.tankunitlevel > 3)
-								{
-									if (unitguitype.texttype == GUIText::TANKUNITCOST2)
-									{
-										unitguientitystate = true;
-										unittext.Text = std::to_string(controller.tankunitcost2).substr(0, std::to_string(controller.tankunitcost2).find('.'));
-									}
-								}
 							}
 							else if (guitype.texttype == GUIText::UNITBUTTON && !UnitUIopen)
 							{
@@ -262,12 +238,6 @@ void GUITextSystem::Update(double dt)
 								else if (unitguitype.texttype == GUIText::RANGEUNITCOST)
 									unitguientitystate = false;
 								else if (unitguitype.texttype == GUIText::TANKUNITCOST)
-									unitguientitystate = false;
-								else if (unitguitype.texttype == GUIText::NORMALUNITCOST2)
-									unitguientitystate = false;
-								else if (unitguitype.texttype == GUIText::RANGEUNITCOST2)
-									unitguientitystate = false;
-								else if (unitguitype.texttype == GUIText::TANKUNITCOST2)
 									unitguientitystate = false;
 								else if (unitguitype.texttype == GUIText::NORMALUNITLEVEL)
 									unitguientitystate = false;
