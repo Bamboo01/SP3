@@ -82,13 +82,14 @@ void SceneCombat::Init()
 	terrainsystem->Init();
 	unitsystem->Init();
 	collidersystem->Init();
-	raycastingsystem->Init(&collidersystem->m_Entities);
+	raycastingsystem->Init(&collidersystem->m_Entities, &controllersystem->m_Entities);
 	controllersystem->Init(&collidersystem->m_Entities);
 	canvasimageupdatesystem->Init(&controllersystem->m_Entities);
 	guitextsystem->Init(&controllersystem->m_Entities);
 
 	raycastingsystem->SetTerrainEntities(terrainsystem->m_Entities);
 	raycastingsystem->SetQuadTreeSystem(quadtreesystem);
+	raycastingsystem->SetUnitSystem(unitsystem);
 	particlesystem->Init();
 	objectpoolsystem->Init();
 	quadtreesystem->Init();

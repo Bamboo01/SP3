@@ -12,13 +12,14 @@ void RayCastingSystem::Setup()
 	coordinator.SetSystemSignature<RayCastingSystem>(signature);
 }
 
-void RayCastingSystem::Init(std::set<Entity>* colliderentitylist)
+void RayCastingSystem::Init(std::set<Entity>* colliderentitylist, std::set<Entity>* controllerentitylist)
 {
 
     unitlimit = 10;
     buildingclickdelay = 0;
     timer = 0;
 	this->colliderentitylist = colliderentitylist;
+    this->controllerentitylist = controllerentitylist;
 
 	for (auto const& entity : m_Entities)
 	{
@@ -97,7 +98,7 @@ void RayCastingSystem::callRayCollision()
         std::vector<Entity> entitiesInQuadVector;
 
         for (int i = 0; i < 500; ++i)
-        { 
+        {
             // If ray overlapped with terrain y
             for (auto const& terrainmap : TerrainEntities)
             {
@@ -107,7 +108,7 @@ void RayCastingSystem::callRayCollision()
                 {
                     cursorOnHeightMapPosition = glm::vec2(ray.RayEndPos.x, ray.RayEndPos.z);
 
-                   // std::cout << "Overlapped with Terrain" << std::endl;
+                    // std::cout << "Overlapped with Terrain" << std::endl;
 
                     if (CursorInGUI == false)
                     {
@@ -178,48 +179,57 @@ void RayCastingSystem::callRayCollision()
             ray.RayEndPos += ray.Ray * 3.f;
             glm::mat4 model(1.0);
             model = glm::translate(model, ray.RayEndPos);
-            model = glm::scale(model, glm::vec3(0.1f));
-            if (selectedbuilding == 1)
-            {
-                renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
-                if (Application::IsMousePressed(0) && buildingclickdelay < timer)
-                {
-                    // Code to create tower (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
-                    std::cout << "Tower Placed!" << std::endl;
-                    selectedbuilding = 0;
-                }
-            }
-            else if (selectedbuilding == 2)
-            {
-                renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
-                if (Application::IsMousePressed(0) && buildingclickdelay < timer)
-                {
-                    // Code to create wall (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
-                    std::cout << "Wall Placed!" << std::endl;
-                    selectedbuilding = 0;
-                }
-            }
-            else if (selectedbuilding == 3)
-            {
-                renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
-                if (Application::IsMousePressed(0) && buildingclickdelay < timer)
-                {
-                    // Code to create gen1 (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
-                    std::cout << "Gen1 Placed!" << std::endl;
-                    selectedbuilding = 0;
-                }
-            }
-            else if (selectedbuilding == 4)
-            {
-                renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
-                if (Application::IsMousePressed(0) && buildingclickdelay < timer)
-                {
-                    // Code to create gen2 (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
-                    std::cout << "Gen2 Placed!" << std::endl;
-                    selectedbuilding = 0;
-                }
-            }
+            model = glm::scale(model, glm::vec3(0.05f));
 
+            for (auto const& terrainmap : TerrainEntities)
+            {
+                auto& terrain = coordinator.GetComponent<TerrainData>(terrainmap);
+
+                if (selectedbuilding == 1)
+                {
+                    renderer.getMesh(GEO_UNIT_TOWER_PLAYER)->DynamicTransformMatrices.push_back(model);
+                    if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                    {
+                        // Code to create tower (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
+                        std::cout << "Tower Placed!" << std::endl;
+                        Entity newUnit = unitsystem->CreateUnit(Unit::TOWER, Unit::PLAYER, 1, Transform(glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+                        selectedbuilding = 0;
+                    }
+                }
+                else if (selectedbuilding == 2)
+                {
+                    renderer.getMesh(GEO_UNIT_WALL_PLAYER)->DynamicTransformMatrices.push_back(model);
+                    if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                    {
+                        // Code to create wall (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
+                        std::cout << "Wall Placed!" << std::endl;
+                        Entity newUnit = unitsystem->CreateUnit(Unit::WALL, Unit::PLAYER, 1, Transform(glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+                        selectedbuilding = 0;
+                    }
+                }
+                else if (selectedbuilding == 3)
+                {
+                    renderer.getMesh(GEO_UNIT_GENERATOR1_PLAYER)->DynamicTransformMatrices.push_back(model);
+                    if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                    {
+                        // Code to create gen1 (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
+                        std::cout << "Gen1 Placed!" << std::endl;
+                        Entity newUnit = unitsystem->CreateUnit(Unit::GENERATOR1, Unit::PLAYER, 1, Transform(glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+                        selectedbuilding = 0;
+                    }
+                }
+                else if (selectedbuilding == 4)
+                {
+                    renderer.getMesh(GEO_UNIT_GENERATOR2_PLAYER)->DynamicTransformMatrices.push_back(model);
+                    if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                    {
+                        // Code to create gen2 (Use rayendpos.x, rayendpos.z, for y, use readheightmap)
+                        std::cout << "Gen2 Placed!" << std::endl;
+                        Entity newUnit = unitsystem->CreateUnit(Unit::GENERATOR2, Unit::PLAYER, 1, Transform(glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+                        selectedbuilding = 0;
+                    }
+                }
+            }
         }
 
         if (
@@ -308,6 +318,11 @@ glm::vec3 RayCastingSystem::calculateMouseRay()
 
 	glm::vec3 dir = glm::normalize(worldCoords);
 	return dir;
+}
+
+void RayCastingSystem::SetUnitSystem(std::shared_ptr<UnitSystem> system)
+{
+    unitsystem = system;
 }
 
 void RayCastingSystem::SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> system)

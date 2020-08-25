@@ -8,7 +8,8 @@
 #include "TerrainData.h"
 #include "Unit.h"
 #include "QuadTreeSystem.h"
-
+#include "UnitSystem.h"
+#include "Controller.h"
 #include "Renderer.h"
 extern Renderer renderer;
 extern Coordinator coordinator;
@@ -19,7 +20,7 @@ class RayCastingSystem : public System
 public:
     
     virtual void Setup();
-    virtual void Init(std::set<Entity>* colliderentitylist);
+    virtual void Init(std::set<Entity>* colliderentitylist, std::set<Entity>* controllerentitylist);
     virtual void Update(double dt);
     virtual void Render();
 
@@ -40,6 +41,7 @@ public:
     glm::vec3 calculateMouseRay();
     glm::vec2 cursorOnHeightMapPosition;
 
+    void SetUnitSystem(std::shared_ptr<UnitSystem> system);
     void SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> system);
 
     int selectedbuilding; // 0 = None, 1 = tower, 2 = wall, 3 = gen1, 4 = gen2
@@ -52,6 +54,7 @@ private:
     std::set<Entity> TerrainEntities;
 
     std::set<Entity> *colliderentitylist;
+    std::set<Entity>* controllerentitylist;
 
     glm::vec3 firstposclick;
     glm::vec3 secondposclick;
@@ -66,4 +69,5 @@ private:
     double timer;
 
     std::shared_ptr<QuadTreeSystem> quadTreeSystem;
+    std::shared_ptr<UnitSystem> unitsystem;
 };

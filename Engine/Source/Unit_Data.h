@@ -183,7 +183,7 @@ public:
 
 	UTower(int unitLevel, UnitFaction unitFact)
 	{
-		std::string unitName = "Wall";
+		std::string unitName = "Tower";
 
 		float baseHealth = 3000;
 		float healthGrowth = 100;
