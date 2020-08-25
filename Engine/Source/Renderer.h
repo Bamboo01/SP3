@@ -63,6 +63,6 @@ public:
 
 	//Canvas stuff
 	std::vector <std::pair<glm::mat4, unsigned>> CanvasImage;
-	std::vector <std::pair<glm::mat4, std::string>> CanvasText;
+	std::vector <std::tuple<glm::mat4, std::string, glm::vec3>> CanvasText;
 };
 

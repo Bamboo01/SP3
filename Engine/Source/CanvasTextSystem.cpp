@@ -35,6 +35,6 @@ void CanvasTextSystem::Render()
 			model = glm::translate(model, -glm::vec3(length, 0, 0));
 		}
 
-		renderer.CanvasText.push_back(std::make_pair(model, canvastext.Text));
+		renderer.CanvasText.push_back(std::make_tuple(model, canvastext.Text, canvastext.color));
 	}
 }

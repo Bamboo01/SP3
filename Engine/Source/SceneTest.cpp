@@ -160,7 +160,7 @@ void SceneTest::Init()
 		}
 		else if (i == 1)
 		{
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("Resources" + std::to_string(i + 1) + ": ", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("Resources" + std::to_string(i + 1) + ": ", ALIGN_LEFT, glm::vec3(0, 1, 0)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::RESOURCES2));
 		}
 		coordinator.AddComponent<EntityState>(UIText, EntityState());

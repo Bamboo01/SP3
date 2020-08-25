@@ -131,6 +131,9 @@
     <ClCompile Include="Source\SoundInfo.cpp">
       <Filter>Core\Modules\SoundController</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneCombat.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -378,6 +381,9 @@
     </ClInclude>
     <ClInclude Include="Source\SoundInfo.h">
       <Filter>Core\Modules\SoundController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneCombat.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

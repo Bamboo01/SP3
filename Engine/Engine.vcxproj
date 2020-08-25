@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\SceneCombat.cpp" />
     <ClCompile Include="Source\ControllerSystem.cpp" />
     <ClCompile Include="Source\ObjectPoolSystem.cpp" />
     <ClCompile Include="Source\ParticleSystem.cpp" />
@@ -205,6 +206,7 @@
     <ClCompile Include="Source\TerrainSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\SceneCombat.h" />
     <ClInclude Include="Source\Controller.h" />
     <ClInclude Include="Source\ControllerSystem.h" />
     <ClInclude Include="Source\ObjectPool.h" />

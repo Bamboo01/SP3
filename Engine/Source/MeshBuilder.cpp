@@ -677,6 +677,35 @@ Mesh* MeshBuilder::GenerateSkyDome(const std::string& meshName, Color color, uns
 	return mesh;
 }
 
+Mesh* MeshBuilder::GenerateLine(const std::string& meshName)
+{
+	Vertex v;
+	std::vector<Vertex> vertex_buffer_data;
+	std::vector<GLuint> index_buffer_data;
+
+	v.pos.Set(0, 0, -0.5f);
+	v.color = Color(1, 1, 1);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0, 0, 0.5f);
+	v.color = Color(1, 1, 1);
+	vertex_buffer_data.push_back(v);
+
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(1);
+
+	Mesh* mesh = new Mesh(meshName);
+
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data.size() * sizeof(Vertex), &vertex_buffer_data[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer_data.size() * sizeof(GLuint), &index_buffer_data[0], GL_STATIC_DRAW);
+
+	mesh->indexSize = 36;
+	mesh->mode = Mesh::DRAW_LINES;
+	return mesh;
+}
+
 Mesh* MeshBuilder::GenerateColliderBox(const std::string& meshName, Color color, float lengthX, float lengthY, float lengthZ)
 {
 	// An array of 3 vectors which represents 3 vertices

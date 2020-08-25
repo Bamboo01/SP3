@@ -285,16 +285,17 @@ void Renderer::RenderCanvas()
 	{
 		glm::mat4 model(1.f);
 		model = glm::scale(model, glm::vec3(shorterside * 0.35f, shorterside * 0.35f, 1.f));
-		model = model * canvastext.first;
+		model = model * std::get<0>(canvastext);
 		textshader->UpdateShaderTexture(Consolas);
 		textshader->UpdateShader(model);
-		for (unsigned i = 0; i < canvastext.second.length(); ++i)
+		for (unsigned i = 0; i < std::get<1>(canvastext).size(); ++i)
 		{
 			glm::mat4 characterspacing(1.f);
 			characterspacing = characterspacing * model;
 			characterspacing = glm::translate(characterspacing , glm::vec3(i * 0.5f, 0, 0));
 			textshader->UpdateShader(characterspacing);
-			TextMesh->RenderIndividually((unsigned)canvastext.second[i] * 6, 6);
+			textshader->UpdateShaderColor(std::get<2>(canvastext));
+			TextMesh->RenderIndividually((unsigned)std::get<1>(canvastext)[i] * 6, 6);
 		}
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, 0);
