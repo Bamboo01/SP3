@@ -728,6 +728,9 @@ void SceneTest::Init()
 	collidersystem->SetQuadTreeSystem(quadtreesystem);
 	unitsystem->SetObjectPoolSystem(objectpoolsystem);
 	unitsystem->SetQuadTreeSystem(quadtreesystem);
+
+	gridcontrollersystem->Init();
+	gridcontrollersystem->getUnitEntity(&unitsystem->m_Entities);
 }
 
 void SceneTest::EarlyUpdate(double dt)
