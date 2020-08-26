@@ -12,5 +12,6 @@ private:
 public:
 	virtual void Init();
 	virtual void Update(float dt);
+	virtual void ScrollUpdate();
 	
 };
