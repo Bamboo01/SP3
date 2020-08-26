@@ -149,17 +149,20 @@ void CSoundController::PauseSoundByID(const int ID)
  @brief Increase Master volume
  @return true if successfully increased volume, else false
  */
-bool CSoundController::MasterVolumeIncrease(void)
+bool CSoundController::MasterVolumeIncrease(float a)
 {
 	// Get the current volume
 	float fCurrentVolume = cSoundEngine->getSoundVolume();
 
 	// Check if the maximum volume has been reached
-	if (fCurrentVolume == 1.0f)
+	if (fCurrentVolume >= 1.0f)
+	{
+		cSoundEngine->setSoundVolume(1.f);
 		return false;
+	}
 
 	// Increase the volume by 10%
-	cSoundEngine->setSoundVolume(fCurrentVolume + 0.1f);
+	cSoundEngine->setSoundVolume(fCurrentVolume + a);
 
 	return true;
 }
@@ -168,17 +171,20 @@ bool CSoundController::MasterVolumeIncrease(void)
  @brief Decrease Master volume
  @return true if successfully decreased volume, else false
  */
-bool CSoundController::MasterVolumeDecrease(void)
+bool CSoundController::MasterVolumeDecrease(float a)
 {
 	// Get the current volume
 	float fCurrentVolume = cSoundEngine->getSoundVolume();
 
 	// Check if the minimum volume has been reached
-	if (fCurrentVolume == 0.0f)
+	if (fCurrentVolume <= 0.0f)
+	{
+		cSoundEngine->setSoundVolume(0.0f);
 		return false;
-
+	}
+		
 	// Decrease the volume by 10%
-	cSoundEngine->setSoundVolume(fCurrentVolume - 0.1f);
+	cSoundEngine->setSoundVolume(fCurrentVolume - a);
 
 	return true;
 }
@@ -242,6 +248,11 @@ bool CSoundController::VolumeDecrease(const int ID)
 	pISoundSource->setDefaultVolume(fCurrentVolume - 0.1f);
 
 	return true;
+}
+
+int CSoundController::GetMasterVolume()
+{
+	return (int)(cSoundEngine->getSoundVolume() * 100.f);
 }
 
 // For 3D sounds only

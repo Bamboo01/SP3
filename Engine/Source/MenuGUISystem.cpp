@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
+#include "SoundController.h"
+#include "SceneManager.h"
 
 bool MenuGUISystem::CollideWithCanvas(float x, float y, float xscale, float yscale)
 {
@@ -52,6 +54,11 @@ void MenuGUISystem::Init()
 
 void MenuGUISystem::Update(float dt)
 {
+	{
+		auto& canvastext = coordinator.GetComponent<CanvasText>(GUI_VolumeMeter);
+		canvastext.Text = "Volume: " + std::to_string(CSoundController::GetInstance()->GetMasterVolume());
+	}
+
 	for (const auto& entity : GUI_Entities)
 	{
 		if (!coordinator.GetComponent<EntityState>(entity).active)
@@ -72,7 +79,7 @@ void MenuGUISystem::Update(float dt)
 			case MenuGUI::START_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
-
+					SceneManager::getInstance()->ChangeScene(SCENE_COMBAT);
 				}
 				break;
 			case MenuGUI::EXIT_BUTTON:
@@ -90,13 +97,13 @@ void MenuGUISystem::Update(float dt)
 			case MenuGUI::AUDIO_INCREASE_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
-
+					CSoundController::GetInstance()->MasterVolumeIncrease(dt);
 				}
 				break;
 			case MenuGUI::AUDIO_DECREASE_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
-
+					CSoundController::GetInstance()->MasterVolumeDecrease(dt);
 				}
 				break;
 			case MenuGUI::BACK_BUTTON:

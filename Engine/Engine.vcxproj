@@ -161,7 +161,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\IntroTextSystem.cpp" />
-    <ClCompile Include="Source\MenuCamera.cpp" />
     <ClCompile Include="Source\MenuCameraSystem.cpp" />
     <ClCompile Include="Source\MenuGUISystem.cpp" />
     <ClCompile Include="Source\MenuNexusSystem.cpp" />

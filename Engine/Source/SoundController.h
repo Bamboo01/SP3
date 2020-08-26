@@ -44,14 +44,17 @@ public:
 	void PauseSoundByID(const int ID);
 
 	// Increase Master volume
-	bool MasterVolumeIncrease(void);
+	bool MasterVolumeIncrease(float a);
 	// Decrease Master volume
-	bool MasterVolumeDecrease(void);
+	bool MasterVolumeDecrease(float a);
 
 	// Increase volume of a ISoundSource
 	bool VolumeIncrease(const int ID);
 	// Decrease volume of a ISoundSource
 	bool VolumeDecrease(const int ID);
+
+	// Get the current Master Volume
+	int GetMasterVolume();
 
 	// For 3D sounds only
 	// Set Listener position

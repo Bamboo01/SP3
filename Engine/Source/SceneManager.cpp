@@ -8,6 +8,7 @@ SceneManager::SceneManager()
 {
 	sceneList[SCENE_TEST] = new SceneTest;
 	sceneList[SCENE_COMBAT] = new SceneCombat;
+	sceneList[SCENE_MENU] = new SceneMenu;
 	sceneList[SCENE_INTRO] = new SceneIntro;
 	scene = nullptr;
 	swap = false;

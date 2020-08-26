@@ -140,9 +140,6 @@
     <ClCompile Include="Source\SceneMenu.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MenuCamera.cpp">
-      <Filter>Auxillary\Components\Menu</Filter>
-    </ClCompile>
     <ClCompile Include="Source\MenuCameraSystem.cpp">
       <Filter>Auxillary\Systems\Menu\MenuCameraSystem</Filter>
     </ClCompile>
