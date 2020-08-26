@@ -35,7 +35,9 @@ void CanvasImageUpdateSystem::Init(std::set<Entity>* controllerentity)
 	renderonce = false;
 	renderamount = 0;
 	increment = 0;
-
+	selectedbuilding = 0;
+	buildingclickdelay = 0;
+	createonce = false;
 	this->controllerentity = controllerentity;
 
 	nexustexture = LoadTGA("Images//nexus.tga");
@@ -317,6 +319,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						{
 							std::cout << "Normal unit created" << std::endl;
 							controller.resource1 -= controller.normalunitcost;
+							//unitsystem->CreateUnit(Unit::NORMAL, Unit::PLAYER, controller.normalunitlevel,
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSTANKUNIT)
@@ -344,6 +347,9 @@ void CanvasImageUpdateSystem::Update(double dt)
 							// Add code to spawn building (Check whether is there enough resources)
 							std::cout << "Tower created" << std::endl;
 							controller.resource1 -= controller.towercost;
+							selectedbuilding = 1;
+							buildingclickdelay = timer + 0.4;
+							createonce = true;
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSWALL)
@@ -353,6 +359,9 @@ void CanvasImageUpdateSystem::Update(double dt)
 							// Add code to spawn wall (Check whether is there enough resources)
 							std::cout << "Wall created" << std::endl;
 							controller.resource1 -= controller.wallcost;
+							selectedbuilding = 2;
+							buildingclickdelay = timer + 0.4;
+							createonce = true;
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR1)
@@ -362,6 +371,9 @@ void CanvasImageUpdateSystem::Update(double dt)
 							// Add code to spawn generator1 (Check whether is there enough resources)
 							std::cout << "Generator1 created" << std::endl;
 							controller.resource1 -= controller.generator1cost;
+							selectedbuilding = 3;
+							buildingclickdelay = timer + 0.4;
+							createonce = true;
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
@@ -371,6 +383,9 @@ void CanvasImageUpdateSystem::Update(double dt)
 							// Add code to spawn generator2 (Check whether is there enough resources)
 							std::cout << "Generator2 created" << std::endl;
 							controller.resource1 -= controller.generator2cost;
+							selectedbuilding = 4;
+							buildingclickdelay = timer + 0.4;
+							createonce = true;
 						}
 					}
 				}
@@ -532,6 +547,11 @@ void CanvasImageUpdateSystem::Render()
 void CanvasImageUpdateSystem::SetSelectedUnitList(std::vector<Entity> selectedunitList)
 {
 	this->selectedunitList = selectedunitList;
+}
+
+void CanvasImageUpdateSystem::SetUnitSystem(std::shared_ptr<UnitSystem> system)
+{
+	unitsystem = system;
 }
 
 bool CanvasImageUpdateSystem::CollideWithCanvas(float x, float y, float xscale, float yscale)

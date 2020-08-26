@@ -1,5 +1,7 @@
 #pragma once
 
+#include "glm.hpp"
+
 struct Controller
 {
 	float resource1;
@@ -26,6 +28,9 @@ struct Controller
 	float levelupnormalcost2;
 	float leveluprangecost2;
 	float leveluptankcost2;
+
+	float buildrange;
+	glm::vec3 nexusposition;
 
 	enum ControllerType
 	{
@@ -59,12 +64,15 @@ struct Controller
 		levelupnormalcost2 = normalunitlevel * 70;
 		leveluprangecost2 = rangeunitlevel * 160;
 		leveluptankcost2 = tankunitlevel * 230;
+		buildrange = 200;
+		nexusposition = glm::vec3(0, 0, 0);
 		controllertype = DEFAULT;
 	}
 
-	Controller(ControllerType controllertype)
+	Controller(ControllerType controllertype, glm::vec3 nexusposition)
 	{
 		this->controllertype = controllertype;
+		this->nexusposition = nexusposition;
 		resource1 = 200;
 		resource2 = 0;
 		normalunitlevel = 1;
@@ -86,6 +94,7 @@ struct Controller
 		levelupnormalcost2 = normalunitlevel * 70;
 		leveluprangecost2 = rangeunitlevel * 160;
 		leveluptankcost2 = tankunitlevel * 230;
+		buildrange = 200;
 	}
 
 };

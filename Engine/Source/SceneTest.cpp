@@ -489,8 +489,6 @@ void SceneTest::Init()
 		if (i == 0)
 		{
 			coordinator.AddComponent<Unit>(myObject3, Unit("NEXUS", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::NEXUS, 0));
-			// Player
-			coordinator.AddComponent<Controller>(myObject3, Controller(Controller::PLAYER));
 		}
 		else if (i == 1)
 			coordinator.AddComponent<Unit>(myObject3, Unit("LAB", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::LAB, 0));
@@ -726,9 +724,9 @@ void SceneTest::Init()
 	canvastextsystem->Init();
 	entitystatesystem->Init();
 	terrainsystem->Init();
-	unitsystem->Init();
+	unitsystem->Init(terrainsystem->m_Entities);
 	collidersystem->Init();
-	raycastingsystem->Init(&collidersystem->m_Entities);
+	raycastingsystem->Init(&collidersystem->m_Entities, &controllersystem->m_Entities);
 	controllersystem->Init(&collidersystem->m_Entities);
 	canvasimageupdatesystem->Init(&controllersystem->m_Entities);
 	guitextsystem->Init(&controllersystem->m_Entities);

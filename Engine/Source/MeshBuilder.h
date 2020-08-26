@@ -31,7 +31,7 @@ public:
 	static Mesh* GenerateTerrain(const std::string& meshName, const std::string& file_path, std::vector<unsigned char>& heightMap);
 	static Mesh* GenerateSkyDome(const std::string& meshName, Color color, unsigned numStack, unsigned numSlice, float radius);
 
-	static Mesh* GenerateLine(const std::string& meshName);
+	static Mesh* GenerateLine(const std::string& meshName, Color color);
 
 	//Custom Meshes
 	static SpriteAnimation* GenerateSpriteAnimation(const std::string& meshName, unsigned numRow, unsigned numCol);

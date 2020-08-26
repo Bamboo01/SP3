@@ -35,14 +35,14 @@ void ColliderSystem::Update(double dt)
             auto& ObjectUnit2 = coordinator.GetComponent<Unit>(tmp);
             auto& ObjectEntityState2 = coordinator.GetComponent<EntityState>(tmp);
 
-            if ((!ObjectEntityState.active) || (!ObjectEntityState2.active) || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction && ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE))
+            if ((!ObjectEntityState.active) || (!ObjectEntityState2.active) || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction && ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitType == Unit::MELEE_PROJECTILE) || (ObjectUnit2.unitType == Unit::MELEE_PROJECTILE))
                 continue;
 
             if (glm::length(ObjectTransform.position - ObjectTransform2.position) <= 100)
             {
                 if (collisionCheck(firstObject, tmp))
                 {
-                    //std::cout << "ColliderSystem: Collision Detected" << std::endl;
+                    std::cout << "ColliderSystem: Collision Detected" << std::endl;
 
                     if (ObjectUnit.unitType == Unit::PROJECTILE)
                     {
@@ -147,7 +147,7 @@ void ColliderSystem::Setup()
 
 void ColliderSystem::Init()
 {
-
+    isBuildingPlaced = false;
 }
 
 bool ColliderSystem::collisionCheck(Entity object1, Entity object2)
@@ -253,6 +253,7 @@ void ColliderSystem::collisionResponse(Entity object1, Entity object2)
     translationalVector2 = translationalVector * glm::vec3(-1, -1, -1);
 
     // If mass == -1, it is a static object. No displacement happens
+   
 
     if (ObjectCollider.mass != -1)
         ObjectTransform.position += translationalVector * (1 / ObjectCollider.mass);

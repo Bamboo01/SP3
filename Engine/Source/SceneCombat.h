@@ -42,6 +42,19 @@ class SceneCombat : public Scene
 	virtual void Exit();
 	virtual Scene* Clone() { return new SceneCombat(*this); }
 
+	void InitGUIText();
+	void InitCanvasGUI();
+	void InitUnit();
+	void InitPoolPrefab();
+	void InitMainCamera();
+	void InitTerrain();
+	void InitController();
+
+	void UpdateImGui();
+	void UpdateImGuiRaycast();
+	void UpdateImGuiUnitSpawn();
+	void UpdateImGuiEntityList();
+
 	Entity testHandler; // An entity handler to control entities
 	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
 

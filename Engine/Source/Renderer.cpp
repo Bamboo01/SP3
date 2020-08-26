@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "Application.h"
 #include <glm.hpp>
+#include "PlacingShader.h"
 #include <gtc/type_ptr.hpp>
 #include <gtc/matrix_transform.hpp>
 
@@ -93,6 +94,9 @@ void Renderer::Init()
 	Shader* billboard_Spherical = new Shader("Shader//sphericalbillboard.vs", "Shader//sphericalbillboard.fs");
 	shaderManager.push_back(billboard_Spherical);
 
+	Shader* placing = new PlacingShader("Shader//placing.vs", "Shader//placing.fs");
+	shaderManager.push_back(placing);
+
 	/*Add your materials*/
 	Material* boxmat = new Material();
 	boxmat->kColor = glm::vec3(0.1f, 1.f, 1.f);
@@ -105,6 +109,12 @@ void Renderer::Init()
 	grass->kSpecular = glm::vec3(0, 0, 0);
 	grass->kShininess = 0.f;
 	materialManager.push_back(grass);
+
+	Material* terrain = new Material();
+	terrain->AssignTexture("Images//terrain.tga");
+	terrain->kSpecular = glm::vec3(0, 0, 0);
+	terrain->kShininess = 0.f;
+	materialManager.push_back(terrain);
 
 	Material* testParticleA = new Material();
 	testParticleA->AssignTexture("Images//crate.tga");
@@ -124,6 +134,25 @@ void Renderer::Init()
 	Material* MiniMapBox = new Material();
 	MiniMapBox->AssignTexture("Images//MiniMapBox.tga");
 	materialManager.push_back(MiniMapBox);
+	Material* playerMaterial = new Material();
+	playerMaterial->AssignTexture("Images//player.tga");
+	materialManager.push_back(playerMaterial);
+
+	Material* enemyMaterial = new Material();
+	enemyMaterial->AssignTexture("Images//enemy.tga");
+	materialManager.push_back(enemyMaterial);
+
+	Material* placingMaterial = new Material();
+	placingMaterial->AssignTexture("Images//player.tga");
+	materialManager.push_back(placingMaterial);
+	
+	Material* playerProjectile = new Material();
+	playerProjectile->kColor = glm::vec3(1, 0, 0);
+	materialManager.push_back(playerProjectile);
+	
+	Material* enemyProjectile = new Material();
+	enemyProjectile->kColor = glm::vec3(0, 0, 1);
+	materialManager.push_back(enemyProjectile);
 
 	//Material* playerMaterial = new Material();
 	//playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
@@ -139,9 +168,14 @@ void Renderer::Init()
 	addMaterial(menuunit, test);
 	addMaterial(MiniMapBox);
 
+
+	addMaterial(playerMaterial);
+	addMaterial(enemyMaterial);
+	addMaterial(placingMaterial, placing);
+
 	/*Assign your meshes their materials here*/
 	//assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
-	assignMaterialtoMesh(meshManager->meshList[GEO_TERRAIN], grass);
+	assignMaterialtoMesh(meshManager->meshList[GEO_TERRAIN], terrain);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_CYLINDRICAL], testParticleA);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_SPHERICAL], testParticleB);
 	assignMaterialtoMesh(meshManager->meshList[GEO_CODEPARTICLE], codeParticle);
@@ -150,6 +184,35 @@ void Renderer::Init()
 	assignMaterialtoMesh(meshManager->meshList[GEO_MENU_UNIT2], menuunit);
 	assignMaterialtoMesh(meshManager->meshList[GEO_MENU_UNIT3], menuunit);
 	assignMaterialtoMesh(meshManager->meshList[GEO_MINIMAPBOX], MiniMapBox);
+
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_NORMAL_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_RANGE_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_TANK_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_NEXUS_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_TOWER_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_GENERATOR1_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_GENERATOR2_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_WALL_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_LAB_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_PLAYER], playerProjectile);
+	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_MELEE_PLAYER], playerProjectile);
+
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_NORMAL_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_RANGE_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_TANK_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_NEXUS_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_TOWER_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_GENERATOR1_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_GENERATOR2_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_WALL_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_LAB_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_ENEMY], playerProjectile);
+	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_MELEE_ENEMY], enemyMaterial);
+
+	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_WALL_PLAYER], placingMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_TOWER_PLAYER], placingMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_GENERATOR1_PLAYER], placingMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_GENERATOR2_PLAYER], placingMaterial);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)

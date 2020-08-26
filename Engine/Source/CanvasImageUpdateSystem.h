@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "Unit.h"
 #include "Controller.h"
+#include "UnitSystem.h"
 
 #ifndef CANVASIMAGEUPDATESYSTEM_H
 #define CANVASIMAGEUPDATESYSTEM_H
@@ -26,12 +27,17 @@ public:
     virtual void Render();
 
     void SetSelectedUnitList(std::vector<Entity> selectedunitList);
+    void SetUnitSystem(std::shared_ptr<UnitSystem> system);
 
     bool CursorinGUI;
 
     bool LabUIopen;
     bool UnitUIopen;
     bool BuildingUIopen;
+
+    int selectedbuilding; // 0 = None, 1 = tower, 2 = wall, 3 = gen1, 4 = gen4;
+    double buildingclickdelay;
+    bool createonce;
 
 private:
 
@@ -48,6 +54,8 @@ private:
     std::vector<Entity> selectedunitList;
 
     std::set<Entity> *controllerentity;
+
+    std::shared_ptr<UnitSystem> unitsystem;
 
     unsigned nexustexture;
     unsigned labtexture;

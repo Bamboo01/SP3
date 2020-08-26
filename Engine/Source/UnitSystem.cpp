@@ -14,8 +14,10 @@ void UnitSystem::Setup()
     coordinator.SetSystemSignature<UnitSystem>(signature);
 }
 
-void UnitSystem::Init()
+void UnitSystem::Init(std::set<Entity> terrainEntitySet)
 {
+    terrainEntity = terrainEntitySet;
+
     for (int i = 0; i < 100; i++) // Init xxx amount of inactive objects
     {
         Entity myObject3;
@@ -45,6 +47,8 @@ void UnitSystem::Update(double dt)
             continue;
         }
 
+        UpdateUnitToTerrain(entity);
+
         switch (unit.unitType)
         {
         case Unit::NORMAL:
@@ -59,9 +63,12 @@ void UnitSystem::Update(double dt)
         case Unit::PROJECTILE:
             UpdateProjectile(entity);
             break;
+        case Unit::MELEE_PROJECTILE:
+            UpdateProjectile(entity);
+            break;
         }
 
-        if (unit.target != UINT_MAX && unit.unitType != Unit::PROJECTILE)
+        if (unit.target != UINT_MAX && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE)
         {
             ApplyAttack(entity, unit.target);
         }
@@ -84,6 +91,23 @@ void UnitSystem::Update(double dt)
             }
         }
     }
+}
+
+void UnitSystem::UpdateUnitToTerrain(Entity entity)
+{
+    for (auto& entities : terrainEntity)
+    {
+        auto& terrain = coordinator.GetComponent<TerrainData>(entities);
+        auto& unitData = coordinator.GetComponent<Unit>(entity);
+        auto& unitTransform = coordinator.GetComponent<Transform>(entity);
+
+        if (unitData.unitType == Unit::PROJECTILE || unitData.unitType == Unit::MELEE_PROJECTILE)
+            return;
+
+        float yPos = terrain.ReadHeightMap(unitTransform.position.x, unitTransform.position.z) + unitTransform.scale.y * 3;
+
+        unitTransform.position.y = yPos;
+	}
 }
 
 void UnitSystem::SetObjectPoolSystem(std::shared_ptr<ObjectPoolSystem> ptr)
@@ -112,7 +136,7 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
 
     float distanceWithCurrentTarget = 0;
 
-    if (unit.unitType == Unit::UnitType::WALL || unit.unitType == Unit::UnitType::NEXUS || unit.unitType == Unit::UnitType::GENERATOR1 || unit.unitType == Unit::UnitType::GENERATOR2 || unit.unitType == Unit::UnitType::LAB || unit.unitType == Unit::UnitType::PROJECTILE) // These shouldn't call this method!
+    if (unit.unitType == Unit::UnitType::WALL || unit.unitType == Unit::UnitType::NEXUS || unit.unitType == Unit::UnitType::GENERATOR1 || unit.unitType == Unit::UnitType::GENERATOR2 || unit.unitType == Unit::UnitType::LAB || unit.unitType == Unit::UnitType::PROJECTILE || unit.unitType == Unit::UnitType::MELEE_PROJECTILE) // These shouldn't call this method!
         return;
 
     Unit::UnitFaction targetFactionRequirement; // A variable to make sure the unit does not target it's own units
@@ -133,7 +157,7 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
     {
         distanceWithCurrentTarget = glm::length(transform.position - currentTargetTransform.position);
 
-        if (distanceWithCurrentTarget > 150)
+        if (distanceWithCurrentTarget > unit.attackRange) // Clear target if current target is too far away from auto attacking range
             unit.target = UINT_MAX;
     }
 
@@ -150,14 +174,13 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
         {
             float distanceFromLoopedUnit = glm::length(transform.position - otherTransform.position);
 
-            if ((unit.target == UINT_MAX && distanceFromLoopedUnit <= 150.f) || (unit.target != UINT_MAX && distanceFromLoopedUnit < distanceWithCurrentTarget)) // If number here is still a raw float, please change it and implement the length with float attackRange! 
+            if ((unit.target == UINT_MAX && distanceFromLoopedUnit <= unit.attackRange) || (unit.target != UINT_MAX && distanceFromLoopedUnit < distanceWithCurrentTarget)) // If number here is still a raw float, please change it and implement the length with float attackRange! 
             {
                 unit.target = entity;
                 auto& newTargetTransform = coordinator.GetComponent<Transform>(unit.target);
                 distanceWithCurrentTarget = glm::length(transform.position - newTargetTransform.position);
             }
         }
-
     }
 }
 
@@ -177,46 +200,112 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         break;
     case Unit::NORMAL:
         UnitData = UNormal(level, faction);
-        UnitRenderData.mesh = renderer.getMesh(GEO_CUBE);
+        if (faction == Unit::PLAYER)
+        {
+			UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NORMAL_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NORMAL_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as NORMAL type" << std::endl;
         break;
     case Unit::TANK:
         UnitData = UTank(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TANK_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TANK_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as TANK type" << std::endl;
         break;
     case Unit::RANGE:
         UnitRenderData.mesh = renderer.getMesh(GEO_GRIDCUBE);
         UnitData = URange(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_RANGE_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_RANGE_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as RANGE type" << std::endl;
         break;
     case Unit::TOWER:
         UnitData = UTower(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TOWER_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TOWER_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as TOWER type" << std::endl;
         break;
     case Unit::WALL:
         UnitData = UWall(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_WALL_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_WALL_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as WALL type" << std::endl;
         break;
     case Unit::NEXUS:
         UnitData = UNexus(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NEXUS_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NEXUS_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as NEXUS type" << std::endl;
         break;
     case Unit::GENERATOR1:
         UnitData = UGenerator1(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR1_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR1_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR1 type" << std::endl;
         break;
     case Unit::GENERATOR2:
         UnitData = UGenerator2(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR2_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR2_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR2 type" << std::endl;
         break;
     case Unit::LAB:
         UnitData = ULab(level, faction);
+        if (faction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_LAB_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_LAB_ENEMY);
+        }
         std::cout << "UnitSystem: " << inactiveID << " initiated as LAB type" << std::endl;
-        break;
-    case Unit::PROJECTILE:
-        break;
-    default:
-        std::cout << "UnitSystem: Unable to init " << inactiveID << " due to undefined unit type" << std::endl;
         break;
     }
 
@@ -243,21 +332,71 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
     auto& targetCollider = coordinator.GetComponent<Collider>(target);
     auto& targetUnit = coordinator.GetComponent<Unit>(target);
 
-    UnitData = UProjectile(origin, target);
-    UnitData.unitFaction = originUnit.unitFaction;
-    UnitCollider.mass = UnitData.mass;
-    UnitCollider.scale = UnitData.colliderScale;
-    std::cout << "UnitSystem: " << inactiveID << " initiated as PROJECTILE type" << std::endl;
-
     if (originUnit.unitType == Unit::RANGE)
     {
-        UnitRenderData.mesh = renderer.getMesh(GEO_CUBE);
+        UnitData = UProjectile(origin, target);
+        UnitData.unitFaction = originUnit.unitFaction;
+        UnitCollider.mass = UnitData.mass;
+        UnitCollider.scale = UnitData.colliderScale;
+        std::cout << "UnitSystem: " << inactiveID << " initiated as PROJECTILE type" << std::endl;
+
+        if (originUnit.unitFaction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_ENEMY);
+        }
+
         UnitTransform = Transform(originTransform.position + originTransform.AxisZ, glm::vec3(0.5, 0.5, 0.5), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
     }
     else if (originUnit.unitType == Unit::TOWER)
     {
+        UnitData = UProjectile(origin, target);
+        UnitData.unitFaction = originUnit.unitFaction;
+        UnitCollider.mass = UnitData.mass;
+        UnitCollider.scale = UnitData.colliderScale;
+        std::cout << "UnitSystem: " << inactiveID << " initiated as PROJECTILE type" << std::endl;
 
+        if (originUnit.unitFaction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_ENEMY);
+        }
+
+        UnitTransform = Transform(originTransform.position + originTransform.AxisZ, glm::vec3(0.1, 0.1, 0.1), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
     }
+    else
+    {
+        UnitData = UMeleeProjectile(origin, target);
+        UnitData.unitFaction = originUnit.unitFaction;
+        UnitCollider.mass = UnitData.mass;
+        UnitCollider.scale = UnitData.colliderScale;
+        UnitData.delay = d_elapsedTime + (1.0 / originUnit.attackSpeed) / 2;
+
+        if (originUnit.unitFaction == Unit::PLAYER)
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_MELEE_PLAYER);
+        }
+        else
+        {
+            UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_MELEE_ENEMY);
+        }
+
+        std::cout << "UnitSystem: " << inactiveID << " initiated as MELEE_PROJECTILE type" << std::endl;
+        
+        glm::vec3 relativePos = targetTransform.position - originTransform.position;
+        float magnitude = glm::length(relativePos);
+        glm::vec3 projectilePos = originTransform.position + relativePos * glm::vec3(0.5, 0.5, 0.5);
+        std::cout << projectilePos.y << std::endl;
+        
+        UnitTransform = Transform(projectilePos, glm::vec3(magnitude, 0.2, 0.2), glm::vec3(0, originTransform.rotation.y, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
+    }
+
     return inactiveID;
 }
 
@@ -269,7 +408,7 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
     auto& receiverTransform = coordinator.GetComponent<Transform>(receiver);
     auto& receiverUnit = coordinator.GetComponent<Unit>(receiver);
 
-    if (receiverUnit.unitType == Unit::PROJECTILE) // In the event a unit targets a projectile, by right shouldnt happen but just incase it gets called
+    if (receiverUnit.unitType == Unit::PROJECTILE || attackerUnit.unitType == Unit::MELEE_PROJECTILE || receiverUnit.unitType == Unit::MELEE_PROJECTILE) // In the event a unit targets a projectile, by right shouldnt happen but just incase it gets called
         return;
 
     if (attackerUnit.unitType == Unit::PROJECTILE)
@@ -290,6 +429,7 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
     {
         if (attackerUnit.unitType == Unit::NORMAL || attackerUnit.unitType == Unit::TANK)
         {
+            CreateProjectile(attacker, receiver);
             float resultantDamage = ((100 - receiverUnit.defense) / 100) * attackerUnit.damage;
             receiverUnit.health -= resultantDamage;
             std::cout << "------------------------------------------------------------" << std::endl;
@@ -313,7 +453,7 @@ void UnitSystem::UpdateProjectile(Entity projectile)
     auto& UnitTransform = coordinator.GetComponent<Transform>(projectile);
     auto& UnitData = coordinator.GetComponent<Unit>(projectile);
 
-    if (UnitData.unitType != Unit::PROJECTILE) // This method is specifically only for projectiles!
+    if (UnitData.unitType != Unit::PROJECTILE && UnitData.unitType != Unit::MELEE_PROJECTILE) // This method is specifically only for projectiles!
         return;
 
     auto& TargetTransform = coordinator.GetComponent<Transform>(UnitData.targetUnit);
@@ -326,9 +466,22 @@ void UnitSystem::UpdateProjectile(Entity projectile)
         return;
     }
 
-    glm::vec3 projectileDirection = glm::normalize(TargetTransform.position - UnitTransform.position);
-    float projectileSpeed = 1.f; // Can create a variable for this under unit
+    if (UnitData.unitType == Unit::PROJECTILE)
+    {
+        glm::vec3 projectileDirection = glm::normalize(TargetTransform.position - UnitTransform.position);
+        float projectileSpeed = 1.f; // Can create a variable for this under unit
 
-    UnitTransform.position += projectileDirection * projectileSpeed;
+        UnitTransform.position += projectileDirection * projectileSpeed;
+    }
+    else if (UnitData.unitType == Unit::MELEE_PROJECTILE)
+    {
+        if (d_elapsedTime >= UnitData.delay)
+        {
+            AddInactiveEntity(projectile);
+            return;
+        }
+    }
+
+
 }
 

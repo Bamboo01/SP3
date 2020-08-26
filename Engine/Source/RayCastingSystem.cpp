@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Application.h"
 #include "GridControllerSystem.h"
+#include "PlacingShader.h"
 
 void RayCastingSystem::Setup()
 {
@@ -12,12 +13,15 @@ void RayCastingSystem::Setup()
 	coordinator.SetSystemSignature<RayCastingSystem>(signature);
 }
 
-void RayCastingSystem::Init(std::set<Entity>* colliderentitylist)
+void RayCastingSystem::Init(std::set<Entity>* colliderentitylist, std::set<Entity>* controllerentitylist)
 {
 
     unitlimit = 10;
-
+    buildingclickdelay = 0;
+    timer = 0;
+    createonce = false;
 	this->colliderentitylist = colliderentitylist;
+    this->controllerentitylist = controllerentitylist;
 
 	for (auto const& entity : m_Entities)
 	{
@@ -29,6 +33,8 @@ void RayCastingSystem::Init(std::set<Entity>* colliderentitylist)
 
 void RayCastingSystem::Update(double dt)
 {
+    timer += dt;
+
 	for (auto const& entity : m_Entities)
 	{
 		auto& camera = coordinator.GetComponent<Camera>(entity);
@@ -94,90 +100,243 @@ void RayCastingSystem::callRayCollision()
         std::vector<Entity> entitiesInQuadVector;
 
         for (int i = 0; i < 500; ++i)
-        { 
+        {
             // If ray overlapped with terrain y
             for (auto const& terrainmap : TerrainEntities)
             {
                 auto& terrain = coordinator.GetComponent<TerrainData>(terrainmap);
 
-                if (fabs(ray.RayEndPos.y - terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z)) < 2.f)
+                // Check if ray is within the terrain
+                if (ray.RayEndPos.x > quadTreeSystem->root->topBoundary.x && ray.RayEndPos.x < quadTreeSystem->root->bottomBoundary.x && ray.RayEndPos.z < quadTreeSystem->root->topBoundary.y && ray.RayEndPos.z > quadTreeSystem->root->bottomBoundary.y)
                 {
-                    cursorOnHeightMapPosition = glm::vec2(ray.RayEndPos.x, ray.RayEndPos.z);
-
-                   // std::cout << "Overlapped with Terrain" << std::endl;
-
-                    if (CursorInGUI == false)
+                    if (fabs(ray.RayEndPos.y - terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z)) < 2.f)
                     {
-                        if (Application::IsMousePressed(1))
-                        {
-                            ray.rightClick = ray.RayEndPos;
-                        }
-                        static bool bLButtonState = false;
-                        // Add Code to get first left click position and position after you let go here
-                        if (Application::IsMousePressed(0) && !bLButtonState)
-                        {
-                            unitlimit = 10;
-                            minX = 0;
-                            maxX = 0;
-                            minZ = 0;
-                            maxZ = 0;
-                            selectedunitlist.clear();
-                            ray.selectedunits.clear();
-                            bLButtonState = true;
-                            firstposclick = ray.RayEndPos;
-                        }
-                        else if (bLButtonState && !Application::IsMousePressed(0))
-                        {
-                            bLButtonState = false;
-                            secondposclick = ray.RayEndPos;
-                            //std::cout << "First Pos: " << firstposclick << std::endl;
-                            //std::cout << "Second Pos: " << secondposclick << std::endl;
-                            // Calculating BottomLeft and TopRight
+                        cursorOnHeightMapPosition = glm::vec2(ray.RayEndPos.x, ray.RayEndPos.z);
 
-                            std::vector <std::vector<int>> Gridcost;
-                            Gridcost.resize(20);
-                            for (auto& vec : Gridcost)
+                        if (CursorInGUI == false)
+                        {
+                            if (Application::IsMousePressed(1))
                             {
-                                vec.resize(20);
+                                ray.rightClick = ray.RayEndPos;
+                            }
+                            static bool bLButtonState = false;
+                            if (Application::IsMousePressed(0) && !bLButtonState)
+                            {
+                                unitlimit = 10;
+                                minX = 0;
+                                maxX = 0;
+                                minZ = 0;
+                                maxZ = 0;
+                                selectedunitlist.clear();
+                                ray.selectedunits.clear();
+                                bLButtonState = true;
+                                firstposclick = ray.RayEndPos;
+                            }
+                            else if (bLButtonState && !Application::IsMousePressed(0))
+                            {
+                                bLButtonState = false;
+                                secondposclick = ray.RayEndPos;
+
+                                // Calculating BottomLeft and TopRight
+                                std::vector <std::vector<int>> Gridcost;
+                                Gridcost.resize(20);
+                                for (auto& vec : Gridcost)
+                                {
+                                    vec.resize(20);
+                                }
+
+                                Gridcost[0][0];
+
+                                if (firstposclick.x < secondposclick.x)
+                                {
+                                    minX = firstposclick.x;
+                                    maxX = secondposclick.x;
+                                }
+                                else if (firstposclick.x > secondposclick.x)
+                                {
+                                    minX = secondposclick.x;
+                                    maxX = firstposclick.x;
+                                }
+                                if (firstposclick.z < secondposclick.z)
+                                {
+                                    minZ = firstposclick.z;
+                                    maxZ = secondposclick.z;
+                                }
+                                else if (firstposclick.z > secondposclick.z)
+                                {
+                                    minZ = secondposclick.z;
+                                    maxZ = firstposclick.z;
+                                }
+                                unitSelection();
+                                ray.selectedunits = selectedunitlist;
                             }
 
-                            Gridcost[0][0];
+                            for (auto const& control : *controllerentitylist)
+                            {
+                                auto& controller = coordinator.GetComponent<Controller>(control);
+                                if (controller.controllertype == Controller::PLAYER)
+                                {
+                                    float distance = glm::length(ray.RayEndPos - controller.nexusposition);
+                                    if (distance < controller.buildrange)
+                                    {
+                                        //std::cout << "In Range!" << std::endl;
+                                        if (selectedbuilding == 1)
+                                        {
+                                            if (createonce == true)
+                                            {
+                                                newUnit = unitsystem->CreateUnit(Unit::TOWER, Unit::PLAYER, 1, Transform(glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+                                                createonce = false;
+                                            }
+                                            auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
+                                            auto& transform = coordinator.GetComponent<Transform>(newUnit);
+                                            auto& collider = coordinator.GetComponent<Collider>(newUnit);
 
-                            if (firstposclick.x < secondposclick.x)
-                            {
-                                minX = firstposclick.x;
-                                maxX = secondposclick.x;
+                                            collider.mass = 1;
+                                            renderdata.mesh = renderer.getMesh(GEO_INRANGE_TOWER_PLAYER);
+                                            static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_TOWER_PLAYER)))->UpdateBool(true);
+                                            glm::vec3 rollBackPos = transform.position;
+                                            transform.position = glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z);
+                                            
+                                            if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                                            {
+                                                std::cout << "Tower Placed!" << std::endl;
+                                                renderdata.mesh = renderer.getMesh(GEO_UNIT_TOWER_PLAYER);
+                                                selectedbuilding = 0;
+                                                collider.mass = -1;
+                                                transform.position = rollBackPos;
+                                            }
+                                        }
+                                        else if (selectedbuilding == 2)
+                                        {
+                                            if (createonce == true)
+                                            {
+                                                newUnit = unitsystem->CreateUnit(Unit::WALL, Unit::PLAYER, 1, Transform(glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+                                                createonce = false;
+                                            }
+                                            auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
+                                            auto& transform = coordinator.GetComponent<Transform>(newUnit);
+                                            auto& collider = coordinator.GetComponent<Collider>(newUnit);
+
+                                            collider.mass = 1;
+                                            renderdata.mesh = renderer.getMesh(GEO_INRANGE_WALL_PLAYER);
+                                            static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_WALL_PLAYER)))->UpdateBool(true);
+                                            glm::vec3 rollBackPos = transform.position;
+                                            transform.position = glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z);
+
+                                            if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                                            {
+                                                std::cout << "Wall Placed!" << std::endl;
+                                                collider.mass = -1;
+                                                renderdata.mesh = renderer.getMesh(GEO_UNIT_WALL_PLAYER);
+                                                selectedbuilding = 0;
+                                                transform.position = rollBackPos;
+                                            }
+                                        }
+                                        else if (selectedbuilding == 3)
+                                        {
+                                            if (createonce == true)
+                                            {
+                                                newUnit = unitsystem->CreateUnit(Unit::GENERATOR1, Unit::PLAYER, 1, Transform(glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+                                                createonce = false;
+                                            }
+                                            auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
+                                            auto& transform = coordinator.GetComponent<Transform>(newUnit);
+                                            auto& collider = coordinator.GetComponent<Collider>(newUnit);
+
+                                            collider.mass = 1;
+                                            renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR1_PLAYER);
+                                            static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR1_PLAYER)))->UpdateBool(true);
+                                            glm::vec3 rollBackPos = transform.position;
+                                            transform.position = glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z);
+                                            if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                                            {
+                                                std::cout << "Gen1 Placed!" << std::endl;
+                                                renderdata.mesh = renderer.getMesh(GEO_UNIT_GENERATOR1_PLAYER);
+                                                selectedbuilding = 0;
+                                                collidersystem->isBuildingPlaced = true;
+                                                collider.mass = -1;
+                                                transform.position = rollBackPos;
+                                            }
+                                        }
+                                        else if (selectedbuilding == 4)
+                                        {
+                                            if (createonce == true)
+                                            {
+                                                newUnit = unitsystem->CreateUnit(Unit::GENERATOR2, Unit::PLAYER, 1, Transform(glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+                                                createonce = false;
+                                            }
+                                            auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
+                                            auto& transform = coordinator.GetComponent<Transform>(newUnit);
+                                            auto& collider = coordinator.GetComponent<Collider>(newUnit);
+
+                                            collider.mass = 1;
+                                            renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR2_PLAYER);
+                                            static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR2_PLAYER)))->UpdateBool(true);
+                                            glm::vec3 rollBackPos = transform.position;
+                                            transform.position = glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z);
+
+                                            if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                                            {
+                                                std::cout << "Gen2 Placed!" << std::endl;
+                                                renderdata.mesh = renderer.getMesh(GEO_UNIT_GENERATOR2_PLAYER);
+                                                collider.mass = -1;
+                                                collidersystem->isBuildingPlaced = true;
+                                                selectedbuilding = 0;
+                                                transform.position = rollBackPos;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //std::cout << "Out of Range! " << std::endl;
+                                        if (selectedbuilding == 1)
+                                        {
+                                            auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
+                                            auto& transform = coordinator.GetComponent<Transform>(newUnit);
+
+                                            renderdata.mesh = renderer.getMesh(GEO_INRANGE_TOWER_PLAYER);
+                                            static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_TOWER_PLAYER)))->UpdateBool(false);
+                                            transform.position = glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z);
+                                        }
+                                        else if (selectedbuilding == 2)
+                                        {
+                                            auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
+                                            auto& transform = coordinator.GetComponent<Transform>(newUnit);
+
+                                            renderdata.mesh = renderer.getMesh(GEO_INRANGE_WALL_PLAYER);
+                                            static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_WALL_PLAYER)))->UpdateBool(false);
+                                            transform.position = glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z);
+                                        }
+                                        else if (selectedbuilding == 3)
+                                        {
+                                            auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
+                                            auto& transform = coordinator.GetComponent<Transform>(newUnit);
+
+                                            renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR1_PLAYER);
+                                            static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR1_PLAYER)))->UpdateBool(false);
+                                            transform.position = glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z);
+                                        }
+                                        else if (selectedbuilding == 4)
+                                        {
+                                            auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
+                                            auto& transform = coordinator.GetComponent<Transform>(newUnit);
+
+                                            renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR1_PLAYER);
+                                            static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR2_PLAYER)))->UpdateBool(false);
+                                            transform.position = glm::vec3(ray.RayEndPos.x, 20 + terrain.ReadHeightMap(ray.RayEndPos.x, ray.RayEndPos.z), ray.RayEndPos.z);
+                                        }
+                                    }
+                                }
                             }
-                            else if (firstposclick.x > secondposclick.x)
-                            {
-                                minX = secondposclick.x;
-                                maxX = firstposclick.x;
-                            }
-                            if (firstposclick.z < secondposclick.z)
-                            {
-                                minZ = firstposclick.z;
-                                maxZ = secondposclick.z;
-                            }
-                            else if (firstposclick.z > secondposclick.z)
-                            {
-                                minZ = secondposclick.z;
-                                maxZ = firstposclick.z;
-                            }
-                            unitSelection();
-                            ray.selectedunits = selectedunitlist;
+
+                            i = 10000;
+                            break;
                         }
-                        i = 10000;
-                        break;
                     }
                 }
             }
 
             ray.RayEndPos += ray.Ray * 3.f;
-            glm::mat4 model(1.0);
-            model = glm::translate(model, ray.RayEndPos);
-            model = glm::scale(model, glm::vec3(0.1f));
-            renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(model);
-
         }
 
         if (
@@ -232,10 +391,18 @@ void RayCastingSystem::unitSelection()
             auto& entitystate = coordinator.GetComponent<EntityState>(entity2);
             auto& unit = coordinator.GetComponent<Unit>(entity2);
 
-            if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ && entitystate.active && unit.unitFaction == Unit::PLAYER && unitlimit != 0)
+            if (unitlimit == 0)
             {
-                unitlimit--;
-                selectedunitlist.push_back(entity2);
+                unitlimit = 10;
+                break;
+            }
+            if (unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE)
+            {
+                if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ && entitystate.active && unit.unitFaction == Unit::PLAYER)
+                {
+                    unitlimit--;
+                    selectedunitlist.push_back(entity2);
+                }
             }
         }
     }
@@ -263,9 +430,19 @@ glm::vec3 RayCastingSystem::calculateMouseRay()
 	return dir;
 }
 
+void RayCastingSystem::SetUnitSystem(std::shared_ptr<UnitSystem> system)
+{
+    unitsystem = system;
+}
+
 void RayCastingSystem::SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> system)
 {
     quadTreeSystem = system;
+}
+
+void RayCastingSystem::SetColliderSystem(std::shared_ptr<ColliderSystem> system)
+{
+    collidersystem = system;
 }
 
 glm::vec2 RayCastingSystem::getNormalizedDeviceCoords(double mousex, double mousey)

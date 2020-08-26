@@ -33,7 +33,7 @@ public:
 		float multiplierDamageOffset = 0.0175;
 
 		float baseAttackSpeed = 1.0;
-		float baseAttackRange = 1.0;
+		float baseAttackRange = 6.0;
 		float unitMass = 1;
 		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
 
@@ -89,7 +89,7 @@ public:
 		float multiplierDamageOffset = 0.0175;
 
 		float baseAttackSpeed = 1.0;
-		float baseAttackRange = 5.0;
+		float baseAttackRange = 30.0;
 		float unitMass = 1;
 		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
 
@@ -145,7 +145,7 @@ public:
 		float multiplierDamageOffset = 0.0175;
 
 		float baseAttackSpeed = 1.0;
-		float baseAttackRange = 1.0;
+		float baseAttackRange = 6.0;
 		float unitMass = 1;
 		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
 
@@ -183,7 +183,7 @@ public:
 
 	UTower(int unitLevel, UnitFaction unitFact)
 	{
-		std::string unitName = "Wall";
+		std::string unitName = "Tower";
 
 		float baseHealth = 3000;
 		float healthGrowth = 100;
@@ -203,7 +203,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 10, 3);
+		glm::vec3 collisionScale = glm::vec3(10, 20, 12);
 
 		name = unitName;
 		level = unitLevel;
@@ -220,7 +220,7 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
-		FlowFieldCost = 0;
+		FlowFieldCost = 500;
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
@@ -259,7 +259,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(20, 16, 20);
 
 		name = unitName;
 		level = unitLevel;
@@ -276,7 +276,7 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
-		FlowFieldCost = 0;
+		FlowFieldCost = 500;
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
@@ -315,7 +315,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(33, 23, 33);
 
 		name = unitName;
 		level = unitLevel;
@@ -332,7 +332,7 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
-		FlowFieldCost = 0;
+		FlowFieldCost = 500;
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
@@ -371,7 +371,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(21, 24, 21);
 
 		name = unitName;
 		level = unitLevel;
@@ -388,7 +388,7 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
-		FlowFieldCost = 0;
+		FlowFieldCost = 500;
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
@@ -427,7 +427,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+		glm::vec3 collisionScale = glm::vec3(21, 16, 21);
 
 		name = unitName;
 		level = unitLevel;
@@ -444,7 +444,7 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
-		FlowFieldCost = 0;
+		FlowFieldCost = 500;
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
@@ -483,7 +483,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(19, 10, 19);
 
 		name = unitName;
 		level = unitLevel;
@@ -500,7 +500,7 @@ public:
 		unitFaction = unitFact;
 		originUnit = UINT_MAX;
 		targetUnit = UINT_MAX;
-		FlowFieldCost = 0;
+		FlowFieldCost = 500;
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
@@ -548,7 +548,7 @@ public:
 		unitFaction = UNDEFINED;
 		originUnit = attacking;
 		targetUnit = targeted;
-		FlowFieldCost = 0;
+		FlowFieldCost = 500;
 		StandingGridCost = 0;
 		nextGrid = glm::vec2(-1, -1);
 		velocity = glm::vec3(0, 0, 0);
@@ -558,4 +558,52 @@ public:
 	}
 
 	~UProjectile() {}
+};
+
+class UMeleeProjectile : public Unit
+{
+public:
+	UMeleeProjectile() {}
+
+	UMeleeProjectile(Entity attacking, Entity targeted)
+	{
+		std::string unitName = "Melee Projectile";
+
+		float baseHealth = 1000.0f;
+
+		float baseDefense = 0.0f;
+
+		float baseDamage = 0.0f;
+
+		float baseAttackSpeed = 0.0;
+		float baseAttackRange = 1.0;
+		float unitMass = -1;
+
+		glm::vec3 collisionScale = glm::vec3(0, 0, 0);
+
+		name = unitName;
+		level = 1;
+		health = baseHealth;
+		defense = baseDefense;
+		damage = baseDamage;
+		attackRange = baseAttackRange;
+		attackSpeed = baseAttackSpeed;
+		delay = 0.0;
+		mass = unitMass;
+		colliderScale = collisionScale;
+		target = UINT_MAX;
+		unitType = MELEE_PROJECTILE;
+		unitFaction = UNDEFINED;
+		originUnit = attacking;
+		targetUnit = targeted;
+		FlowFieldCost = 500;
+		StandingGridCost = 0;
+		nextGrid = glm::vec2(-1, -1);
+		velocity = glm::vec3(0, 0, 0);
+		resourcesgenerated = 0.f;
+		timeforgeneration = 0.f;
+		generationdelay = 0;
+	}
+
+	~UMeleeProjectile() {}
 };
