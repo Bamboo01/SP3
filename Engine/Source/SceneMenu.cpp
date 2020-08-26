@@ -70,55 +70,74 @@ void SceneMenu::Init()
 			glm::vec3(0.f), glm::vec3(0.f))
 		);
 
+	Entity Title = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(Title, Transform());
+	coordinator.AddComponent<EntityState>(Title, EntityState());
+	coordinator.AddComponent<CanvasText>(Title, CanvasText("HOLOWAR", ALIGN_CENTER, glm::vec3(1.f), 0.4f));
+	coordinator.GetComponent<Transform>(Title).position = glm::vec3(0.06, 0.8, 0);
+	coordinator.AddComponent<MenuGUI>(Title, MenuGUI(MenuGUI::START_BUTTON));
+
 	Entity GUI_Start = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_Start, Transform());
 	coordinator.AddComponent<EntityState>(GUI_Start, EntityState());
-	coordinator.AddComponent<CanvasText>(GUI_Start, CanvasText("Start", ALIGN_CENTER, glm::vec3(1.f), 0.01f));
-	//coordinator.GetComponent<Transform>(GUI_Start).position.y = -0.15;
+	coordinator.AddComponent<CanvasText>(GUI_Start, CanvasText("Start", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Start).position.y = -0.35;
 	coordinator.AddComponent<MenuGUI>(GUI_Start, MenuGUI(MenuGUI::START_BUTTON));
 
-	//Entity GUI_Exit = coordinator.CreateEntity();
-	//coordinator.AddComponent<Transform>(GUI_Exit, Transform());
-	//coordinator.AddComponent<EntityState>(GUI_Exit, EntityState());
-	//coordinator.AddComponent<CanvasText>(GUI_Exit, CanvasText("Exit"));
-	//coordinator.GetComponent<Transform>(GUI_Exit).position.y = -0.25;
-	//coordinator.AddComponent<MenuGUI>(GUI_Exit, MenuGUI(MenuGUI::EXIT_BUTTON));
+	Entity GUI_Options = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Options, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Options, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Options, CanvasText("Options", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Options).position.y = -0.50;
+	coordinator.AddComponent<MenuGUI>(GUI_Options, MenuGUI(MenuGUI::OPTION_BUTTON));
 
-	//Entity GUI_Options = coordinator.CreateEntity();
-	//coordinator.AddComponent<Transform>(GUI_Options, Transform());
-	//coordinator.AddComponent<EntityState>(GUI_Options, EntityState());
-	//coordinator.AddComponent<CanvasText>(GUI_Options, CanvasText("Options"));
-	//coordinator.GetComponent<Transform>(GUI_Options).position.y = -0.20;
-	//coordinator.AddComponent<MenuGUI>(GUI_Options, MenuGUI(MenuGUI::OPTION_BUTTON));
+	Entity GUI_Exit = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Exit, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Exit, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Exit, CanvasText("Exit", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Exit).position.y = -0.65;
+	coordinator.AddComponent<MenuGUI>(GUI_Exit, MenuGUI(MenuGUI::EXIT_BUTTON));
 
-	//Entity GUI_VolumeUp = coordinator.CreateEntity();
-	//coordinator.AddComponent<Transform>(GUI_VolumeUp, Transform());
-	//coordinator.AddComponent<EntityState>(GUI_VolumeUp, EntityState());
-	//coordinator.AddComponent<CanvasText>(GUI_VolumeUp, CanvasText("VolumeUp"));
-	//coordinator.AddComponent<MenuGUI>(GUI_VolumeUp, MenuGUI(MenuGUI::AUDIO_INCREASE_BUTTON));
+	Entity GUI_VolumeUp = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_VolumeUp, Transform());
+	coordinator.AddComponent<EntityState>(GUI_VolumeUp, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_VolumeUp, CanvasText("VolumeUp", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_VolumeUp).position.y = -0.35;
+	coordinator.AddComponent<MenuGUI>(GUI_VolumeUp, MenuGUI(MenuGUI::AUDIO_INCREASE_BUTTON));
 
-	//Entity GUI_VolumeDown = coordinator.CreateEntity();
-	//coordinator.AddComponent<Transform>(GUI_VolumeDown, Transform());
-	//coordinator.AddComponent<EntityState>(GUI_VolumeDown, EntityState());
-	//coordinator.AddComponent<CanvasText>(GUI_VolumeDown, CanvasText("VolumeDown"));
-	//coordinator.AddComponent<MenuGUI>(GUI_VolumeDown, MenuGUI(MenuGUI::AUDIO_DECREASE_BUTTON));
+	Entity GUI_VolumeDown = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_VolumeDown, Transform());
+	coordinator.AddComponent<EntityState>(GUI_VolumeDown, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_VolumeDown, CanvasText("VolumeDown", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_VolumeDown).position.y = -0.50;
+	coordinator.AddComponent<MenuGUI>(GUI_VolumeDown, MenuGUI(MenuGUI::AUDIO_DECREASE_BUTTON));
 
-	//Entity GUI_BackToMainMenu = coordinator.CreateEntity();
-	//coordinator.AddComponent<Transform>(GUI_BackToMainMenu, Transform());
-	//coordinator.AddComponent<EntityState>(GUI_BackToMainMenu, EntityState());
-	//coordinator.AddComponent<CanvasText>(GUI_BackToMainMenu, CanvasText("BackToMainMenu"));
-	//coordinator.AddComponent<MenuGUI>(GUI_BackToMainMenu, MenuGUI(MenuGUI::BACK_BUTTON));
+	Entity GUI_BackToMainMenu = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_BackToMainMenu, Transform());
+	coordinator.AddComponent<EntityState>(GUI_BackToMainMenu, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_BackToMainMenu, CanvasText("Back"));
+	coordinator.GetComponent<Transform>(GUI_BackToMainMenu).position.y = -0.85;
+	coordinator.AddComponent<MenuGUI>(GUI_BackToMainMenu, MenuGUI(MenuGUI::BACK_BUTTON));
 
-	//Entity GUI_VolumeMeter = coordinator.CreateEntity();
-	//coordinator.AddComponent<Transform>(GUI_VolumeMeter, Transform());
-	//coordinator.AddComponent<EntityState>(GUI_VolumeMeter, EntityState());
-	//coordinator.AddComponent<CanvasText>(GUI_VolumeMeter, CanvasText("VolumeMeter"));
-	//coordinator.AddComponent<MenuGUI>(GUI_VolumeMeter, MenuGUI());
+	Entity GUI_VolumeMeter = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_VolumeMeter, Transform());
+	coordinator.AddComponent<EntityState>(GUI_VolumeMeter, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_VolumeMeter, CanvasText("Volume: ", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_VolumeMeter).position.y = -0.10;
+	coordinator.AddComponent<MenuGUI>(GUI_VolumeMeter, MenuGUI());
 
+	menuguisystem->GUI_BackToMainMenu = GUI_BackToMainMenu;
+	menuguisystem->GUI_Exit = GUI_Exit;
+	menuguisystem->GUI_Options = GUI_Options;
+	menuguisystem->GUI_Start = GUI_Start;
+	menuguisystem->GUI_VolumeDown = GUI_VolumeDown;
+	menuguisystem->GUI_VolumeUp = GUI_VolumeUp;
+	menuguisystem->GUI_VolumeMeter = GUI_VolumeMeter;
 
 	menunexussystem->Init();
 	menuunitsystem->Init();
 	menucamerasystem->Init();
+	menuguisystem->Init();
 	particlesystem->Init();
 
 	camerasystem->Init();
@@ -145,6 +164,7 @@ void SceneMenu::Update(double dt)
 	menuunitsystem->Update(dt);
 	menucamerasystem->Update(dt);
 	particlesystem->Update(dt);
+	menuguisystem->Update(dt);
 
 	camerasystem->Update(dt);
 	rendersystem->Update(dt);
@@ -171,6 +191,7 @@ void SceneMenu::PreRender()
 
 void SceneMenu::Render()
 {
+	menuguisystem->Render();
 	particlesystem->Render();
 	rendersystem->Render();
 	entitystatesystem->Render();

@@ -63,43 +63,47 @@ void MenuGUISystem::Update(float dt)
 		auto& canvastext = coordinator.GetComponent<CanvasText>(entity);
 		canvastext.size = 0.1f;
 
-		if (CollideWithCanvas(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y))
+		if (CollideWithCanvas(transform.position.x, transform.position.y + (1.5f * canvastext.size), canvastext.size, canvastext.size))
 		{
-			canvastext.size = 0.3f;
+			canvastext.size = 0.13f;
 			auto& menugui = coordinator.GetComponent<MenuGUI>(entity);
 			switch (menugui.menuGUIType)
 			{
 			case MenuGUI::START_BUTTON:
-				if (Application::IsMousePressed(1))
+				if (Application::IsMousePressed(0))
 				{
 
 				}
 				break;
 			case MenuGUI::EXIT_BUTTON:
-				if (Application::IsMousePressed(1))
+				if (Application::IsMousePressed(0))
 				{
 					Application::exitProgram = true;
 				}
 				break;
 			case MenuGUI::OPTION_BUTTON:
-				if (Application::IsMousePressed(1))
+				if (Application::IsMousePressed(0))
 				{
-
+					state = S_OPTIONS;
 				}
 				break;
 			case MenuGUI::AUDIO_INCREASE_BUTTON:
-				if (Application::IsMousePressed(1))
+				if (Application::IsMousePressed(0))
 				{
 
 				}
 				break;
 			case MenuGUI::AUDIO_DECREASE_BUTTON:
-				if (Application::IsMousePressed(1))
+				if (Application::IsMousePressed(0))
 				{
 
 				}
 				break;
 			case MenuGUI::BACK_BUTTON:
+				if (Application::IsMousePressed(0))
+				{
+					state = S_MAIN_MENU;
+				}
 				break;
 			default:
 				canvastext.size = 0.1f;
@@ -113,12 +117,22 @@ void MenuGUISystem::Render()
 {
 	if (state == S_MAIN_MENU)
 	{
-		GUI_Start;
-		GUI_Exit;
-		GUI_Options;
-		GUI_VolumeUp;
-		GUI_VolumeDown;
-		GUI_BackToMainMenu;
-		GUI_VolumeMeter;
+		coordinator.GetComponent<EntityState>(GUI_Start).active = true;
+		coordinator.GetComponent<EntityState>(GUI_Exit).active = true;
+		coordinator.GetComponent<EntityState>(GUI_Options).active = true;
+		coordinator.GetComponent<EntityState>(GUI_VolumeUp).active = false;
+		coordinator.GetComponent<EntityState>(GUI_VolumeDown).active = false;;
+		coordinator.GetComponent<EntityState>(GUI_BackToMainMenu).active = false;
+		coordinator.GetComponent<EntityState>(GUI_VolumeMeter).active = false;
+	}
+	else if (state == S_OPTIONS)
+	{
+		coordinator.GetComponent<EntityState>(GUI_Start).active = false;
+		coordinator.GetComponent<EntityState>(GUI_Exit).active = false;
+		coordinator.GetComponent<EntityState>(GUI_Options).active = false;
+		coordinator.GetComponent<EntityState>(GUI_VolumeUp).active = true;
+		coordinator.GetComponent<EntityState>(GUI_VolumeDown).active = true;
+		coordinator.GetComponent<EntityState>(GUI_BackToMainMenu).active = true;
+		coordinator.GetComponent<EntityState>(GUI_VolumeMeter).active = true;
 	}
 }

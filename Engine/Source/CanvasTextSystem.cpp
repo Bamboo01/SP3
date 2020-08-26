@@ -21,12 +21,12 @@ void CanvasTextSystem::Render()
 		model = glm::rotate(model, rot.x, glm::vec3(1, 0, 0));
 		model = glm::rotate(model, rot.y, glm::vec3(0, 1, 0));
 		model = glm::rotate(model, rot.z, glm::vec3(0, 0, 1));
-
-		model = glm::scale(model, transform.scale + glm::vec3(canvastext.size));
+		model = glm::scale(model, glm::vec3(canvastext.size));
+		transform.scale = glm::vec3(canvastext.size);
 
 		if (canvastext.Alignment == TEXT_ALIGNMENT::ALIGN_CENTER)
 		{
-			float length = ((float)canvastext.Text.size() - 1.5f) * 0.5f;
+			float length = ((float)canvastext.Text.size() - 1.5f) * 0.25f;
 			model = glm::translate(model, -glm::vec3(length, 0, 0));
 		}
 		else if (canvastext.Alignment == TEXT_ALIGNMENT::ALIGN_RIGHT)
