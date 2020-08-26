@@ -19,6 +19,6 @@ void MenuUnitSystem::Update(float dt)
 	for (const auto& entity : m_Entities)
 	{
 		auto& transform = coordinator.GetComponent<Transform>(entity);
-		transform.position += 3.f * dt * transform.AxisZ;
+		transform.position += 10.f * dt * transform.AxisZ;
 	}
 }

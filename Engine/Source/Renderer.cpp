@@ -49,6 +49,11 @@ Material* Renderer::getMaterial(GEO_TYPE type)
 	return MeshtoMaterial[getMesh(type)];
 }
 
+Shader* Renderer::getShader(Material* material)
+{
+	return MaterialtoShader[material];
+}
+
 void Renderer::Init()
 {
 	addMaterial(new Material, new Shader("Shader///basic.vs", "Shader//basic.fs"));
@@ -121,7 +126,7 @@ void Renderer::Init()
 	addMaterial(grass);
 	addMaterial(testParticleA, billboard_Cylindrical);
 	addMaterial(testParticleB, billboard_Spherical);
-	addMaterial(codeParticle, billboard_Cylindrical);
+	addMaterial(codeParticle, billboard_Spherical);
 	addMaterial(menuunit, test);
 
 	/*Assign your meshes their materials here*/

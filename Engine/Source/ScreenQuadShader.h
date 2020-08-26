@@ -22,6 +22,7 @@ public:
 
 	virtual void InitShader()
 	{
+		Shader::InitShader();
 		UseShader();
 		ScreenQuadShaderUniforms[U_TRANSFORM_MATRIX] = getUniformLocation("model");
 		ScreenQuadShaderUniforms[U_TEXTURE] = getUniformLocation("screenTexture");

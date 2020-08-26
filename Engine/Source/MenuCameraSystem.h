@@ -11,5 +11,5 @@ class MenuCameraSystem : public System
 public:
 	void Setup();
 	void Init();
-	void Update();
+	void Update(float dt);
 };

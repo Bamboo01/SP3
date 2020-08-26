@@ -28,6 +28,7 @@
 #include "MenuCameraSystem.h"
 #include "MenuNexusSystem.h"
 #include "MenuUnitSystem.h"
+#include "MenuGUISystem.h"
 
 #pragma once
 
@@ -62,6 +63,7 @@ class SceneMenu : public Scene
 	std::shared_ptr<MenuNexusSystem> menunexussystem;
 	std::shared_ptr<MenuUnitSystem> menuunitsystem;
 	std::shared_ptr<MenuCameraSystem> menucamerasystem;
+	std::shared_ptr<MenuGUISystem> menuguisystem;
 
 };
 

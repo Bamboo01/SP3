@@ -13,6 +13,12 @@ void MenuCameraSystem::Init()
 {
 }
 
-void MenuCameraSystem::Update()
+void MenuCameraSystem::Update(float dt)
 {
+	for (const auto& entity : m_Entities)
+	{
+		auto& camera = coordinator.GetComponent<Camera>(entity);
+		camera.target = glm::vec3(0, 0, 0);
+		camera.position += camera.right * 3.f * dt;
+	}
 }

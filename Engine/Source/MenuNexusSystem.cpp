@@ -53,7 +53,7 @@ void MenuNexusSystem::Update(float dt)
 
 		if (menunexus.timer >= menunexus.nextBuildTime)
 		{
-			menunexus.timer - 0.f;
+			menunexus.timer = 0.f;
 			menunexus.nextBuildTime = glm::linearRand(2.f, 7.f);
 
 			Entity nextUnit = UnitQueue.back();
@@ -71,11 +71,13 @@ void MenuNexusSystem::Update(float dt)
 			auto& transform = coordinator.GetComponent<Transform>(entity);
 			auto& unittransform = coordinator.GetComponent<Transform>(*unitentity);
 
-			if (glm::length(transform.position - unittransform.position) > 500.f)
+			if (glm::length(transform.position - unittransform.position) > 100.f)
 			{
 				coordinator.GetComponent<EntityState>(*unitentity).active = false;
+				coordinator.GetComponent<Transform>(*unitentity).position = transform.position;
 				unitentity = ActiveUnits.erase(unitentity);
 				UnitQueue.push_back(*unitentity);
+				std::cout << "despawn! " << UnitQueue.size() << std::endl;
 			}
 			else
 			{

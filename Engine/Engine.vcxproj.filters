@@ -152,6 +152,9 @@
     <ClCompile Include="Source\MenuUnitSystem.cpp">
       <Filter>Auxillary\Systems\Menu\MenuUnitSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MenuGUISystem.cpp">
+      <Filter>Auxillary\Systems\Menu\MenuGUISystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -424,6 +427,12 @@
     <ClInclude Include="Source\MenuUnitSystem.h">
       <Filter>Auxillary\Systems\Menu\MenuUnitSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MenuGUISystem.h">
+      <Filter>Auxillary\Systems\Menu\MenuGUISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MenuGUI.h">
+      <Filter>Auxillary\Components\Menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -566,6 +575,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\Menu\MenuUnitSystem">
       <UniqueIdentifier>{42ad383a-ac02-4f7c-9b1a-6dff465dd441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\Menu\MenuGUISystem">
+      <UniqueIdentifier>{efb50f56-c42d-4ad2-a099-754785735104}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

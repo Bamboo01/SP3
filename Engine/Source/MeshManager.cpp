@@ -44,14 +44,14 @@ MeshManager::MeshManager()
 	meshList[GEO_CODEPARTICLE] = MeshBuilder::GenerateQuad("CodeParticle", Color(1, 1, 1), 1);
 	meshList[GEO_CODEPARTICLE]->Init(50000);
 
-	meshList[GEO_MENU_UNIT1] = MeshBuilder::GenerateOBJ("MenuUnit1", "OBJ//nexus.obj");
-	meshList[GEO_MENU_UNIT1]->Init(10);
+	meshList[GEO_MENU_UNIT1] = MeshBuilder::GenerateOBJ("MenuUnit1", "OBJ//normalunit.obj");
+	meshList[GEO_MENU_UNIT1]->Init(1000);
 
-	meshList[GEO_MENU_UNIT2] = MeshBuilder::GenerateOBJ("MenuUnit2", "OBJ//nexus.obj");
-	meshList[GEO_MENU_UNIT2]->Init(10);
+	meshList[GEO_MENU_UNIT2] = MeshBuilder::GenerateOBJ("MenuUnit2", "OBJ//rangeunit.obj");
+	meshList[GEO_MENU_UNIT2]->Init(1000);
 
-	meshList[GEO_MENU_UNIT3] = MeshBuilder::GenerateOBJ("MenuUnit3", "OBJ//nexus.obj");
-	meshList[GEO_MENU_UNIT3]->Init(10);
+	meshList[GEO_MENU_UNIT3] = MeshBuilder::GenerateOBJ("MenuUnit3", "OBJ//tankunit.obj");
+	meshList[GEO_MENU_UNIT3]->Init(1000);
 
 	for (int i = 0; i < NUM_MESH; i++)
 	{
