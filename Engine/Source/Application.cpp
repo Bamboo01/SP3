@@ -17,6 +17,9 @@
 //Include Renderer for rendering
 #include "Renderer.h"
 
+//Sound Controller
+#include "SoundController.h"
+
 //Include ImGui Files
 #include "../Dependencies/ImGui/imgui.h"
 #include "../Dependencies/ImGui/imgui_impl_glfw.h"
@@ -207,6 +210,9 @@ void Application::Init()
 
 void Application::Run()
 {
+	//Initialise sounds
+	CSoundController* cSoundController = CSoundController::GetInstance();
+
 	//Main Loop
 	Scene* scene = nullptr;
 	SceneManager* scenemanager = SceneManager::getInstance();
