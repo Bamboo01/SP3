@@ -213,12 +213,15 @@ void Application::Run()
 	//Initialise sounds
 	CSoundController* cSoundController = CSoundController::GetInstance();
 	cSoundController->Init();
+	cSoundController->LoadSound("Sounds//menusong.mp3", 999, true);
+	cSoundController->LoadSound("Sounds//menuclick.wav", 1000);
+
 
 	//Main Loop
 	Scene* scene = nullptr;
 	SceneManager* scenemanager = SceneManager::getInstance();
 	scenemanager->Init(&scene);
-	scenemanager->ChangeScene(SCENE_COMBAT);
+	scenemanager->ChangeScene(SCENE_MENU);
 	scenemanager->Update();
 
 	const char* glsl_version = "#version 330";

@@ -43,6 +43,9 @@ public:
 	// Pause a sound by its ID
 	void PauseSoundByID(const int ID);
 
+	// Pause all sounds and reset them
+	void StopAllSounds();
+
 	// Increase Master volume
 	bool MasterVolumeIncrease(float a);
 	// Decrease Master volume

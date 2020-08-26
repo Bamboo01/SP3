@@ -39,4 +39,6 @@ public:
 	void Init();
 	void Update(float dt);
 	void Render();
+
+	~MenuGUISystem();
 };

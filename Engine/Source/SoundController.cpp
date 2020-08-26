@@ -145,6 +145,11 @@ void CSoundController::PauseSoundByID(const int ID)
 	cSoundEngine->stopAllSoundsOfSoundSource(pSoundInfo->GetSound());
 }
 
+void CSoundController::StopAllSounds()
+{
+	cSoundEngine->stopAllSounds();
+}
+
 /**
  @brief Increase Master volume
  @return true if successfully increased volume, else false

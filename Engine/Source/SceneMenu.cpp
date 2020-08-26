@@ -1,4 +1,5 @@
 #include "SceneMenu.h"
+#include "SoundController.h"
 
 void SceneMenu::Init()
 {
@@ -208,4 +209,5 @@ void SceneMenu::PostRender()
 
 void SceneMenu::Exit()
 {
+	CSoundController::GetInstance()->StopAllSounds();
 }

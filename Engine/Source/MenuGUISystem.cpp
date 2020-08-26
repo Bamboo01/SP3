@@ -43,6 +43,7 @@ void MenuGUISystem::Setup()
 
 void MenuGUISystem::Init()
 {
+	CSoundController::GetInstance()->PlaySoundByID(999);
 	GUI_Entities.push_back(GUI_Start);
 	GUI_Entities.push_back(GUI_Exit);
 	GUI_Entities.push_back(GUI_Options);
@@ -79,18 +80,21 @@ void MenuGUISystem::Update(float dt)
 			case MenuGUI::START_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
+					CSoundController::GetInstance()->PlaySoundByID(1000);
 					SceneManager::getInstance()->ChangeScene(SCENE_COMBAT);
 				}
 				break;
 			case MenuGUI::EXIT_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
+					CSoundController::GetInstance()->PlaySoundByID(1000);
 					Application::exitProgram = true;
 				}
 				break;
 			case MenuGUI::OPTION_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
+					CSoundController::GetInstance()->PlaySoundByID(1000);
 					state = S_OPTIONS;
 				}
 				break;
@@ -109,6 +113,7 @@ void MenuGUISystem::Update(float dt)
 			case MenuGUI::BACK_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
+					CSoundController::GetInstance()->PlaySoundByID(1000);
 					state = S_MAIN_MENU;
 				}
 				break;
@@ -142,4 +147,8 @@ void MenuGUISystem::Render()
 		coordinator.GetComponent<EntityState>(GUI_BackToMainMenu).active = true;
 		coordinator.GetComponent<EntityState>(GUI_VolumeMeter).active = true;
 	}
+}
+
+MenuGUISystem::~MenuGUISystem()
+{
 }
