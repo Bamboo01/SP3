@@ -49,6 +49,7 @@ class SceneCombat : public Scene
 	void InitMainCamera();
 	void InitTerrain();
 	void InitController();
+	void InitMiniMap();
 
 	void UpdateImGui();
 	void UpdateImGuiRaycast();

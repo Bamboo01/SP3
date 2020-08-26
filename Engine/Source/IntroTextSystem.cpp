@@ -1,10 +1,13 @@
 #include "IntroTextSystem.h"
 #include "GUIText.h"
+#include "SceneManager.h"
+
 
 void IntroTextSystem::Init()
 {
 	timer = 0;
 	count = 0;
+	cSoundController = CSoundController::GetInstance();
 }
 
 void IntroTextSystem::Update(float dt)
@@ -19,6 +22,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("computer rebooting...", ALIGN_LEFT));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if(timer > 0.8 && count == 1)
@@ -29,6 +33,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> 00G%SK001", ALIGN_LEFT,glm::vec3(1,0,0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 1 && count == 2)
@@ -39,6 +44,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> 0$UIS%07^", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 1.3 && count == 3)
@@ -49,6 +55,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Loading Resources...0%", ALIGN_LEFT));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 2 && count == 4)
@@ -59,6 +66,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Loading Resources...63%", ALIGN_LEFT));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 2.7 && count == 5)
@@ -69,6 +77,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Loading Re$o%r&es... 100%", ALIGN_LEFT));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 3 && count == 6)
@@ -79,6 +88,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> 7&*UYA_0E", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 3.5 && count == 7)
@@ -89,6 +99,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Loading Comp&e^t(d...", ALIGN_LEFT));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 3.8 && count == 8)
@@ -99,6 +110,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("ProCe$$inG...", ALIGN_LEFT));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 4 && count == 9)
@@ -109,6 +121,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> 8^DJ000E", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 4.5 && count == 10)
@@ -119,6 +132,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("R%b00t su(e$$fu1ly...", ALIGN_LEFT));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 4.8 && count == 11)
@@ -129,6 +143,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> installing ##082##", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5 && count == 12)
@@ -139,6 +154,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> installing ##793##", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.5 && count == 13)
@@ -149,6 +165,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> &#0&*AQ0", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.55 && count == 14)
@@ -159,6 +176,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> 56&*^PQ", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.6 && count == 15)
@@ -169,6 +187,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> *&&&SjeAWpA90*72D$#59eDo_0294D8173", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.65 && count == 16)
@@ -179,6 +198,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> 78d9U*e&6%2AQ0(ajOsieESp;lsnENuBVI*&2 ", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.7 && count == 17)
@@ -189,6 +209,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> OUir**7sHAuw^5%%ed98eJUQ- ", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.75 && count == 18)
@@ -199,6 +220,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> 8Podu*371Gew5S^$%ene(88", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.8 && count == 19)
@@ -209,6 +231,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> UTI*7420mKFJe_01949", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.85 && count == 20)
@@ -219,6 +242,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> PO0(0E82HDBNOQ", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.9 && count == 21)
@@ -229,6 +253,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> UTIW&*207572OBFkF9)*726", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 5.95 && count == 22)
@@ -239,6 +264,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> IPHET92^)927460*", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6 && count == 23)
@@ -249,6 +275,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> PIEU(*4)(72igbK;JFEW8&&2", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.05 && count == 24)
@@ -259,6 +286,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> O[9073^*3957", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.1 && count == 25)
@@ -269,6 +297,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> IPMFA*7&5%18^^", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.15 && count == 26)
@@ -279,6 +308,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> IRHGB90&&&&6111*BWih:}[d", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.2 && count == 27)
@@ -289,6 +319,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> 8ST7()&sBjkfbOAU&&*%^2NWL", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.25 && count == 28)
@@ -300,6 +331,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> lpo%%$$SKpoalfo*0^&769bouugF", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.3 && count == 29)
@@ -311,6 +343,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> LDOPEuio*f&97(^d9BLASFN", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -318,6 +351,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<VIRUS DETECTED> PG0(UHE6&&&vwlKNF###2df%", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.35 && count == 30)
@@ -329,6 +363,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> P_DPA8097BfhblF&&6%s1", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.4 && count == 31)
@@ -340,6 +375,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> {F-W9hBiyrBiyf&&*1@!kSLpo", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -347,6 +383,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<VIRUS DETECTED> _f0jnFOgQ8)IUHF%3#$%6(^T3GBIFKJ", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.45 && count == 32)
@@ -358,6 +395,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> PlFOPn208527Blkf'FE;'.<.SQU39", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.5 && count == 33)
@@ -369,6 +407,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> PPLFOBW9726()&842YHOljbf*^7;pkfn", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -376,6 +415,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<VIRUS DETECTED> SIKGHB8*(&FRT6$#$%762YBlbfS", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.55 && count == 34)
@@ -387,6 +427,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> *DBNobG&%29(f0lFOPHW^(872Bjbf", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.6 && count == 35)
@@ -398,6 +439,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> P[DV{}SPIKXB*^516.>I176", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -405,6 +447,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<ERROR> OHBF(&Q^9287rTGVBFeLOjfOUWB*^)2", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.65 && count == 36)
@@ -416,6 +459,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> IUJNfk()&26*&046lPISD&*@&E6", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -423,6 +467,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<VIRUS DETECTED> L:FN8wyirhsf-(&42846_ierth0q86UOBJF", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.7 && count == 37)
@@ -434,6 +479,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> pIUHBV092740B_(*&61LK><nf", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -441,6 +487,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<VIRUS DETECTED> [sUFJHWUOE)&(8265T0GpklbF[PKWR[OPGB", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.8 && count == 38)
@@ -452,6 +499,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> pIUHBV092740B_(*&61LK><nf", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -459,6 +507,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<ERROR> P[DG*836579%()92U4JHklsbFL", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.85 && count == 39)
@@ -470,6 +519,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<ERROR> P:shfB0A8WYRGBFOlj.ZD94WTI", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -477,6 +527,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<ERROR> opHFKXG9286W4975q60975ytqgobaulj", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.9 && count == 40)
@@ -488,6 +539,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> JLGB0(&@)*46T3uoLSBFo$$@$#287WIURGBFK ", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -495,6 +547,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<VIRUS DETECTED> PAIDHG08365807yshfljbnp;wrpiyq357", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 6.95 && count == 41)
@@ -506,6 +559,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("<VIRUS DETECTED> PIF97*^@&($564198yiHBRFKJJIF ", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(2);
 		ScrollUpdate();
 		Entity UIText2 = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText2, Transform());
@@ -513,6 +567,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText2).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText2, CanvasText("<VIRUS DETECTED> piyfgbouv&(w$578Q&&5387_25-(yr", ALIGN_LEFT, glm::vec3(1, 0, 0)));
 		coordinator.AddComponent<EntityState>(UIText2, EntityState());
+		cSoundController->PlaySoundByID(2);
 		++count;
 	}
 	else if (timer > 7.2 && count == 42)
@@ -524,6 +579,7 @@ void IntroTextSystem::Update(float dt)
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.0001, 0.0001, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("L0adi*g Com[#eted ", ALIGN_LEFT));
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
+		cSoundController->PlaySoundByID(3);
 		++count;
 	}
 	else if (timer > 7.7 && count == 43)
@@ -551,6 +607,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "W_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -561,6 +618,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WE_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -571,6 +629,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WEL_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -581,6 +640,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -591,6 +651,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -601,6 +662,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0M_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -611,6 +673,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -621,6 +684,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME _";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -631,6 +695,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME T_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -642,6 +707,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -652,6 +718,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO _";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -662,6 +729,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -672,6 +740,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -682,6 +751,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0L_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -692,6 +762,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0L0_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -703,6 +774,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0L0W_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -714,6 +786,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0L0WA_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -725,6 +798,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0L0WAR_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -736,6 +810,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0L0WAR._";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -747,6 +822,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0L0WAR.E_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -758,6 +834,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0L0WAR.EX_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -769,6 +846,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			text.Text = "WELC0ME TO H0L0WAR.EXE_";
+			cSoundController->PlaySoundByID(1);
 		}
 		++count;
 	}
@@ -789,6 +867,7 @@ void IntroTextSystem::Update(float dt)
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
 			scroll.position.x = -0.56f;
+			cSoundController->PlaySoundByID(4);
 		}
 		++count;
 	}
@@ -862,19 +941,32 @@ void IntroTextSystem::Update(float dt)
 		}
 		++count;
 	}
-	else if (timer > 10.65)
+	else if (timer > 10.65 && count == 75)
 	{
 		for (auto& a : m_Entities)
 		{
 			auto& scroll = coordinator.GetComponent<Transform>(a);
 			auto& text = coordinator.GetComponent<CanvasText>(a);
-			if (text.color != glm::vec3(0, 0, 0))
+			if (text.color.r > 0 && text.color.g > 0 && text.color.b > 0)
 			{
 				text.color.r -= 0.01f;
 				text.color.g -= 0.01f;
 				text.color.b -= 0.01f;
 			}
+			else
+			{
+				++count;
+			}
 		}
+	}
+	else if (count == 76)
+	{
+		SceneManager::getInstance()->ChangeScene(SCENE_MENU);
+	}
+
+	if (Application::IsKeyPressed(VK_ESCAPE))
+	{
+		SceneManager::getInstance()->ChangeScene(SCENE_MENU);
 	}
 }
 

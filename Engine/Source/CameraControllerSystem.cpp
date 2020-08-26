@@ -52,7 +52,7 @@ void CameraControllerSystem::Update(float dt)
             if (Application::mouse_current_y > Application::GetWindowHeight() - 50)
             {
                 //Camera move up
-                if (camera.position.z > -200)
+                if (camera.position.z > -300)
                 {
                     glm::vec3 dir = camera.up;
                     dir.y = 0;

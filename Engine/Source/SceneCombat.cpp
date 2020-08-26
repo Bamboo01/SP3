@@ -70,6 +70,7 @@ void SceneCombat::Init()
 	InitGUIText();
 	InitPoolPrefab();
 	InitCanvasGUI();
+	InitMiniMap();
 	InitController();
 
 	// Initialising of all System
@@ -128,11 +129,11 @@ void SceneCombat::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+	rendersystem->Update(dt);
 	transformsystem->Update(dt);
 	camerasystem->Update(dt);
 	cameracontrollersystem->Update(dt);
-	rendersystem->Update(dt);
+	
 	canvasimagesystem->Update(dt);
 	canvastextsystem->Update(dt);
 	entitystatesystem->Update(dt);
@@ -532,7 +533,7 @@ void SceneCombat::InitCanvasGUI()
 		// Minimap
 		Entity UI = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UI, Transform());
-		coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.7, -0.7, 1);
+		coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.7, -0.7, 0.9);
 		coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.3, 0.3, 1);
 		coordinator.AddComponent<CanvasImage>(UI, CanvasImage("Images//regulartexture.tga"));
 		coordinator.AddComponent<CanvasImageUpdate>(UI, CanvasImageUpdate(CanvasImageUpdate::NONCLICKABLE, CanvasImageUpdate::START2, CanvasImageUpdate::NONPOPUP, CanvasImageUpdate::START4));
@@ -809,6 +810,30 @@ void SceneCombat::InitController()
 			coordinator.AddComponent<Controller>(controller, Controller(Controller::ENEMY, glm::vec3(-160, 30, -160)));
 		coordinator.AddComponent<EntityState>(controller, EntityState());
 	}
+}
+
+void SceneCombat::InitMiniMap()
+{
+	// MINIMAP
+	Entity MiniMap = coordinator.CreateEntity();
+	coordinator.AddComponent<Camera>(MiniMap, Camera(
+		glm::vec3(0, 400, -3.f),
+		glm::vec3(60, 0, 0),
+		1080, 1080, //Lower this if the FPS stinks
+		45.f,
+		CAMERA_TYPE::CAMERA_MINIMAP,
+		CAMERA_MODE::MODE_PERSPECTIVE
+	));
+	coordinator.AddComponent<CameraController>(MiniMap, CameraController());
+	coordinator.AddComponent<EntityState>(MiniMap, EntityState());
+
+	Entity UI = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(UI, Transform());
+	coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.7, -0.7, 0);
+	coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.28, 0.28, 1);
+	coordinator.AddComponent<CanvasImage>(UI, CanvasImage());
+	coordinator.GetComponent<Camera>(MiniMap).assignTargetTexture(&coordinator.GetComponent<CanvasImage>(UI).TextureID);
+	coordinator.AddComponent<EntityState>(UI, EntityState());
 }
 
 void SceneCombat::UpdateImGui()
