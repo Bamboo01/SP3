@@ -15,7 +15,7 @@ void CameraSystem::Init()
 	for (auto const& entity : m_Entities)
 	{
 		auto& camera = coordinator.GetComponent<Camera>(entity);
-		camera.target = glm::vec3(0, 0, 0);
+		camera.target = glm::vec3(0, 0, 50);
 		
 		camera.FBO = new FrameBufferObject;
 		camera.FBO->Init(camera.viewWidth, camera.viewHeight);

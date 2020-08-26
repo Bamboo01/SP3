@@ -69,6 +69,11 @@ MeshManager::MeshManager()
 	meshList[GEO_PROJECTILE_PLAYER] = MeshBuilder::GenerateOBJ("Projectile Unit", "OBJ//projectile.obj");
 	meshList[GEO_PROJECTILE_PLAYER]->Init();
 
+	meshList[GEO_PROJECTILE_MELEE_PLAYER] = MeshBuilder::GenerateCube("Projectile Melee Unit", Color(1, 0, 0));
+	meshList[GEO_PROJECTILE_MELEE_PLAYER]->Init();
+
+	// Enemy Geometry with Enemy Texture
+
 	meshList[GEO_UNIT_NORMAL_ENEMY] = MeshBuilder::GenerateOBJ("Normal Unit", "OBJ//normalunit.obj");
 	meshList[GEO_UNIT_NORMAL_ENEMY]->Init();
 
@@ -110,6 +115,9 @@ MeshManager::MeshManager()
 
 	meshList[GEO_INRANGE_TOWER_PLAYER] = MeshBuilder::GenerateOBJ("Inrange wall", "OBJ//tower.obj");
 	meshList[GEO_INRANGE_TOWER_PLAYER]->Init();
+	
+	meshList[GEO_PROJECTILE_MELEE_ENEMY] = MeshBuilder::GenerateCube("Projectile Melee Unit", Color(0, 0, 1));
+	meshList[GEO_PROJECTILE_MELEE_ENEMY]->Init();
 
 	for (int i = 0; i < NUM_MESH; i++)
 	{

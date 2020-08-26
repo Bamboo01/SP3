@@ -709,7 +709,7 @@ void SceneTest::Init()
 	canvastextsystem->Init();
 	entitystatesystem->Init();
 	terrainsystem->Init();
-	unitsystem->Init();
+	unitsystem->Init(terrainsystem->m_Entities);
 	collidersystem->Init();
 	raycastingsystem->Init(&collidersystem->m_Entities, &controllersystem->m_Entities);
 	controllersystem->Init(&collidersystem->m_Entities);

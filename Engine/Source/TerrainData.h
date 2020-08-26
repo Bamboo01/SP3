@@ -26,8 +26,8 @@ struct TerrainData
     {
         x += transform.position.x;
         z += transform.position.z;
-        x / transform.scale.x;
-        z / transform.scale.z;
+        x = x / transform.scale.x;
+        z = z / transform.scale.z;
 
         if (x < -0.5f || x > 0.5f || z < -0.5f || z > 0.5f)
             return 0;

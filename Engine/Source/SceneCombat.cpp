@@ -80,7 +80,7 @@ void SceneCombat::Init()
 	canvastextsystem->Init();
 	entitystatesystem->Init();
 	terrainsystem->Init();
-	unitsystem->Init();
+	unitsystem->Init(terrainsystem->m_Entities);
 	collidersystem->Init();
 	raycastingsystem->Init(&collidersystem->m_Entities, &controllersystem->m_Entities);
 	controllersystem->Init(&collidersystem->m_Entities);
@@ -735,8 +735,8 @@ void SceneCombat::InitCanvasGUI()
 
 void SceneCombat::InitUnit()
 {
-	unitsystem->CreateUnit(Unit::UnitType::NEXUS, Unit::UnitFaction::PLAYER, 1, Transform(glm::vec3(130, 30, 130), glm::vec3(3, 3, 3), glm::vec3(0, -45, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
-	unitsystem->CreateUnit(Unit::UnitType::NEXUS, Unit::UnitFaction::ENEMY, 1, Transform(glm::vec3(-130, 30, -130), glm::vec3(3, 3, 3), glm::vec3(0, -45, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+	unitsystem->CreateUnit(Unit::UnitType::NEXUS, Unit::UnitFaction::PLAYER, 1, Transform(glm::vec3(160, 30, 160), glm::vec3(3, 3, 3), glm::vec3(0, -45, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+	unitsystem->CreateUnit(Unit::UnitType::NEXUS, Unit::UnitFaction::ENEMY, 1, Transform(glm::vec3(-160, 30, -160), glm::vec3(3, 3, 3), glm::vec3(0, -45, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
 	unitsystem->CreateUnit(Unit::UnitType::LAB, Unit::UnitFaction::PLAYER, 1, Transform(glm::vec3(100, 30, 130), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
 	unitsystem->CreateUnit(Unit::UnitType::LAB, Unit::UnitFaction::ENEMY, 1, Transform(glm::vec3(-100, 30, -130), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
 	unitsystem->CreateUnit(Unit::UnitType::GENERATOR1, Unit::UnitFaction::PLAYER, 1, Transform(glm::vec3(100, 30, 100), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
@@ -786,7 +786,7 @@ void SceneCombat::InitMainCamera()
 	Entity maincamera = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(maincamera, Camera(
 		glm::vec3(0, 100, -3.f),
-		glm::vec3(60, 0, 0),
+		glm::vec3(15, 0, 0),
 		1080, 1080, //Lower this if the FPS stinks
 		45.f,
 		CAMERA_TYPE::CAMERA_MAIN,
@@ -945,7 +945,7 @@ void SceneCombat::UpdateImGuiUnitSpawn()
 
 void SceneCombat::UpdateImGuiEntityList()
 {
-
+	activeEntityList.clear();
 	ImGui::Begin("EntityList");
 	if (activeEntityList.empty())
 	{
@@ -968,11 +968,16 @@ void SceneCombat::UpdateImGuiEntityList()
 		static int selection = 0;
 		ImGui::SliderInt(("activeEntities: " + std::to_string(activeEntityList.size())).c_str(), &selection, 0, activeEntityList.size() - 1);
 
+		if (selection >= activeEntityList.size())
+		{
+			selection = activeEntityList.size() - 1;
+		}
+
 		testHandler = activeEntityList[selection];
 		auto& transform = coordinator.GetComponent<Transform>(testHandler);
 		auto& collider = coordinator.GetComponent<Collider>(testHandler);
 		auto& unit = coordinator.GetComponent<Unit>(testHandler);
-		static const char* unitTypes2[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
+		static const char* unitTypes2[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR1","GENERATOR2","LAB","PROJECTILE","MELEE_PROJECTILE"};
 		static const char* unitfaction2[]{ "PLAYER","ENEMY" };
 
 		if (ImGui::CollapsingHeader("Unit Data"))
@@ -1032,12 +1037,11 @@ void SceneCombat::UpdateImGuiEntityList()
 
 		if (ImGui::Button("Set to inactive"))
 		{
-			activeEntityList.erase(activeEntityList.begin() + selection);
 			unitsystem->AddInactiveEntity(testHandler);
 
-			if (selection == activeEntityList.size() - 1 && selection != 0)
+			if (selection == activeEntityList.size() - 1)
 			{
-				selection -= 1;
+				selection = selection - 1;
 			}
 		}
 
@@ -1055,8 +1059,6 @@ void SceneCombat::UpdateImGuiEntityList()
 			selection = 0;
 		}
 
-
-		activeEntityList.clear();
 	}
 
 	ImGui::End();
