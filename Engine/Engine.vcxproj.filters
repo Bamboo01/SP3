@@ -134,8 +134,11 @@
     <ClCompile Include="Source\SceneCombat.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMenu.cpp">
+    <ClCompile Include="Source\SceneIntro.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\IntroTextSystem.cpp">
+      <Filter>Auxillary\Systems\IntroTextSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,8 +391,11 @@
     <ClInclude Include="Source\SceneCombat.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="SceneMenu.h">
+    <ClInclude Include="Source\SceneIntro.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\IntroTextSystem.h">
+      <Filter>Auxillary\Systems\IntroTextSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -518,6 +524,9 @@
     </Filter>
     <Filter Include="Core\Modules\SoundController">
       <UniqueIdentifier>{985bf271-6ce9-4c73-b4bc-3433266cc230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\IntroTextSystem">
+      <UniqueIdentifier>{b33a3b6f-c2b6-4e02-8e24-d034ae184e69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
