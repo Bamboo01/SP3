@@ -25,6 +25,9 @@ MeshManager::MeshManager()
 	meshList[GEO_GUIQUAD] = MeshBuilder::GenerateQuad("cube", Color(1.f, 1.f, 1.f), 1.f);
 	meshList[GEO_GUIQUAD]->Init();
 
+	meshList[GEO_MINIMAPBOX] = MeshBuilder::GenerateQuad("MiniMapBox", Color(1.f, 1.f, 1.f), 1.f);
+	meshList[GEO_MINIMAPBOX]->Init();
+
 	meshList[GEO_GRIDCUBE] = MeshBuilder::GenerateCube("GridCube", Color(1, 1, 1), 1);
 	meshList[GEO_GRIDCUBE]->Init();
 	meshList[GEO_GRIDCUBE]->mode = Mesh::DRAW_LINES;
