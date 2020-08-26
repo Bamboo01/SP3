@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "CameraController.h"
+#include "Renderer.h"
 #include "EntityState.h"
 #include "Coordinator.h"
 
@@ -8,6 +9,7 @@
 
 
 extern Coordinator coordinator;
+extern Renderer renderer;
 
 class CameraControllerSystem : public System
 {

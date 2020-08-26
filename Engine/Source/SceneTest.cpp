@@ -77,6 +77,19 @@ void SceneTest::Init()
 	coordinator.AddComponent<RayCasting>(maincamera, RayCasting());
 	coordinator.AddComponent<EntityState>(maincamera, EntityState());
 
+	// MINIMAP
+	Entity MiniMap = coordinator.CreateEntity();
+	coordinator.AddComponent<Camera>(MiniMap, Camera(
+		glm::vec3(0, 400, -3.f),
+		glm::vec3(60, 0, 0),
+		1080, 1080, //Lower this if the FPS stinks
+		45.f,
+		CAMERA_TYPE::CAMERA_MINIMAP,
+		CAMERA_MODE::MODE_PERSPECTIVE
+	));
+	coordinator.AddComponent<CameraController>(MiniMap, CameraController());
+	coordinator.AddComponent<EntityState>(MiniMap, EntityState());
+
 	Entity axes = coordinator.CreateEntity();
 	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));
 	coordinator.AddComponent<Transform>(axes, Transform());
@@ -138,14 +151,7 @@ void SceneTest::Init()
 	//coordinator.GetComponent<Transform>(cube).scale = glm::vec3(10, 10, 1);
 	//coordinator.AddComponent<EntityState>(testunit, EntityState());
 
-	//Entity UI = coordinator.CreateEntity();
-	//coordinator.AddComponent<Transform>(UI, Transform());
-	//coordinator.GetComponent<Transform>(UI).position = glm::vec3(0, 0, 0);
-	//coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.5, 0.5, 1);
-	//coordinator.AddComponent<CanvasImage>(UI, CanvasImage());
-	//coordinator.GetComponent<Camera>(maincamera).assignTargetTexture(&coordinator.GetComponent<CanvasImage>(UI).TextureID);
-	//coordinator.AddComponent<EntityState>(UI, EntityState());
-
+	
 	// Resources Text
 	for (int i = 0; i < 2; ++i)
 	{
@@ -701,6 +707,15 @@ void SceneTest::Init()
 		coordinator.AddComponent<EntityState>(UI, EntityState(true));
 	}
 
+	Entity UI = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(UI, Transform());
+	coordinator.GetComponent<Transform>(UI).position = glm::vec3(-0.7, -0.7, 0);
+	coordinator.GetComponent<Transform>(UI).scale = glm::vec3(0.28, 0.28, 1);
+	coordinator.AddComponent<CanvasImage>(UI, CanvasImage());
+	coordinator.GetComponent<Camera>(MiniMap).assignTargetTexture(&coordinator.GetComponent<CanvasImage>(UI).TextureID);
+	coordinator.AddComponent<EntityState>(UI, EntityState());
+
+
 	gridcontrollersystem->getRaycastingEntity(maincamera);
 
 	/*Init all systems*/
@@ -753,7 +768,6 @@ void SceneTest::Update(double dt)
 {
 	transformsystem->Update(dt);
 	camerasystem->Update(dt);
-	cameracontrollersystem->Update(dt);
 	rendersystem->Update(dt);
 	canvasimagesystem->Update(dt);
 	canvastextsystem->Update(dt);
@@ -767,7 +781,7 @@ void SceneTest::Update(double dt)
 	unitsystem->Update(dt);
 	guitextsystem->Update(dt);
 	controllersystem->Update(dt);
-
+	cameracontrollersystem->Update(dt);
 	canvasimageupdatesystem->SetSelectedUnitList(raycastingsystem->selectedunitlist);
 	guitextsystem->SetSelectedUnitList(raycastingsystem->selectedunitlist);
 	guitextsystem->SetUIopen(canvasimageupdatesystem->LabUIopen, canvasimageupdatesystem->UnitUIopen, canvasimageupdatesystem->BuildingUIopen);

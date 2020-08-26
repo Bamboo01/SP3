@@ -134,9 +134,6 @@
     <ClCompile Include="Source\SceneCombat.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMenu.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -386,9 +383,6 @@
       <Filter>Core\Modules\SoundController</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneCombat.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneMenu.h">
       <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>

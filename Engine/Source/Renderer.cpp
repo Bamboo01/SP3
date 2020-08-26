@@ -111,6 +111,11 @@ void Renderer::Init()
 	//testParticleB->AssignTexture("Images//grass.tga");
 	materialManager.push_back(testParticleB);
 
+
+	Material* MiniMapBox = new Material();
+	MiniMapBox->AssignTexture("Images//MiniMapBox.tga");
+	materialManager.push_back(MiniMapBox);
+
 	//Material* playerMaterial = new Material();
 	//playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
 	//playerMaterial->AssignTexture("Images//player.tga");
@@ -122,12 +127,14 @@ void Renderer::Init()
 	//addMaterial(playerMaterial);
 	addMaterial(testParticleA, billboard_Cylindrical);
 	addMaterial(testParticleB, billboard_Spherical);
+	addMaterial(MiniMapBox);
 
 	/*Assign your meshes their materials here*/
 	//assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TERRAIN], grass);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_CYLINDRICAL], testParticleA);
 	assignMaterialtoMesh(meshManager->meshList[GEO_TESTPARTICLE_SPHERICAL], testParticleB);
+	assignMaterialtoMesh(meshManager->meshList[GEO_MINIMAPBOX], MiniMapBox);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)
