@@ -18,6 +18,7 @@
 #include "ObjectPoolSystem.h"
 #include "ControllerSystem.h"
 #include "QuadTreeSystem.h"
+#include "IntroTextSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -64,5 +65,6 @@ class SceneIntro : public Scene
 	std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
 	std::shared_ptr<ControllerSystem> controllersystem;
 	std::shared_ptr<QuadTreeSystem> quadtreesystem;
+	std::shared_ptr<IntroTextSystem> introtextsystem;
 };
 

@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "SceneTest.h"
+#include "SceneIntro.h"
 #include "SceneCombat.h"
 #include "SceneMenu.h"
 
@@ -7,7 +8,7 @@ SceneManager::SceneManager()
 {
 	sceneList[SCENE_TEST] = new SceneTest;
 	sceneList[SCENE_COMBAT] = new SceneCombat;
-	sceneList[SCENE_MENU] = new SceneMenu;
+	sceneList[SCENE_INTRO] = new SceneIntro;
 	scene = nullptr;
 	swap = false;
 }
