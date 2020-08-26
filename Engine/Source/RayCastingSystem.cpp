@@ -396,10 +396,13 @@ void RayCastingSystem::unitSelection()
                 unitlimit = 10;
                 break;
             }
-            if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ && entitystate.active && unit.unitFaction == Unit::PLAYER)
+            if (unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE)
             {
-                unitlimit--;
-                selectedunitlist.push_back(entity2);
+                if (transform.position.x > minX && transform.position.x < maxX && transform.position.z > minZ && transform.position.z < maxZ && entitystate.active && unit.unitFaction == Unit::PLAYER)
+                {
+                    unitlimit--;
+                    selectedunitlist.push_back(entity2);
+                }
             }
         }
     }

@@ -741,33 +741,6 @@ void SceneCombat::InitUnit()
 	unitsystem->CreateUnit(Unit::UnitType::LAB, Unit::UnitFaction::ENEMY, 1, Transform(glm::vec3(-100, 30, -130), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
 	unitsystem->CreateUnit(Unit::UnitType::GENERATOR1, Unit::UnitFaction::PLAYER, 1, Transform(glm::vec3(100, 30, 100), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
 	unitsystem->CreateUnit(Unit::UnitType::GENERATOR1, Unit::UnitFaction::ENEMY, 1, Transform(glm::vec3(-100, 30, -100), glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
-
-
-
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	Entity myObject3;
-	//	myObject3 = coordinator.CreateEntity();
-	//	coordinator.AddComponent<Transform>(myObject3, Transform());
-	//	coordinator.GetComponent<Transform>(myObject3).position = glm::vec3(0 + i * 20, 20, 0);
-	//	coordinator.GetComponent<Transform>(myObject3).scale = glm::vec3(10, 10, 10);
-	//	coordinator.AddComponent<RenderData>(myObject3, RenderData(renderer.getMesh(GEO_CUBE), false));
-	//	coordinator.AddComponent<Collider>(myObject3, Collider(glm::vec3(10, 10, 10), 1));
-	//	if (i == 0)
-	//	{
-	//		coordinator.AddComponent<Unit>(myObject3, Unit("NEXUS", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::NEXUS, 0));
-	//		// Player
-	//		coordinator.AddComponent<Controller>(myObject3, Controller(Controller::PLAYER));
-	//	}
-	//	else if (i == 1)
-	//		coordinator.AddComponent<Unit>(myObject3, Unit("LAB", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::LAB, 0));
-	//	else if (i == 2)
-	//		coordinator.AddComponent<Unit>(myObject3, Unit("GENERATOR1", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::GENERATOR1, 0));
-	//	else if (i == 3)
-	//		coordinator.AddComponent<Unit>(myObject3, Unit("GENERATOR2", 1 + i, 1 + i, 1 + i, 1 + i, 1 + i, Unit::GENERATOR2, 0));
-
-	//	coordinator.AddComponent<EntityState>(myObject3, EntityState(true));
-	//}
 }
 
 void SceneCombat::InitPoolPrefab()
@@ -830,9 +803,9 @@ void SceneCombat::InitController()
 	{
 		Entity controller = coordinator.CreateEntity();
 		if (i == 0)
-			coordinator.AddComponent<Controller>(controller, Controller(Controller::PLAYER, glm::vec3(130, 30, 130)));
+			coordinator.AddComponent<Controller>(controller, Controller(Controller::PLAYER, glm::vec3(160, 30, 160)));
 		else if (i == 1)
-			coordinator.AddComponent<Controller>(controller, Controller(Controller::ENEMY, glm::vec3(-130, 30, -130)));
+			coordinator.AddComponent<Controller>(controller, Controller(Controller::ENEMY, glm::vec3(-160, 30, -160)));
 		coordinator.AddComponent<EntityState>(controller, EntityState());
 	}
 }

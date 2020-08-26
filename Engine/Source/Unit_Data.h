@@ -203,7 +203,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 10, 3);
+		glm::vec3 collisionScale = glm::vec3(10, 20, 12);
 
 		name = unitName;
 		level = unitLevel;
@@ -259,7 +259,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(20, 16, 20);
 
 		name = unitName;
 		level = unitLevel;
@@ -315,7 +315,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(33, 23, 33);
 
 		name = unitName;
 		level = unitLevel;
@@ -371,7 +371,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(21, 24, 21);
 
 		name = unitName;
 		level = unitLevel;
@@ -427,7 +427,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(50, 50, 50);
+		glm::vec3 collisionScale = glm::vec3(21, 16, 21);
 
 		name = unitName;
 		level = unitLevel;
@@ -483,7 +483,7 @@ public:
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 1.0;
 		float unitMass = -1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(19, 10, 19);
 
 		name = unitName;
 		level = unitLevel;
