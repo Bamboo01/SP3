@@ -339,42 +339,42 @@ void RayCastingSystem::callRayCollision()
             ray.RayEndPos += ray.Ray * 3.f;
         }
 
-        if (
-            fabs(ray.RayEndPos.x) > quadTreeSystem->rootHalfWidth ||
-            fabs(ray.RayEndPos.z) > quadTreeSystem->rootHalfHeight
-            )
-        {
-            return;
-        }
+        //if (
+        //    fabs(ray.RayEndPos.x) > quadTreeSystem->rootHalfWidth ||
+        //    fabs(ray.RayEndPos.z) > quadTreeSystem->rootHalfHeight
+        //    )
+        //{
+        //    return;
+        //}
 
-        if (quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->quadType == QUAD_TYPE::ROOT)
-        {
-            entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos));
-        }
-        else
-        {
-            entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->parent);
-        }
+        //if (quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->quadType == QUAD_TYPE::ROOT)
+        //{
+        //    entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos));
+        //}
+        //else
+        //{
+        //    entitiesInQuadVector = quadTreeSystem->GetEntityInQuad(quadTreeSystem->GetNearbyEntityQuad(ray.RayEndPos)->parent);
+        //}
 
-        if (entitiesInQuadVector.size() <= 1)
-            continue;
+        //if (entitiesInQuadVector.size() <= 1)
+        //    continue;
 
-        for (int j = 0; j < entitiesInQuadVector.size(); j++)
-        {
-            Entity tmp = entitiesInQuadVector[j];
+        //for (int j = 0; j < entitiesInQuadVector.size(); j++)
+        //{
+        //    Entity tmp = entitiesInQuadVector[j];
 
-            if (tmp == entity)
-                continue;
+        //    if (tmp == entity)
+        //        continue;
 
-            auto& ObjectTransform = coordinator.GetComponent<Transform>(tmp);
-            auto& ObjectEntityState = coordinator.GetComponent<EntityState>(tmp);
-            if (raycollisioncheck(entity, tmp) && ObjectEntityState.active)
-            {
-                //std::cout << "Ray collided with object!" << std::endl;
-                break;
-            }
+        //    auto& ObjectTransform = coordinator.GetComponent<Transform>(tmp);
+        //    auto& ObjectEntityState = coordinator.GetComponent<EntityState>(tmp);
+        //    if (raycollisioncheck(entity, tmp) && ObjectEntityState.active)
+        //    {
+        //        //std::cout << "Ray collided with object!" << std::endl;
+        //        break;
+        //    }
 
-        }
+        //}
     }
 }
 

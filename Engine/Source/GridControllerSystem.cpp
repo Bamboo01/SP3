@@ -543,7 +543,8 @@ void GridControllerSystem::UpdateUnitPosition()
 							//direction.z = temp;
 							distance = GridPosition[dX][dY] - transform.position + distance;
 							glm::vec3 direction = glm::normalize(distance);
-							unit.velocity = 1.3f * direction;
+							transform.rotation.y = Math::RadianToDegree(atan2f(direction.x, direction.z)) - 90;
+							unit.velocity = 0.6f * direction;
 							unit.velocity.y = 0;
 						/*	std::cout << GridCost[dX][dY] << std::endl;
 							std::cout << GridPosition[dX][dY].x << ", " << GridPosition[dX][dY].z << std::endl;

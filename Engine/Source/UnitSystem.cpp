@@ -60,6 +60,9 @@ void UnitSystem::Update(double dt)
         case Unit::RANGE:
             FetchNearbyTargetWithinRange(entity);
             break;
+		case Unit::TOWER:
+			FetchNearbyTargetWithinRange(entity);
+			break;
         case Unit::PROJECTILE:
             UpdateProjectile(entity);
             break;
@@ -68,7 +71,7 @@ void UnitSystem::Update(double dt)
             break;
         }
 
-        if (unit.target != UINT_MAX && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE)
+        if (unit.target != UINT_MAX && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE && unit.velocity != glm::vec3(0, 0, 0))
         {
             ApplyAttack(entity, unit.target);
         }
@@ -157,7 +160,7 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
     {
         distanceWithCurrentTarget = glm::length(transform.position - currentTargetTransform.position);
 
-        if (distanceWithCurrentTarget > unit.attackRange) // Clear target if current target is too far away from auto attacking range
+        if (distanceWithCurrentTarget > unit.attackRange + currentTargetUnit.colliderScale.x / 1.5) // Clear target if current target is too far away from auto attacking range
             unit.target = UINT_MAX;
     }
 
@@ -174,7 +177,7 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
         {
             float distanceFromLoopedUnit = glm::length(transform.position - otherTransform.position);
 
-            if ((unit.target == UINT_MAX && distanceFromLoopedUnit <= unit.attackRange) || (unit.target != UINT_MAX && distanceFromLoopedUnit < distanceWithCurrentTarget)) // If number here is still a raw float, please change it and implement the length with float attackRange! 
+            if ((unit.target == UINT_MAX && distanceFromLoopedUnit <= unit.attackRange + otherUnit.colliderScale.x / 1.5) || (unit.target != UINT_MAX && distanceFromLoopedUnit < distanceWithCurrentTarget)) // If number here is still a raw float, please change it and implement the length with float attackRange! 
             {
                 unit.target = entity;
                 auto& newTargetTransform = coordinator.GetComponent<Transform>(unit.target);
@@ -349,7 +352,7 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
             UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_ENEMY);
         }
 
-        UnitTransform = Transform(originTransform.position + originTransform.AxisZ, glm::vec3(0.5, 0.5, 0.5), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
+        UnitTransform = Transform(originTransform.position + originTransform.AxisZ, glm::vec3(0.25, 0.25, 0.25), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
     }
     else if (originUnit.unitType == Unit::TOWER)
     {
@@ -368,7 +371,7 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
             UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_ENEMY);
         }
 
-        UnitTransform = Transform(originTransform.position + originTransform.AxisZ, glm::vec3(0.1, 0.1, 0.1), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
+        UnitTransform = Transform(originTransform.position + originTransform.scale.y / 2, glm::vec3(0.25, 0.25, 0.25), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
     }
     else
     {
@@ -438,9 +441,15 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
             attackerUnit.delay = d_elapsedTime + (1.0 / attackerUnit.attackSpeed);
         }
 
-        if (attackerUnit.unitType == Unit::RANGE)
+        if (attackerUnit.unitType == Unit::RANGE || attackerUnit.unitType == Unit::TOWER)
         {
             CreateProjectile(attacker, receiver);
+        }
+
+        if (attackerUnit.unitType != Unit::TOWER)
+        {
+            glm::vec3 dir = glm::normalize(attackerTransform.position - receiverTransform.position);
+            attackerTransform.rotation.y = Math::RadianToDegree(atan2f(dir.x, dir.z)) - 90;
         }
 
         attackerUnit.delay = d_elapsedTime + (1.0 / attackerUnit.attackSpeed); // Adds in the resultant delay after inclusion of attackSpeed
@@ -469,7 +478,7 @@ void UnitSystem::UpdateProjectile(Entity projectile)
     if (UnitData.unitType == Unit::PROJECTILE)
     {
         glm::vec3 projectileDirection = glm::normalize(TargetTransform.position - UnitTransform.position);
-        float projectileSpeed = 1.f; // Can create a variable for this under unit
+        float projectileSpeed = 0.7f; // Can create a variable for this under unit
 
         UnitTransform.position += projectileDirection * projectileSpeed;
     }

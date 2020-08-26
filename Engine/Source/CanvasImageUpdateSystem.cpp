@@ -319,7 +319,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						{
 							std::cout << "Normal unit created" << std::endl;
 							controller.resource1 -= controller.normalunitcost;
-							//unitsystem->CreateUnit(Unit::NORMAL, Unit::PLAYER, controller.normalunitlevel,
+							unitsystem->CreateUnit(Unit::NORMAL, Unit::PLAYER, controller.normalunitlevel, Transform(glm::vec3(130, 0, 150), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSTANKUNIT)
@@ -329,6 +329,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						{
 							std::cout << "Tank unit created" << std::endl;
 							controller.resource1 -= controller.tankunitcost;
+							unitsystem->CreateUnit(Unit::TANK, Unit::PLAYER, controller.tankunitlevel, Transform(glm::vec3(130, 0, 150), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT)
@@ -338,6 +339,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 							// Add code to spawn range unit (Check whether is there enough resources)
 							std::cout << "Range unit created" << std::endl;
 							controller.resource1 -= controller.rangeunitcost;
+							unitsystem->CreateUnit(Unit::RANGE, Unit::PLAYER, controller.rangeunitlevel, Transform(glm::vec3(130, 0, 150), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSBUILDING)
@@ -579,7 +581,7 @@ bool CanvasImageUpdateSystem::CollideWithCanvas(float x, float y, float xscale, 
 
 	double mousex, mousey;
 	Application::GetCursorPos(&mousex, &mousey);
-	if (mousex > bottomleftx && mousex < toprightx && mousey > bottomlefty && mousey < toprighty)
+	if (mousex > bottomleftx&& mousex < toprightx && mousey > bottomlefty&& mousey < toprighty)
 		return true;
 	return false;
 }

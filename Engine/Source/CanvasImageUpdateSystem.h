@@ -53,7 +53,7 @@ private:
 
     std::vector<Entity> selectedunitList;
 
-    std::set<Entity> *controllerentity;
+    std::set<Entity>* controllerentity;
 
     std::shared_ptr<UnitSystem> unitsystem;
 
