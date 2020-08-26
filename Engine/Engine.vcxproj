@@ -221,6 +221,7 @@
     <ClInclude Include="Source\MenuNexusSystem.h" />
     <ClInclude Include="Source\MenuUnit.h" />
     <ClInclude Include="Source\MenuUnitSystem.h" />
+    <ClInclude Include="Source\PlacingShader.h" />
     <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\SceneMenu.h" />
     <ClInclude Include="Source\SceneCombat.h" />

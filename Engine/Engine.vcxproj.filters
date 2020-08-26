@@ -436,6 +436,9 @@
     <ClInclude Include="Source\IntroTextSystem.h">
       <Filter>Auxillary\Systems\IntroScrollSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\PlacingShader.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
