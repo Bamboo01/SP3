@@ -213,12 +213,16 @@ void Application::Run()
 	//Initialise sounds
 	CSoundController* cSoundController = CSoundController::GetInstance();
 	cSoundController->Init();
+	cSoundController->LoadSound("Sounds/keypress.ogg", 1);
+	cSoundController->LoadSound("Sounds/Intro.ogg", 2);
+	cSoundController->LoadSound("Sounds/IntroComplete.ogg", 3);
+	cSoundController->LoadSound("Sounds/Glitch.ogg", 4);
 
 	//Main Loop
 	Scene* scene = nullptr;
 	SceneManager* scenemanager = SceneManager::getInstance();
 	scenemanager->Init(&scene);
-	scenemanager->ChangeScene(SCENE_COMBAT);
+	scenemanager->ChangeScene(SCENE_INTRO);
 	scenemanager->Update();
 
 	const char* glsl_version = "#version 330";
@@ -234,7 +238,7 @@ void Application::Run()
 	// ImGui Init
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-	while ((!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE)))
+	while ((!glfwWindowShouldClose(m_window)))
 	{
 		if (exitProgram == true)
 		{

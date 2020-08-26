@@ -365,7 +365,7 @@ void Renderer::RenderCanvas()
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 	textshader->UseShader();
 	for (auto& canvastext : CanvasText)
 	{
