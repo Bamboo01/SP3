@@ -160,12 +160,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\IntroTextSystem.cpp" />
     <ClCompile Include="Source\MenuCamera.cpp" />
     <ClCompile Include="Source\MenuCameraSystem.cpp" />
     <ClCompile Include="Source\MenuGUISystem.cpp" />
     <ClCompile Include="Source\MenuNexusSystem.cpp" />
     <ClCompile Include="Source\MenuUnitSystem.cpp" />
-    <ClCompile Include="Source\SceneIntro.cpp" />
     <ClCompile Include="Source\SceneMenu.cpp" />
     <ClCompile Include="Source\SceneCombat.cpp" />
     <ClCompile Include="Source\ControllerSystem.cpp" />
@@ -214,6 +214,7 @@
     <ClCompile Include="Source\TerrainSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\IntroTextSystem.h" />
     <ClInclude Include="Source\MenuGUI.h" />
     <ClInclude Include="Source\MenuCameraSystem.h" />
     <ClInclude Include="Source\MenuGUISystem.h" />
@@ -258,7 +259,6 @@
     <ClInclude Include="Source\QuadTreeSystem.h" />
     <ClInclude Include="Source\RayCasting.h" />
     <ClInclude Include="Source\RayCastingSystem.h" />
-    <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\ScreenQuadShader.h" />
     <ClInclude Include="Source\CameraController.h" />
     <ClInclude Include="Source\CameraControllerSystem.h" />
