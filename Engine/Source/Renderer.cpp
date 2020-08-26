@@ -124,6 +124,14 @@ void Renderer::Init()
 	enemyMaterial->AssignTexture("Images//enemy.tga");
 	materialManager.push_back(enemyMaterial);
 
+	Material* playerProjectile = new Material();
+	playerProjectile->kColor = glm::vec3(1, 0, 0);
+	materialManager.push_back(playerProjectile);
+	
+	Material* enemyProjectile = new Material();
+	enemyProjectile->kColor = glm::vec3(0, 0, 1);
+	materialManager.push_back(enemyProjectile);
+
 	//Material* playerMaterial = new Material();
 	//playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
 	//playerMaterial->AssignTexture("Images//player.tga");
@@ -135,6 +143,7 @@ void Renderer::Init()
 	//addMaterial(playerMaterial);
 	addMaterial(testParticleA, billboard_Cylindrical);
 	addMaterial(testParticleB, billboard_Spherical);
+
 
 	addMaterial(playerMaterial);
 	addMaterial(enemyMaterial);
@@ -154,7 +163,8 @@ void Renderer::Init()
 	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_GENERATOR2_PLAYER], playerMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_WALL_PLAYER], playerMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_LAB_PLAYER], playerMaterial);
-	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_PLAYER], playerMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_PLAYER], playerProjectile);
+	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_MELEE_PLAYER], playerProjectile);
 
 	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_NORMAL_ENEMY], enemyMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_RANGE_ENEMY], enemyMaterial);
@@ -165,7 +175,8 @@ void Renderer::Init()
 	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_GENERATOR2_ENEMY], enemyMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_WALL_ENEMY], enemyMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_LAB_ENEMY], enemyMaterial);
-	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_ENEMY], enemyMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_ENEMY], playerProjectile);
+	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_MELEE_ENEMY], enemyMaterial);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)

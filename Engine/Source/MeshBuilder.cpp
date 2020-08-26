@@ -677,17 +677,17 @@ Mesh* MeshBuilder::GenerateSkyDome(const std::string& meshName, Color color, uns
 	return mesh;
 }
 
-Mesh* MeshBuilder::GenerateLine(const std::string& meshName)
+Mesh* MeshBuilder::GenerateLine(const std::string& meshName, Color color)
 {
 	Vertex v;
 	std::vector<Vertex> vertex_buffer_data;
 	std::vector<GLuint> index_buffer_data;
 
-	v.pos.Set(0, 0, -0.5f);
-	v.color = Color(1, 1, 1);
+	v.pos.Set(-0.5f, 0, 0);
+	v.color = color;
 	vertex_buffer_data.push_back(v);
-	v.pos.Set(0, 0, 0.5f);
-	v.color = Color(1, 1, 1);
+	v.pos.Set(0.5f, 0, 0);
+	v.color = color;
 	vertex_buffer_data.push_back(v);
 
 	index_buffer_data.push_back(0);

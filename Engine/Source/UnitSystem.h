@@ -1,6 +1,7 @@
 #include "System.h"
 #include "Unit.h"
 #include "Collider.h"
+#include "TerrainData.h"
 #include "Transform.h"
 #include "Coordinator.h"
 #include "RenderData.h"
@@ -16,8 +17,10 @@ class UnitSystem : public System
 {
 public:
     virtual void Setup();
-    virtual void Init();
+    virtual void Init(std::set<Entity> terrainEntity);
     virtual void Update(double dt);
+
+    void UpdateUnitToTerrain(Entity entity);
 
     void SetObjectPoolSystem(std::shared_ptr<ObjectPoolSystem> ptr);
     void SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> ptr);
@@ -31,8 +34,10 @@ public:
 
     void ApplyAttack(Entity attacker, Entity receiver);
     void UpdateProjectile(Entity projectile);
+
 private:
     double d_elapsedTime;
+    std::set<Entity> terrainEntity;
     std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
     std::shared_ptr<QuadTreeSystem> quadtreesystem;
 };

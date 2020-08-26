@@ -19,6 +19,7 @@ struct Unit
 		GENERATOR2 = 8,		// Generate resources for player
 		LAB = 9,			// Level units up
 		PROJECTILE = 10,
+		MELEE_PROJECTILE = 11,
 		NUM_TYPE
 	};
 

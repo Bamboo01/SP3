@@ -35,7 +35,7 @@ void ColliderSystem::Update(double dt)
             auto& ObjectUnit2 = coordinator.GetComponent<Unit>(tmp);
             auto& ObjectEntityState2 = coordinator.GetComponent<EntityState>(tmp);
 
-            if ((!ObjectEntityState.active) || (!ObjectEntityState2.active) || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction && ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE))
+            if ((!ObjectEntityState.active) || (!ObjectEntityState2.active) || (ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitFaction == ObjectUnit2.unitFaction && ObjectUnit.unitType == Unit::PROJECTILE && ObjectUnit2.unitType == Unit::PROJECTILE) || (ObjectUnit.unitType == Unit::MELEE_PROJECTILE) || (ObjectUnit2.unitType == Unit::MELEE_PROJECTILE))
                 continue;
 
             if (glm::length(ObjectTransform.position - ObjectTransform2.position) <= 100)
