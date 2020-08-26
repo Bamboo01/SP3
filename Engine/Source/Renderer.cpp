@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "Application.h"
 #include <glm.hpp>
+#include "PlacingShader.h"
 #include <gtc/type_ptr.hpp>
 #include <gtc/matrix_transform.hpp>
 
@@ -49,6 +50,11 @@ Material* Renderer::getMaterial(GEO_TYPE type)
 	return MeshtoMaterial[getMesh(type)];
 }
 
+Shader* Renderer::getShader(Material* material)
+{
+	return MaterialtoShader[material];
+}
+
 void Renderer::Init()
 {
 	addMaterial(new Material, new Shader("Shader///basic.vs", "Shader//basic.fs"));
@@ -87,6 +93,9 @@ void Renderer::Init()
 	Shader* billboard_Spherical = new Shader("Shader//sphericalbillboard.vs", "Shader//sphericalbillboard.fs");
 	shaderManager.push_back(billboard_Spherical);
 
+	Shader* placing = new PlacingShader("Shader//placing.vs", "Shader//placing.fs");
+	shaderManager.push_back(placing);
+
 	/*Add your materials*/
 	Material* boxmat = new Material();
 	boxmat->kColor = glm::vec3(0.1f, 1.f, 1.f);
@@ -124,6 +133,10 @@ void Renderer::Init()
 	enemyMaterial->AssignTexture("Images//enemy.tga");
 	materialManager.push_back(enemyMaterial);
 
+	Material* placingMaterial = new Material();
+	placingMaterial->AssignTexture("Images//player.tga");
+	materialManager.push_back(placingMaterial);
+
 	//Material* playerMaterial = new Material();
 	//playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
 	//playerMaterial->AssignTexture("Images//player.tga");
@@ -138,6 +151,7 @@ void Renderer::Init()
 
 	addMaterial(playerMaterial);
 	addMaterial(enemyMaterial);
+	addMaterial(placingMaterial, placing);
 
 	/*Assign your meshes their materials here*/
 	//assignMaterialtoMesh(meshManager->meshList[GEO_CUBE], boxmat);
@@ -166,6 +180,11 @@ void Renderer::Init()
 	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_WALL_ENEMY], enemyMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_LAB_ENEMY], enemyMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_ENEMY], enemyMaterial);
+
+	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_WALL_PLAYER], placingMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_TOWER_PLAYER], placingMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_GENERATOR1_PLAYER], placingMaterial);
+	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_GENERATOR2_PLAYER], placingMaterial);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)

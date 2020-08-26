@@ -385,6 +385,9 @@
     <ClInclude Include="Source\SceneCombat.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\PlacingShader.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">

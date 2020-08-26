@@ -70,6 +70,7 @@ void SceneCombat::Init()
 	InitGUIText();
 	InitPoolPrefab();
 	InitCanvasGUI();
+	InitController();
 
 	// Initialising of all System
 	camerasystem->Init();
@@ -89,6 +90,7 @@ void SceneCombat::Init()
 	raycastingsystem->SetTerrainEntities(terrainsystem->m_Entities);
 	raycastingsystem->SetQuadTreeSystem(quadtreesystem);
 	raycastingsystem->SetUnitSystem(unitsystem);
+	raycastingsystem->SetColliderSystem(collidersystem);
 	particlesystem->Init();
 	objectpoolsystem->Init();
 	quadtreesystem->Init();
@@ -145,14 +147,16 @@ void SceneCombat::Update(double dt)
 	raycastingsystem->GetCursorInGUI(canvasimageupdatesystem->CursorinGUI);
 	raycastingsystem->selectedbuilding = canvasimageupdatesystem->selectedbuilding;
 	raycastingsystem->buildingclickdelay = canvasimageupdatesystem->buildingclickdelay;
+	raycastingsystem->createonce = canvasimageupdatesystem->createonce;
 
 	particlesystem->Update(dt);
 	objectpoolsystem->Update(dt);
 	quadtreesystem->SetUnitSystemEntities(unitsystem->m_Entities);
 	quadtreesystem->Update(dt);
-	collidersystem->Update(dt);
 	raycastingsystem->Update(dt);
+	collidersystem->Update(dt);
 	canvasimageupdatesystem->selectedbuilding = raycastingsystem->selectedbuilding;
+	canvasimageupdatesystem->createonce = raycastingsystem->createonce;
 }
 
 void SceneCombat::LateUpdate(double dt)
@@ -215,7 +219,7 @@ void SceneCombat::InitGUIText()
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
 		if (i == 0)
 		{
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("Resources" + std::to_string(i + 1) + ": ", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("Resources" + std::to_string(i + 1) + ": ", ALIGN_LEFT, glm::vec3(0.5, 0, 1)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::RESOURCES1));
 		}
 		else if (i == 1)
@@ -388,19 +392,19 @@ void SceneCombat::InitGUIText()
 		if (i == 0)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-1.2f, 0.4, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0.5, 0, 1)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::NORMALUNITCOST));
 		}
 		else if (i == 1)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.8f, 0.4, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0.5, 0, 1)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::RANGEUNITCOST));
 		}
 		else if (i == 2)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.4f, 0.4, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0.5, 0, 1)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::TANKUNITCOST));
 		}
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
@@ -414,19 +418,19 @@ void SceneCombat::InitGUIText()
 		if (i == 0)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-1.2f, 0.3, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0, 1, 0)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::NORMALUNITCOST2));
 		}
 		else if (i == 1)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.8f, 0.3, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0, 1, 0)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::RANGEUNITCOST2));
 		}
 		else if (i == 2)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.4f, 0.3, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0, 1, 0)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::TANKUNITCOST2));
 		}
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
@@ -495,25 +499,25 @@ void SceneCombat::InitGUIText()
 		if (i == 0)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-1.15f, 0.4, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0.5, 0, 1)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::TOWERCOST));
 		}
 		else if (i == 1)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.75f, 0.4, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0.5, 0, 1)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::WALLCOST));
 		}
 		else if (i == 2)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-0.4f, 0.4, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0.5, 0, 1)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::GENERATOR1COST));
 		}
 		else if (i == 3)
 		{
 			coordinator.GetComponent<Transform>(UIText).position = glm::vec3(-1.12f, -0.31, 0);
-			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT));
+			coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_LEFT, glm::vec3(0.5, 0, 1)));
 			coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::GENERATOR2COST));
 		}
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
@@ -818,6 +822,19 @@ void SceneCombat::InitTerrain()
 	coordinator.GetComponent<Transform>(terrain).scale = glm::vec3(400, 35, 400);
 	coordinator.AddComponent<TerrainData>(terrain, TerrainData(GEO_TERRAIN));
 	coordinator.AddComponent<EntityState>(terrain, EntityState());
+}
+
+void SceneCombat::InitController()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		Entity controller = coordinator.CreateEntity();
+		if (i == 0)
+			coordinator.AddComponent<Controller>(controller, Controller(Controller::PLAYER, glm::vec3(130, 30, 130)));
+		else if (i == 1)
+			coordinator.AddComponent<Controller>(controller, Controller(Controller::ENEMY, glm::vec3(-130, 30, -130)));
+		coordinator.AddComponent<EntityState>(controller, EntityState());
+	}
 }
 
 void SceneCombat::UpdateImGui()

@@ -48,6 +48,7 @@ class SceneCombat : public Scene
 	void InitPoolPrefab();
 	void InitMainCamera();
 	void InitTerrain();
+	void InitController();
 
 	void UpdateImGui();
 	void UpdateImGuiRaycast();

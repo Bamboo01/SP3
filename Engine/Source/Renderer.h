@@ -52,6 +52,7 @@ public:
 	Mesh* getMesh(GEO_TYPE type);
 	Material* getMaterial(Mesh* mesh);
 	Material* getMaterial(GEO_TYPE type);
+	Shader* getShader(Material* material);
 
 	void Init();
 	void Update(float dt);

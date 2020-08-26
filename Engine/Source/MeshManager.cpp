@@ -15,10 +15,10 @@ MeshManager::MeshManager()
 
 	//Initialise your meshes here
 
-	meshList[GEO_AXES] =  MeshBuilder::GenerateAxes("reference");
+	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference");
 	meshList[GEO_AXES]->Init();
 
-	meshList[GEO_CUBE] =  MeshBuilder::GenerateCube("cube", Color(1.f, 1.f, 1.f), 1.f);
+	meshList[GEO_CUBE] = MeshBuilder::GenerateCube("cube", Color(1.f, 1.f, 1.f), 1.f);
 	meshList[GEO_CUBE]->Init(50000);
 	meshList[GEO_GRID] = MeshBuilder::GenerateCube("grid", Color(1.f, 1.f, 1.f), 1.f);
 	meshList[GEO_GRID]->Init(5000);
@@ -33,7 +33,7 @@ MeshManager::MeshManager()
 	meshList[GEO_TERRAIN] = CreateTerrain(GEO_TERRAIN, "Heightmaps//heightmap.raw");
 	meshList[GEO_TERRAIN]->Init();
 
-	meshList[GEO_TESTPARTICLE_CYLINDRICAL] = MeshBuilder::GenerateQuad("ParticleA", Color(1,1,1), 1);
+	meshList[GEO_TESTPARTICLE_CYLINDRICAL] = MeshBuilder::GenerateQuad("ParticleA", Color(1, 1, 1), 1);
 	meshList[GEO_TESTPARTICLE_CYLINDRICAL]->Init(100000);
 
 	meshList[GEO_TESTPARTICLE_SPHERICAL] = MeshBuilder::GenerateQuad("ParticleB", Color(1, 1, 1), 1);
@@ -56,7 +56,7 @@ MeshManager::MeshManager()
 
 	meshList[GEO_UNIT_GENERATOR1_PLAYER] = MeshBuilder::GenerateOBJ("Generator1 Unit", "OBJ//generator1.obj");
 	meshList[GEO_UNIT_GENERATOR1_PLAYER]->Init();
-	
+
 	meshList[GEO_UNIT_GENERATOR2_PLAYER] = MeshBuilder::GenerateOBJ("Generator2 Unit", "OBJ//generator2.obj");
 	meshList[GEO_UNIT_GENERATOR2_PLAYER]->Init();
 
@@ -98,6 +98,18 @@ MeshManager::MeshManager()
 
 	meshList[GEO_PROJECTILE_ENEMY] = MeshBuilder::GenerateOBJ("Projectile Unit", "OBJ//projectile.obj");
 	meshList[GEO_PROJECTILE_ENEMY]->Init();
+
+	meshList[GEO_INRANGE_WALL_PLAYER] = MeshBuilder::GenerateOBJ("Inrange gen1", "OBJ//wall.obj");
+	meshList[GEO_INRANGE_WALL_PLAYER]->Init();
+
+	meshList[GEO_INRANGE_GENERATOR1_PLAYER] = MeshBuilder::GenerateOBJ("Inrange gen2", "OBJ//generator1.obj");
+	meshList[GEO_INRANGE_GENERATOR1_PLAYER]->Init();
+
+	meshList[GEO_INRANGE_GENERATOR2_PLAYER] = MeshBuilder::GenerateOBJ("Inrange wall", "OBJ//generator2.obj");
+	meshList[GEO_INRANGE_GENERATOR2_PLAYER]->Init();
+
+	meshList[GEO_INRANGE_TOWER_PLAYER] = MeshBuilder::GenerateOBJ("Inrange wall", "OBJ//tower.obj");
+	meshList[GEO_INRANGE_TOWER_PLAYER]->Init();
 
 	for (int i = 0; i < NUM_MESH; i++)
 	{

@@ -35,6 +35,7 @@ public:
 
     int selectedbuilding; // 0 = None, 1 = tower, 2 = wall, 3 = gen1, 4 = gen4;
     double buildingclickdelay;
+    bool createonce;
 
 private:
 

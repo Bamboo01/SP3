@@ -42,7 +42,7 @@ void ColliderSystem::Update(double dt)
             {
                 if (collisionCheck(firstObject, tmp))
                 {
-                    //std::cout << "ColliderSystem: Collision Detected" << std::endl;
+                    std::cout << "ColliderSystem: Collision Detected" << std::endl;
 
                     if (ObjectUnit.unitType == Unit::PROJECTILE)
                     {
@@ -147,7 +147,7 @@ void ColliderSystem::Setup()
 
 void ColliderSystem::Init()
 {
-
+    isBuildingPlaced = false;
 }
 
 bool ColliderSystem::collisionCheck(Entity object1, Entity object2)
@@ -253,6 +253,7 @@ void ColliderSystem::collisionResponse(Entity object1, Entity object2)
     translationalVector2 = translationalVector * glm::vec3(-1, -1, -1);
 
     // If mass == -1, it is a static object. No displacement happens
+   
 
     if (ObjectCollider.mass != -1)
         ObjectTransform.position += translationalVector * (1 / ObjectCollider.mass);

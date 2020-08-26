@@ -11,6 +11,8 @@
 #include "UnitSystem.h"
 #include "Controller.h"
 #include "Renderer.h"
+#include "ColliderSystem.h"
+
 extern Renderer renderer;
 extern Coordinator coordinator;
 
@@ -43,9 +45,11 @@ public:
 
     void SetUnitSystem(std::shared_ptr<UnitSystem> system);
     void SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> system);
+    void SetColliderSystem(std::shared_ptr<ColliderSystem> system);
 
     int selectedbuilding; // 0 = None, 1 = tower, 2 = wall, 3 = gen1, 4 = gen2
     double buildingclickdelay;
+    bool createonce;
 
 private:
     glm::vec2 getNormalizedDeviceCoords(double mousex, double mousey);
@@ -54,12 +58,14 @@ private:
     std::set<Entity> TerrainEntities;
 
     std::set<Entity> *colliderentitylist;
-    std::set<Entity>* controllerentitylist;
+    std::set<Entity> *controllerentitylist;
 
     glm::vec3 firstposclick;
     glm::vec3 secondposclick;
 
     bool CursorInGUI;
+
+    Entity newUnit;
 
     float maxX, minX;
     float maxZ, minZ;
@@ -70,4 +76,5 @@ private:
 
     std::shared_ptr<QuadTreeSystem> quadTreeSystem;
     std::shared_ptr<UnitSystem> unitsystem;
+    std::shared_ptr<ColliderSystem> collidersystem;
 };

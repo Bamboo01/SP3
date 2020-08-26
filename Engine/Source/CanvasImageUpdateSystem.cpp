@@ -37,6 +37,7 @@ void CanvasImageUpdateSystem::Init(std::set<Entity>* controllerentity)
 	increment = 0;
 	selectedbuilding = 0;
 	buildingclickdelay = 0;
+	createonce = false;
 	this->controllerentity = controllerentity;
 
 	nexustexture = LoadTGA("Images//nexus.tga");
@@ -347,6 +348,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 							controller.resource1 -= controller.towercost;
 							selectedbuilding = 1;
 							buildingclickdelay = timer + 0.4;
+							createonce = true;
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSWALL)
@@ -358,6 +360,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 							controller.resource1 -= controller.wallcost;
 							selectedbuilding = 2;
 							buildingclickdelay = timer + 0.4;
+							createonce = true;
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR1)
@@ -369,6 +372,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 							controller.resource1 -= controller.generator1cost;
 							selectedbuilding = 3;
 							buildingclickdelay = timer + 0.4;
+							createonce = true;
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
@@ -380,6 +384,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 							controller.resource1 -= controller.generator2cost;
 							selectedbuilding = 4;
 							buildingclickdelay = timer + 0.4;
+							createonce = true;
 						}
 					}
 				}

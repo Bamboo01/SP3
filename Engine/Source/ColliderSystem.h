@@ -25,6 +25,8 @@ public:
     void SetUnitSystem(std::shared_ptr<UnitSystem> unitSystem);
     void SetQuadTreeSystem(std::shared_ptr<QuadTreeSystem> quadTreeSystem);
 
+    bool isBuildingPlaced;
+
 private:
     std::shared_ptr<UnitSystem> unitSystem;
     std::shared_ptr<QuadTreeSystem> quadTreeSystem;
