@@ -319,6 +319,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						{
 							std::cout << "Normal unit created" << std::endl;
 							controller.resource1 -= controller.normalunitcost;
+							//unitsystem->CreateUnit(Unit::NORMAL, Unit::PLAYER, controller.normalunitlevel,
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSTANKUNIT)
@@ -546,6 +547,11 @@ void CanvasImageUpdateSystem::Render()
 void CanvasImageUpdateSystem::SetSelectedUnitList(std::vector<Entity> selectedunitList)
 {
 	this->selectedunitList = selectedunitList;
+}
+
+void CanvasImageUpdateSystem::SetUnitSystem(std::shared_ptr<UnitSystem> system)
+{
+	unitsystem = system;
 }
 
 bool CanvasImageUpdateSystem::CollideWithCanvas(float x, float y, float xscale, float yscale)
