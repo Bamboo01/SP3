@@ -66,6 +66,11 @@ public:
 	void SetListenerDirection(const float x, const float y, const float z);
 
 	void SetSoundSourcePosition(const int ID, float x, float y, float z);
+	// Change max distance of a sound source
+	void ChangeSoundSourceMaxDistance(const int ID, float dist);
+
+	// Change max distance of a sound source
+	void ChangeSoundSourceMinDistance(const int ID, float dist);
 
 protected:
 	// Constructor
