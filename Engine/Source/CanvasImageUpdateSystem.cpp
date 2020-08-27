@@ -1,5 +1,6 @@
 #include "CanvasImageUpdateSystem.h"
 #include "Application.h"
+#include "SoundController.h"
 
 CanvasImageUpdateSystem::~CanvasImageUpdateSystem()
 {
@@ -50,6 +51,8 @@ void CanvasImageUpdateSystem::Init(std::set<Entity>* controllerentity)
 	rangeunittexture = LoadTGA("Images//range.tga");
 	tankunittexture = LoadTGA("Images//tank.tga");
 
+	cSoundController = CSoundController::GetInstance();
+
 	for (auto const& entity : m_Entities)
 	{
 		auto& transform = coordinator.GetComponent<Transform>(entity);
@@ -79,6 +82,11 @@ void CanvasImageUpdateSystem::Update(double dt)
 		// Check for clicking on clickable quad (Buttons)
 		if (canvasupdate.clicktype == CanvasImageUpdate::CLICKABLE && Application::IsMousePressed(0) && CollideWithCanvas(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y) && entitystate.active == true && clickdelay <= timer)
 		{
+			if (canvasupdate.buttontype == CanvasImageUpdate::GENERATOR1BUTTON || canvasupdate.buttontype == CanvasImageUpdate::GENERATOR2BUTTON)
+				cSoundController->PlaySoundByID(27);
+			else
+				cSoundController->PlaySoundByID(26);
+
 			clickdelay = timer + 0.2;
 			if (canvasupdate.buttontype == CanvasImageUpdate::LABBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEUNITBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON)
 			{

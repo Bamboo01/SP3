@@ -1,12 +1,18 @@
 #include "CameraControllerSystem.h"
 #include "gtc/constants.hpp"
 #include "Application.h"
+#include "SoundController.h"
 
 void CameraControllerSystem::Update(float dt)
 {
     for (auto const& entity : m_Entities)
     {
         auto& camera = coordinator.GetComponent<Camera>(entity);
+
+        CSoundController::GetInstance()->SetListenerPosition(camera.position.x, camera.position.y, camera.position.z);
+        CSoundController::GetInstance()->SetListenerDirection(camera.position.x - camera.target.x, camera.position.y - camera.target.y, camera.position.z - camera.target.z);
+        //CSoundController::GetInstance()->SetListenerDirection(camera.target.x, camera.target.y, camera.target.z);
+
         if (camera.type == CAMERA_MAIN)
         {
             if (glm::length(camera.position - camera.target) > 100.f && Application::mouse_scroll_y > 0)

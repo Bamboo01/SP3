@@ -8,6 +8,7 @@
 #include "Unit.h"
 #include "Controller.h"
 #include "UnitSystem.h"
+#include "SoundController.h"
 
 #ifndef CANVASIMAGEUPDATESYSTEM_H
 #define CANVASIMAGEUPDATESYSTEM_H
@@ -42,6 +43,8 @@ public:
 private:
 
     bool CollideWithCanvas(float x, float y, float xscale, float yscale);
+
+    CSoundController* cSoundController;
 
     double timer;
     double clickdelay;

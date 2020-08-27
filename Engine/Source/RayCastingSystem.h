@@ -12,6 +12,7 @@
 #include "Controller.h"
 #include "Renderer.h"
 #include "ColliderSystem.h"
+#include "SoundController.h"
 
 extern Renderer renderer;
 extern Coordinator coordinator;
@@ -31,6 +32,8 @@ public:
     void callRayCollision();
     
     void unitSelection();
+
+    void PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos);
 
     void SetTerrainEntities(std::set<Entity> terrain);
 
@@ -59,6 +62,8 @@ private:
 
     std::set<Entity> *colliderentitylist;
     std::set<Entity> *controllerentitylist;
+
+    CSoundController* cSoundController;
 
     glm::vec3 firstposclick;
     glm::vec3 secondposclick;
