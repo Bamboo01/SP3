@@ -25,6 +25,7 @@ void SceneCombat::Init()
 	coordinator.RegisterComponent<ParticleSystemParameters>();
 	coordinator.RegisterComponent<Controller>();
 	coordinator.RegisterComponent<Pool>();
+	coordinator.RegisterComponent<AIController>();
 
 	// Registering System to coordinator
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
@@ -45,6 +46,7 @@ void SceneCombat::Init()
 	particlesystem = coordinator.RegisterSystem<ParticleSystem>();
 	controllersystem = coordinator.RegisterSystem<ControllerSystem>();
 	quadtreesystem = coordinator.RegisterSystem<QuadTreeSystem>();
+	aicontrollersystem = coordinator.RegisterSystem<AIControllerSystem>();
 
 	transformsystem->Setup();
 	camerasystem->Setup();
@@ -64,6 +66,7 @@ void SceneCombat::Init()
 	objectpoolsystem->Setup();
 	controllersystem->Setup();
 	quadtreesystem->Setup();
+	aicontrollersystem->Setup();
 
 	InitMainCamera();
 	InitTerrain();
@@ -96,6 +99,7 @@ void SceneCombat::Init()
 	particlesystem->Init();
 	objectpoolsystem->Init();
 	quadtreesystem->Init();
+	aicontrollersystem->Init();
 
 	collidersystem->SetUnitSystem(unitsystem);
 	collidersystem->SetQuadTreeSystem(quadtreesystem);
@@ -830,15 +834,13 @@ void SceneCombat::InitTerrain()
 
 void SceneCombat::InitController()
 {
-	for (int i = 0; i < 2; ++i)
-	{
-		Entity controller = coordinator.CreateEntity();
-		if (i == 0)
-			coordinator.AddComponent<Controller>(controller, Controller(Controller::PLAYER, glm::vec3(160, 30, 160)));
-		else if (i == 1)
-			coordinator.AddComponent<Controller>(controller, Controller(Controller::ENEMY, glm::vec3(-160, 30, -160)));
-		coordinator.AddComponent<EntityState>(controller, EntityState());
-	}
+	Entity controller = coordinator.CreateEntity();
+	coordinator.AddComponent<Controller>(controller, Controller(Controller::PLAYER, glm::vec3(160, 30, 160)));
+	coordinator.AddComponent<EntityState>(controller, EntityState());
+
+	Entity enemycontroller = coordinator.CreateEntity();
+	coordinator.AddComponent<AIController>(enemycontroller, AIController(gridcontrollersystem, Controller::ENEMY, glm::vec3(-160, 30, -160), glm::vec3(160, 30, 160)));
+	coordinator.AddComponent<EntityState>(enemycontroller, EntityState());
 }
 
 void SceneCombat::InitMiniMap()

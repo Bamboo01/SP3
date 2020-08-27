@@ -18,6 +18,7 @@
 #include "ObjectPoolSystem.h"
 #include "ControllerSystem.h"
 #include "QuadTreeSystem.h"
+#include "AIControllerSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -79,5 +80,6 @@ class SceneCombat : public Scene
 	std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
 	std::shared_ptr<ControllerSystem> controllersystem;
 	std::shared_ptr<QuadTreeSystem> quadtreesystem;
+	std::shared_ptr<AIControllerSystem> aicontrollersystem;
 };
 

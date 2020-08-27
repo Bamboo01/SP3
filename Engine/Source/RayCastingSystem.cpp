@@ -6,11 +6,11 @@
 
 void RayCastingSystem::Setup()
 {
-	Signature signature;
-	signature.set(coordinator.GetComponentType<Camera>());
-	signature.set(coordinator.GetComponentType<RayCasting>());
-	signature.set(coordinator.GetComponentType<EntityState>());
-	coordinator.SetSystemSignature<RayCastingSystem>(signature);
+    Signature signature;
+    signature.set(coordinator.GetComponentType<Camera>());
+    signature.set(coordinator.GetComponentType<RayCasting>());
+    signature.set(coordinator.GetComponentType<EntityState>());
+    coordinator.SetSystemSignature<RayCastingSystem>(signature);
 }
 
 void RayCastingSystem::Init(std::set<Entity>* colliderentitylist, std::set<Entity>* controllerentitylist, Entity camera)
@@ -20,36 +20,36 @@ void RayCastingSystem::Init(std::set<Entity>* colliderentitylist, std::set<Entit
     buildingclickdelay = 0;
     timer = 0;
     createonce = false;
-	this->colliderentitylist = colliderentitylist;
+    this->colliderentitylist = colliderentitylist;
     this->controllerentitylist = controllerentitylist;
     cSoundController = CSoundController::GetInstance();
     this->camera = camera;
 
-	for (auto const& entity : m_Entities)
-	{
-		auto& camera = coordinator.GetComponent<Camera>(entity);
-		auto& ray = coordinator.GetComponent<RayCasting>(entity);
-		ray.Init(camera);
-	}
+    for (auto const& entity : m_Entities)
+    {
+        auto& camera = coordinator.GetComponent<Camera>(entity);
+        auto& ray = coordinator.GetComponent<RayCasting>(entity);
+        ray.Init(camera);
+    }
 }
 
 void RayCastingSystem::Update(double dt)
 {
     timer += dt;
 
-	for (auto const& entity : m_Entities)
-	{
-		auto& camera = coordinator.GetComponent<Camera>(entity);
-		auto& ray = coordinator.GetComponent<RayCasting>(entity);
-		if (camera.type == CAMERA_TYPE::CAMERA_MAIN)
-		{
-			ray.viewMatrix = camera.getViewMatrix();
-			ray.RayEndPos = glm::vec3(camera.position.x, camera.position.y, camera.position.z);
-			ray.Ray = calculateMouseRay();
-		}
+    for (auto const& entity : m_Entities)
+    {
+        auto& camera = coordinator.GetComponent<Camera>(entity);
+        auto& ray = coordinator.GetComponent<RayCasting>(entity);
+        if (camera.type == CAMERA_TYPE::CAMERA_MAIN)
+        {
+            ray.viewMatrix = camera.getViewMatrix();
+            ray.RayEndPos = glm::vec3(camera.position.x, camera.position.y, camera.position.z);
+            ray.Ray = calculateMouseRay();
+        }
 
         callRayCollision();
-	}
+    }
 }
 
 void RayCastingSystem::Render()
@@ -58,33 +58,33 @@ void RayCastingSystem::Render()
 
 bool RayCastingSystem::raycollisioncheck(Entity ray, Entity obj)
 {
-	auto& RayTransform = coordinator.GetComponent<Transform>(ray);
-	auto& Ray = coordinator.GetComponent<RayCasting>(ray);
-	auto& ObjectTransform = coordinator.GetComponent<Transform>(obj);
-	auto& ObjectCollider = coordinator.GetComponent<Collider>(obj);
+    auto& RayTransform = coordinator.GetComponent<Transform>(ray);
+    auto& Ray = coordinator.GetComponent<RayCasting>(ray);
+    auto& ObjectTransform = coordinator.GetComponent<Transform>(obj);
+    auto& ObjectCollider = coordinator.GetComponent<Collider>(obj);
 
     glm::vec3 rayendpos = Ray.RayEndPos;
     rayendpos.y = ObjectTransform.position.y;
     glm::vec3 relativePos = ObjectTransform.position - rayendpos;
 
-	bool collided = !(rayplanecheck(relativePos, ObjectTransform.AxisX, ObjectTransform, ObjectCollider) ||
-		rayplanecheck(relativePos, ObjectTransform.AxisY, ObjectTransform, ObjectCollider) ||
-		rayplanecheck(relativePos, ObjectTransform.AxisZ, ObjectTransform, ObjectCollider));
+    bool collided = !(rayplanecheck(relativePos, ObjectTransform.AxisX, ObjectTransform, ObjectCollider) ||
+        rayplanecheck(relativePos, ObjectTransform.AxisY, ObjectTransform, ObjectCollider) ||
+        rayplanecheck(relativePos, ObjectTransform.AxisZ, ObjectTransform, ObjectCollider));
 
 
-	if (!collided)
-		return collided;
+    if (!collided)
+        return collided;
 
-	return collided;
-	return false;
+    return collided;
+    return false;
 }
 
 bool RayCastingSystem::rayplanecheck(glm::vec3 rPos, glm::vec3 axis, Transform object, Collider collider)
 {
-	return (fabs(glm::dot(rPos, axis))) >
-		(fabs(glm::dot(object.AxisX * glm::vec3(0.5, 0.5, 0.5) * collider.scale.x, axis)) +
-			fabs(glm::dot(object.AxisY * glm::vec3(0.5, 0.5, 0.5) * collider.scale.y, axis)) +
-			fabs(glm::dot(object.AxisZ * glm::vec3(0.5, 0.5, 0.5) * collider.scale.z, axis)));
+    return (fabs(glm::dot(rPos, axis))) >
+        (fabs(glm::dot(object.AxisX * glm::vec3(0.5, 0.5, 0.5) * collider.scale.x, axis)) +
+            fabs(glm::dot(object.AxisY * glm::vec3(0.5, 0.5, 0.5) * collider.scale.y, axis)) +
+            fabs(glm::dot(object.AxisZ * glm::vec3(0.5, 0.5, 0.5) * collider.scale.z, axis)));
 }
 
 void RayCastingSystem::callRayCollision()
@@ -262,9 +262,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
         if (controller.controllertype == Controller::PLAYER)
         {
             float distance = glm::length(rayendpos - controller.nexusposition);
+            // Check if it is in range to build, if it is, player can build
             if (distance < controller.buildrange)
             {
-                //std::cout << "In Range!" << std::endl;
                 if (selectedbuilding == 1)
                 {
                     if (createonce == true)
@@ -280,14 +280,13 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_TOWER_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_TOWER_PLAYER)))->UpdateBool(true);
                     glm::vec3 rollBackPos = transform.position;
-                    transform.position = glm::vec3(rayendpos.x, 20 + terrain.ReadHeightMap(rayendpos.x, rayendpos.z), rayendpos.z);
+                    transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
 
-                    if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                    if (Application::IsMousePressed(0) && buildingclickdelay < timer && transform.position.y == terrain.ReadHeightMap(transform.position.x, transform.position.z) + transform.scale.y * 3)
                     {
                         cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
 
-                        std::cout << "Tower Placed!" << std::endl;
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_TOWER_PLAYER);
                         selectedbuilding = 0;
                         collider.mass = -1;
@@ -309,14 +308,13 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_WALL_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_WALL_PLAYER)))->UpdateBool(true);
                     glm::vec3 rollBackPos = transform.position;
-                    transform.position = glm::vec3(rayendpos.x, 20 + terrain.ReadHeightMap(rayendpos.x, rayendpos.z), rayendpos.z);
+                    transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
 
-                    if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                    if (Application::IsMousePressed(0) && buildingclickdelay < timer && transform.position.y == terrain.ReadHeightMap(transform.position.x, transform.position.z) + transform.scale.y * 3)
                     {
                         cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
 
-                        std::cout << "Wall Placed!" << std::endl;
                         collider.mass = -1;
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_WALL_PLAYER);
                         selectedbuilding = 0;
@@ -338,12 +336,11 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR1_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR1_PLAYER)))->UpdateBool(true);
                     glm::vec3 rollBackPos = transform.position;
-                    transform.position = glm::vec3(rayendpos.x, 20 + terrain.ReadHeightMap(rayendpos.x, rayendpos.z), rayendpos.z);
-                    if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                    transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
+                    if (Application::IsMousePressed(0) && buildingclickdelay < timer && transform.position.y == terrain.ReadHeightMap(transform.position.x, transform.position.z) + transform.scale.y * 3)
                     {
                         cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y + 80, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
-                        std::cout << "Gen1 Placed!" << std::endl;
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_GENERATOR1_PLAYER);
                         selectedbuilding = 0;
                         collidersystem->isBuildingPlaced = true;
@@ -366,13 +363,12 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR2_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR2_PLAYER)))->UpdateBool(true);
                     glm::vec3 rollBackPos = transform.position;
-                    transform.position = glm::vec3(rayendpos.x, 20 + terrain.ReadHeightMap(rayendpos.x, rayendpos.z), rayendpos.z);
+                    transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
 
-                    if (Application::IsMousePressed(0) && buildingclickdelay < timer)
+                    if (Application::IsMousePressed(0) && buildingclickdelay < timer && transform.position.y == terrain.ReadHeightMap(transform.position.x, transform.position.z) + transform.scale.y * 3)
                     {
                         cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y + 80, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
-                        std::cout << "Gen2 Placed!" << std::endl;
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_GENERATOR2_PLAYER);
                         collider.mass = -1;
                         collidersystem->isBuildingPlaced = true;
@@ -381,9 +377,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     }
                 }
             }
+            // When building is out of range, player can't build buildings and change shader color to indicate the player can't build
             else
             {
-                //std::cout << "Out of Range! " << std::endl;
                 if (selectedbuilding == 1)
                 {
                     auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
@@ -391,7 +387,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
 
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_TOWER_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_TOWER_PLAYER)))->UpdateBool(false);
-                    transform.position = glm::vec3(rayendpos.x, 20 + terrain.ReadHeightMap(rayendpos.x, rayendpos.z), rayendpos.z);
+                    transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
                 }
                 else if (selectedbuilding == 2)
                 {
@@ -400,7 +396,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
 
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_WALL_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_WALL_PLAYER)))->UpdateBool(false);
-                    transform.position = glm::vec3(rayendpos.x, 20 + terrain.ReadHeightMap(rayendpos.x, rayendpos.z), rayendpos.z);
+                    transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
                 }
                 else if (selectedbuilding == 3)
                 {
@@ -409,7 +405,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
 
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR1_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR1_PLAYER)))->UpdateBool(false);
-                    transform.position = glm::vec3(rayendpos.x, 20 + terrain.ReadHeightMap(rayendpos.x, rayendpos.z), rayendpos.z);
+                    transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
                 }
                 else if (selectedbuilding == 4)
                 {
@@ -418,7 +414,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
 
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR1_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR2_PLAYER)))->UpdateBool(false);
-                    transform.position = glm::vec3(rayendpos.x, 20 + terrain.ReadHeightMap(rayendpos.x, rayendpos.z), rayendpos.z);
+                    transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
                 }
             }
         }
@@ -437,14 +433,14 @@ void RayCastingSystem::GetCursorInGUI(bool cursoringui)
 
 glm::vec3 RayCastingSystem::calculateMouseRay()
 {
-	double mousex, mousey;
-	Application::GetCursorPos(&mousex, &mousey);
-	glm::vec2 normalizedCoords = getNormalizedDeviceCoords(mousex, mousey);
-	glm::vec4 clipCoords = glm::vec4(normalizedCoords.x, normalizedCoords.y, -1.f, 1.f);
-	glm::vec3 worldCoords = toWorldCoords(clipCoords);
+    double mousex, mousey;
+    Application::GetCursorPos(&mousex, &mousey);
+    glm::vec2 normalizedCoords = getNormalizedDeviceCoords(mousex, mousey);
+    glm::vec4 clipCoords = glm::vec4(normalizedCoords.x, normalizedCoords.y, -1.f, 1.f);
+    glm::vec3 worldCoords = toWorldCoords(clipCoords);
 
-	glm::vec3 dir = glm::normalize(worldCoords);
-	return dir;
+    glm::vec3 dir = glm::normalize(worldCoords);
+    return dir;
 }
 
 void RayCastingSystem::SetUnitSystem(std::shared_ptr<UnitSystem> system)
@@ -474,17 +470,17 @@ glm::vec2 RayCastingSystem::getNormalizedDeviceCoords(double mousex, double mous
 
     double x = (2 * (mousex - (offsetx / 2))) / (Application::GetWindowWidth() - offsetx) - 1;
     double y = (2 * (mousey - (offsety / 2))) / (Application::GetWindowHeight() - offsety) - 1;
-	return glm::vec2(x, -y);
+    return glm::vec2(x, -y);
 }
 
 glm::vec3 RayCastingSystem::toWorldCoords(glm::vec4 clipCoords)
 {
-	for (auto const& entity : m_Entities)
-	{
-		auto& ray = coordinator.GetComponent<RayCasting>(entity);
-		glm::vec4 eyeCoord(glm::inverse(ray.projectionMatrix) * clipCoords);
-		eyeCoord = glm::vec4(eyeCoord.x, eyeCoord.y, -1.f, 0);
+    for (auto const& entity : m_Entities)
+    {
+        auto& ray = coordinator.GetComponent<RayCasting>(entity);
+        glm::vec4 eyeCoord(glm::inverse(ray.projectionMatrix) * clipCoords);
+        eyeCoord = glm::vec4(eyeCoord.x, eyeCoord.y, -1.f, 0);
 
-		return glm::vec3(glm::inverse(ray.viewMatrix) * eyeCoord);
-	}
+        return glm::vec3(glm::inverse(ray.viewMatrix) * eyeCoord);
+    }
 }
