@@ -72,6 +72,7 @@ struct AIController : public Controller
 			{
 				if(event2 == event1)
 				{
+					++event2;
 					continue;
 				}
 				if (glm::length(event1->position - event2->position) < 10.f)
