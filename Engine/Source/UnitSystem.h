@@ -8,6 +8,7 @@
 #include "Renderer.h"
 #include "ObjectPoolSystem.h"
 #include "QuadTreeSystem.h"
+#include "SoundController.h"
 
 extern Coordinator coordinator;
 extern Renderer renderer;
@@ -41,4 +42,5 @@ private:
     std::set<Entity> terrainEntity;
     std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
     std::shared_ptr<QuadTreeSystem> quadtreesystem;
+    CSoundController* cSoundController;
 };

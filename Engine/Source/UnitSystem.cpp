@@ -18,6 +18,7 @@ void UnitSystem::Init(std::set<Entity> terrainEntitySet, Entity cameraentity)
 {
     terrainEntity = terrainEntitySet;
     cameraEntity = cameraentity;
+    cSoundController = CSoundController::GetInstance();
 
     for (int i = 0; i < 100; i++) // Init xxx amount of inactive objects
     {
@@ -44,6 +45,17 @@ void UnitSystem::Update(double dt)
 
         if (unit.health <= 0) // In the event the unit's health falls to/below 0, deactivate the unit.
         {
+            if (unit.unitType == Unit::NORMAL || unit.unitType == Unit::TANK || unit.unitType == Unit::RANGE)
+            {
+                cSoundController->SetSoundSourcePosition(23, transform.position.x, transform.position.y, transform.position.z);
+                cSoundController->PlaySoundByID(23);
+            }
+            else
+            {
+                cSoundController->SetSoundSourcePosition(24, transform.position.x, transform.position.y, transform.position.z);
+                cSoundController->PlaySoundByID(24);
+            }
+
             AddInactiveEntity(entity);
             continue;
         }
@@ -433,6 +445,8 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
     {
         if (attackerUnit.unitType == Unit::NORMAL || attackerUnit.unitType == Unit::TANK)
         {
+            cSoundController->SetSoundSourcePosition(20, attackerTransform.position.x, attackerTransform.position.y, attackerTransform.position.z);
+            cSoundController->PlaySoundByID(20);
             CreateProjectile(attacker, receiver);
             float resultantDamage = ((100 - receiverUnit.defense) / 100) * attackerUnit.damage;
             receiverUnit.health -= resultantDamage;
@@ -444,6 +458,17 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
 
         if (attackerUnit.unitType == Unit::RANGE || attackerUnit.unitType == Unit::TOWER)
         {
+            if (attackerUnit.unitType == Unit::RANGE)
+            {
+                cSoundController->SetSoundSourcePosition(21, attackerTransform.position.x, attackerTransform.position.y, attackerTransform.position.z);
+                cSoundController->PlaySoundByID(21);
+            }
+            else
+            {
+                cSoundController->SetSoundSourcePosition(22, attackerTransform.position.x, attackerTransform.position.y, attackerTransform.position.z);
+                cSoundController->PlaySoundByID(22);
+            }
+
             CreateProjectile(attacker, receiver);
         }
 
