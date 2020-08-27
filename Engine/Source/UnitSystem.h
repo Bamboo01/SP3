@@ -17,7 +17,7 @@ class UnitSystem : public System
 {
 public:
     virtual void Setup();
-    virtual void Init(std::set<Entity> terrainEntity);
+    virtual void Init(std::set<Entity> terrainEntity, Entity cameraEntity);
     virtual void Update(double dt);
 
     void UpdateUnitToTerrain(Entity entity);
@@ -37,6 +37,7 @@ public:
 
 private:
     double d_elapsedTime;
+    Entity cameraEntity;
     std::set<Entity> terrainEntity;
     std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
     std::shared_ptr<QuadTreeSystem> quadtreesystem;

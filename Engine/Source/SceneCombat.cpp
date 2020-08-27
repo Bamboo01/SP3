@@ -81,7 +81,7 @@ void SceneCombat::Init()
 	canvastextsystem->Init();
 	entitystatesystem->Init();
 	terrainsystem->Init();
-	unitsystem->Init(terrainsystem->m_Entities);
+	unitsystem->Init(terrainsystem->m_Entities, cameraHandler);
 	collidersystem->Init();
 	raycastingsystem->Init(&collidersystem->m_Entities, &controllersystem->m_Entities);
 	controllersystem->Init(&collidersystem->m_Entities);
@@ -771,6 +771,7 @@ void SceneCombat::InitMainCamera()
 	coordinator.AddComponent<CameraController>(maincamera, CameraController());
 	coordinator.AddComponent<RayCasting>(maincamera, RayCasting());
 	coordinator.AddComponent<EntityState>(maincamera, EntityState());
+	cameraHandler = maincamera;
 
 	Entity axes = coordinator.CreateEntity();
 	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));

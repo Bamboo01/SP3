@@ -57,6 +57,7 @@ class SceneCombat : public Scene
 	void UpdateImGuiEntityList();
 
 	Entity testHandler; // An entity handler to control entities
+	Entity cameraHandler;
 	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
 
 	/*Systems of the scene*/

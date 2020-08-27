@@ -14,9 +14,10 @@ void UnitSystem::Setup()
     coordinator.SetSystemSignature<UnitSystem>(signature);
 }
 
-void UnitSystem::Init(std::set<Entity> terrainEntitySet)
+void UnitSystem::Init(std::set<Entity> terrainEntitySet, Entity cameraentity)
 {
     terrainEntity = terrainEntitySet;
+    cameraEntity = cameraentity;
 
     for (int i = 0; i < 100; i++) // Init xxx amount of inactive objects
     {
@@ -94,6 +95,11 @@ void UnitSystem::Update(double dt)
             }
         }
     }
+}
+
+void UnitSystem::UpdateCameraEntity(Entity entity)
+{
+    cameraEntity = entity;
 }
 
 void UnitSystem::UpdateUnitToTerrain(Entity entity)
