@@ -71,7 +71,7 @@ void UnitSystem::Update(double dt)
             break;
         }
 
-        if (unit.target != UINT_MAX && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE && unit.velocity != glm::vec3(0, 0, 0))
+        if (unit.target != UINT_MAX && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE /*&& unit.velocity != glm::vec3(0, 0, 0)*/)
         {
             ApplyAttack(entity, unit.target);
         }
