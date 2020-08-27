@@ -588,5 +588,8 @@
     <Filter Include="Auxillary\Systems\IntroScrollSystem">
       <UniqueIdentifier>{906b7e3a-aa95-4a28-855c-2e809d0fc401}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Auxillary\Components\AIComponents">
+      <UniqueIdentifier>{b4f33fd7-7af1-48c6-be28-216a7659fe5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

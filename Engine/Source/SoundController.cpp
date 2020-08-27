@@ -127,6 +127,7 @@ void CSoundController::PlaySoundByID(const int ID)
 	else if (pSoundInfo->GetSoundType() == CSoundInfo::SOUNDTYPE::_3D)
 	{
 		cSoundEngine->setListenerPosition(vec3dfListenerPos, vec3dfListenerDir);
+		irrklang::vec3df a = pSoundInfo->GetPosition();
 		cSoundEngine->play3D(	pSoundInfo->GetSound(), 
 								pSoundInfo->GetPosition(), 
 								pSoundInfo->GetLoopStatus());
@@ -255,6 +256,28 @@ bool CSoundController::VolumeDecrease(const int ID)
 	return true;
 }
 
+void CSoundController::ChangeSoundSourceMaxDistance(const int ID, float dist)
+{
+	// Get the ISoundSource
+	ISoundSource* pISoundSource = GetSound(ID)->GetSound();
+	if (pISoundSource == nullptr)
+	{
+		return;
+	}
+	pISoundSource->setDefaultMaxDistance(dist);
+}
+
+void CSoundController::ChangeSoundSourceMinDistance(const int ID, float dist)
+{
+		// Get the ISoundSource
+	ISoundSource* pISoundSource = GetSound(ID)->GetSound();
+	if (pISoundSource == nullptr)
+	{
+		return;
+	}
+	pISoundSource->setDefaultMaxDistance(dist);
+}
+
 int CSoundController::GetMasterVolume()
 {
 	return (int)(cSoundEngine->getSoundVolume() * 100.f);
@@ -281,6 +304,11 @@ void CSoundController::SetListenerPosition(const float x, const float y, const f
 void CSoundController::SetListenerDirection(const float x, const float y, const float z)
 {
 	vec3dfListenerDir.set(x, y, z);
+}
+
+void CSoundController::SetRolloffFactor(float a)
+{
+	cSoundEngine->setRolloffFactor(a);
 }
 
 /**

@@ -50,7 +50,7 @@ void CameraSystem::Update(float dt)
 
         if (camera.mode == CAMERA_MODE::MODE_ORTHOGRAPHIC)
         {
-            camera.ProjectionMatrix = glm::ortho(0, camera.viewWidth, 0, camera.viewHeight);
+            camera.ProjectionMatrix = glm::ortho(0, camera.viewWidth, 0, camera.viewHeight, -1, 1000);
         }
         else
         {
