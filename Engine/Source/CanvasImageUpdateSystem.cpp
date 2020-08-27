@@ -82,10 +82,13 @@ void CanvasImageUpdateSystem::Update(double dt)
 		// Check for clicking on clickable quad (Buttons)
 		if (canvasupdate.clicktype == CanvasImageUpdate::CLICKABLE && Application::IsMousePressed(0) && CollideWithCanvas(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y) && entitystate.active == true && clickdelay <= timer)
 		{
-			//if (canvasupdate.buttontype == CanvasImageUpdate::GENERATOR1BUTTON || canvasupdate.buttontype == CanvasImageUpdate::GENERATOR2BUTTON)
-			//	cSoundController->PlaySoundByID(27);
-			//else
-			//	cSoundController->PlaySoundByID(26);
+			if (canvasupdate.buttontype != CanvasImageUpdate::NEXUSNORMALUNIT && canvasupdate.buttontype != CanvasImageUpdate::NEXUSRANGEUNIT && canvasupdate.buttontype != CanvasImageUpdate::NEXUSTANKUNIT)
+			{
+				if (canvasupdate.buttontype == CanvasImageUpdate::GENERATOR1BUTTON || canvasupdate.buttontype == CanvasImageUpdate::GENERATOR2BUTTON)
+					cSoundController->PlaySoundByID(27);
+				else
+					cSoundController->PlaySoundByID(26);
+			}
 
 			clickdelay = timer + 0.2;
 			if (canvasupdate.buttontype == CanvasImageUpdate::LABBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEUNITBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON)
@@ -337,6 +340,8 @@ void CanvasImageUpdateSystem::Update(double dt)
 						// Add code to spawn tank unit (Check whether is there enough resources)
 						if (controller.resource1 >= controller.tankunitcost)
 						{
+							cSoundController->SetSoundSourcePosition(25, 130, 0, 150);
+							cSoundController->PlaySoundByID(25);
 							std::cout << "Tank unit created" << std::endl;
 							controller.resource1 -= controller.tankunitcost;
 							unitsystem->CreateUnit(Unit::TANK, Unit::PLAYER, controller.tankunitlevel, Transform(glm::vec3(130, 0, 150), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
@@ -347,6 +352,8 @@ void CanvasImageUpdateSystem::Update(double dt)
 						if (controller.resource1 >= controller.rangeunitcost)
 						{
 							// Add code to spawn range unit (Check whether is there enough resources)
+							cSoundController->SetSoundSourcePosition(25, 130, 0, 150);
+							cSoundController->PlaySoundByID(25);
 							std::cout << "Range unit created" << std::endl;
 							controller.resource1 -= controller.rangeunitcost;
 							unitsystem->CreateUnit(Unit::RANGE, Unit::PLAYER, controller.rangeunitlevel, Transform(glm::vec3(130, 0, 150), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));

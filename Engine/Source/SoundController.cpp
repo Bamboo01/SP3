@@ -127,6 +127,7 @@ void CSoundController::PlaySoundByID(const int ID)
 	else if (pSoundInfo->GetSoundType() == CSoundInfo::SOUNDTYPE::_3D)
 	{
 		cSoundEngine->setListenerPosition(vec3dfListenerPos, vec3dfListenerDir);
+		irrklang::vec3df a = pSoundInfo->GetPosition();
 		cSoundEngine->play3D(	pSoundInfo->GetSound(), 
 								pSoundInfo->GetPosition(), 
 								pSoundInfo->GetLoopStatus());
@@ -353,4 +354,9 @@ void CSoundController::ChangeSoundSourceMinDistance(const int ID, float dist)
 		return;
 	}
 	pISoundSource->setDefaultMinDistance(dist);
+}
+
+void CSoundController::SetRolloffFactor(float a)
+{
+	cSoundEngine->setRolloffFactor(a);
 }

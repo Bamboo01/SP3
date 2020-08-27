@@ -72,6 +72,8 @@ public:
 	// Change max distance of a sound source
 	void ChangeSoundSourceMinDistance(const int ID, float dist);
 
+	void SetRolloffFactor(float a);
+
 protected:
 	// Constructor
 	CSoundController(void);

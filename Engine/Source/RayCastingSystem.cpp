@@ -286,6 +286,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     {
                         cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
+
                         std::cout << "Tower Placed!" << std::endl;
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_TOWER_PLAYER);
                         selectedbuilding = 0;
@@ -312,8 +313,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
 
                     if (Application::IsMousePressed(0) && buildingclickdelay < timer)
                     {
-                        cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y + 80, rayendpos.z);
+                        cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
+
                         std::cout << "Wall Placed!" << std::endl;
                         collider.mass = -1;
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_WALL_PLAYER);

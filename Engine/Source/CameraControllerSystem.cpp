@@ -9,12 +9,11 @@ void CameraControllerSystem::Update(float dt)
     {
         auto& camera = coordinator.GetComponent<Camera>(entity);
 
-        CSoundController::GetInstance()->SetListenerPosition(camera.position.x, camera.position.y, camera.position.z);
-        CSoundController::GetInstance()->SetListenerDirection(camera.position.x - camera.target.x, camera.position.y - camera.target.y, camera.position.z - camera.target.z);
-        //CSoundController::GetInstance()->SetListenerDirection(camera.target.x, camera.target.y, camera.target.z);
-
         if (camera.type == CAMERA_MAIN)
         {
+            CSoundController::GetInstance()->SetListenerPosition(camera.position.x, camera.position.y, camera.position.z);
+            CSoundController::GetInstance()->SetListenerDirection(0, 0, 1);
+
             if (glm::length(camera.position - camera.target) > 100.f && Application::mouse_scroll_y > 0)
             {
                 glm::vec3 view = glm::normalize(camera.target - camera.position) * (float)Application::mouse_scroll_y * 3.f;
