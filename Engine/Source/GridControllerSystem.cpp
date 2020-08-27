@@ -662,7 +662,7 @@ void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vecto
 			auto& a = coordinator.GetComponent<Unit>(e);
 			if (a.UnitID != INT_MAX)
 			{
-				if (a.StandingGridCost == 0)
+				if (a.StandingGridCost == 0 || a.velocity == glm::vec3(0,0,0))
 				{
 					IDtoFlowfield.at(a.UnitID).first--;
 					a.UnitID = FlowfieldIDs.front();
