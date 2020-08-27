@@ -105,6 +105,7 @@ void SceneCombat::Init()
 	collidersystem->SetQuadTreeSystem(quadtreesystem);
 	unitsystem->SetObjectPoolSystem(objectpoolsystem);
 	unitsystem->SetQuadTreeSystem(quadtreesystem);
+	aicontrollersystem->SetUnitSystem(unitsystem);
 	InitUnit();
 
 	gridcontrollersystem->Init();
@@ -125,6 +126,7 @@ void SceneCombat::EarlyUpdate(double dt)
 	unitsystem->EarlyUpdate(dt);
 	guitextsystem->EarlyUpdate(dt);
 	controllersystem->EarlyUpdate(dt);
+	aicontrollersystem->EarlyUpdate(dt);
 }
 
 void SceneCombat::Update(double dt)
@@ -161,6 +163,7 @@ void SceneCombat::Update(double dt)
 	quadtreesystem->Update(dt);
 	raycastingsystem->Update(dt);
 	collidersystem->Update(dt);
+	aicontrollersystem->Update(dt);
 	canvasimageupdatesystem->selectedbuilding = raycastingsystem->selectedbuilding;
 	canvasimageupdatesystem->createonce = raycastingsystem->createonce;
 }
@@ -178,6 +181,7 @@ void SceneCombat::LateUpdate(double dt)
 	unitsystem->LateUpdate(dt);
 	guitextsystem->LateUpdate(dt);
 	controllersystem->LateUpdate(dt);
+	aicontrollersystem->LateUpdate(dt);
 }
 
 void SceneCombat::PreRender()

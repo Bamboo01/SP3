@@ -83,7 +83,7 @@ void AIControllerSystem::Update(float dt)
                 }
 
                 // GridController stuff here!
-                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities);
+                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities, true);
                 // Make sure that if a unit is enroute to anything, SKIP it and process the next one
 
             }
@@ -106,14 +106,20 @@ void AIControllerSystem::Update(float dt)
                 if (aicontroller.resource1 > 150.f)
                 {
                     //Build tank
+                    aicontroller.resource1 -= aicontroller.tankunitcost;
+                    unitsystem->CreateUnit(Unit::TANK, Unit::ENEMY, aicontroller.tankunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                 }
                 else if (aicontroller.resource1 > 100.f)
                 {
                     //Build Ranged
+                    aicontroller.resource1 -= aicontroller.rangeunitcost;
+                    unitsystem->CreateUnit(Unit::RANGE, Unit::ENEMY, aicontroller.rangeunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                 }
                 else if (aicontroller.resource1 > 30.f)
                 {
                     //Build normal
+                    aicontroller.resource1 -= aicontroller.normalunitcost;
+                    unitsystem->CreateUnit(Unit::NORMAL, Unit::ENEMY, aicontroller.normalunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                 }
 
                 int attackingUnits = std::ceil(aicontroller.TotalAggression);
@@ -203,4 +209,9 @@ void AIControllerSystem::Update(float dt)
 
         //Process the collection of resources from ALL generators
     }
+}
+
+void AIControllerSystem::SetUnitSystem(std::shared_ptr<UnitSystem> system)
+{
+    this->unitsystem = system;
 }
