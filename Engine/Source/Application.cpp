@@ -230,6 +230,9 @@ void Application::Run()
 	cSoundController->LoadSound("Sounds/GUI_click.wav", 26);
 	cSoundController->LoadSound("Sounds/Collect_resource.wav", 27);
 
+	//cSoundController->ChangeSoundSourceMaxDistance(25, 200);
+	cSoundController->ChangeSoundSourceMinDistance(25, 25);
+
 	//Main Loop
 	Scene* scene = nullptr;
 	SceneManager* scenemanager = SceneManager::getInstance();
