@@ -846,7 +846,7 @@ void SceneCombat::InitMiniMap()
 	// MINIMAP
 	Entity MiniMap = coordinator.CreateEntity();
 	coordinator.AddComponent<Camera>(MiniMap, Camera(
-		glm::vec3(0, 400, -3.f),
+		glm::vec3(0, 400, 0.f),
 		glm::vec3(60, 0, 0),
 		1080, 1080, //Lower this if the FPS stinks
 		45.f,

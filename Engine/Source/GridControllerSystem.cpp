@@ -16,10 +16,10 @@ void GridControllerSystem::CreateGrids()
 		}
 	}
 	int y = 0;
-	for (int Posy = -500; Posy < 500; Posy += 50)
+	for (int Posy = -300; Posy < 300; Posy += 30)
 	{
 		int x = 0;
-		for (int Posx = 500; Posx > -500; Posx -= 50)
+		for (int Posx = 300; Posx > -300; Posx -= 30)
 		{
 			GridPosition[x][y] = glm::vec3(Posy, 2, Posx);
 			CheckGridCost(x,y);
@@ -36,14 +36,21 @@ void GridControllerSystem::CreateGrids()
 void GridControllerSystem::CheckGridCost(int GridNumX, int GridNumY)
 {
 	glm::vec3 GridTopLeft = GridPosition[GridNumX][GridNumY];
-	glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+	glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 30, GridTopLeft.y, GridTopLeft.z - 30);
 	for (auto const& entity : m_Entities)
 	{
 		auto& unit = coordinator.GetComponent<Unit>(entity);
 		auto& transform = coordinator.GetComponent<Transform>(entity);
-		if (transform.position.x + transform.scale.x>= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z+ transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
+		/*if (transform.position.x + transform.scale.x>= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z+ transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 		{
 			GridCost[GridNumX][GridNumY] += unit.FlowFieldCost;
+		}*/
+		if (unit.FlowFieldCost != 0)
+		{
+			if ((transform.position.x >= GridTopLeft.x) && (transform.position.x <= GridBottomRight.x) && (transform.position.y <= GridTopLeft.y) && (transform.position.y >= GridBottomRight.y))
+			{
+				GridCost[GridNumX][GridNumY] += unit.FlowFieldCost;
+			}
 		}
 	}
 	
@@ -89,22 +96,15 @@ void GridControllerSystem::Update(float dt)
 		}
 		FlowfieldIDs.pop();
 		UpdateUnitPosition();
+	/*	for (int y = 0; y < 20; ++y)
+		{
+			for (int x = 0; x < 20; ++x)
+			{
+				std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].y << ", " << GridPosition[x][y].z << " ::::" << GridCost[x][y] << std::endl;
+			}
+		}*/
 		
 	}
-	// Give the units a new update position sfter grids are created
-	//if (active == true)
-	//{
-	//	
-
-	//	active = false;
-	//	//for (int y = 0; y < 20; ++y)
-	//	//{
-	//	//	for (int x = 0; x < 20; ++x)
-	//	//	{
-	//	//		std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].y << ", " << GridPosition[x][y].z << " ::::" << GridCost[x][y] << std::endl;
-	//	//	}
-	//	//}
-	//}
 	for (auto const& entity : m_Entities)
 	{
 		auto& unit = coordinator.GetComponent<Unit>(entity);
@@ -113,7 +113,7 @@ void GridControllerSystem::Update(float dt)
 			int GTLX = unit.nextGrid.x;
 			int GTLY = unit.nextGrid.y;
 			glm::vec3 GridTopLeft = GridPosition[GTLX][GTLY];
-			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 30, GridTopLeft.y, GridTopLeft.z - 30);
 			if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 			{
 				UpdateUnitPosition();
@@ -136,7 +136,7 @@ void GridControllerSystem::GetDestinationGrid()
 		for (int y = 0; y < 20; ++y)
 		{
 			glm::vec3 GridTopLeft = GridPosition[x][y];
-			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 30, GridTopLeft.y, GridTopLeft.z - 30);
 			if (CursorWorldPosition.x >= GridTopLeft.x && CursorWorldPosition.x <= GridBottomRight.x && CursorWorldPosition.z <= GridTopLeft.z && CursorWorldPosition.z >= GridBottomRight.z)
 			{
 				if (GridCost[x][y] == -1)
@@ -168,20 +168,41 @@ void GridControllerSystem::CreatePathTop(glm::vec2 Destination)
 	int dX = Destination.x;
 	int dY = Destination.y;
 	//glm::vec3 GridTopLeft = GridPosition[dX][dY];
-	glm::vec3 GridBottomRight = glm::vec3(GridPosition[dX][dY].x + 50, GridPosition[dX][dY].y, GridPosition[dX][dY].z - 50);
+	glm::vec3 GridBottomRight = glm::vec3(GridPosition[dX][dY].x + 30, GridPosition[dX][dY].y, GridPosition[dX][dY].z - 30);
 	bool north, east, west;
-	north = ((GridPosition[dX - 1][dY].z == (GridPosition[dX][dY].z + 50)) &&
-		(GridPosition[dX - 1][dY].x == GridPosition[dX][dY].x) && (GridCost[dX - 1][dY] == -1));
-	east = ((GridPosition[dX][dY + 1].z == GridBottomRight.z + 50) && (GridPosition[dX][dY + 1].x == GridBottomRight.x) &&
-		(GridCost[dX][dY + 1] == -1));
-	west = ((GridPosition[dX][dY - 1].x == GridPosition[dX][dY].x - 50) && (GridPosition[dX][dY - 1].z == GridPosition[dX][dY].z) &&
-		(GridCost[dX][dY - 1] == -1));
+	if (dX - 1 >= 0 && dX - 1 <= 19)
+	{
+		north = ((GridPosition[dX - 1][dY].z == (GridPosition[dX][dY].z + 30)) &&
+			(GridPosition[dX - 1][dY].x == GridPosition[dX][dY].x) && (GridCost[dX - 1][dY] == -1));
+	}
+	else 
+	{
+		north = false;
+	}
+	if (dY + 1 >= 0 && dY + 1 <= 19)
+	{
+		east = ((GridPosition[dX][dY + 1].z == GridBottomRight.z + 30) && (GridPosition[dX][dY + 1].x == GridBottomRight.x) &&
+			(GridCost[dX][dY + 1] == -1));
+	}
+	else
+	{
+		east = false;
+	}
+	if (dY - 1 >= 0 && dY - 1 <= 19)
+	{
+		west = ((GridPosition[dX][dY - 1].x == GridPosition[dX][dY].x - 30) && (GridPosition[dX][dY - 1].z == GridPosition[dX][dY].z) &&
+			(GridCost[dX][dY - 1] == -1));
+	}
+	else
+	{
+		west = false;
+	}
 	// Check at the edge of the world space
 	// If not, Check if the grid around it is passable or not
 	
 	//North
 	
-	if (GridPosition[dX][dY].z != 500)
+	if (GridPosition[dX][dY].z != 300)
 	{
 		// There is a Grid in the North Direction!!
 		// Check the North Grid ID
@@ -206,7 +227,7 @@ void GridControllerSystem::CreatePathTop(glm::vec2 Destination)
 
 	}
 	// East
-	if (GridBottomRight.x != 500)
+	if (GridBottomRight.x != 300)
 	{
 		// There is a Grid in the East Direction!
 		// Check East Grid ID
@@ -231,7 +252,7 @@ void GridControllerSystem::CreatePathTop(glm::vec2 Destination)
 
 	}
 	// West
-	if (GridPosition[dX][dY].x != -500)
+	if (GridPosition[dX][dY].x != -300)
 	{
 		// There is a Grid in the West Direction!
 		// Check West Grid ID
@@ -272,18 +293,39 @@ void GridControllerSystem::CreatePathBottom(glm::vec2 Destination)
 	int dX = Destination.x;
 	int dY = Destination.y;
 	//glm::vec3 GridTopLeft = GridPosition[dX][dY];
-	glm::vec3 GridBottomRight = glm::vec3(GridPosition[dX][dY].x + 50, GridPosition[dX][dY].y, GridPosition[dX][dY].z - 50);
+	glm::vec3 GridBottomRight = glm::vec3(GridPosition[dX][dY].x + 30, GridPosition[dX][dY].y, GridPosition[dX][dY].z - 30);
 	bool south, east, west;
-	south = ((GridPosition[dX + 1][dY].z == GridPosition[dX][dY].z - 50) && (GridPosition[dX + 1][dY].x == GridPosition[dX][dY].x) &&
-		(GridCost[dX + 1][dY] == -1));
-	east = ((GridPosition[dX][dY + 1].z == GridBottomRight.z + 50) && (GridPosition[dX][dY + 1].x == GridBottomRight.x) &&
-		(GridCost[dX][dY + 1] == -1));
-	west = ((GridPosition[dX][dY - 1].x == GridPosition[dX][dY].x - 50) && (GridPosition[dX][dY - 1].z == GridPosition[dX][dY].z) &&
-		(GridCost[dX][dY - 1] == -1));
+	if (dX + 1 >= 0 && dX + 1 <= 19)
+	{
+		south = ((GridPosition[dX + 1][dY].z == GridPosition[dX][dY].z - 30) && (GridPosition[dX + 1][dY].x == GridPosition[dX][dY].x) &&
+			(GridCost[dX + 1][dY] == -1));
+	}
+	else
+	{
+		south = false;
+	}
+	if (dY + 1 >= 0 && dY + 1 <= 19)
+	{
+		east = ((GridPosition[dX][dY + 1].z == GridBottomRight.z + 30) && (GridPosition[dX][dY + 1].x == GridBottomRight.x) &&
+			(GridCost[dX][dY + 1] == -1));
+	}
+	else
+	{
+		east = false;
+	}
+	if (dY - 1 >= 0 && dY - 1 <= 19)
+	{
+		west = ((GridPosition[dX][dY - 1].x == GridPosition[dX][dY].x - 30) && (GridPosition[dX][dY - 1].z == GridPosition[dX][dY].z) &&
+			(GridCost[dX][dY - 1] == -1));
+	}
+	else
+	{
+		west = false;
+	}
 	// Check at the edge of the world space
 	// If not, Check if the grid around it is passable or not
 	// South
-	if (GridBottomRight.z != -500)
+	if (GridBottomRight.z != -300)
 	{
 		// There is a Grid in the South Direction!!
 		// Check the South Grid ID
@@ -307,7 +349,7 @@ void GridControllerSystem::CreatePathBottom(glm::vec2 Destination)
 		}
 	}
 	// East
-	if (GridBottomRight.x != 500)
+	if (GridBottomRight.x != 300)
 	{
 		// There is a Grid in the East Direction!
 		// Check East Grid ID
@@ -332,7 +374,7 @@ void GridControllerSystem::CreatePathBottom(glm::vec2 Destination)
 
 	}
 	// West
-	if (GridPosition[dX][dY].x != -500)
+	if (GridPosition[dX][dY].x != -300)
 	{
 		// There is a Grid in the West Direction!
 		// Check West Grid ID
@@ -424,7 +466,7 @@ void GridControllerSystem::UpdateUnitPosition()
 				for (int y = 0; y < 20; ++y)
 				{
 					glm::vec3 GridTopLeft = GridPosition[x][y];
-					glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 50, GridTopLeft.y, GridTopLeft.z - 50);
+					glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 30, GridTopLeft.y, GridTopLeft.z - 30);
 					glm::vec3 distance = glm::vec3(0,0,0);
 					glm::vec3 direction;
 					if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
@@ -449,7 +491,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x - 1, y, cost);
-								distance = glm::vec3(0, 0, 50);
+								distance = glm::vec3(0, 0, 30);
 							}
 						}
 						// Check for South
@@ -460,7 +502,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x + 1, y, cost);
-								distance = glm::vec3(0, 0, -50);
+								distance = glm::vec3(0, 0, -30);
 							}
 						}
 						// Check for East
@@ -471,7 +513,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x, y+1, cost);
-								distance = glm::vec3(50, 0, 0);
+								distance = glm::vec3(30, 0, 0);
 							}
 						}
 						// Check for West
@@ -482,7 +524,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x, y - 1, cost);
-								distance = glm::vec3(-50, 0, 0);
+								distance = glm::vec3(-30, 0, 0);
 							}
 						}
 						// Check for North East
@@ -562,6 +604,72 @@ void GridControllerSystem::UpdateUnitPosition()
 			}
 		}
 	}
+}
+
+void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vector<Entity> units)
+{
+	CreateGrids();
+	glm::vec2 destination = glm::vec2(-1, -1);	// If it is -1 at the end, means that destination is impossible
+	for (int x = 0; x < 20; ++x)
+	{
+		for (int y = 0; y < 20; ++y)
+		{
+			glm::vec3 GridTopLeft = GridPosition[x][y];
+			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 30, GridTopLeft.y, GridTopLeft.z - 30);
+			if (Destination.x >= GridTopLeft.x && Destination.x <= GridBottomRight.x && Destination.z <= GridTopLeft.z && Destination.z >= GridBottomRight.z)
+			{
+				if (GridCost[x][y] == -1)
+				{	// Set The Empty Grid To the Destination Point
+					GridCost[x][y] = 0;
+					destination.x = x;
+					destination.y = y;
+					//std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+					break;
+				}
+				else
+					break;		// If there is a wall at the destination point, Destination is impossible to reach
+			}
+		}
+	}
+	if (destination.x != -1 && destination.y != -1)
+	{
+		// A Grid that has been selected
+		CreatePathTop(destination);
+
+		CreatePathBottom(destination);
+
+		SafetyPathCheck(destination);
+
+
+		std::vector <std::vector<int>> temp;
+		temp.resize(20);
+		for (auto& vec : temp)
+		{
+			vec.resize(20);
+		}
+
+		for (int x = 0; x < 20; ++x)
+		{
+			for (int y = 0; y < 20; ++y)
+			{
+				temp[x][y] = GridCost[x][y];
+			}
+		}
+
+		IDtoFlowfield.insert({ FlowfieldIDs.front(),std::make_pair(units.size(), temp) });
+		for (auto e : units)
+		{
+			auto& a = coordinator.GetComponent<Unit>(e);
+			if (a.UnitID != INT_MAX)
+			{
+				IDtoFlowfield.at(a.UnitID).first--;
+			}
+			a.UnitID = FlowfieldIDs.front();
+		}
+		FlowfieldIDs.pop();
+		UpdateUnitPosition();
+	}
+
 }
 
 void GridControllerSystem::SetUp()
