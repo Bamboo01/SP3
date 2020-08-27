@@ -295,7 +295,7 @@ void SceneCombat::InitGUIText()
 	{
 		Entity UIText = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText, Transform());
-		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.1f, -0.9, 0);
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.02f, -0.9, 0);
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Build", ALIGN_CENTER));
 		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::NEXUSBUTTON));
@@ -305,7 +305,7 @@ void SceneCombat::InitGUIText()
 	{
 		Entity UIText = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText, Transform());
-		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.08f, -1.2, 0);
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.03f, -1.2, 0);
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Unit", ALIGN_CENTER));
 		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::NEXUSBUTTON));
@@ -315,7 +315,7 @@ void SceneCombat::InitGUIText()
 	{
 		Entity UIText = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText, Transform());
-		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.19f, -1.2, 0);
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.f, -1.2, 0);
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Level Up", ALIGN_CENTER));
 		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::LABBUTTON));
@@ -325,7 +325,7 @@ void SceneCombat::InitGUIText()
 	{
 		Entity UIText = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText, Transform());
-		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.17f, -1.2, 0);
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.f, -1.2, 0);
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Collect", ALIGN_CENTER));
 		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::GENERATORBUTTON));
@@ -335,7 +335,7 @@ void SceneCombat::InitGUIText()
 	{
 		Entity UIText = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText, Transform());
-		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.25f, -0.8, 0);
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.f, -0.8, 0);
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Generated:", ALIGN_CENTER));
 		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::GENERATORBUTTON));
@@ -345,7 +345,7 @@ void SceneCombat::InitGUIText()
 	{
 		Entity UIText = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText, Transform());
-		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.05f, -0.9, 0);
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.f, -0.9, 0);
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("", ALIGN_CENTER));
 		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::GENERATEDRESOURCES));
@@ -355,7 +355,7 @@ void SceneCombat::InitGUIText()
 	{
 		Entity UIText = coordinator.CreateEntity();
 		coordinator.AddComponent<Transform>(UIText, Transform());
-		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.15f, -1.0, 0);
+		coordinator.GetComponent<Transform>(UIText).position = glm::vec3(1.f, -1.0, 0);
 		coordinator.GetComponent<Transform>(UIText).scale = glm::vec3(0.01, 0.01, 1);
 		coordinator.AddComponent<CanvasText>(UIText, CanvasText("Time: 10", ALIGN_CENTER));
 		coordinator.AddComponent<GUIText>(UIText, GUIText(GUIText::GENERATORBUTTON));
@@ -526,6 +526,7 @@ void SceneCombat::InitGUIText()
 		coordinator.AddComponent<EntityState>(UIText, EntityState());
 	}
 }
+
 
 void SceneCombat::InitCanvasGUI()
 {
@@ -786,6 +787,33 @@ void SceneCombat::InitMainCamera()
 			glm::vec3(0.f), glm::vec3(0.f)));
 
 	gridcontrollersystem->getRaycastingEntity(maincamera);
+
+	{
+		Entity particle = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(axes, Transform(glm::vec3(160, 30, 160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+		coordinator.AddComponent<EntityState>(axes, EntityState());
+		coordinator.AddComponent<ParticleSystemParameters>(axes,
+			ParticleSystemParameters(
+				renderer.getMesh(GEO_TESTPARTICLE_SPHERICAL), 5, 50, 1,
+				glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
+				glm::vec3(-1, 15, -1), glm::vec3(1, 15, 1),
+				glm::vec3(10.f, 10.f, 1.f), glm::vec3(10.f, 10.f, 1.f),
+				glm::vec3(0.f), glm::vec3(0.f),
+				glm::vec3(0.f), glm::vec3(0.f)));
+	}
+	{
+		Entity particle = coordinator.CreateEntity();
+		coordinator.AddComponent<Transform>(axes, Transform(glm::vec3(-160, 30, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+		coordinator.AddComponent<EntityState>(axes, EntityState());
+		coordinator.AddComponent<ParticleSystemParameters>(axes,
+			ParticleSystemParameters(
+				renderer.getMesh(GEO_TESTPARTICLE_SPHERICAL), 5, 50, 1,
+				glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
+				glm::vec3(-1, 15, -1), glm::vec3(1, 15, 1),
+				glm::vec3(10.f, 10.f, 1.f), glm::vec3(10.f, 10.f, 1.f),
+				glm::vec3(0.f), glm::vec3(0.f),
+				glm::vec3(0.f), glm::vec3(0.f)));
+	}
 }
 
 void SceneCombat::InitTerrain()

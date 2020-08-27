@@ -319,7 +319,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						{
 							std::cout << "Normal unit created" << std::endl;
 							controller.resource1 -= controller.normalunitcost;
-							//unitsystem->CreateUnit(Unit::NORMAL, Unit::PLAYER, controller.normalunitlevel,
+							unitsystem->CreateUnit(Unit::NORMAL, Unit::PLAYER, controller.normalunitlevel, Transform(glm::vec3(130, 0, 150), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSTANKUNIT)
@@ -329,6 +329,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 						{
 							std::cout << "Tank unit created" << std::endl;
 							controller.resource1 -= controller.tankunitcost;
+							unitsystem->CreateUnit(Unit::TANK, Unit::PLAYER, controller.tankunitlevel, Transform(glm::vec3(130, 0, 150), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
 						}
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT)
@@ -338,54 +339,58 @@ void CanvasImageUpdateSystem::Update(double dt)
 							// Add code to spawn range unit (Check whether is there enough resources)
 							std::cout << "Range unit created" << std::endl;
 							controller.resource1 -= controller.rangeunitcost;
+							unitsystem->CreateUnit(Unit::RANGE, Unit::PLAYER, controller.rangeunitlevel, Transform(glm::vec3(130, 0, 150), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
 						}
 					}
-					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSBUILDING)
+					if (selectedbuilding == 0)
 					{
-						if (controller.resource1 >= controller.towercost)
+						if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSBUILDING)
 						{
-							// Add code to spawn building (Check whether is there enough resources)
-							std::cout << "Tower created" << std::endl;
-							controller.resource1 -= controller.towercost;
-							selectedbuilding = 1;
-							buildingclickdelay = timer + 0.4;
-							createonce = true;
+							if (controller.resource1 >= controller.towercost)
+							{
+								// Add code to spawn building (Check whether is there enough resources)
+								std::cout << "Tower created" << std::endl;
+								controller.resource1 -= controller.towercost;
+								selectedbuilding = 1;
+								buildingclickdelay = timer + 0.4;
+								createonce = true;
+							}
 						}
-					}
-					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSWALL)
-					{
-						if (controller.resource1 >= controller.wallcost)
+						else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSWALL)
 						{
-							// Add code to spawn wall (Check whether is there enough resources)
-							std::cout << "Wall created" << std::endl;
-							controller.resource1 -= controller.wallcost;
-							selectedbuilding = 2;
-							buildingclickdelay = timer + 0.4;
-							createonce = true;
+							if (controller.resource1 >= controller.wallcost)
+							{
+								// Add code to spawn wall (Check whether is there enough resources)
+								std::cout << "Wall created" << std::endl;
+								controller.resource1 -= controller.wallcost;
+								selectedbuilding = 2;
+								buildingclickdelay = timer + 0.4;
+								createonce = true;
+							}
 						}
-					}
-					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR1)
-					{
-						if (controller.resource1 >= controller.generator1cost)
+						else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR1)
 						{
-							// Add code to spawn generator1 (Check whether is there enough resources)
-							std::cout << "Generator1 created" << std::endl;
-							controller.resource1 -= controller.generator1cost;
-							selectedbuilding = 3;
-							buildingclickdelay = timer + 0.4;
-							createonce = true;
+							if (controller.resource1 >= controller.generator1cost)
+							{
+								// Add code to spawn generator1 (Check whether is there enough resources)
+								std::cout << "Generator1 created" << std::endl;
+								controller.resource1 -= controller.generator1cost;
+								selectedbuilding = 3;
+								buildingclickdelay = timer + 0.4;
+								createonce = true;
+							}
 						}
-					}
-					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
-					{
-						if (controller.resource1 >= controller.generator2cost)
+						else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
 						{
-							// Add code to spawn generator2 (Check whether is there enough resources)
-							std::cout << "Generator2 created" << std::endl;
-							controller.resource1 -= controller.generator2cost;
-							selectedbuilding = 4;
-							buildingclickdelay = timer + 0.4;
-							createonce = true;
+							if (controller.resource1 >= controller.generator2cost)
+							{
+								// Add code to spawn generator2 (Check whether is there enough resources)
+								std::cout << "Generator2 created" << std::endl;
+								controller.resource1 -= controller.generator2cost;
+								selectedbuilding = 4;
+								buildingclickdelay = timer + 0.4;
+								createonce = true;
+							}
 						}
 					}
 				}
@@ -579,7 +584,7 @@ bool CanvasImageUpdateSystem::CollideWithCanvas(float x, float y, float xscale, 
 
 	double mousex, mousey;
 	Application::GetCursorPos(&mousex, &mousey);
-	if (mousex > bottomleftx && mousex < toprightx && mousey > bottomlefty && mousey < toprighty)
+	if (mousex > bottomleftx&& mousex < toprightx && mousey > bottomlefty&& mousey < toprighty)
 		return true;
 	return false;
 }
