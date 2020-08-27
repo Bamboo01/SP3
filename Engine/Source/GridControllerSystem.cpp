@@ -66,7 +66,7 @@ void GridControllerSystem::Update(float dt)
 		int y = Application::GetWindowHeight();
 		CursorScreenPosition = glm::vec2(Application::mouse_current_x, Application::mouse_current_y);
 		auto& raycaster = coordinator.GetComponent<RayCasting>(raycastentity);
-		CursorWorldPosition = raycaster.rightClick;
+		CursorWorldPosition = raycaster.RayEndPos;
 
 		CreateGrids();
 		std::vector <std::vector<int>> temp;
