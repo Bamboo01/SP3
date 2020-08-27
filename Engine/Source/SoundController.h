@@ -65,6 +65,12 @@ public:
 	// Set Listener direction
 	void SetListenerDirection(const float x, const float y, const float z);
 
+	// Change max distance of a sound source
+	void ChangeSoundSourceMaxDistance(const int ID, float dist);
+
+	// Change max distance of a sound source
+	void ChangeSoundSourceMinDistance(const int ID, float dist);
+
 protected:
 	// Constructor
 	CSoundController(void);
