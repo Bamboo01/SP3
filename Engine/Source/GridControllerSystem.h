@@ -37,7 +37,7 @@ public:
 	virtual void CreatePathBottom(glm::vec2 Destination);		// Get Grid cost for Destination BOTTOM ONLY
 	virtual void SafetyPathCheck(glm::vec2 Destination);		// Just in case there is a -1
 	virtual void UpdateUnitPosition();				// Update unit position
-	virtual void UpdateEnemyGridCost(glm::vec3 Destination, std::vector<Entity>units);
+	virtual void UpdateEnemyGridCost(glm::vec3 Destination, std::vector<Entity>units, bool attacking);
 	virtual void SetUp();
 	virtual void Init();
 	void getUnitEntity(std::set<Entity>* entitylist);
