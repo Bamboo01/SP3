@@ -38,11 +38,14 @@ void UnitSystem::Update(double dt)
 {
     d_elapsedTime += dt;
 
+    std::vector<Entity> unitList;
+
     for (auto const& entity : m_Entities)
     {
         auto& transform = coordinator.GetComponent<Transform>(entity);
         auto& unit = coordinator.GetComponent<Unit>(entity);
         auto& entityState = coordinator.GetComponent<EntityState>(entity);
+
 
         if (unit.health <= 0) // In the event the unit's health falls to/below 0, deactivate the unit.
         {
@@ -59,6 +62,11 @@ void UnitSystem::Update(double dt)
 
             AddInactiveEntity(entity);
             continue;
+        }
+
+        if (unit.unitFaction == Unit::ENEMY)
+        {
+            unitList.push_back(entity);
         }
 
         UpdateUnitToTerrain(entity);
@@ -108,6 +116,13 @@ void UnitSystem::Update(double dt)
             }
         }
     }
+
+    for (auto& const aientity : aiControllerEntity)
+    {
+        auto& aiEntityController = coordinator.GetComponent<AIController>(aientity);
+        aiEntityController.updateUnitList(unitList);
+    }
+
 }
 
 void UnitSystem::UpdateUnitToTerrain(Entity entity)

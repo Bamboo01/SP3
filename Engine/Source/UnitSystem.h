@@ -10,6 +10,7 @@
 #include "QuadTreeSystem.h"
 #include "SoundController.h"
 #include "AIController.h"
+#include "AIControllerSystem.h"
 
 extern Coordinator coordinator;
 extern Renderer renderer;
@@ -45,4 +46,5 @@ private:
     std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
     std::shared_ptr<QuadTreeSystem> quadtreesystem;
     CSoundController* cSoundController;
+    
 };
