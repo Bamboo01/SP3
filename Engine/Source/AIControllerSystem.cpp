@@ -131,7 +131,11 @@ void AIControllerSystem::Update(float dt)
             else if (aicontroller.TotalAggression > 0.f)
             {
                 // Semi-Defensive
-                // Research units
+                // If number of gen1 > 3 and gen2 > 1
+                    //Level up unit based on current resources.
+                        //Check which units are available for leveling up
+                    //Else, build one unit
+                // Else, Build Generators
             }
             else
             {

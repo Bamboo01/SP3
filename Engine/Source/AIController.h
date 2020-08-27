@@ -30,6 +30,9 @@ struct AIController : public Controller
 	float ProcessEventsTimer;
 	float ProcessTacticsTimer;
 
+	int numGen1;
+	int numGen2;
+
 	std::vector<Event> eventlist;
 	std::vector<Entity> unitlist;
 
