@@ -27,11 +27,18 @@ struct AIController : public Controller
 
 	float AIAggroTimer;
 	float PlayerAggroTimer;
+	float ProcessEventsTimer;
+	float ProcessTacticsTimer;
 
 	std::vector<Event> eventlist;
 	std::vector<Entity> unitlist;
 
 	std::shared_ptr<GridControllerSystem> gridcontrollersystem;
+
+	AIController()
+	{
+
+	}
 
 	AIController(std::shared_ptr<GridControllerSystem> gcs, ControllerType controllertype, glm::vec3 nexusposition) : Controller(controllertype, nexusposition)
 	{
@@ -41,6 +48,8 @@ struct AIController : public Controller
 
 		AIAggroTimer = 0.f;
 		PlayerAggroTimer = 0.f;
+		ProcessEventsTimer = 0.f;
+		ProcessTacticsTimer = 0.f;
 		gridcontrollersystem = gcs;
 	}
 
