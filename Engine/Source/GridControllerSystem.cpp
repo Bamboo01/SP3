@@ -606,6 +606,72 @@ void GridControllerSystem::UpdateUnitPosition()
 	}
 }
 
+void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vector<Entity> units)
+{
+	CreateGrids();
+	glm::vec2 destination = glm::vec2(-1, -1);	// If it is -1 at the end, means that destination is impossible
+	for (int x = 0; x < 20; ++x)
+	{
+		for (int y = 0; y < 20; ++y)
+		{
+			glm::vec3 GridTopLeft = GridPosition[x][y];
+			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 30, GridTopLeft.y, GridTopLeft.z - 30);
+			if (Destination.x >= GridTopLeft.x && Destination.x <= GridBottomRight.x && Destination.z <= GridTopLeft.z && Destination.z >= GridBottomRight.z)
+			{
+				if (GridCost[x][y] == -1)
+				{	// Set The Empty Grid To the Destination Point
+					GridCost[x][y] = 0;
+					destination.x = x;
+					destination.y = y;
+					//std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+					break;
+				}
+				else
+					break;		// If there is a wall at the destination point, Destination is impossible to reach
+			}
+		}
+	}
+	if (destination.x != -1 && destination.y != -1)
+	{
+		// A Grid that has been selected
+		CreatePathTop(destination);
+
+		CreatePathBottom(destination);
+
+		SafetyPathCheck(destination);
+
+
+		std::vector <std::vector<int>> temp;
+		temp.resize(20);
+		for (auto& vec : temp)
+		{
+			vec.resize(20);
+		}
+
+		for (int x = 0; x < 20; ++x)
+		{
+			for (int y = 0; y < 20; ++y)
+			{
+				temp[x][y] = GridCost[x][y];
+			}
+		}
+
+		IDtoFlowfield.insert({ FlowfieldIDs.front(),std::make_pair(units.size(), temp) });
+		for (auto e : units)
+		{
+			auto& a = coordinator.GetComponent<Unit>(e);
+			if (a.UnitID != INT_MAX)
+			{
+				IDtoFlowfield.at(a.UnitID).first--;
+			}
+			a.UnitID = FlowfieldIDs.front();
+		}
+		FlowfieldIDs.pop();
+		UpdateUnitPosition();
+	}
+
+}
+
 void GridControllerSystem::SetUp()
 {
 	Signature signature;
