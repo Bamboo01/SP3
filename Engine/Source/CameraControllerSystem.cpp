@@ -129,17 +129,17 @@ void CameraControllerSystem::Update(float dt)
             }
             //MINIMAP BOX
             glm::mat4 model(1.0);
-            if (0.2 * camera.position.x > -50 && 0.2 * camera.position.x < 50 && 0.25 * camera.position.z > -50 && 0.25 * camera.position.z < 50)
+            if (0.2 * camera.position.x > -50 && 0.3 * camera.position.x < 50 && 0.25 * camera.position.z > -50 && 0.25 * camera.position.z < 50)
             {
-                model = glm::translate(model, glm::vec3(0.2 * camera.position.x, 300, 0.25*camera.position.z));
+                model = glm::translate(model, glm::vec3(0.3 * camera.position.x, 300, 0.25*camera.position.z));
             }
-            else if (0.2 * camera.position.x > -50 && 0.2 * camera.position.x < 50 && 0.25 * camera.position.z < 50)
+            else if (0.2 * camera.position.x > -50 && 0.3 * camera.position.x < 50 && 0.25 * camera.position.z < 50)
             {
-                model = glm::translate(model, glm::vec3(0.2 * camera.position.x, 300, -50));
+                model = glm::translate(model, glm::vec3(0.3 * camera.position.x, 300, -50));
             }
-            else if (0.2 * camera.position.x > -50 && 0.2 * camera.position.x < 50 && 0.25 * camera.position.z > -50)
+            else if (0.2 * camera.position.x > -50 && 0.3 * camera.position.x < 50 && 0.25 * camera.position.z > -50)
             {
-                model = glm::translate(model, glm::vec3(0.2 * camera.position.x, 300, 50));
+                model = glm::translate(model, glm::vec3(0.3 * camera.position.x, 300, 50));
             }
             else if (0.2 * camera.position.x > -50&& 0.25 * camera.position.z > -50 && 0.25 * camera.position.z < 50)
             {
@@ -166,7 +166,7 @@ void CameraControllerSystem::Update(float dt)
                 model = glm::translate(model, glm::vec3(-50, 300, -50));
             }
             model = glm::rotate(model, glm::radians(-90.f), glm::vec3(1, 0, 0));
-            model = glm::scale(model, glm::vec3(18, 18, 0));
+            model = glm::scale(model, glm::vec3(30, 30, 0));
            
             renderer.getMesh(GEO_MINIMAPBOX)->DynamicTransformMatrices.push_back(model);
 
