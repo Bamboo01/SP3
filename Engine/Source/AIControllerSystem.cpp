@@ -1,4 +1,5 @@
 #include "AIControllerSystem.h"
+#include <gtc/random.hpp>
 
 void AIControllerSystem::Setup()
 {
@@ -83,7 +84,7 @@ void AIControllerSystem::Update(float dt)
                 }
 
                 // GridController stuff here!
-                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities, true);
+                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities, false);
                 // Make sure that if a unit is enroute to anything, SKIP it and process the next one
 
             }
@@ -92,7 +93,7 @@ void AIControllerSystem::Update(float dt)
         }
 
         //Build order via final aggression amount
-        if (aicontroller.ProcessTacticsTimer > 10.f)
+        if (aicontroller.ProcessTacticsTimer > 5.f)
         {
             aicontroller.ProcessTacticsTimer = 0.f;
 
@@ -133,6 +134,7 @@ void AIControllerSystem::Update(float dt)
                 }
                 std::sort(EntitiesToNexus.begin(), EntitiesToNexus.end(), [](const std::pair<Entity, float>& a, const std::pair<Entity, float>& b) { return a.second < b.second; });
                 //Send those units to attack, select those few units and send to grid function, position is player nexus
+                
             }
             else if (aicontroller.TotalAggression > 0.f)
             {
@@ -146,6 +148,55 @@ void AIControllerSystem::Update(float dt)
                 {
                     if (aicontroller.resource1 > aicontroller.leveluprangecost)
                     {
+                        // Level up normal units
+                        if (aicontroller.resource1 > aicontroller.levelupnormalcost)
+                        {
+                            std::cout << "ENEMY NORMAL LEVEL UP! " << std::endl;
+                            if (aicontroller.normalunitlevel <= 3)
+                            {
+                                aicontroller.normalunitlevel++;
+                                aicontroller.resource1 -= aicontroller.levelupnormalcost;
+                            }
+                            else if (aicontroller.normalunitlevel > 3 && aicontroller.resource2 > aicontroller.levelupnormalcost2)
+                            {
+                                aicontroller.normalunitlevel++;
+                                aicontroller.resource1 -= aicontroller.levelupnormalcost;
+                                aicontroller.resource2 -= aicontroller.levelupnormalcost2;
+                            }
+
+                        }
+                        // Level up range units
+                        else if (aicontroller.resource1 > aicontroller.leveluprangecost)
+                        {
+                            std::cout << "ENEMY RANGE LEVEL UP! " << std::endl;
+                            if (aicontroller.rangeunitlevel <= 3)
+                            {
+                                aicontroller.rangeunitlevel++;
+                                aicontroller.resource1 -= aicontroller.leveluprangecost;
+                            }
+                            else if (aicontroller.rangeunitlevel > 3 && aicontroller.resource2 > aicontroller.leveluprangecost2)
+                            {
+                                aicontroller.rangeunitlevel++;
+                                aicontroller.resource1 -= aicontroller.leveluprangecost;
+                                aicontroller.resource2 -= aicontroller.leveluprangecost2;
+                            }
+                        }
+                        // Level up tank units
+                        else if (aicontroller.resource1 > aicontroller.leveluptankcost)
+                        {
+                            std::cout << "ENEMY TANK LEVEL UP! " << std::endl;
+                            if (aicontroller.tankunitlevel <= 3)
+                            {
+                                aicontroller.tankunitlevel++;
+                                aicontroller.resource1 -= aicontroller.leveluptankcost;
+                            }
+                            else if (aicontroller.tankunitlevel > 3 && aicontroller.resource2 > aicontroller.leveluptankcost2)
+                            {
+                                aicontroller.tankunitlevel++;
+                                aicontroller.resource1 -= aicontroller.leveluptankcost;
+                                aicontroller.resource2 -= aicontroller.leveluptankcost2;
+                            }
+                        }
 
                     }
                     else
@@ -153,14 +204,20 @@ void AIControllerSystem::Update(float dt)
                         if (aicontroller.resource1 > 150.f)
                         {
                             //Build tank
+                            aicontroller.resource1 -= aicontroller.tankunitcost;
+                            unitsystem->CreateUnit(Unit::TANK, Unit::ENEMY, aicontroller.tankunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                         }
                         else if (aicontroller.resource1 > 100.f)
                         {
                             //Build Ranged
+                            aicontroller.resource1 -= aicontroller.rangeunitcost;
+                            unitsystem->CreateUnit(Unit::RANGE, Unit::ENEMY, aicontroller.rangeunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                         }
                         else if (aicontroller.resource1 > 30.f)
                         {
                             //Build normal
+                            aicontroller.resource1 -= aicontroller.normalunitcost;
+                            unitsystem->CreateUnit(Unit::NORMAL, Unit::ENEMY, aicontroller.normalunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                         }
                     }
                 }
@@ -169,13 +226,60 @@ void AIControllerSystem::Update(float dt)
                     //Build Generators
                     if (aicontroller.resource1 > 160.f)
                     {
-                        if (aicontroller.numGen1 > 3)
+                        if (aicontroller.numGen1 > 5)
                         {
                             //build generator 2
+                            bool found = false;
+                            while (!found)
+                            {
+                                glm::vec2 randomxz = glm::diskRand(200.f);
+                                glm::vec3 positiontoplace = glm::vec3(aicontroller.nexusposition.x + randomxz.x, aicontroller.nexusposition.y, aicontroller.nexusposition.z + randomxz.y);
+
+                                // Check if it's within the terrain
+                                if (positiontoplace.x > -200 && positiontoplace.x < 200 && positiontoplace.z > -200 && positiontoplace.z < 200)
+                                {
+                                    for (int i = 0; i < aicontroller.unitlist.size(); ++i)
+                                    {
+                                        Entity temp = aicontroller.unitlist[i];
+                                        auto& transformbuilding = coordinator.GetComponent<Transform>(temp);
+
+                                        if (glm::length(transformbuilding.position - positiontoplace) > 100)
+                                        {
+                                            aicontroller.resource1 -= aicontroller.generator2cost;
+                                            unitsystem->CreateUnit(Unit::GENERATOR2, Unit::ENEMY, 1, Transform(positiontoplace, glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            //build generator 1
+                            bool found = false;
+                            while (!found)
+                            {
+                                glm::vec2 randomxz = glm::diskRand(200.f);
+                                glm::vec3 positiontoplace = glm::vec3(aicontroller.nexusposition.x + randomxz.x, aicontroller.nexusposition.y, aicontroller.nexusposition.z + randomxz.y);
+
+                                // Check if it's within the terrain
+                                if (positiontoplace.x > -200 && positiontoplace.x < 200 && positiontoplace.z > -200 && positiontoplace.z < 200)
+                                {
+                                    for (int i = 0; i < aicontroller.unitlist.size(); ++i)
+                                    {
+                                        Entity temp = aicontroller.unitlist[i];
+                                        auto& transformbuilding = coordinator.GetComponent<Transform>(temp);
+
+                                        if (glm::length(transformbuilding.position - positiontoplace) > 100)
+                                        {
+                                            aicontroller.resource1 -= aicontroller.generator1cost;
+                                            unitsystem->CreateUnit(Unit::GENERATOR1, Unit::ENEMY, 1, Transform(positiontoplace, glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     else
@@ -183,14 +287,20 @@ void AIControllerSystem::Update(float dt)
                         if (aicontroller.resource1 > 150.f)
                         {
                             //Build tank
+                            aicontroller.resource1 -= aicontroller.tankunitcost;
+                            unitsystem->CreateUnit(Unit::TANK, Unit::ENEMY, aicontroller.tankunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                         }
                         else if (aicontroller.resource1 > 100.f)
                         {
                             //Build Ranged
+                            aicontroller.resource1 -= aicontroller.rangeunitcost;
+                            unitsystem->CreateUnit(Unit::RANGE, Unit::ENEMY, aicontroller.rangeunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                         }
                         else if (aicontroller.resource1 > 30.f)
                         {
                             //Build normal
+                            aicontroller.resource1 -= aicontroller.normalunitcost;
+                            unitsystem->CreateUnit(Unit::NORMAL, Unit::ENEMY, aicontroller.normalunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                         }
                     }
                 }
@@ -203,6 +313,30 @@ void AIControllerSystem::Update(float dt)
                 if (aicontroller.resource1 > 250.f)
                 {
                     //Build turret
+                    bool found = false;
+                    while (!found)
+                    {
+                        glm::vec2 randomxz = glm::diskRand(200.f);
+                        glm::vec3 positiontoplace = glm::vec3(aicontroller.nexusposition.x + randomxz.x, aicontroller.nexusposition.y, aicontroller.nexusposition.z + randomxz.y);
+
+                        // Check if it's within the terrain
+                        if (positiontoplace.x > -200 && positiontoplace.x < 200 && positiontoplace.z > -200 && positiontoplace.z < 200)
+                        {
+                            for (int i = 0; i < aicontroller.unitlist.size(); ++i)
+                            {
+                                Entity temp = aicontroller.unitlist[i];
+                                auto& transformbuilding = coordinator.GetComponent<Transform>(temp);
+
+                                if (glm::length(transformbuilding.position - positiontoplace) > 100)
+                                {
+                                    aicontroller.resource1 -= aicontroller.towercost;
+                                    unitsystem->CreateUnit(Unit::TOWER, Unit::ENEMY, 1, Transform(positiontoplace, glm::vec3(2, 2, 2), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -73,7 +73,7 @@ struct Controller
 	{
 		this->controllertype = controllertype;
 		this->nexusposition = nexusposition;
-		resource1 = 200;
+		resource1 = 1000;
 		resource2 = 0;
 		normalunitlevel = 1;
 		rangeunitlevel = 1;

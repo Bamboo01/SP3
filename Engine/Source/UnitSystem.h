@@ -10,7 +10,6 @@
 #include "QuadTreeSystem.h"
 #include "SoundController.h"
 #include "AIController.h"
-#include "AIControllerSystem.h"
 
 extern Coordinator coordinator;
 extern Renderer renderer;
