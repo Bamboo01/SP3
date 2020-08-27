@@ -18,7 +18,6 @@ void ControllerSystem::Update(double dt)
 	for (auto const& control : m_Entities)
 	{
 		auto& controller = coordinator.GetComponent<Controller>(control);
-		
 		// Update unit cost
 		controller.normalunitcost = controller.normalunitlevel * 50;
 		controller.rangeunitcost = controller.rangeunitlevel * 100;

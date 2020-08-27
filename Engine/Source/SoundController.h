@@ -56,6 +56,12 @@ public:
 	// Decrease volume of a ISoundSource
 	bool VolumeDecrease(const int ID);
 
+	// Change max distance of a sound source
+	void ChangeSoundSourceMaxDistance(const int ID, float dist);
+
+	// Change max distance of a sound source
+	void ChangeSoundSourceMinDistance(const int ID, float dist);
+
 	// Get the current Master Volume
 	int GetMasterVolume();
 
@@ -72,6 +78,7 @@ public:
 	// Change max distance of a sound source
 	void ChangeSoundSourceMinDistance(const int ID, float dist);
 
+	// Sets rolloff factor
 	void SetRolloffFactor(float a);
 
 protected:

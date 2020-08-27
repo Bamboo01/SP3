@@ -256,6 +256,28 @@ bool CSoundController::VolumeDecrease(const int ID)
 	return true;
 }
 
+void CSoundController::ChangeSoundSourceMaxDistance(const int ID, float dist)
+{
+	// Get the ISoundSource
+	ISoundSource* pISoundSource = GetSound(ID)->GetSound();
+	if (pISoundSource == nullptr)
+	{
+		return;
+	}
+	pISoundSource->setDefaultMaxDistance(dist);
+}
+
+void CSoundController::ChangeSoundSourceMinDistance(const int ID, float dist)
+{
+		// Get the ISoundSource
+	ISoundSource* pISoundSource = GetSound(ID)->GetSound();
+	if (pISoundSource == nullptr)
+	{
+		return;
+	}
+	pISoundSource->setDefaultMaxDistance(dist);
+}
+
 int CSoundController::GetMasterVolume()
 {
 	return (int)(cSoundEngine->getSoundVolume() * 100.f);
@@ -293,6 +315,11 @@ void CSoundController::SetSoundSourcePosition(const int ID, float x, float y, fl
 		return;
 	}
 	pSoundInfo->SetPosition(x, y, z);
+}
+
+void CSoundController::SetRolloffFactor(float a)
+{
+	cSoundEngine->setRolloffFactor(a);
 }
 
 /**
