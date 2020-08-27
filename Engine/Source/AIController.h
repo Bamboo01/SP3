@@ -85,6 +85,7 @@ struct AIController : public Controller
 					++event2;
 				}
 			}
+			++event1;
 		}
 		//Next, sort the list of events from highest to lowest
 		std::sort(eventlist.begin(), eventlist.end(), [](const Event& x, const Event& y) { return x.severity > y.severity; });
