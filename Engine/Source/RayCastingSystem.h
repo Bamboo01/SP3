@@ -13,6 +13,7 @@
 #include "Renderer.h"
 #include "ColliderSystem.h"
 #include "SoundController.h"
+#include "Camera.h"
 
 extern Renderer renderer;
 extern Coordinator coordinator;
@@ -23,7 +24,7 @@ class RayCastingSystem : public System
 public:
     
     virtual void Setup();
-    virtual void Init(std::set<Entity>* colliderentitylist, std::set<Entity>* controllerentitylist);
+    virtual void Init(std::set<Entity>* colliderentitylist, std::set<Entity>* controllerentitylist, Entity camera);
     virtual void Update(double dt);
     virtual void Render();
 
@@ -78,6 +79,8 @@ private:
     int unitlimit;
 
     double timer;
+
+    Entity camera;
 
     std::shared_ptr<QuadTreeSystem> quadTreeSystem;
     std::shared_ptr<UnitSystem> unitsystem;

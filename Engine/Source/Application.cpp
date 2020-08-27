@@ -234,7 +234,7 @@ void Application::Run()
 	Scene* scene = nullptr;
 	SceneManager* scenemanager = SceneManager::getInstance();
 	scenemanager->Init(&scene);
-	scenemanager->ChangeScene(SCENE_INTRO);
+	scenemanager->ChangeScene(SCENE_COMBAT);
 	scenemanager->Update();
 
 	const char* glsl_version = "#version 330";

@@ -65,6 +65,8 @@ public:
 	// Set Listener direction
 	void SetListenerDirection(const float x, const float y, const float z);
 
+	void SetSoundSourcePosition(const int ID, float x, float y, float z);
+
 protected:
 	// Constructor
 	CSoundController(void);

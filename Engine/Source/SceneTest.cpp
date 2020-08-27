@@ -724,9 +724,9 @@ void SceneTest::Init()
 	canvastextsystem->Init();
 	entitystatesystem->Init();
 	terrainsystem->Init();
-	unitsystem->Init(terrainsystem->m_Entities);
+	//unitsystem->Init(terrainsystem->m_Entities);
 	collidersystem->Init();
-	raycastingsystem->Init(&collidersystem->m_Entities, &controllersystem->m_Entities);
+//	raycastingsystem->Init(&collidersystem->m_Entities, &controllersystem->m_Entities);
 	controllersystem->Init(&collidersystem->m_Entities);
 	canvasimageupdatesystem->Init(&controllersystem->m_Entities);
 	guitextsystem->Init(&controllersystem->m_Entities);

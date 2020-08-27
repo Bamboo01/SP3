@@ -97,11 +97,6 @@ void UnitSystem::Update(double dt)
     }
 }
 
-void UnitSystem::UpdateCameraEntity(Entity entity)
-{
-    cameraEntity = entity;
-}
-
 void UnitSystem::UpdateUnitToTerrain(Entity entity)
 {
     for (auto& entities : terrainEntity)

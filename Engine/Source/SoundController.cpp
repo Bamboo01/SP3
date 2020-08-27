@@ -283,6 +283,17 @@ void CSoundController::SetListenerDirection(const float x, const float y, const 
 	vec3dfListenerDir.set(x, y, z);
 }
 
+void CSoundController::SetSoundSourcePosition(const int ID, float x, float y, float z)
+{
+	CSoundInfo* pSoundInfo = GetSound(ID);
+	if (!pSoundInfo)
+	{
+		cout << "Sound #" << ID << " is not playable." << endl;
+		return;
+	}
+	pSoundInfo->SetPosition(x, y, z);
+}
+
 /**
  @brief Get an sound from this map
  @param ID A const int variable which will be the ID of the iSoundSource in the map

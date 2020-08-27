@@ -13,7 +13,7 @@ void RayCastingSystem::Setup()
 	coordinator.SetSystemSignature<RayCastingSystem>(signature);
 }
 
-void RayCastingSystem::Init(std::set<Entity>* colliderentitylist, std::set<Entity>* controllerentitylist)
+void RayCastingSystem::Init(std::set<Entity>* colliderentitylist, std::set<Entity>* controllerentitylist, Entity camera)
 {
 
     unitlimit = 10;
@@ -23,6 +23,7 @@ void RayCastingSystem::Init(std::set<Entity>* colliderentitylist, std::set<Entit
 	this->colliderentitylist = colliderentitylist;
     this->controllerentitylist = controllerentitylist;
     cSoundController = CSoundController::GetInstance();
+    this->camera = camera;
 
 	for (auto const& entity : m_Entities)
 	{
@@ -254,7 +255,7 @@ void RayCastingSystem::unitSelection()
 
 void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
 {
-
+    auto& cameratransform = coordinator.GetComponent<Camera>(camera);
     for (auto const& control : *controllerentitylist)
     {
         auto& controller = coordinator.GetComponent<Controller>(control);
@@ -283,6 +284,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
 
                     if (Application::IsMousePressed(0) && buildingclickdelay < timer)
                     {
+                        cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y + 80, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
                         std::cout << "Tower Placed!" << std::endl;
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_TOWER_PLAYER);
@@ -310,6 +312,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
 
                     if (Application::IsMousePressed(0) && buildingclickdelay < timer)
                     {
+                        cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y + 80, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
                         std::cout << "Wall Placed!" << std::endl;
                         collider.mass = -1;
@@ -336,6 +339,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     transform.position = glm::vec3(rayendpos.x, 20 + terrain.ReadHeightMap(rayendpos.x, rayendpos.z), rayendpos.z);
                     if (Application::IsMousePressed(0) && buildingclickdelay < timer)
                     {
+                        cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y + 80, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
                         std::cout << "Gen1 Placed!" << std::endl;
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_GENERATOR1_PLAYER);
@@ -364,6 +368,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
 
                     if (Application::IsMousePressed(0) && buildingclickdelay < timer)
                     {
+                        cSoundController->SetSoundSourcePosition(25, rayendpos.x, rayendpos.y + 80, rayendpos.z);
                         cSoundController->PlaySoundByID(25);
                         std::cout << "Gen2 Placed!" << std::endl;
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_GENERATOR2_PLAYER);

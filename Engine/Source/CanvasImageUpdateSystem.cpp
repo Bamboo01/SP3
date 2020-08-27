@@ -82,10 +82,10 @@ void CanvasImageUpdateSystem::Update(double dt)
 		// Check for clicking on clickable quad (Buttons)
 		if (canvasupdate.clicktype == CanvasImageUpdate::CLICKABLE && Application::IsMousePressed(0) && CollideWithCanvas(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y) && entitystate.active == true && clickdelay <= timer)
 		{
-			if (canvasupdate.buttontype == CanvasImageUpdate::GENERATOR1BUTTON || canvasupdate.buttontype == CanvasImageUpdate::GENERATOR2BUTTON)
-				cSoundController->PlaySoundByID(27);
-			else
-				cSoundController->PlaySoundByID(26);
+			//if (canvasupdate.buttontype == CanvasImageUpdate::GENERATOR1BUTTON || canvasupdate.buttontype == CanvasImageUpdate::GENERATOR2BUTTON)
+			//	cSoundController->PlaySoundByID(27);
+			//else
+			//	cSoundController->PlaySoundByID(26);
 
 			clickdelay = timer + 0.2;
 			if (canvasupdate.buttontype == CanvasImageUpdate::LABBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEUNITBUTTON || canvasupdate.buttontype == CanvasImageUpdate::NEXUSCREATEBUILDINGBUTTON)
@@ -325,6 +325,8 @@ void CanvasImageUpdateSystem::Update(double dt)
 						// Add code to spawn normal unit (Check whether is there enough resources)
 						if (controller.resource1 >= controller.normalunitcost)
 						{
+							cSoundController->SetSoundSourcePosition(25, 130, 0, 150);
+							cSoundController->PlaySoundByID(25);
 							std::cout << "Normal unit created" << std::endl;
 							controller.resource1 -= controller.normalunitcost;
 							unitsystem->CreateUnit(Unit::NORMAL, Unit::PLAYER, controller.normalunitlevel, Transform(glm::vec3(130, 0, 150), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
