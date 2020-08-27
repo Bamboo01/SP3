@@ -221,6 +221,15 @@ void Application::Run()
 	cSoundController->LoadSound("Sounds/IntroComplete.ogg", 3);
 	cSoundController->LoadSound("Sounds/Glitch.ogg", 4);
 
+	cSoundController->LoadSound("Sound/NormalTank_attack.wav", 20);
+	cSoundController->LoadSound("Sound/Range_attack.mp3", 21);
+	cSoundController->LoadSound("Sound/Tower_attack.wav", 22);
+	cSoundController->LoadSound("Sound/Unit_death.wav", 23);
+	cSoundController->LoadSound("Sound/Building_death.wav", 24);
+	cSoundController->LoadSound("Sound/Create_building_unit.wav", 25);
+	cSoundController->LoadSound("Sound/GUI_click.wav", 26);
+	cSoundController->LoadSound("Sound/Collect_resource.wav", 27);
+
 	//Main Loop
 	Scene* scene = nullptr;
 	SceneManager* scenemanager = SceneManager::getInstance();
