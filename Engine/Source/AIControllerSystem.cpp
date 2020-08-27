@@ -24,8 +24,6 @@ void AIControllerSystem::Update(float dt)
         aicontroller.PlayerAggroTimer += dt;
         aicontroller.ProcessTacticsTimer += dt;
 
-        int costbalance = aicontroller.unitlist.size();
-
         aicontroller.normalunitcost = aicontroller.normalunitlevel * 50;
         aicontroller.rangeunitcost = aicontroller.rangeunitlevel * 100;
         aicontroller.tankunitcost = aicontroller.tankunitlevel * 150;
@@ -68,22 +66,15 @@ void AIControllerSystem::Update(float dt)
         {
             aicontroller.sortEventSeverity();
             aicontroller.ProcessEventsTimer = 0.f;
+
             for (const auto& e : aicontroller.eventlist)
             {
-                if (costbalance <= 0)
-                {
-                    break;
-                }
                 float searchdist = 200.f / (1.f / e.severity);
 
                 std::vector<Entity> selectedentities;
 
                 for (const auto& entity : aicontroller.unitlist)
                 {
-                    if (costbalance <= 0)
-                    {
-                        break;
-                    }
                     auto& transform = coordinator.GetComponent<Transform>(entity);
                     if (glm::length(e.position - transform.position) < searchdist)
                     {
@@ -126,16 +117,77 @@ void AIControllerSystem::Update(float dt)
                 }
 
                 int attackingUnits = std::ceil(aicontroller.TotalAggression);
+
+                std::vector<std::pair<Entity, float>> EntitiesToNexus;
+                for (auto a : aicontroller.unitlist)
+                {
+                    auto& transform = coordinator.GetComponent<Transform>(a);
+                    float dist = (glm::length(transform.position - aicontroller.targetNexusPosition));
+                    EntitiesToNexus.push_back(std::make_pair(a, dist));
+                }
+                std::sort(EntitiesToNexus.begin(), EntitiesToNexus.end(), [](const std::pair<Entity, float>& a, const std::pair<Entity, float>& b) { return a.second < b.second; });
                 //Send those units to attack, select 2 units and send to grid function, position is player nexus
             }
             else if (aicontroller.TotalAggression > 0.f)
             {
                 // Semi-Defensive
-                // If number of gen1 > 3 and gen2 > 1
+                // If number of gen1 > 3 and gen2 > 2
                     //Level up unit based on current resources.
                         //Check which units are available for leveling up
                     //Else, build one unit
                 // Else, Build Generators
+                if (aicontroller.numGen1 > 3 && aicontroller.numGen2 > 2)
+                {
+                    if (aicontroller.resource1 > aicontroller.leveluprangecost)
+                    {
+
+                    }
+                    else
+                    {
+                        if (aicontroller.resource1 > 150.f)
+                        {
+                            //Build tank
+                        }
+                        else if (aicontroller.resource1 > 100.f)
+                        {
+                            //Build Ranged
+                        }
+                        else if (aicontroller.resource1 > 30.f)
+                        {
+                            //Build normal
+                        }
+                    }
+                }
+                else
+                {
+                    //Build Generators
+                    if (aicontroller.resource1 > 160.f)
+                    {
+                        if (aicontroller.numGen1 > 3)
+                        {
+                            //build generator 2
+                        }
+                        else
+                        {
+                            //build generator 1
+                        }
+                    }
+                    else
+                    {
+                        if (aicontroller.resource1 > 150.f)
+                        {
+                            //Build tank
+                        }
+                        else if (aicontroller.resource1 > 100.f)
+                        {
+                            //Build Ranged
+                        }
+                        else if (aicontroller.resource1 > 30.f)
+                        {
+                            //Build normal
+                        }
+                    }
+                }
             }
             else
             {

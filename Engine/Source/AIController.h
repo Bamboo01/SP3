@@ -33,6 +33,8 @@ struct AIController : public Controller
 	int numGen1;
 	int numGen2;
 
+	glm::vec3 targetNexusPosition;
+
 	std::vector<Event> eventlist;
 	std::vector<Entity> unitlist;
 
@@ -43,7 +45,7 @@ struct AIController : public Controller
 
 	}
 
-	AIController(std::shared_ptr<GridControllerSystem> gcs, ControllerType controllertype, glm::vec3 nexusposition) : Controller(controllertype, nexusposition)
+	AIController(std::shared_ptr<GridControllerSystem> gcs, ControllerType controllertype, glm::vec3 nexusposition, glm::vec3 targetpos) : Controller(controllertype, nexusposition)
 	{
 		PlayerAggression = 0.f;
 		AIAggression = 0.f;
@@ -54,6 +56,11 @@ struct AIController : public Controller
 		ProcessEventsTimer = 0.f;
 		ProcessTacticsTimer = 0.f;
 		gridcontrollersystem = gcs;
+
+		numGen1 = 0;
+		numGen2 = 0;
+
+		targetNexusPosition = targetpos;
 	}
 
 	void sortEventSeverity()

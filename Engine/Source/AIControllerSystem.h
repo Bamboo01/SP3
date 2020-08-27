@@ -7,6 +7,7 @@ extern Coordinator coordinator;
 
 class AIControllerSystem : public System
 {
+public:
 	void Setup();
 	void Init();
 	void Update(float dt);
