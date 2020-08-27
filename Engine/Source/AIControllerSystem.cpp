@@ -126,7 +126,7 @@ void AIControllerSystem::Update(float dt)
                     EntitiesToNexus.push_back(std::make_pair(a, dist));
                 }
                 std::sort(EntitiesToNexus.begin(), EntitiesToNexus.end(), [](const std::pair<Entity, float>& a, const std::pair<Entity, float>& b) { return a.second < b.second; });
-                //Send those units to attack, select 2 units and send to grid function, position is player nexus
+                //Send those units to attack, select those few units and send to grid function, position is player nexus
             }
             else if (aicontroller.TotalAggression > 0.f)
             {
