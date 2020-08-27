@@ -360,30 +360,3 @@ int CSoundController::GetNumOfSounds(void) const
 {
 	return soundMap.size();
 }
-
-void CSoundController::ChangeSoundSourceMaxDistance(const int ID, float dist)
-{
-	// Get the ISoundSource
-	ISoundSource* pISoundSource = GetSound(ID)->GetSound();
-	if (pISoundSource == nullptr)
-	{
-		return;
-	}
-	pISoundSource->setDefaultMaxDistance(dist);
-}
-
-void CSoundController::ChangeSoundSourceMinDistance(const int ID, float dist)
-{
-	// Get the ISoundSource
-	ISoundSource* pISoundSource = GetSound(ID)->GetSound();
-	if (pISoundSource == nullptr)
-	{
-		return;
-	}
-	pISoundSource->setDefaultMinDistance(dist);
-}
-
-void CSoundController::SetRolloffFactor(float a)
-{
-	cSoundEngine->setRolloffFactor(a);
-}
