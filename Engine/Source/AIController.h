@@ -66,9 +66,9 @@ struct AIController : public Controller
 	void sortEventSeverity()
 	{
 		//First, merge the severity of events that are close to each other
-		for (auto event1 = eventlist.begin(); event1 < eventlist.end();)
+		for (auto event1 = eventlist.begin(); event1 != eventlist.end();)
 		{
-			for (auto event2 = event1; event2 < eventlist.end();)
+			for (auto event2 = event1; event2 != eventlist.end();)
 			{
 				if(event2 == event1)
 				{
