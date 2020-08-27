@@ -14,9 +14,10 @@ void UnitSystem::Setup()
     coordinator.SetSystemSignature<UnitSystem>(signature);
 }
 
-void UnitSystem::Init(std::set<Entity> terrainEntitySet, Entity cameraentity)
+void UnitSystem::Init(std::set<Entity> terrainEntitySet, std::set<Entity> aiControllerSet, Entity cameraentity)
 {
     terrainEntity = terrainEntitySet;
+    aiControllerEntity = aiControllerSet;
     cameraEntity = cameraentity;
     cSoundController = CSoundController::GetInstance();
 
@@ -479,6 +480,30 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
         }
 
         attackerUnit.delay = d_elapsedTime + (1.0 / attackerUnit.attackSpeed); // Adds in the resultant delay after inclusion of attackSpeed
+
+        for (auto& const aientity : aiControllerEntity)
+        {
+            auto& aiEntityController = coordinator.GetComponent<AIController>(aientity);
+            float unitSeverity = 0.5;
+            float buildingSeverity = 1.5;
+            float nexusSeverity = 5.0;
+
+            if (receiverUnit.unitFaction == Unit::ENEMY)
+            {
+                if (receiverUnit.unitType == Unit::NORMAL || receiverUnit.unitType == Unit::TANK || receiverUnit.unitType == Unit::RANGE)
+                {
+                    aiEntityController.LogEvent(receiverTransform.position, unitSeverity);
+                }
+                else if (receiverUnit.unitType == Unit::NEXUS)
+                {
+                    aiEntityController.LogEvent(receiverTransform.position, nexusSeverity);
+                }
+                else
+                {
+                    aiEntityController.LogEvent(receiverTransform.position, buildingSeverity);
+                }
+            }
+        }
     }
 
 }

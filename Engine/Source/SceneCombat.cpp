@@ -84,7 +84,6 @@ void SceneCombat::Init()
 	canvastextsystem->Init();
 	entitystatesystem->Init();
 	terrainsystem->Init();
-	unitsystem->Init(terrainsystem->m_Entities, cameraHandler);
 	collidersystem->Init();
 	raycastingsystem->Init(&collidersystem->m_Entities, &controllersystem->m_Entities, cameraHandler);
 	controllersystem->Init(&collidersystem->m_Entities);
@@ -100,6 +99,7 @@ void SceneCombat::Init()
 	objectpoolsystem->Init();
 	quadtreesystem->Init();
 	aicontrollersystem->Init();
+	unitsystem->Init(terrainsystem->m_Entities, aicontrollersystem->m_Entities, cameraHandler);
 
 	collidersystem->SetUnitSystem(unitsystem);
 	collidersystem->SetQuadTreeSystem(quadtreesystem);

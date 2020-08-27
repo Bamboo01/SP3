@@ -9,6 +9,7 @@
 #include "ObjectPoolSystem.h"
 #include "QuadTreeSystem.h"
 #include "SoundController.h"
+#include "AIController.h"
 
 extern Coordinator coordinator;
 extern Renderer renderer;
@@ -18,7 +19,7 @@ class UnitSystem : public System
 {
 public:
     virtual void Setup();
-    virtual void Init(std::set<Entity> terrainEntity, Entity cameraEntity);
+    virtual void Init(std::set<Entity> terrainEntity, std::set<Entity> aiControllerEntities, Entity cameraEntity);
     virtual void Update(double dt);
 
     void UpdateUnitToTerrain(Entity entity);
@@ -40,6 +41,7 @@ private:
     double d_elapsedTime;
     Entity cameraEntity;
     std::set<Entity> terrainEntity;
+    std::set<Entity> aiControllerEntity;
     std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
     std::shared_ptr<QuadTreeSystem> quadtreesystem;
     CSoundController* cSoundController;
