@@ -597,8 +597,6 @@ void GridControllerSystem::UpdateUnitPosition()
 							unit.velocity = glm::vec3(0, 0, 0);
 						}
 
-
-
 					}
 				}
 			}
