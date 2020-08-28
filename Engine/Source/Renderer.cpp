@@ -174,7 +174,7 @@ void Renderer::Init()
 
 
 	addMaterial(playerMaterial);
-	addMaterial(enemyMaterial, enemyShader);
+	addMaterial(enemyMaterial/*, enemyShader*/);
 	addMaterial(placingMaterial, placing);
 
 	/*Assign your meshes their materials here*/
