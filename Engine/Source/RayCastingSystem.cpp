@@ -275,7 +275,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
                     auto& transform = coordinator.GetComponent<Transform>(newUnit);
                     auto& collider = coordinator.GetComponent<Collider>(newUnit);
+                    auto& unit = coordinator.GetComponent<Unit>(newUnit);
 
+                    unit.isPreview = true;
                     collider.mass = 1;
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_TOWER_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_TOWER_PLAYER)))->UpdateBool(true);
@@ -291,6 +293,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                         selectedbuilding = 0;
                         collider.mass = -1;
                         transform.position = rollBackPos;
+                        unit.isPreview = false;
                     }
                 }
                 else if (selectedbuilding == 2)
@@ -303,7 +306,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
                     auto& transform = coordinator.GetComponent<Transform>(newUnit);
                     auto& collider = coordinator.GetComponent<Collider>(newUnit);
+                    auto& unit = coordinator.GetComponent<Unit>(newUnit);
 
+                    unit.isPreview = true;
                     collider.mass = 1;
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_WALL_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_WALL_PLAYER)))->UpdateBool(true);
@@ -319,6 +324,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                         renderdata.mesh = renderer.getMesh(GEO_UNIT_WALL_PLAYER);
                         selectedbuilding = 0;
                         transform.position = rollBackPos;
+                        unit.isPreview = false;
                     }
                 }
                 else if (selectedbuilding == 3)
@@ -331,7 +337,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
                     auto& transform = coordinator.GetComponent<Transform>(newUnit);
                     auto& collider = coordinator.GetComponent<Collider>(newUnit);
+                    auto& unit = coordinator.GetComponent<Unit>(newUnit);
 
+                    unit.isPreview = true;
                     collider.mass = 1;
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR1_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR1_PLAYER)))->UpdateBool(true);
@@ -346,6 +354,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                         collidersystem->isBuildingPlaced = true;
                         collider.mass = -1;
                         transform.position = rollBackPos;
+                        unit.isPreview = false;
                     }
                 }
                 else if (selectedbuilding == 4)
@@ -358,7 +367,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                     auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
                     auto& transform = coordinator.GetComponent<Transform>(newUnit);
                     auto& collider = coordinator.GetComponent<Collider>(newUnit);
+                    auto& unit = coordinator.GetComponent<Unit>(newUnit);
 
+                    unit.isPreview = true;
                     collider.mass = 1;
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR2_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR2_PLAYER)))->UpdateBool(true);
@@ -374,6 +385,7 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                         collidersystem->isBuildingPlaced = true;
                         selectedbuilding = 0;
                         transform.position = rollBackPos;
+                        unit.isPreview = false;
                     }
                 }
             }
@@ -384,7 +396,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                 {
                     auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
                     auto& transform = coordinator.GetComponent<Transform>(newUnit);
+                    auto& unit = coordinator.GetComponent<Unit>(newUnit);
 
+                    unit.isPreview = true;
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_TOWER_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_TOWER_PLAYER)))->UpdateBool(false);
                     transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
@@ -393,7 +407,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                 {
                     auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
                     auto& transform = coordinator.GetComponent<Transform>(newUnit);
+                    auto& unit = coordinator.GetComponent<Unit>(newUnit);
 
+                    unit.isPreview = true;
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_WALL_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_WALL_PLAYER)))->UpdateBool(false);
                     transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
@@ -402,7 +418,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                 {
                     auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
                     auto& transform = coordinator.GetComponent<Transform>(newUnit);
+                    auto& unit = coordinator.GetComponent<Unit>(newUnit);
 
+                    unit.isPreview = true;
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR1_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR1_PLAYER)))->UpdateBool(false);
                     transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);
@@ -411,7 +429,9 @@ void RayCastingSystem::PlaceBuilding(TerrainData terrain, glm::vec3 rayendpos)
                 {
                     auto& renderdata = coordinator.GetComponent<RenderData>(newUnit);
                     auto& transform = coordinator.GetComponent<Transform>(newUnit);
+                    auto& unit = coordinator.GetComponent<Unit>(newUnit);
 
+                    unit.isPreview = true;
                     renderdata.mesh = renderer.getMesh(GEO_INRANGE_GENERATOR1_PLAYER);
                     static_cast<PlacingShader*>(renderer.getShader(renderer.getMaterial(GEO_INRANGE_GENERATOR2_PLAYER)))->UpdateBool(false);
                     transform.position = glm::vec3(rayendpos.x, terrain.ReadHeightMap(rayendpos.x, rayendpos.z) + transform.scale.y * 3, rayendpos.z);

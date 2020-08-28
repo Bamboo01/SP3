@@ -43,6 +43,7 @@ struct Unit
 	Entity target; // Current targeted enemy
 	UnitType unitType; // The type of unit
 	UnitFaction unitFaction; // The side/faction which the unit belongs to
+	bool isPreview;
 
 	Entity originUnit; // (PROJECTILE ONLY!) The unit that shot the projectile, it could be tower or ranged :D
 	Entity targetUnit; // (PROJECTILE ONLY!) The unit that is being traced by the projectile
@@ -77,6 +78,7 @@ struct Unit
 		, resourcesgenerated(0)
 		, timeforgeneration(10)
 		, generationdelay(0)
+		, isPreview(false)
 	{
 	}
 

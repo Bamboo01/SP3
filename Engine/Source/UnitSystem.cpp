@@ -51,7 +51,7 @@ void UnitSystem::Update(double dt)
         auto& entityState = coordinator.GetComponent<EntityState>(entity);
 
         //POSITION THINGY DON'T MIND ME THANKS - SHERWYN
-        if (unit.unitFaction == Unit::PLAYER && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE)
+        if (unit.unitFaction == Unit::PLAYER && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE && !unit.isPreview)
         {
             renderer.fogofwarManager.positions.push_back(glm::vec4(transform.position, 0));
         }
@@ -517,13 +517,19 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
     auto& receiverTransform = coordinator.GetComponent<Transform>(receiver);
     auto& receiverUnit = coordinator.GetComponent<Unit>(receiver);
 
-    if (receiverUnit.unitType == Unit::PROJECTILE || attackerUnit.unitType == Unit::MELEE_PROJECTILE || receiverUnit.unitType == Unit::MELEE_PROJECTILE) // In the event a unit targets a projectile, by right shouldnt happen but just incase it gets called
+    if (receiverUnit.unitType == Unit::PROJECTILE || attackerUnit.unitType == Unit::MELEE_PROJECTILE || receiverUnit.unitType == Unit::MELEE_PROJECTILE || attackerUnit.isPreview || receiverUnit.isPreview) // In the event a unit targets a projectile, by right shouldnt happen but just incase it gets called
         return;
 
     if (attackerUnit.unitType == Unit::NORMAL || attackerUnit.unitType == Unit::TANK || attackerUnit.unitType == Unit::RANGE)
     {
         glm::vec3 dir = glm::normalize(attackerTransform.position - receiverTransform.position);
         attackerTransform.rotation.y = Math::RadianToDegree(atan2f(dir.x, dir.z)) - 90;
+    }
+
+    if (attackerUnit.unitType == Unit::TOWER)
+    {
+        glm::vec3 dir = glm::normalize(attackerTransform.position - receiverTransform.position);
+        attackerTransform.rotation.y = Math::RadianToDegree(atan2f(dir.x, dir.z)) - 180;
     }
 
     if (attackerUnit.unitType == Unit::PROJECTILE)
