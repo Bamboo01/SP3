@@ -54,10 +54,26 @@ layout (std140) uniform FogOfWarBlock
 };
 
 //In Data
+in vec4 fragPos;
 in vec2 TexCoord;
 
 void main()
 {
+    bool canSee = false;
+    for (int i = 0; i < floor(NumUnits.x); i++)
+    {
+        if (length(UnitPositions[i] - fragPos) < 50.f)
+        {
+            canSee = true;
+            break;
+        }
+    }
+
+    if (canSee != true)
+    {
+        discard;
+    }
+
     if(material.colorTextureNum == 0)
     {
         FragColor = vec4(material.kColor, 1);

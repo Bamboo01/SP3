@@ -46,7 +46,12 @@ void UnitSystem::Update(double dt)
         auto& unit = coordinator.GetComponent<Unit>(entity);
         auto& entityState = coordinator.GetComponent<EntityState>(entity);
 
-
+        //POSITION THINGY DON'T MIND ME THANKS - SHERWYN
+        if (unit.unitFaction == Unit::PLAYER && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE)
+        {
+            renderer.fogofwarManager.positions.push_back(glm::vec4(transform.position, 0));
+        }
+       
         if (unit.health <= 0) // In the event the unit's health falls to/below 0, deactivate the unit.
         {
             if (unit.unitType == Unit::NORMAL || unit.unitType == Unit::TANK || unit.unitType == Unit::RANGE)
@@ -132,6 +137,7 @@ void UnitSystem::UpdateUnitToTerrain(Entity entity)
         auto& terrain = coordinator.GetComponent<TerrainData>(entities);
         auto& unitData = coordinator.GetComponent<Unit>(entity);
         auto& unitTransform = coordinator.GetComponent<Transform>(entity);
+
 
         if (unitData.unitType == Unit::PROJECTILE || unitData.unitType == Unit::MELEE_PROJECTILE)
             return;

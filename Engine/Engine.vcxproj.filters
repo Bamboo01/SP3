@@ -158,6 +158,9 @@
     <ClCompile Include="Source\AIControllerSystem.cpp">
       <Filter>Auxillary\Systems\AIControllerSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FogOfWarManager.cpp">
+      <Filter>Core\Modules\FogOfWarManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -448,6 +451,9 @@
     <ClInclude Include="Source\AIControllerSystem.h">
       <Filter>Auxillary\Systems\AIControllerSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\FogOfWarManager.h">
+      <Filter>Core\Modules\FogOfWarManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -602,6 +608,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\AIControllerSystem">
       <UniqueIdentifier>{721c3bd4-e803-4762-9c66-c43f4360d8b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Modules\FogOfWarManager">
+      <UniqueIdentifier>{6b03e3d6-bc32-41cd-b0da-0f05c1e92e5d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

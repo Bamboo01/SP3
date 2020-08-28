@@ -93,7 +93,7 @@ void AIControllerSystem::Update(float dt)
         }
 
         //Build order via final aggression amount
-        if (aicontroller.ProcessTacticsTimer > 5.f)
+        if (aicontroller.ProcessTacticsTimer > 10.f)
         {
             aicontroller.ProcessTacticsTimer = 0.f;
 
