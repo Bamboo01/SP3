@@ -18,17 +18,17 @@ public:
 		std::string unitName = "Normal";
 
 		float baseHealth = 100;
-		float healthGrowth = 10;
+		float healthGrowth = 20;
 		float additionalHealthOffset = 0.7025;
 		float multiplierHealthOffset = 0.0175;
 
 		float baseDefense = 8;
-		float defenseGrowth = 0.8;
+		float defenseGrowth = 6.6;
 		float additionalDefenseOffset = 0.7025;
 		float multiplierDefenseOffset = 0.0175;
 
 		float baseDamage = 10;
-		float damageGrowth = 0.8;
+		float damageGrowth = 8.6;
 		float additionalDamageOffset = 0.7025;
 		float multiplierDamageOffset = 0.0175;
 
@@ -74,17 +74,17 @@ public:
 		std::string unitName = "Range";
 
 		float baseHealth = 65;
-		float healthGrowth = 6.4;
+		float healthGrowth = 15.4;
 		float additionalHealthOffset = 0.7025;
 		float multiplierHealthOffset = 0.0175;
 
 		float baseDefense = 6;
-		float defenseGrowth = 0.8;
+		float defenseGrowth = 5.8;
 		float additionalDefenseOffset = 0.7025;
 		float multiplierDefenseOffset = 0.0175;
 
 		float baseDamage = 15;
-		float damageGrowth = 1.6;
+		float damageGrowth = 20.6;
 		float additionalDamageOffset = 0.7025;
 		float multiplierDamageOffset = 0.0175;
 
@@ -130,17 +130,17 @@ public:
 		std::string unitName = "Tank";
 
 		float baseHealth = 200;
-		float healthGrowth = 25;
+		float healthGrowth = 30;
 		float additionalHealthOffset = 0.7025;
 		float multiplierHealthOffset = 0.0175;
 
 		float baseDefense = 15;
-		float defenseGrowth = 3.0;
+		float defenseGrowth = 20.0;
 		float additionalDefenseOffset = 0.7025;
 		float multiplierDefenseOffset = 0.0175;
 
 		float baseDamage = 5;
-		float damageGrowth = 1.0;
+		float damageGrowth = 10.0;
 		float additionalDamageOffset = 0.7025;
 		float multiplierDamageOffset = 0.0175;
 
@@ -185,7 +185,7 @@ public:
 	{
 		std::string unitName = "Tower";
 
-		float baseHealth = 1500;
+		float baseHealth = 700;
 		float healthGrowth = 100;
 		float additionalHealthOffset = 0.7025;
 		float multiplierHealthOffset = 0.0175;
@@ -195,7 +195,7 @@ public:
 		float additionalDefenseOffset = 0.7025;
 		float multiplierDefenseOffset = 0.0175;
 
-		float baseDamage = 100;
+		float baseDamage = 70;
 		float damageGrowth = 50;
 		float additionalDamageOffset = 0.7025;
 		float multiplierDamageOffset = 0.0175;

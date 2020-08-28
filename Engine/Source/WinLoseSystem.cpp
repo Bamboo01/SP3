@@ -63,7 +63,7 @@ void WinLoseSystem::Update(float dt)
 	}
 	{
 		auto& canvastext = coordinator.GetComponent<CanvasText>(GUI_UnitsLeft);
-		canvastext.Text = "Alive Count: " + std::to_string(PlayerTotalUnit - NumOfUnitsDestroyed);
+		canvastext.Text = "Alive Count: " + std::to_string(PlayerTotalUnit);
 	}
 
 	if (WinLose == 1)
