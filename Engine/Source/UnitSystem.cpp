@@ -252,7 +252,6 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
     if ((faction == Unit::PLAYER && numberOfPlayer > 500) || (faction == Unit::ENEMY && numberOfEnemies > 500))
     {
         std::cout << "Failed to create new unit due to too many existing units!" << std::endl;
-        return;
     }
 
     Entity inactiveID = objectpoolsystem->FetchEntityFromPool(Tag::UNIT);
