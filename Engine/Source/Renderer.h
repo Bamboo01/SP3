@@ -9,7 +9,7 @@
 #include "ScreenQuad.h"
 #include <string>
 #include "TextShader.h"
-
+#include "FogOfWarManager.h"
 
 #pragma once
 
@@ -42,9 +42,6 @@ private:
 	unsigned Consolas;
 	unsigned DOSFont;
 
-	//Add-ons to the rendering pipeline
-	LightingManager lightingManager;
-
 	void addMaterial(Material* mat, Shader* shader = nullptr);
 	void assignMaterialtoMesh(Mesh* mesh, Material* material);
 	unsigned addFont(std::string filepath);
@@ -66,5 +63,9 @@ public:
 	//Canvas stuff
 	std::vector <std::pair<glm::mat4, unsigned>> CanvasImage;
 	std::vector <std::tuple<glm::mat4, std::string, glm::vec3>> CanvasText;
+
+	//Add-ons to the rendering pipeline
+	LightingManager lightingManager;
+	FogOfWarManager fogofwarManager;
 };
 
