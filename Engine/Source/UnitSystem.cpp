@@ -504,7 +504,7 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
     auto& receiverTransform = coordinator.GetComponent<Transform>(receiver);
     auto& receiverUnit = coordinator.GetComponent<Unit>(receiver);
 
-    if (receiverUnit.unitType == Unit::PROJECTILE || attackerUnit.unitType == Unit::MELEE_PROJECTILE || receiverUnit.unitType == Unit::MELEE_PROJECTILE) // In the event a unit targets a projectile, by right shouldnt happen but just incase it gets called
+    if (receiverUnit.unitType == Unit::PROJECTILE || attackerUnit.unitType == Unit::MELEE_PROJECTILE || receiverUnit.unitType == Unit::MELEE_PROJECTILE || attackerUnit.isPreview || receiverUnit.isPreview) // In the event a unit targets a projectile, by right shouldnt happen but just incase it gets called
         return;
 
     if (attackerUnit.unitType == Unit::NORMAL || attackerUnit.unitType == Unit::TANK || attackerUnit.unitType == Unit::RANGE)
