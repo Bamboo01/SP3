@@ -513,6 +513,12 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
         attackerTransform.rotation.y = Math::RadianToDegree(atan2f(dir.x, dir.z)) - 90;
     }
 
+    if (attackerUnit.unitType == Unit::TOWER)
+    {
+        glm::vec3 dir = glm::normalize(attackerTransform.position - receiverTransform.position);
+        attackerTransform.rotation.y = Math::RadianToDegree(atan2f(dir.x, dir.z)) - 180;
+    }
+
     if (attackerUnit.unitType == Unit::PROJECTILE)
     {
         auto& originTransform = coordinator.GetComponent<Transform>(attackerUnit.originUnit);
