@@ -899,49 +899,49 @@ void SceneCombat::InitPauseMenu()
 {
 	Entity GUI_Resume = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_Resume, Transform());
-	coordinator.AddComponent<EntityState>(GUI_Resume, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_Resume, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_Resume, CanvasText("Resume", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_Resume).position.y = 0.3;
 	coordinator.AddComponent<PauseMenu>(GUI_Resume, PauseMenu(PauseMenu::RESUME_BUTTON));
 
 	Entity GUI_Options = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_Options, Transform());
-	coordinator.AddComponent<EntityState>(GUI_Options, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_Options, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_Options, CanvasText("Options", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_Options).position.y = 0;
 	coordinator.AddComponent<PauseMenu>(GUI_Options, PauseMenu(PauseMenu::OPTION_BUTTON));
 
 	Entity GUI_Exit = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_Exit, Transform());
-	coordinator.AddComponent<EntityState>(GUI_Exit, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_Exit, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_Exit, CanvasText("Exit", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_Exit).position.y = -0.2;
 	coordinator.AddComponent<PauseMenu>(GUI_Exit, PauseMenu(PauseMenu::EXIT_BUTTON));
 
 	Entity GUI_VolumeUp = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_VolumeUp, Transform());
-	coordinator.AddComponent<EntityState>(GUI_VolumeUp, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_VolumeUp, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_VolumeUp, CanvasText("VolumeUp", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_VolumeUp).position.y = 0.3;
 	coordinator.AddComponent<PauseMenu>(GUI_VolumeUp, PauseMenu(PauseMenu::AUDIO_INCREASE_BUTTON));
 
 	Entity GUI_VolumeDown = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_VolumeDown, Transform());
-	coordinator.AddComponent<EntityState>(GUI_VolumeDown, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_VolumeDown, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_VolumeDown, CanvasText("VolumeDown", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_VolumeDown).position.y = 0.1;
 	coordinator.AddComponent<PauseMenu>(GUI_VolumeDown, PauseMenu(PauseMenu::AUDIO_DECREASE_BUTTON));
 
 	Entity GUI_BackToPauseMenu = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_BackToPauseMenu, Transform());
-	coordinator.AddComponent<EntityState>(GUI_BackToPauseMenu, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_BackToPauseMenu, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_BackToPauseMenu, CanvasText("Back"));
 	coordinator.GetComponent<Transform>(GUI_BackToPauseMenu).position.y = -0.5;
 	coordinator.AddComponent<PauseMenu>(GUI_BackToPauseMenu, PauseMenu(PauseMenu::BACK_BUTTON));
 
 	Entity GUI_VolumeMeter = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_VolumeMeter, Transform());
-	coordinator.AddComponent<EntityState>(GUI_VolumeMeter, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_VolumeMeter, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_VolumeMeter, CanvasText("Volume: ", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_VolumeMeter).position.y = 0.5;
 	coordinator.AddComponent<PauseMenu>(GUI_VolumeMeter, PauseMenu());
@@ -950,7 +950,7 @@ void SceneCombat::InitPauseMenu()
 	coordinator.AddComponent<Transform>(PauseCanvas, Transform());
 	coordinator.GetComponent<Transform>(PauseCanvas).position = glm::vec3(0, 0, 0);
 	coordinator.GetComponent<Transform>(PauseCanvas).scale = glm::vec3(0.5, 0.5, 1);
-	coordinator.AddComponent<EntityState>(PauseCanvas, EntityState());
+	coordinator.AddComponent<EntityState>(PauseCanvas, EntityState(false));
 	coordinator.AddComponent<CanvasImage>(PauseCanvas, CanvasImage("Images//regulartexture.tga"));
 	coordinator.AddComponent<PauseMenu>(PauseCanvas, PauseMenu(PauseMenu::CANVAS));
 
@@ -968,14 +968,14 @@ void SceneCombat::InitWinLose()
 {
 	Entity GUI_Exit = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_Exit, Transform());
-	coordinator.AddComponent<EntityState>(GUI_Exit, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_Exit, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_Exit, CanvasText("Exit", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_Exit).position.y = -0.5;
 	coordinator.AddComponent<WinLoseMenu>(GUI_Exit, WinLoseMenu(WinLoseMenu::EXIT_BUTTON));
 
 	Entity GUI_Text = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_Text, Transform());
-	coordinator.AddComponent<EntityState>(GUI_Text, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_Text, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_Text, CanvasText("", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_Text).position.y = 0.4;
 	coordinator.AddComponent<WinLoseMenu>(GUI_Text, WinLoseMenu(WinLoseMenu::NO_BUTTON));
@@ -989,14 +989,14 @@ void SceneCombat::InitWinLose()
 
 	Entity GUI_UnitsDestroyed = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_UnitsDestroyed, Transform());
-	coordinator.AddComponent<EntityState>(GUI_UnitsDestroyed, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_UnitsDestroyed, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_UnitsDestroyed, CanvasText("Death Count: ", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_UnitsDestroyed).position.y = -0.05;
 	coordinator.AddComponent<WinLoseMenu>(GUI_UnitsDestroyed, WinLoseMenu(WinLoseMenu::NO_BUTTON));
 
 	Entity GUI_UnitsLeft = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_UnitsLeft, Transform());
-	coordinator.AddComponent<EntityState>(GUI_UnitsLeft, EntityState());
+	coordinator.AddComponent<EntityState>(GUI_UnitsLeft, EntityState(false));
 	coordinator.AddComponent<CanvasText>(GUI_UnitsLeft, CanvasText("Alive Count: ", ALIGN_CENTER));
 	coordinator.GetComponent<Transform>(GUI_UnitsLeft).position.y = -0.2;
 	coordinator.AddComponent<WinLoseMenu>(GUI_UnitsLeft, WinLoseMenu());
@@ -1005,7 +1005,7 @@ void SceneCombat::InitWinLose()
 	coordinator.AddComponent<Transform>(WinLoseCanvas, Transform());
 	coordinator.GetComponent<Transform>(WinLoseCanvas).position = glm::vec3(0, 0, 0);
 	coordinator.GetComponent<Transform>(WinLoseCanvas).scale = glm::vec3(0.5, 0.5, 1);
-	coordinator.AddComponent<EntityState>(WinLoseCanvas, EntityState());
+	coordinator.AddComponent<EntityState>(WinLoseCanvas, EntityState(false));
 	coordinator.AddComponent<CanvasImage>(WinLoseCanvas, CanvasImage("Images//regulartexture.tga"));
 	coordinator.AddComponent<WinLoseMenu>(WinLoseCanvas, WinLoseMenu(WinLoseMenu::CANVAS));
 

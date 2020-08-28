@@ -15,6 +15,11 @@ public:
 
 	void SetUnitSystem(std::shared_ptr<UnitSystem> system);
 
+	double timer;
+	double songdelay;
+	bool IsBGMplaying;
+	bool IsCombatplaying;
+
 private:
 
 	std::shared_ptr<UnitSystem> unitsystem;
