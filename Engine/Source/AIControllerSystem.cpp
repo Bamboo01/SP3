@@ -107,7 +107,7 @@ void AIControllerSystem::Update(float dt)
                 }
 
                 // GridController stuff here!
-                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities, true);
+                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities, true,dt);
                 // Make sure that if a unit is enroute to anything, SKIP it and process the next one
                 highestseverity = aicontroller.eventlist.begin()->severity;
             }
@@ -172,7 +172,7 @@ void AIControllerSystem::Update(float dt)
                         selectedEntity.push_back(a.first);
                     }
                 }
-                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(aicontroller.targetNexusPosition, selectedEntity, false);
+                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(aicontroller.targetNexusPosition, selectedEntity, false,dt);
                 
             }
             else if (aicontroller.TotalAggression > 0.f)

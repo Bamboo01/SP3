@@ -95,7 +95,7 @@ void GridControllerSystem::Update(float dt)
 			a.UnitID = FlowfieldIDs.front();
 		}
 		FlowfieldIDs.pop();
-		UpdateUnitPosition();
+		UpdateUnitPosition(dt);
 	/*	for (int y = 0; y < 20; ++y)
 		{
 			for (int x = 0; x < 20; ++x)
@@ -116,13 +116,13 @@ void GridControllerSystem::Update(float dt)
 			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 20, GridTopLeft.y, GridTopLeft.z - 20);
 			if (transform.position.x + transform.scale.x >= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z + transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 			{
-				UpdateUnitPosition();
+				UpdateUnitPosition(dt);
 			}
 		}
 		transform.position += unit.velocity;
 	//	std::cout << unit.velocity.x << ", " << unit.velocity.z << std::endl;
 	}
-	UpdateUnitPosition();
+	UpdateUnitPosition(dt);
 
 }
 
@@ -438,7 +438,7 @@ void GridControllerSystem::SafetyPathCheck(glm::vec2 Destination)
 }
 
 
-void GridControllerSystem::UpdateUnitPosition()
+void GridControllerSystem::UpdateUnitPosition(float dt)
 {
 	for (auto const& entity : m_Entities)
 	{
@@ -590,8 +590,18 @@ void GridControllerSystem::UpdateUnitPosition()
 							{
 								transform.rotation.y = Math::RadianToDegree(atan2f(direction.x, direction.z)) - 90;
 							}
-
-							unit.velocity = 0.6f * direction;
+							if (unit.unitType == Unit::NORMAL)
+							{
+								unit.velocity = 20.f * direction * dt;
+							}
+							else if (unit.unitType == Unit::RANGE)
+							{
+								unit.velocity = 15.f * direction * dt;
+							}
+							else if (unit.unitType == Unit::TANK)
+							{
+								unit.velocity = 10.f * direction * dt;
+							}
 							unit.velocity.y = 0;
 						/*	std::cout << GridCost[dX][dY] << std::endl;
 							std::cout << GridPosition[dX][dY].x << ", " << GridPosition[dX][dY].z << std::endl;
@@ -609,7 +619,7 @@ void GridControllerSystem::UpdateUnitPosition()
 	}
 }
 
-void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vector<Entity> units, bool attacking)
+void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vector<Entity> units, bool attacking, float dt)
 {
 	if (attacking == true)
 	{
@@ -708,7 +718,7 @@ void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vecto
 			a.UnitID = FlowfieldIDs.front();
 		}
 		FlowfieldIDs.pop();
-		UpdateUnitPosition();
+		UpdateUnitPosition(dt);
 	}
 }
 
