@@ -14,8 +14,8 @@ bool PauseMenuSystem::CollideWithCanvas(float x, float y, float xscale, float ys
 	else if (Application::GetWindowWidth() < Application::GetWindowHeight())
 		offsetx = 0;
 
-	float newx = ((x + 1) / 2) * (Application::GetWindowWidth() - offsetx);
-	float newy = ((y + 1) / 2) * (Application::GetWindowHeight() + offsety);
+	float newx = ((x + 1.5) / 3) * (Application::GetWindowWidth() - offsetx);
+	float newy = ((y + 1.5) / 3) * (Application::GetWindowHeight() + offsety);
 	float newxscale = (xscale) * (Application::GetWindowWidth() - offsetx);
 	float newyscale = (yscale) * (Application::GetWindowHeight() + offsety);
 
@@ -82,7 +82,7 @@ void PauseMenuSystem::Update(float dt)
 		auto& canvastext = coordinator.GetComponent<CanvasText>(entity);
 		canvastext.size = 0.1f;
 
-		if (CollideWithCanvas(transform.position.x, transform.position.y + (0.2 * canvastext.size), canvastext.size, canvastext.size))
+		if (CollideWithCanvas(transform.position.x, transform.position.y, canvastext.size, canvastext.size * 0.5f))
 		{
 
 			canvastext.size = 0.13f;
