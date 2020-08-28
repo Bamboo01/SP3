@@ -13,7 +13,11 @@ void CameraControllerSystem::Update(float dt)
         {
             CSoundController::GetInstance()->SetListenerPosition(camera.position.x, camera.position.y, camera.position.z);
             CSoundController::GetInstance()->SetListenerDirection(0, 0, 1);
-
+            float offsetx = Application::GetWindowWidth() - Application::GetWindowHeight();
+            if (Application::GetWindowWidth() < Application::GetWindowHeight())
+            {
+                offsetx = 0;
+            }
             if (glm::length(camera.position - camera.target) > 100.f && Application::mouse_scroll_y > 0)
             {
                 glm::vec3 view = glm::normalize(camera.target - camera.position) * (float)Application::mouse_scroll_y * 3.f;
@@ -25,7 +29,7 @@ void CameraControllerSystem::Update(float dt)
                 camera.position += view * dt * 100.f;
             }
 
-            if (Application::mouse_current_x < 50)
+            if (Application::mouse_current_x < (0.5*offsetx))
             {
                 //Camera Move to the Left
                 if (camera.position.x < 200)
@@ -34,7 +38,7 @@ void CameraControllerSystem::Update(float dt)
                     camera.target += camera.right * 100.f * dt;
                 }
             }
-            if (Application::mouse_current_x > Application::GetWindowWidth() - 50)
+            if (Application::mouse_current_x > Application::GetWindowWidth() - (0.55f *offsetx))
             {
                 //Camera move to the right
                 if (camera.position.x > -200)
