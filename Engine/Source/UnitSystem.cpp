@@ -123,6 +123,8 @@ void UnitSystem::Update(double dt)
         aiEntityController.updateUnitList(unitList);
     }
 
+    numberOfEnemies = unitList.size();
+    numberOfPlayer = m_Entities.size() - unitList.size();
 }
 
 void UnitSystem::UpdateUnitToTerrain(Entity entity)
@@ -218,6 +220,12 @@ void UnitSystem::FetchNearbyTargetWithinRange(Entity unitID)
 
 Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, int level, Transform transform)
 {
+    if ((faction == Unit::PLAYER && numberOfPlayer > 500) || (faction == Unit::ENEMY && numberOfEnemies > 500))
+    {
+        std::cout << "Failed to create new unit due to too many existing units!" << std::endl;
+        return;
+    }
+
     Entity inactiveID = objectpoolsystem->FetchEntityFromPool(Tag::UNIT);
 
     auto& UnitTransform = coordinator.GetComponent<Transform>(inactiveID);

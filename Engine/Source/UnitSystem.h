@@ -45,5 +45,6 @@ private:
     std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
     std::shared_ptr<QuadTreeSystem> quadtreesystem;
     CSoundController* cSoundController;
-    
+    int numberOfPlayer;
+    int numberOfEnemies;
 };

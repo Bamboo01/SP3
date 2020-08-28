@@ -75,7 +75,7 @@ struct AIController : public Controller
 					++event2;
 					continue;
 				}
-				if (glm::length(event1->position - event2->position) < 10.f)
+				if (glm::length(event1->position - event2->position) < 50.f)
 				{
 					event1->severity += event2->severity;
 					event2 = eventlist.erase(event2);
