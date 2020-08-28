@@ -232,6 +232,7 @@ void Application::Run()
 	cSoundController->LoadSound("Sounds/GUI_click.wav", 26);
 	cSoundController->LoadSound("Sounds/Collect_resource.wav", 27);
 	cSoundController->LoadSound("Sounds/combatsong.mp3", 28, false, true);
+	cSoundController->LoadSound("Sounds/combatsong2.mp3", 29);
 
 	cSoundController->ChangeSoundSourceMinDistance(25, 128);
 	cSoundController->ChangeSoundSourceMinDistance(20, 128);
@@ -239,6 +240,7 @@ void Application::Run()
 	cSoundController->ChangeSoundSourceMinDistance(22, 128);
 	cSoundController->ChangeSoundSourceMinDistance(23, 128);
 	cSoundController->ChangeSoundSourceMinDistance(24, 128);
+
 	cSoundController->SetRolloffFactor(0.01f);
 
 	//Main Loop

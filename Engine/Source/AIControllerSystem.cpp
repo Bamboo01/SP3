@@ -1,5 +1,6 @@
 #include "AIControllerSystem.h"
 #include <gtc/random.hpp>
+#include "SoundController.h"
 
 void AIControllerSystem::Setup()
 {
@@ -11,11 +12,16 @@ void AIControllerSystem::Setup()
 
 void AIControllerSystem::Init()
 {
-
+    timer = 0;
+    songdelay = 0;
+    IsBGMplaying = true;
+    IsCombatplaying = false;
 }
 
 void AIControllerSystem::Update(float dt)
 {
+    timer += dt;
+
     for (auto& entity : m_Entities)
     {
         auto& aicontroller = coordinator.GetComponent<AIController>(entity);
@@ -37,6 +43,8 @@ void AIControllerSystem::Update(float dt)
         aicontroller.levelupnormalcost2 = aicontroller.normalunitlevel * 40;
         aicontroller.leveluprangecost2 = aicontroller.rangeunitlevel * 100;
         aicontroller.leveluptankcost2 = aicontroller.tankunitlevel * 150;
+
+        float highestseverity = 0.f;
 
         if (aicontroller.AIAggroTimer > 20.f)
         {
@@ -86,7 +94,22 @@ void AIControllerSystem::Update(float dt)
                 // GridController stuff here!
                 aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities, true);
                 // Make sure that if a unit is enroute to anything, SKIP it and process the next one
+                highestseverity = aicontroller.eventlist.begin()->severity;
+            }
 
+            if (highestseverity > 5 && IsCombatplaying == false)
+            {
+                CSoundController::GetInstance()->StopAllSounds();
+                CSoundController::GetInstance()->PlaySoundByID(29);
+                songdelay = timer + 205;
+                IsCombatplaying = true;
+                IsBGMplaying = false;
+            }
+            else if (songdelay < timer && IsBGMplaying == false)
+            {
+                CSoundController::GetInstance()->PlaySoundByID(28);
+                IsBGMplaying = true;
+                IsCombatplaying = false;
             }
             aicontroller.eventlist.clear();
             aicontroller.eventlist.shrink_to_fit();
@@ -96,7 +119,7 @@ void AIControllerSystem::Update(float dt)
         if (aicontroller.ProcessTacticsTimer > 10.f)
         {
             aicontroller.ProcessTacticsTimer = 0.f;
-
+            
             if (aicontroller.TotalAggression > 1.f)
             {
                 // Offensive
