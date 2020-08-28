@@ -6,6 +6,7 @@ layout (location = 3) in vec2 aTexCoord;
 layout (location = 4) in mat4 aModel;
 
 out vec2 TexCoord;
+out vec4 fragPos;
 
 layout (std140) uniform MatriceBlock
 {
@@ -31,4 +32,5 @@ void main()
     vec4 P = modelviewmatrix * vec4(aPos, 1);
     gl_Position = projection * P;
     TexCoord = aTexCoord;
+    fragPos = aModel * vec4(aPos, 1.0f);
 }

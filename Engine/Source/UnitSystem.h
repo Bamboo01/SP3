@@ -10,6 +10,7 @@
 #include "QuadTreeSystem.h"
 #include "SoundController.h"
 #include "AIController.h"
+#include "ParticleSystemParameters.h"
 
 extern Coordinator coordinator;
 extern Renderer renderer;

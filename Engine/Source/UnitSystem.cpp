@@ -283,6 +283,9 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
     auto& UnitCollider = coordinator.GetComponent<Collider>(inactiveID);
     auto& UnitData = coordinator.GetComponent<Unit>(inactiveID);
     auto& UnitRenderData = coordinator.GetComponent<RenderData>(inactiveID);
+    auto& UnitParticle = coordinator.GetComponent<ParticleSystemParameters>(inactiveID);
+
+    UnitParticle.spawnParticles = false;
 
     switch (type)
     {
@@ -420,6 +423,7 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
     auto& UnitCollider = coordinator.GetComponent<Collider>(inactiveID);
     auto& UnitData = coordinator.GetComponent<Unit>(inactiveID);
     auto& UnitRenderData = coordinator.GetComponent<RenderData>(inactiveID);
+    auto& UnitParticle = coordinator.GetComponent<ParticleSystemParameters>(inactiveID);
 
     auto& originTransform = coordinator.GetComponent<Transform>(origin);
     auto& originCollider = coordinator.GetComponent<Collider>(origin);
@@ -428,6 +432,8 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
     auto& targetTransform = coordinator.GetComponent<Transform>(target);
     auto& targetCollider = coordinator.GetComponent<Collider>(target);
     auto& targetUnit = coordinator.GetComponent<Unit>(target);
+
+    UnitParticle.spawnParticles = true;
 
     if (originUnit.unitType == Unit::RANGE)
     {
@@ -440,13 +446,16 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
         if (originUnit.unitFaction == Unit::PLAYER)
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_PLAYER);
+            UnitParticle.particle_mesh = renderer.getMesh(GEO_PLAYERPARTICLE);
         }
         else
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_ENEMY);
+            UnitParticle.particle_mesh = renderer.getMesh(GEO_ENEMYPARTICLE);
         }
 
         UnitTransform = Transform(originTransform.position + originTransform.AxisZ, glm::vec3(0.25, 0.25, 0.25), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
+        UnitParticle.spawnParticles = true;
     }
     else if (originUnit.unitType == Unit::TOWER)
     {
@@ -459,10 +468,12 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
         if (originUnit.unitFaction == Unit::PLAYER)
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_PLAYER);
+            UnitParticle.particle_mesh = renderer.getMesh(GEO_PLAYERPARTICLE);
         }
         else
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_ENEMY);
+            UnitParticle.particle_mesh = renderer.getMesh(GEO_ENEMYPARTICLE);
         }
 
         UnitTransform = Transform(originTransform.position + originTransform.scale.y / 2, glm::vec3(0.25, 0.25, 0.25), glm::vec3(0, 0, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
@@ -478,10 +489,12 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
         if (originUnit.unitFaction == Unit::PLAYER)
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_MELEE_PLAYER);
+            UnitParticle.particle_mesh = renderer.getMesh(GEO_PLAYERPARTICLE);
         }
         else
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_PROJECTILE_MELEE_ENEMY);
+            UnitParticle.particle_mesh = renderer.getMesh(GEO_ENEMYPARTICLE);
         }
 
         std::cout << "UnitSystem: " << inactiveID << " initiated as MELEE_PROJECTILE type" << std::endl;

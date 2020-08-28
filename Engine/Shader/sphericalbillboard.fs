@@ -5,6 +5,7 @@ layout(location = 0) out vec4 FragColor;
 // Constant values
 const int MAX_LIGHTS = 32; //Add a +1 for shadow light
 const int MAX_TEXTURES = 8;
+const int MAX_UNITS = 1000;
 
 //Define all the structs here
 struct Material 
@@ -47,11 +48,34 @@ layout (std140) uniform LightBlock
 	int numLights;	
 };
 
+layout (std140) uniform FogOfWarBlock
+{
+    vec4 UnitPositions[MAX_UNITS];
+    vec4 NumUnits;
+};
+
 //In Data
 in vec2 TexCoord;
+in vec4 fragPos;
 
 void main()
 {
+
+    bool canSee = false;
+    for (int i = 0; i < floor(NumUnits.x); i++)
+    {
+        if (length(UnitPositions[i] - fragPos) < 50.f)
+        {
+            canSee = true;
+            break;
+        }
+    }
+
+    if (canSee != true)
+    {
+        discard;
+    }
+
     if(material.colorTextureNum == 0)
     {
         FragColor = vec4(material.kColor, 1);

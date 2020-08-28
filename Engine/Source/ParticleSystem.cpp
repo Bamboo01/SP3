@@ -68,8 +68,8 @@ void ParticleSystem::Update(float dt)
 				else
 				{
 					particle.lifetime += dt;
-					particle.velocity += particlesystemparameters.velocityDecay;
-					particle.angularvelocity += particlesystemparameters.angularvelocityDecay;
+					particle.velocity += (particlesystemparameters.velocityDecay + glm::vec3(0, particlesystemparameters.particle_gravity, 0)) * dt;
+					particle.angularvelocity += particlesystemparameters.angularvelocityDecay * dt;
 
 					particle.position += particle.velocity * dt;
 					particle.rotation += particle.angularvelocity * dt;

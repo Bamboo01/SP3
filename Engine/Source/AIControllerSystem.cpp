@@ -38,6 +38,8 @@ void AIControllerSystem::Update(float dt)
         aicontroller.leveluprangecost2 = aicontroller.rangeunitlevel * 100;
         aicontroller.leveluptankcost2 = aicontroller.tankunitlevel * 150;
 
+        float highestseverity = 0.f;
+
         if (aicontroller.AIAggroTimer > 20.f)
         {
             aicontroller.AIAggression += 1.f;
@@ -86,7 +88,7 @@ void AIControllerSystem::Update(float dt)
                 // GridController stuff here!
                 aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities, true);
                 // Make sure that if a unit is enroute to anything, SKIP it and process the next one
-
+                highestseverity = aicontroller.eventlist.begin()->severity;
             }
             aicontroller.eventlist.clear();
             aicontroller.eventlist.shrink_to_fit();

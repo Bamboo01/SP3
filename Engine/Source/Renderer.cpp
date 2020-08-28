@@ -157,6 +157,14 @@ void Renderer::Init()
 	enemyProjectile->kColor = glm::vec3(0, 0, 1);
 	materialManager.push_back(enemyProjectile);
 
+	Material* playerparticle = new Material();
+	playerparticle->AssignTexture("Images//playerparticle.tga");
+	materialManager.push_back(playerparticle);
+
+	Material* enemyparticle = new Material();
+	enemyparticle->AssignTexture("Images//enemyparticle.tga");
+	materialManager.push_back(enemyparticle);
+
 	//Material* playerMaterial = new Material();
 	//playerMaterial->kColor = glm::vec3(1.f, 1.f, 1.f);
 	//playerMaterial->AssignTexture("Images//player.tga");
@@ -171,6 +179,8 @@ void Renderer::Init()
 	addMaterial(codeParticle, billboard_Spherical);
 	addMaterial(menuunit, test);
 	addMaterial(MiniMapBox);
+	addMaterial(playerparticle, billboard_Spherical);
+	addMaterial(enemyparticle, billboard_Spherical);
 
 
 	addMaterial(playerMaterial);
@@ -217,6 +227,9 @@ void Renderer::Init()
 	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_TOWER_PLAYER], placingMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_GENERATOR1_PLAYER], placingMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_GENERATOR2_PLAYER], placingMaterial);
+
+	assignMaterialtoMesh(meshManager->meshList[GEO_PLAYERPARTICLE], playerparticle);
+	assignMaterialtoMesh(meshManager->meshList[GEO_ENEMYPARTICLE], enemyparticle);
 
 	/*Assignment of uniform blocks*/
 	for (auto shader : shaderManager)

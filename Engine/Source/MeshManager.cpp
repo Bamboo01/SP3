@@ -136,6 +136,12 @@ MeshManager::MeshManager()
 	meshList[GEO_PROJECTILE_MELEE_ENEMY] = MeshBuilder::GenerateCube("Projectile Melee Unit", Color(0, 0, 1));
 	meshList[GEO_PROJECTILE_MELEE_ENEMY]->Init();
 
+	meshList[GEO_PLAYERPARTICLE] = MeshBuilder::GenerateQuad("Playerparticle", Color(1, 1, 1), 1);
+	meshList[GEO_PLAYERPARTICLE]->Init(10000);
+
+	meshList[GEO_ENEMYPARTICLE] = MeshBuilder::GenerateQuad("Enemyparticle", Color(1, 1, 1), 1);
+	meshList[GEO_ENEMYPARTICLE]->Init(10000);
+
 	for (int i = 0; i < NUM_MESH; i++)
 	{
 		if (meshList[i] == NULL)

@@ -790,6 +790,16 @@ void SceneCombat::InitPoolPrefab()
 	coordinator.AddComponent<RenderData>(unitPoolPrefab, RenderData());
 	coordinator.AddComponent<Unit>(unitPoolPrefab, Unit());
 	coordinator.AddComponent<EntityState>(unitPoolPrefab, EntityState(false));
+	coordinator.AddComponent<ParticleSystemParameters>(unitPoolPrefab,
+		ParticleSystemParameters(
+			renderer.getMesh(GEO_CODEPARTICLE), 1, 10, 1,
+			glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
+			glm::vec3(-1, 15, -1), glm::vec3(1, 15, 1),
+			glm::vec3(10.f, 10.f, 1.f), glm::vec3(10.f, 10.f, 1.f),
+			glm::vec3(0.f), glm::vec3(0.f),
+			glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f), false, 10.f
+		));
+
 	objectpoolsystem->AddToPool(Pool(Tag::UNIT, unitPoolPrefab, 100));
 }
 
@@ -809,29 +819,15 @@ void SceneCombat::InitMainCamera()
 	coordinator.AddComponent<EntityState>(maincamera, EntityState());
 	cameraHandler = maincamera;
 
-	Entity axes = coordinator.CreateEntity();
-	coordinator.AddComponent<RenderData>(axes, RenderData(renderer.getMesh(GEO_AXES), false));
-	coordinator.AddComponent<Transform>(axes, Transform());
-	coordinator.GetComponent<Transform>(axes).type = TRANSFORM_TYPE::STATIC_TRANSFORM;
-	coordinator.AddComponent<EntityState>(axes, EntityState());
-	coordinator.AddComponent<ParticleSystemParameters>(axes,
-		ParticleSystemParameters(
-			renderer.getMesh(GEO_TESTPARTICLE_SPHERICAL), 5, 50, 1,
-			glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-			glm::vec3(-1, 15, -1), glm::vec3(1, 15, 1),
-			glm::vec3(10.f, 10.f, 1.f), glm::vec3(10.f, 10.f, 1.f),
-			glm::vec3(0.f), glm::vec3(0.f),
-			glm::vec3(0.f), glm::vec3(0.f)));
-
 	gridcontrollersystem->getRaycastingEntity(maincamera);
 
 	{
 		Entity particle = coordinator.CreateEntity();
-		coordinator.AddComponent<Transform>(axes, Transform(glm::vec3(160, 30, 160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
-		coordinator.AddComponent<EntityState>(axes, EntityState());
-		coordinator.AddComponent<ParticleSystemParameters>(axes,
+		coordinator.AddComponent<Transform>(particle, Transform(glm::vec3(160, 30, 160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+		coordinator.AddComponent<EntityState>(particle, EntityState());
+		coordinator.AddComponent<ParticleSystemParameters>(particle,
 			ParticleSystemParameters(
-				renderer.getMesh(GEO_TESTPARTICLE_SPHERICAL), 5, 50, 1,
+				renderer.getMesh(GEO_CODEPARTICLE), 5, 50, 1,
 				glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
 				glm::vec3(-1, 15, -1), glm::vec3(1, 15, 1),
 				glm::vec3(10.f, 10.f, 1.f), glm::vec3(10.f, 10.f, 1.f),
@@ -840,11 +836,11 @@ void SceneCombat::InitMainCamera()
 	}
 	{
 		Entity particle = coordinator.CreateEntity();
-		coordinator.AddComponent<Transform>(axes, Transform(glm::vec3(-160, 30, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
-		coordinator.AddComponent<EntityState>(axes, EntityState());
-		coordinator.AddComponent<ParticleSystemParameters>(axes,
+		coordinator.AddComponent<Transform>(particle, Transform(glm::vec3(-160, 30, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+		coordinator.AddComponent<EntityState>(particle, EntityState());
+		coordinator.AddComponent<ParticleSystemParameters>(particle,
 			ParticleSystemParameters(
-				renderer.getMesh(GEO_TESTPARTICLE_SPHERICAL), 5, 50, 1,
+				renderer.getMesh(GEO_CODEPARTICLE), 5, 50, 1,
 				glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
 				glm::vec3(-1, 15, -1), glm::vec3(1, 15, 1),
 				glm::vec3(10.f, 10.f, 1.f), glm::vec3(10.f, 10.f, 1.f),
