@@ -40,6 +40,7 @@ void CanvasImageUpdateSystem::Init(std::set<Entity>* controllerentity)
 	buildingclickdelay = 0;
 	createonce = false;
 	this->controllerentity = controllerentity;
+	NumberofUnitCreated = 0;
 
 	nexustexture = LoadTGA("Images//nexus.tga");
 	labtexture = LoadTGA("Images//lab.tga");
@@ -325,9 +326,10 @@ void CanvasImageUpdateSystem::Update(double dt)
 					// Nexus unit button clicks to create unit
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSNORMALUNIT)
 					{
-						// Add code to spawn normal unit (Check whether is there enough resources)
+						// Spawn normal unit (Check whether is there enough resources)
 						if (controller.resource1 >= controller.normalunitcost)
 						{
+							NumberofUnitCreated++;
 							cSoundController->SetSoundSourcePosition(25, 130, 0, 150);
 							cSoundController->PlaySoundByID(25);
 							std::cout << "Normal unit created" << std::endl;
@@ -337,9 +339,10 @@ void CanvasImageUpdateSystem::Update(double dt)
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSTANKUNIT)
 					{
-						// Add code to spawn tank unit (Check whether is there enough resources)
+						// tank unit (Check whether is there enough resources)
 						if (controller.resource1 >= controller.tankunitcost)
 						{
+							NumberofUnitCreated++;
 							cSoundController->SetSoundSourcePosition(25, 130, 0, 150);
 							cSoundController->PlaySoundByID(25);
 							std::cout << "Tank unit created" << std::endl;
@@ -349,9 +352,10 @@ void CanvasImageUpdateSystem::Update(double dt)
 					}
 					else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSRANGEUNIT)
 					{
+						// spawn range unit (Check whether is there enough resources)
 						if (controller.resource1 >= controller.rangeunitcost)
 						{
-							// Add code to spawn range unit (Check whether is there enough resources)
+							NumberofUnitCreated++;
 							cSoundController->SetSoundSourcePosition(25, 130, 0, 150);
 							cSoundController->PlaySoundByID(25);
 							std::cout << "Range unit created" << std::endl;
@@ -371,6 +375,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 								selectedbuilding = 1;
 								buildingclickdelay = timer + 0.4;
 								createonce = true;
+								NumberofUnitCreated++;
 							}
 						}
 						else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSWALL)
@@ -383,6 +388,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 								selectedbuilding = 2;
 								buildingclickdelay = timer + 0.4;
 								createonce = true;
+								NumberofUnitCreated++;
 							}
 						}
 						else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR1)
@@ -395,6 +401,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 								selectedbuilding = 3;
 								buildingclickdelay = timer + 0.4;
 								createonce = true;
+								NumberofUnitCreated++;
 							}
 						}
 						else if (canvasupdate.buttontype == CanvasImageUpdate::NEXUSGENERATOR2)
@@ -407,6 +414,7 @@ void CanvasImageUpdateSystem::Update(double dt)
 								selectedbuilding = 4;
 								buildingclickdelay = timer + 0.4;
 								createonce = true;
+								NumberofUnitCreated++;
 							}
 						}
 					}

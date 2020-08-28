@@ -1,3 +1,4 @@
+#pragma once
 #include "Scene.h"
 #include "TransformSystem.h"
 #include "CameraSystem.h"
@@ -18,19 +19,17 @@
 #include "ObjectPoolSystem.h"
 #include "ControllerSystem.h"
 #include "QuadTreeSystem.h"
-#include "AIControllerSystem.h"
-#include "PauseMenuSystem.h"
-#include "WinLoseSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
 #include "../Dependencies/ImGui/imgui_impl_glfw.h"
 #include "../Dependencies/ImGui/imgui_impl_opengl3.h"
+#include "CreditScrollSystem.h"
 
 #pragma once
 
 #pragma once
-class SceneCombat : public Scene
+class SceneCredit : public Scene
 {
 	virtual void Init();
 	virtual void EarlyUpdate(double dt);
@@ -43,26 +42,9 @@ class SceneCombat : public Scene
 
 
 	virtual void Exit();
-	virtual Scene* Clone() { return new SceneCombat(*this); }
-
-	void InitGUIText();
-	void InitCanvasGUI();
-	void InitUnit();
-	void InitPoolPrefab();
-	void InitMainCamera();
-	void InitTerrain();
-	void InitController();
-	void InitMiniMap();
-	void InitPauseMenu();
-	void InitWinLose();
-
-	void UpdateImGui();
-	void UpdateImGuiRaycast();
-	void UpdateImGuiUnitSpawn();
-	void UpdateImGuiEntityList();
+	virtual Scene* Clone() { return new SceneCredit(*this); }
 
 	Entity testHandler; // An entity handler to control entities
-	Entity cameraHandler;
 	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
 
 	/*Systems of the scene*/
@@ -84,8 +66,6 @@ class SceneCombat : public Scene
 	std::shared_ptr<ObjectPoolSystem> objectpoolsystem;
 	std::shared_ptr<ControllerSystem> controllersystem;
 	std::shared_ptr<QuadTreeSystem> quadtreesystem;
-	std::shared_ptr<AIControllerSystem> aicontrollersystem;
-	std::shared_ptr<PauseMenuSystem> pausemenusystem;
-	std::shared_ptr<WinLoseSystem> winlosesystem;
+	std::shared_ptr<CreditScrollSystem> creditscrollsystem;
 };
 

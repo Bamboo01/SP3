@@ -26,6 +26,8 @@ void SceneCombat::Init()
 	coordinator.RegisterComponent<Controller>();
 	coordinator.RegisterComponent<Pool>();
 	coordinator.RegisterComponent<AIController>();
+	coordinator.RegisterComponent<PauseMenu>();
+	coordinator.RegisterComponent<WinLoseMenu>();
 
 	// Registering System to coordinator
 	transformsystem = coordinator.RegisterSystem<TransformSystem>();
@@ -47,6 +49,8 @@ void SceneCombat::Init()
 	controllersystem = coordinator.RegisterSystem<ControllerSystem>();
 	quadtreesystem = coordinator.RegisterSystem<QuadTreeSystem>();
 	aicontrollersystem = coordinator.RegisterSystem<AIControllerSystem>();
+	pausemenusystem = coordinator.RegisterSystem<PauseMenuSystem>();
+	winlosesystem = coordinator.RegisterSystem<WinLoseSystem>();
 
 	transformsystem->Setup();
 	camerasystem->Setup();
@@ -67,6 +71,8 @@ void SceneCombat::Init()
 	controllersystem->Setup();
 	quadtreesystem->Setup();
 	aicontrollersystem->Setup();
+	pausemenusystem->Setup();
+	winlosesystem->Setup();
 
 	InitMainCamera();
 	InitTerrain();
@@ -75,6 +81,8 @@ void SceneCombat::Init()
 	InitCanvasGUI();
 	InitMiniMap();
 	InitController();
+	InitPauseMenu();
+	InitWinLose();
 
 	// Initialising of all System
 	camerasystem->Init();
@@ -89,6 +97,8 @@ void SceneCombat::Init()
 	controllersystem->Init(&collidersystem->m_Entities);
 	canvasimageupdatesystem->Init(&controllersystem->m_Entities);
 	guitextsystem->Init(&controllersystem->m_Entities);
+	pausemenusystem->Init();
+	winlosesystem->Init();
 	
 	raycastingsystem->SetTerrainEntities(terrainsystem->m_Entities);
 	raycastingsystem->SetQuadTreeSystem(quadtreesystem);
@@ -127,6 +137,8 @@ void SceneCombat::EarlyUpdate(double dt)
 	guitextsystem->EarlyUpdate(dt);
 	controllersystem->EarlyUpdate(dt);
 	aicontrollersystem->EarlyUpdate(dt);
+	pausemenusystem->EarlyUpdate(dt);
+	winlosesystem->EarlyUpdate(dt);
 }
 
 void SceneCombat::Update(double dt)
@@ -135,11 +147,12 @@ void SceneCombat::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	rendersystem->Update(dt);
 	transformsystem->Update(dt);
 	camerasystem->Update(dt);
 	cameracontrollersystem->Update(dt);
-	
+
 	canvasimagesystem->Update(dt);
 	canvastextsystem->Update(dt);
 	entitystatesystem->Update(dt);
@@ -166,6 +179,13 @@ void SceneCombat::Update(double dt)
 	aicontrollersystem->Update(dt);
 	canvasimageupdatesystem->selectedbuilding = raycastingsystem->selectedbuilding;
 	canvasimageupdatesystem->createonce = raycastingsystem->createonce;
+
+	pausemenusystem->Update(dt);
+	winlosesystem->NumOfUnitsBuilt = canvasimageupdatesystem->NumberofUnitCreated;
+	winlosesystem->NumOfUnitsDestroyed = unitsystem->UnitsDeath;
+	winlosesystem->WinLose = unitsystem->WinLose;
+	winlosesystem->PlayerTotalUnit = unitsystem->PlayerTotalUnit;
+	winlosesystem->Update(dt);
 }
 
 void SceneCombat::LateUpdate(double dt)
@@ -182,6 +202,8 @@ void SceneCombat::LateUpdate(double dt)
 	guitextsystem->LateUpdate(dt);
 	controllersystem->LateUpdate(dt);
 	aicontrollersystem->LateUpdate(dt);
+	pausemenusystem->LateUpdate(dt);
+	winlosesystem->LateUpdate(dt);
 }
 
 void SceneCombat::PreRender()
@@ -202,6 +224,8 @@ void SceneCombat::Render()
 	canvasimagesystem->Render();
 	canvastextsystem->Render();
 	canvasimageupdatesystem->Render();
+	pausemenusystem->Render();
+	winlosesystem->Render();
 	UpdateImGui();
 }
 
@@ -869,6 +893,128 @@ void SceneCombat::InitMiniMap()
 	coordinator.AddComponent<CanvasImage>(UI, CanvasImage());
 	coordinator.GetComponent<Camera>(MiniMap).assignTargetTexture(&coordinator.GetComponent<CanvasImage>(UI).TextureID);
 	coordinator.AddComponent<EntityState>(UI, EntityState());
+}
+
+void SceneCombat::InitPauseMenu()
+{
+	Entity GUI_Resume = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Resume, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Resume, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Resume, CanvasText("Resume", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Resume).position.y = 0.3;
+	coordinator.AddComponent<PauseMenu>(GUI_Resume, PauseMenu(PauseMenu::RESUME_BUTTON));
+
+	Entity GUI_Options = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Options, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Options, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Options, CanvasText("Options", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Options).position.y = 0;
+	coordinator.AddComponent<PauseMenu>(GUI_Options, PauseMenu(PauseMenu::OPTION_BUTTON));
+
+	Entity GUI_Exit = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Exit, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Exit, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Exit, CanvasText("Exit", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Exit).position.y = -0.2;
+	coordinator.AddComponent<PauseMenu>(GUI_Exit, PauseMenu(PauseMenu::EXIT_BUTTON));
+
+	Entity GUI_VolumeUp = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_VolumeUp, Transform());
+	coordinator.AddComponent<EntityState>(GUI_VolumeUp, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_VolumeUp, CanvasText("VolumeUp", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_VolumeUp).position.y = 0.3;
+	coordinator.AddComponent<PauseMenu>(GUI_VolumeUp, PauseMenu(PauseMenu::AUDIO_INCREASE_BUTTON));
+
+	Entity GUI_VolumeDown = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_VolumeDown, Transform());
+	coordinator.AddComponent<EntityState>(GUI_VolumeDown, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_VolumeDown, CanvasText("VolumeDown", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_VolumeDown).position.y = 0.1;
+	coordinator.AddComponent<PauseMenu>(GUI_VolumeDown, PauseMenu(PauseMenu::AUDIO_DECREASE_BUTTON));
+
+	Entity GUI_BackToPauseMenu = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_BackToPauseMenu, Transform());
+	coordinator.AddComponent<EntityState>(GUI_BackToPauseMenu, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_BackToPauseMenu, CanvasText("Back"));
+	coordinator.GetComponent<Transform>(GUI_BackToPauseMenu).position.y = -0.5;
+	coordinator.AddComponent<PauseMenu>(GUI_BackToPauseMenu, PauseMenu(PauseMenu::BACK_BUTTON));
+
+	Entity GUI_VolumeMeter = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_VolumeMeter, Transform());
+	coordinator.AddComponent<EntityState>(GUI_VolumeMeter, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_VolumeMeter, CanvasText("Volume: ", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_VolumeMeter).position.y = 0.5;
+	coordinator.AddComponent<PauseMenu>(GUI_VolumeMeter, PauseMenu());
+
+	Entity PauseCanvas = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(PauseCanvas, Transform());
+	coordinator.GetComponent<Transform>(PauseCanvas).position = glm::vec3(0, 0, 0);
+	coordinator.GetComponent<Transform>(PauseCanvas).scale = glm::vec3(0.5, 0.5, 1);
+	coordinator.AddComponent<EntityState>(PauseCanvas, EntityState());
+	coordinator.AddComponent<CanvasImage>(PauseCanvas, CanvasImage("Images//regulartexture.tga"));
+	coordinator.AddComponent<PauseMenu>(PauseCanvas, PauseMenu(PauseMenu::CANVAS));
+
+	pausemenusystem->GUI_BackToPauseMenu = GUI_BackToPauseMenu;
+	pausemenusystem->GUI_Exit = GUI_Exit;
+	pausemenusystem->GUI_Options = GUI_Options;
+	pausemenusystem->GUI_Resume = GUI_Resume;
+	pausemenusystem->GUI_VolumeDown = GUI_VolumeDown;
+	pausemenusystem->GUI_VolumeUp = GUI_VolumeUp;
+	pausemenusystem->GUI_VolumeMeter = GUI_VolumeMeter;
+	pausemenusystem->PauseCanvas = PauseCanvas;
+}
+
+void SceneCombat::InitWinLose()
+{
+	Entity GUI_Exit = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Exit, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Exit, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Exit, CanvasText("Exit", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Exit).position.y = -0.5;
+	coordinator.AddComponent<WinLoseMenu>(GUI_Exit, WinLoseMenu(WinLoseMenu::EXIT_BUTTON));
+
+	Entity GUI_Text = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Text, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Text, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Text, CanvasText("", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Text).position.y = 0.4;
+	coordinator.AddComponent<WinLoseMenu>(GUI_Text, WinLoseMenu(WinLoseMenu::NO_BUTTON));
+
+	Entity GUI_UnitsBuilt = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_UnitsBuilt, Transform());
+	coordinator.AddComponent<EntityState>(GUI_UnitsBuilt, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_UnitsBuilt, CanvasText("Units Built: ", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_UnitsBuilt).position.y = 0.1;
+	coordinator.AddComponent<WinLoseMenu>(GUI_UnitsBuilt, WinLoseMenu(WinLoseMenu::NO_BUTTON));
+
+	Entity GUI_UnitsDestroyed = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_UnitsDestroyed, Transform());
+	coordinator.AddComponent<EntityState>(GUI_UnitsDestroyed, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_UnitsDestroyed, CanvasText("Death Count: ", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_UnitsDestroyed).position.y = -0.05;
+	coordinator.AddComponent<WinLoseMenu>(GUI_UnitsDestroyed, WinLoseMenu(WinLoseMenu::NO_BUTTON));
+
+	Entity GUI_UnitsLeft = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_UnitsLeft, Transform());
+	coordinator.AddComponent<EntityState>(GUI_UnitsLeft, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_UnitsLeft, CanvasText("Alive Count: ", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_UnitsLeft).position.y = -0.2;
+	coordinator.AddComponent<WinLoseMenu>(GUI_UnitsLeft, WinLoseMenu());
+
+	Entity WinLoseCanvas = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(WinLoseCanvas, Transform());
+	coordinator.GetComponent<Transform>(WinLoseCanvas).position = glm::vec3(0, 0, 0);
+	coordinator.GetComponent<Transform>(WinLoseCanvas).scale = glm::vec3(0.5, 0.5, 1);
+	coordinator.AddComponent<EntityState>(WinLoseCanvas, EntityState());
+	coordinator.AddComponent<CanvasImage>(WinLoseCanvas, CanvasImage("Images//regulartexture.tga"));
+	coordinator.AddComponent<WinLoseMenu>(WinLoseCanvas, WinLoseMenu(WinLoseMenu::CANVAS));
+
+	winlosesystem->GUI_Text = GUI_Text;
+	winlosesystem->GUI_Exit = GUI_Exit;
+	winlosesystem->GUI_UnitsBuilt = GUI_UnitsBuilt;
+	winlosesystem->GUI_UnitsDestroyed = GUI_UnitsDestroyed;
+	winlosesystem->GUI_UnitsLeft = GUI_UnitsLeft;
+	winlosesystem->WinLoseCanvas = WinLoseCanvas;
 }
 
 void SceneCombat::UpdateImGui()

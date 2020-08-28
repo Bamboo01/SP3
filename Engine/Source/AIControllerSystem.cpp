@@ -25,18 +25,18 @@ void AIControllerSystem::Update(float dt)
         aicontroller.PlayerAggroTimer += dt;
         aicontroller.ProcessTacticsTimer += dt;
 
-        aicontroller.normalunitcost = aicontroller.normalunitlevel * 50;
-        aicontroller.rangeunitcost = aicontroller.rangeunitlevel * 100;
-        aicontroller.tankunitcost = aicontroller.tankunitlevel * 150;
-        aicontroller.normalunitcost2 = aicontroller.normalunitlevel * 40;
-        aicontroller.rangeunitcost2 = aicontroller.rangeunitlevel * 80;
-        aicontroller.tankunitcost2 = aicontroller.tankunitlevel * 110;
+        aicontroller.normalunitcost = aicontroller.normalunitlevel * 40;
+        aicontroller.rangeunitcost = aicontroller.rangeunitlevel * 60;
+        aicontroller.tankunitcost = aicontroller.tankunitlevel * 90;
+        aicontroller.normalunitcost2 = aicontroller.normalunitlevel * 30;
+        aicontroller.rangeunitcost2 = aicontroller.rangeunitlevel * 50;
+        aicontroller.tankunitcost2 = aicontroller.tankunitlevel * 80;
         aicontroller.levelupnormalcost = aicontroller.normalunitlevel * 30;
-        aicontroller.leveluprangecost = aicontroller.rangeunitlevel * 130;
-        aicontroller.leveluptankcost = aicontroller.tankunitlevel * 200;
-        aicontroller.levelupnormalcost2 = aicontroller.normalunitlevel * 70;
-        aicontroller.leveluprangecost2 = aicontroller.rangeunitlevel * 120;
-        aicontroller.leveluptankcost2 = aicontroller.tankunitlevel * 160;
+        aicontroller.leveluprangecost = aicontroller.rangeunitlevel * 70;
+        aicontroller.leveluptankcost = aicontroller.tankunitlevel * 100;
+        aicontroller.levelupnormalcost2 = aicontroller.normalunitlevel * 40;
+        aicontroller.leveluprangecost2 = aicontroller.rangeunitlevel * 100;
+        aicontroller.leveluptankcost2 = aicontroller.tankunitlevel * 150;
 
         if (aicontroller.AIAggroTimer > 20.f)
         {
@@ -93,7 +93,7 @@ void AIControllerSystem::Update(float dt)
         }
 
         //Build order via final aggression amount
-        if (aicontroller.ProcessTacticsTimer > 5.f)
+        if (aicontroller.ProcessTacticsTimer > 10.f)
         {
             aicontroller.ProcessTacticsTimer = 0.f;
 

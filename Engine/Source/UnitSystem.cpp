@@ -10,7 +10,6 @@ void UnitSystem::Setup()
     signature.set(coordinator.GetComponentType<Collider>());
     signature.set(coordinator.GetComponentType<RenderData>());
     signature.set(coordinator.GetComponentType<EntityState>());
-
     coordinator.SetSystemSignature<UnitSystem>(signature);
 }
 
@@ -20,6 +19,9 @@ void UnitSystem::Init(std::set<Entity> terrainEntitySet, std::set<Entity> aiCont
     aiControllerEntity = aiControllerSet;
     cameraEntity = cameraentity;
     cSoundController = CSoundController::GetInstance();
+    UnitsDeath = 0;
+    WinLose = 0;
+    PlayerTotalUnit = 0;
 
     for (int i = 0; i < 100; i++) // Init xxx amount of inactive objects
     {
@@ -38,6 +40,8 @@ void UnitSystem::Update(double dt)
 {
     d_elapsedTime += dt;
 
+    PlayerTotalUnit = 0;
+
     std::vector<Entity> unitList;
 
     for (auto const& entity : m_Entities)
@@ -46,6 +50,16 @@ void UnitSystem::Update(double dt)
         auto& unit = coordinator.GetComponent<Unit>(entity);
         auto& entityState = coordinator.GetComponent<EntityState>(entity);
 
+        //POSITION THINGY DON'T MIND ME THANKS - SHERWYN
+        if (unit.unitFaction == Unit::PLAYER && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE)
+        {
+            renderer.fogofwarManager.positions.push_back(glm::vec4(transform.position, 0));
+        }
+       
+        if (unit.unitFaction == Unit::PLAYER)
+        {
+            PlayerTotalUnit++;
+        }
 
         if (unit.health <= 0) // In the event the unit's health falls to/below 0, deactivate the unit.
         {
@@ -58,6 +72,20 @@ void UnitSystem::Update(double dt)
             {
                 cSoundController->SetSoundSourcePosition(24, transform.position.x, transform.position.y, transform.position.z);
                 cSoundController->PlaySoundByID(24);
+            }
+
+            if (unit.unitType == Unit::NEXUS && unit.unitFaction == Unit::PLAYER)
+            {
+                WinLose = 1;
+            }
+            else if (unit.unitType == Unit::NEXUS && unit.unitFaction == Unit::ENEMY)
+            {
+                WinLose = 2;
+            }
+
+            if (unit.unitFaction == Unit::PLAYER)
+            {
+                UnitsDeath++;
             }
 
             AddInactiveEntity(entity);
@@ -134,6 +162,7 @@ void UnitSystem::UpdateUnitToTerrain(Entity entity)
         auto& terrain = coordinator.GetComponent<TerrainData>(entities);
         auto& unitData = coordinator.GetComponent<Unit>(entity);
         auto& unitTransform = coordinator.GetComponent<Transform>(entity);
+
 
         if (unitData.unitType == Unit::PROJECTILE || unitData.unitType == Unit::MELEE_PROJECTILE)
             return;
@@ -285,6 +314,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TOWER_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as TOWER type" << std::endl;
         break;
     case Unit::WALL:
@@ -297,6 +327,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_WALL_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as WALL type" << std::endl;
         break;
     case Unit::NEXUS:
@@ -309,6 +340,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NEXUS_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as NEXUS type" << std::endl;
         break;
     case Unit::GENERATOR1:
@@ -321,6 +353,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR1_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR1 type" << std::endl;
         break;
     case Unit::GENERATOR2:
@@ -333,6 +366,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR2_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR2 type" << std::endl;
         break;
     case Unit::LAB:
@@ -345,6 +379,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_LAB_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as LAB type" << std::endl;
         break;
     }

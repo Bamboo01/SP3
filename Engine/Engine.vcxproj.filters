@@ -158,6 +158,21 @@
     <ClCompile Include="Source\AIControllerSystem.cpp">
       <Filter>Auxillary\Systems\AIControllerSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FogOfWarManager.cpp">
+      <Filter>Core\Modules\FogOfWarManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneCredit.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CreditScrollSystem.cpp">
+      <Filter>Auxillary\Systems\CreditScrollSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PauseMenuSystem.cpp">
+      <Filter>Auxillary\Systems\PauseMenuSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinLoseSystem.cpp">
+      <Filter>Auxillary\Systems\WinLoseSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -448,6 +463,27 @@
     <ClInclude Include="Source\AIControllerSystem.h">
       <Filter>Auxillary\Systems\AIControllerSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\FogOfWarManager.h">
+      <Filter>Core\Modules\FogOfWarManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneCredit.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CreditScrollSystem.h">
+      <Filter>Auxillary\Systems\CreditScrollSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinLoseMenu.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PauseMenu.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PauseMenuSystem.h">
+      <Filter>Auxillary\Systems\PauseMenuSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinLoseSystem.h">
+      <Filter>Auxillary\Systems\WinLoseSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -602,6 +638,18 @@
     </Filter>
     <Filter Include="Auxillary\Systems\AIControllerSystem">
       <UniqueIdentifier>{721c3bd4-e803-4762-9c66-c43f4360d8b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Modules\FogOfWarManager">
+      <UniqueIdentifier>{6b03e3d6-bc32-41cd-b0da-0f05c1e92e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\CreditScrollSystem">
+      <UniqueIdentifier>{4d7fa13f-374c-4d5d-b66b-55806f49e917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\PauseMenuSystem">
+      <UniqueIdentifier>{8d3b9d48-1543-453e-8a5d-11161e125770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\WinLoseSystem">
+      <UniqueIdentifier>{585a4c34-9fa9-4fca-94dc-57ba322993bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

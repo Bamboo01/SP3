@@ -597,8 +597,6 @@ void GridControllerSystem::UpdateUnitPosition()
 							unit.velocity = glm::vec3(0, 0, 0);
 						}
 
-
-
 					}
 				}
 			}
@@ -620,16 +618,18 @@ void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vecto
 				glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 30, GridTopLeft.y, GridTopLeft.z - 30);
 				if (Destination.x >= GridTopLeft.x && Destination.x <= GridBottomRight.x && Destination.z <= GridTopLeft.z && Destination.z >= GridBottomRight.z)
 				{
-					if (GridCost[x][y] == -1)
-					{	// Set The Empty Grid To the Destination Point
+					/*if (GridCost[x][y] == -1)
+					{*/	// Set The Empty Grid To the Destination Point
 						GridCost[x][y] = 0;
 						destination.x = x;
 						destination.y = y;
 						//std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+						x = 20;
+						y = 20;
 						break;
-					}
+					/*}
 					else
-						break;		// If there is a wall at the destination point, Destination is impossible to reach
+						break;	*/	// If there is a wall at the destination point, Destination is impossible to reach
 				}
 			}
 		}
@@ -664,20 +664,11 @@ void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vecto
 				auto& a = coordinator.GetComponent<Unit>(e);
 				if (a.UnitID != INT_MAX)
 				{
-					if (a.StandingGridCost == 0 || a.velocity == glm::vec3(0, 0, 0))
-					{
-						IDtoFlowfield.at(a.UnitID).first--;
-						a.UnitID = FlowfieldIDs.front();
-						FlowfieldIDs.pop();
-					}
+					IDtoFlowfield.at(a.UnitID).first--;
 				}
-				else
-				{
-					a.UnitID = FlowfieldIDs.front();
-					FlowfieldIDs.pop();
-				}
+				a.UnitID = FlowfieldIDs.front();
 			}
-
+			FlowfieldIDs.pop();
 			UpdateUnitPosition();
 		}
 	}

@@ -81,9 +81,6 @@ void Renderer::Init()
 		MeshtoMaterial.insert({ mesh, nullptr });
 	}
 
-	//Initialising pipeline modules
-	lightingManager.InitLights(shaderManager);
-
 	/*Initialise all your shaders here*/
 	Shader* test = new Shader("Shader//test.vs", "Shader//test.fs");
 	shaderManager.push_back(test);
@@ -96,6 +93,12 @@ void Renderer::Init()
 
 	Shader* placing = new PlacingShader("Shader//placing.vs", "Shader//placing.fs");
 	shaderManager.push_back(placing);
+
+	Shader* enemyShader = new Shader("Shader//enemyShader.vs", "Shader//enemyShader.fs");
+	shaderManager.push_back(enemyShader);
+
+	Shader* terrainShader = new Shader("Shader//terrainShader.vs", "Shader//terrainShader.fs");
+	shaderManager.push_back(enemyShader);
 
 	/*Add your materials*/
 	Material* boxmat = new Material();
@@ -161,6 +164,7 @@ void Renderer::Init()
 
 	/*Assign your material their shaders here*/
 	addMaterial(boxmat/*, test*/);
+	addMaterial(terrain, terrainShader);
 	addMaterial(grass);
 	addMaterial(testParticleA, billboard_Cylindrical);
 	addMaterial(testParticleB, billboard_Spherical);
@@ -170,7 +174,7 @@ void Renderer::Init()
 
 
 	addMaterial(playerMaterial);
-	addMaterial(enemyMaterial);
+	addMaterial(enemyMaterial, enemyShader);
 	addMaterial(placingMaterial, placing);
 
 	/*Assign your meshes their materials here*/
@@ -225,6 +229,11 @@ void Renderer::Init()
 	glBindBuffer(GL_UNIFORM_BUFFER, MatriceUBO);
 	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), NULL, GL_STATIC_DRAW);
 	glBindBufferRange(GL_UNIFORM_BUFFER, 0, MatriceUBO, 0, 2 * sizeof(glm::mat4));
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	//Initialising pipeline modules
+	lightingManager.InitLights(shaderManager);
+	fogofwarManager.InitManager(shaderManager);
 }
 
 void Renderer::Update(float dt)
@@ -242,7 +251,7 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 {
 	//Buffer all your pipeline modules here
 
-	lightingManager.BufferLights();
+	//lightingManager.BufferLights();
 
 	if (useCameraShader)
 	{
@@ -288,8 +297,6 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(camera.getProjectionMatrix()));
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(camera.getViewMatrix()));
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-		lightingManager.BufferLights();
 
 		for (auto mesh : meshManager->meshList)
 		{
@@ -338,6 +345,8 @@ void Renderer::Render(Camera& camera, bool useCameraShader)
 
 void Renderer::RenderCanvas()
 {
+	fogofwarManager.BufferManager();
+
 	if (Application::IsKeyPressed('1'))
 		glEnable(GL_CULL_FACE);
 	if (Application::IsKeyPressed('2'))

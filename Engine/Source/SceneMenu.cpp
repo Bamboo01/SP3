@@ -96,7 +96,7 @@ void SceneMenu::Init()
 	coordinator.AddComponent<Transform>(GUI_Exit, Transform());
 	coordinator.AddComponent<EntityState>(GUI_Exit, EntityState());
 	coordinator.AddComponent<CanvasText>(GUI_Exit, CanvasText("Exit", ALIGN_CENTER));
-	coordinator.GetComponent<Transform>(GUI_Exit).position.y = -0.65;
+	coordinator.GetComponent<Transform>(GUI_Exit).position.y = -0.80;
 	coordinator.AddComponent<MenuGUI>(GUI_Exit, MenuGUI(MenuGUI::EXIT_BUTTON));
 
 	Entity GUI_VolumeUp = coordinator.CreateEntity();
@@ -117,15 +117,58 @@ void SceneMenu::Init()
 	coordinator.AddComponent<Transform>(GUI_BackToMainMenu, Transform());
 	coordinator.AddComponent<EntityState>(GUI_BackToMainMenu, EntityState());
 	coordinator.AddComponent<CanvasText>(GUI_BackToMainMenu, CanvasText("Back"));
-	coordinator.GetComponent<Transform>(GUI_BackToMainMenu).position.y = -0.85;
+	coordinator.GetComponent<Transform>(GUI_BackToMainMenu).position.y = -1.05;
 	coordinator.AddComponent<MenuGUI>(GUI_BackToMainMenu, MenuGUI(MenuGUI::BACK_BUTTON));
 
 	Entity GUI_VolumeMeter = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_VolumeMeter, Transform());
 	coordinator.AddComponent<EntityState>(GUI_VolumeMeter, EntityState());
 	coordinator.AddComponent<CanvasText>(GUI_VolumeMeter, CanvasText("Volume: ", ALIGN_CENTER));
-	coordinator.GetComponent<Transform>(GUI_VolumeMeter).position.y = -0.10;
+	coordinator.GetComponent<Transform>(GUI_VolumeMeter).position.y = -0.65;
 	coordinator.AddComponent<MenuGUI>(GUI_VolumeMeter, MenuGUI());
+
+	Entity GUI_Instructionbutton = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Instructionbutton, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Instructionbutton, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Instructionbutton, CanvasText("Instruction", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Instructionbutton).position.y = -0.65;
+	coordinator.AddComponent<MenuGUI>(GUI_Instructionbutton, MenuGUI(MenuGUI::INSTRUCTION_BUTTON));
+
+	Entity GUI_Instructions = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Instructions, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Instructions, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Instructions, CanvasText("INSTRUCTIONS", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Instructions).position.y = 0.30;
+	coordinator.AddComponent<MenuGUI>(GUI_Instructions, MenuGUI());
+
+	Entity GUI_Escape = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Escape, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Escape, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Escape, CanvasText("ESCAPE Key -> Menu Screen", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Escape).position.y = 0.15;
+	coordinator.AddComponent<MenuGUI>(GUI_Escape, MenuGUI());
+
+	Entity GUI_LeftMousePress = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_LeftMousePress, Transform());
+	coordinator.AddComponent<EntityState>(GUI_LeftMousePress, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_LeftMousePress, CanvasText("Left Click: Select units by dragging & Interact with UI ", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_LeftMousePress).position.y = 0.0;
+	coordinator.AddComponent<MenuGUI>(GUI_LeftMousePress, MenuGUI());
+
+	Entity GUI_RightMousePress = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_RightMousePress, Transform());
+	coordinator.AddComponent<EntityState>(GUI_RightMousePress, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_RightMousePress, CanvasText("Right Click: Move Selected Units", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_RightMousePress).position.y = -0.15;
+	coordinator.AddComponent<MenuGUI>(GUI_RightMousePress, MenuGUI());
+
+	Entity GUI_ScrollWheel = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_ScrollWheel, Transform());
+	coordinator.AddComponent<EntityState>(GUI_ScrollWheel, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_ScrollWheel, CanvasText("Scroll Wheel: Rotate/Zoom Camera", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_ScrollWheel).position.y = -0.30;
+	coordinator.AddComponent<MenuGUI>(GUI_ScrollWheel, MenuGUI());
+
 
 	menuguisystem->GUI_BackToMainMenu = GUI_BackToMainMenu;
 	menuguisystem->GUI_Exit = GUI_Exit;
@@ -134,6 +177,13 @@ void SceneMenu::Init()
 	menuguisystem->GUI_VolumeDown = GUI_VolumeDown;
 	menuguisystem->GUI_VolumeUp = GUI_VolumeUp;
 	menuguisystem->GUI_VolumeMeter = GUI_VolumeMeter;
+
+	menuguisystem->GUI_Instructionbutton = GUI_Instructionbutton;
+	menuguisystem->GUI_Instructions = GUI_Instructions;
+	menuguisystem->GUI_Escape = GUI_Escape;
+	menuguisystem->GUI_LeftMousePress = GUI_LeftMousePress;
+	menuguisystem->GUI_RightMousePress = GUI_RightMousePress;
+	menuguisystem->GUI_ScrollWheel = GUI_ScrollWheel;
 
 	menunexussystem->Init();
 	menuunitsystem->Init();

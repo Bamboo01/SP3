@@ -216,6 +216,8 @@ void Application::Run()
 	cSoundController->LoadSound("Sounds//menusong.mp3", 999, true);
 	cSoundController->LoadSound("Sounds//menuclick.wav", 1000);
 
+	cSoundController->LoadSound("Sounds/credit.ogg", 700, true, true);
+
 	cSoundController->LoadSound("Sounds/keypress.ogg", 1);
 	cSoundController->LoadSound("Sounds/Intro.ogg", 2);
 	cSoundController->LoadSound("Sounds/IntroComplete.ogg", 3);
@@ -237,7 +239,7 @@ void Application::Run()
 	Scene* scene = nullptr;
 	SceneManager* scenemanager = SceneManager::getInstance();
 	scenemanager->Init(&scene);
-	scenemanager->ChangeScene(SCENE_COMBAT);
+	scenemanager->ChangeScene(SCENE_MENU);
 	scenemanager->Update();
 
 	const char* glsl_version = "#version 330";

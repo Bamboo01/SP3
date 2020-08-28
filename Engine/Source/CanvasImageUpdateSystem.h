@@ -40,6 +40,8 @@ public:
     double buildingclickdelay;
     bool createonce;
 
+    int NumberofUnitCreated;
+
 private:
 
     bool CollideWithCanvas(float x, float y, float xscale, float yscale);

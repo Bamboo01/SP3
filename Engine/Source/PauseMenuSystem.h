@@ -3,43 +3,40 @@
 #include "Entity.h"
 #include "Coordinator.h"
 #include "Transform.h"
-#include "ParticleSystemParameters.h"
 #include "RenderData.h"
-#include "MenuNexus.h"
-#include "MenuGUI.h"
+#include "PauseMenu.h"
 #include "CanvasText.h"
 
 extern Coordinator coordinator;
 #pragma once
 
-class MenuGUISystem : public System
+class PauseMenuSystem : public System
 {
 private:
-	enum MENU_STATE
+	enum PAUSE_STATE
 	{
-		S_MAIN_MENU,
+		S_PAUSE_MENU,
 		S_OPTIONS,
-		S_INSTRUCTIONS,
+		S_NONE
 	};
+
+	double timer;
+	double escape_delay;
+
 public:
-	Entity GUI_Start;
+	Entity GUI_Resume;
 	Entity GUI_Exit;
 	Entity GUI_Options;
 	Entity GUI_VolumeUp;
 	Entity GUI_VolumeDown;
-	Entity GUI_BackToMainMenu;
+	Entity GUI_BackToPauseMenu;
 	Entity GUI_VolumeMeter;
-	Entity GUI_Instructionbutton;
 
-	Entity GUI_Instructions;
-	Entity GUI_Escape;
-	Entity GUI_LeftMousePress;
-	Entity GUI_RightMousePress;
-	Entity GUI_ScrollWheel;
-	
-	std::vector<Entity> GUI_Entities;
+	Entity PauseCanvas;
 
-	MENU_STATE state;
+	std::vector<Entity> PauseGUI_Entities;
+
+	PAUSE_STATE state;
 
 	bool CollideWithCanvas(float x, float y, float xscale, float yscale);
 
@@ -48,5 +45,5 @@ public:
 	void Update(float dt);
 	void Render();
 
-	~MenuGUISystem();
+	~PauseMenuSystem();
 };
