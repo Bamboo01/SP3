@@ -161,6 +161,12 @@
     <ClCompile Include="Source\FogOfWarManager.cpp">
       <Filter>Core\Modules\FogOfWarManager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneCredit.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CreditScrollSystem.cpp">
+      <Filter>Auxillary\Systems\CreditScrollSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -454,6 +460,12 @@
     <ClInclude Include="Source\FogOfWarManager.h">
       <Filter>Core\Modules\FogOfWarManager</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SceneCredit.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CreditScrollSystem.h">
+      <Filter>Auxillary\Systems\CreditScrollSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -611,6 +623,9 @@
     </Filter>
     <Filter Include="Core\Modules\FogOfWarManager">
       <UniqueIdentifier>{6b03e3d6-bc32-41cd-b0da-0f05c1e92e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\CreditScrollSystem">
+      <UniqueIdentifier>{4d7fa13f-374c-4d5d-b66b-55806f49e917}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

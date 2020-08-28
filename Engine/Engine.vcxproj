@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AIControllerSystem.cpp" />
+    <ClCompile Include="Source\CreditScrollSystem.cpp" />
     <ClCompile Include="Source\FogOfWarManager.cpp" />
     <ClCompile Include="Source\IntroTextSystem.cpp" />
     <ClCompile Include="Source\MenuCameraSystem.cpp" />
@@ -218,6 +219,7 @@
   <ItemGroup>
     <ClInclude Include="Source\AIController.h" />
     <ClInclude Include="Source\AIControllerSystem.h" />
+    <ClInclude Include="Source\CreditScrollSystem.h" />
     <ClInclude Include="Source\FogOfWarManager.h" />
     <ClInclude Include="Source\IntroTextSystem.h" />
     <ClInclude Include="Source\MenuGUI.h" />
