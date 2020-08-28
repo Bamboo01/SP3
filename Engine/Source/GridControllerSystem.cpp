@@ -626,7 +626,7 @@ void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vecto
 		for (auto it = units.begin(); it != units.end();)
 		{
 			auto& a = coordinator.GetComponent<Unit>(*it);
-			if (a.UnitID != INT_MAX || a.velocity == glm::vec3(0,0,0))
+			if (a.UnitID != INT_MAX || a.velocity != glm::vec3(0,0,0))
 			{
 				it = units.erase(it);
 			}

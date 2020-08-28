@@ -145,7 +145,7 @@ public:
 		float multiplierDamageOffset = 0.0175;
 
 		float baseAttackSpeed = 1.0;
-		float baseAttackRange = 6.0;
+		float baseAttackRange = 15.0;
 		float unitMass = 1;
 		glm::vec3 collisionScale = glm::vec3(4, 9, 4);
 
