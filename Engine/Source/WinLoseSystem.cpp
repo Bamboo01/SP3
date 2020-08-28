@@ -93,7 +93,7 @@ void WinLoseSystem::Update(float dt)
 		auto& canvastext = coordinator.GetComponent<CanvasText>(entity);
 		canvastext.size = 0.1f;
 
-		if (CollideWithCanvas(transform.position.x, transform.position.y + (0.2 * canvastext.size), canvastext.size, canvastext.size))
+		if (CollideWithCanvas(transform.position.x, transform.position.y, canvastext.size, canvastext.size))
 		{
 			canvastext.size = 0.13f;
 			auto& winlosegui = coordinator.GetComponent<WinLoseMenu>(entity);
