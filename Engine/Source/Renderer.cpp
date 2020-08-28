@@ -210,7 +210,7 @@ void Renderer::Init()
 	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_GENERATOR2_ENEMY], enemyMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_UNIT_WALL_ENEMY], enemyMaterial);
 	assignMaterialtoMesh(meshManager->meshList[GEO_LAB_ENEMY], enemyMaterial);
-	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_ENEMY], playerProjectile);
+	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_ENEMY], enemyProjectile);
 	assignMaterialtoMesh(meshManager->meshList[GEO_PROJECTILE_MELEE_ENEMY], enemyMaterial);
 
 	assignMaterialtoMesh(meshManager->meshList[GEO_INRANGE_WALL_PLAYER], placingMaterial);

@@ -231,9 +231,10 @@ void Application::Run()
 	cSoundController->LoadSound("Sounds/Create_building_unit.wav", 25, true, false, CSoundInfo::_3D);
 	cSoundController->LoadSound("Sounds/GUI_click.wav", 26);
 	cSoundController->LoadSound("Sounds/Collect_resource.wav", 27);
+	cSoundController->LoadSound("Sounds/combatsong.mp3", 28, false, true);
 
 	cSoundController->ChangeSoundSourceMinDistance(25, 128);
-	cSoundController->SetRolloffFactor(0.5f);
+	cSoundController->SetRolloffFactor(0.1f);
 
 	//Main Loop
 	Scene* scene = nullptr;
