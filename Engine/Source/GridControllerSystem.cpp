@@ -621,7 +621,28 @@ void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vecto
 			}
 		}
 	}
-	CreateGrids();
+	//CreateGrids();
+
+	for (int x = 0; x < 30; ++x)
+	{
+		for (int y = 0; y < 30; ++y)
+		{
+			GridCost[x][y] = -1;
+		}
+	}
+	int y = 0;
+	for (int Posy = -300; Posy < 300; Posy += 20)
+	{
+		int x = 0;
+		for (int Posx = 300; Posx > -300; Posx -= 20)
+		{
+			GridPosition[x][y] = glm::vec3(Posy, 2, Posx);
+			CheckGridCost(x, y);
+			//std::cout << GridPosition[count].x << ", " << GridPosition[count].y << ", " << GridPosition[count].z << " ::::" << GridCost[count] << std::endl;
+			x++;
+		}
+		++y;
+	}
 	glm::vec2 destination = glm::vec2(-1, -1);	// If it is -1 at the end, means that destination is impossible
 	for (int x = 0; x < 30; ++x)
 	{
