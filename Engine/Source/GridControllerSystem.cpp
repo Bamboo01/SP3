@@ -41,17 +41,17 @@ void GridControllerSystem::CheckGridCost(int GridNumX, int GridNumY)
 	{
 		auto& unit = coordinator.GetComponent<Unit>(entity);
 		auto& transform = coordinator.GetComponent<Transform>(entity);
-		/*if (transform.position.x + transform.scale.x>= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z+ transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
+		if (transform.position.x + transform.scale.x>= GridTopLeft.x && transform.position.x + transform.scale.x <= GridBottomRight.x && transform.position.z+ transform.scale.z <= GridTopLeft.z && transform.position.z + transform.scale.z >= GridBottomRight.z)
 		{
 			GridCost[GridNumX][GridNumY] += unit.FlowFieldCost;
-		}*/
-		if (unit.FlowFieldCost != 0)
+		}
+	/*	if (unit.FlowFieldCost != 0)
 		{
 			if ((transform.position.x >= GridTopLeft.x) && (transform.position.x <= GridBottomRight.x) && (transform.position.y <= GridTopLeft.y) && (transform.position.y >= GridBottomRight.y))
 			{
 				GridCost[GridNumX][GridNumY] += unit.FlowFieldCost;
 			}
-		}
+		}*/
 	}
 	
 }
@@ -491,7 +491,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x - 1, y, cost);
-								distance = glm::vec3(0, 0, 20);
+								distance = glm::vec3(0, 0, 30);
 							}
 						}
 						// Check for South
@@ -502,7 +502,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x + 1, y, cost);
-								distance = glm::vec3(0, 0, -20);
+								distance = glm::vec3(0, 0, -30);
 							}
 						}
 						// Check for East
@@ -513,7 +513,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x, y+1, cost);
-								distance = glm::vec3(20, 0, 0);
+								distance = glm::vec3(30, 0, 0);
 							}
 						}
 						// Check for West
@@ -524,7 +524,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x, y - 1, cost);
-								distance = glm::vec3(-20, 0, 0);
+								distance = glm::vec3(-30, 0, 0);
 							}
 						}
 						// Check for North East
@@ -546,7 +546,7 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x - 1, y - 1, cost);
-								distance = glm::vec3(25, 0, -25);
+								distance = glm::vec3(-25, 0, 25);
 							}
 						}
 						// Check for South East
@@ -557,13 +557,13 @@ void GridControllerSystem::UpdateUnitPosition()
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
 								lowest = glm::vec3(x + 1, y + 1, cost);
-								distance = glm::vec3(-25, 0, 25);
+								distance = glm::vec3(25, 0, -25);
 							}
 						}
-						// Check for North West
+						// Check for South West
 						if (y - 1 <= 29 && y - 1 >= 0 && x + 1 <= 29 && x + 1 >= 0)
 						{
-							//If North West Grid Exist
+							//If South West Grid Exist
 							cost = GridCost[x + 1][y - 1];
 							if ((lowest.z == -1 || cost < lowest.z) && cost != -1)
 							{
