@@ -15,11 +15,11 @@ private:
 	glm::vec2 GridSize;
 	glm::vec2 CursorScreenPosition;
 
-	glm::vec3 GridPosition[20][20];
+	glm::vec3 GridPosition[30][30];
 	std::queue<unsigned> FlowfieldIDs;
 	std::map<unsigned,std::pair<int, std::vector <std::vector<int>>>> IDtoFlowfield; // unsigned = ID , int = num of units inside
 	std::set<Entity>* UnitList;
-	int GridCost[20][20];
+	int GridCost[30][30];
 	float timer = 0;
 	//bool active = false;
 	
