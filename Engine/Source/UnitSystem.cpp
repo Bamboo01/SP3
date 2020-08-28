@@ -283,6 +283,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_TOWER_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as TOWER type" << std::endl;
         break;
     case Unit::WALL:
@@ -295,6 +296,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_WALL_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as WALL type" << std::endl;
         break;
     case Unit::NEXUS:
@@ -307,6 +309,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_NEXUS_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as NEXUS type" << std::endl;
         break;
     case Unit::GENERATOR1:
@@ -319,6 +322,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR1_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR1 type" << std::endl;
         break;
     case Unit::GENERATOR2:
@@ -331,6 +335,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_UNIT_GENERATOR2_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as GENERATOR2 type" << std::endl;
         break;
     case Unit::LAB:
@@ -343,6 +348,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
         {
             UnitRenderData.mesh = renderer.getMesh(GEO_LAB_ENEMY);
         }
+        UnitData.FlowFieldCost = 500;
         std::cout << "UnitSystem: " << inactiveID << " initiated as LAB type" << std::endl;
         break;
     }

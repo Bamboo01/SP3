@@ -3,6 +3,7 @@
 #include "SceneIntro.h"
 #include "SceneCombat.h"
 #include "SceneMenu.h"
+#include "SceneCredit.h"
 
 SceneManager::SceneManager()
 {
@@ -10,6 +11,7 @@ SceneManager::SceneManager()
 	sceneList[SCENE_COMBAT] = new SceneCombat;
 	sceneList[SCENE_MENU] = new SceneMenu;
 	sceneList[SCENE_INTRO] = new SceneIntro;
+	sceneList[SCENE_CREDIT] = new SceneCredit;
 	scene = nullptr;
 	swap = false;
 }

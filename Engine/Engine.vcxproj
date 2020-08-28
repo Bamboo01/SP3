@@ -167,6 +167,7 @@
     <ClCompile Include="Source\MenuGUISystem.cpp" />
     <ClCompile Include="Source\MenuNexusSystem.cpp" />
     <ClCompile Include="Source\MenuUnitSystem.cpp" />
+    <ClCompile Include="Source\SceneCredit.cpp" />
     <ClCompile Include="Source\SceneMenu.cpp" />
     <ClCompile Include="Source\SceneCombat.cpp" />
     <ClCompile Include="Source\ControllerSystem.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="Source\MenuUnit.h" />
     <ClInclude Include="Source\MenuUnitSystem.h" />
     <ClInclude Include="Source\PlacingShader.h" />
+    <ClInclude Include="Source\SceneCredit.h" />
     <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\SceneMenu.h" />
     <ClInclude Include="Source\SceneCombat.h" />
