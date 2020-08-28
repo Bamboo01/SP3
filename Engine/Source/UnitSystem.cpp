@@ -92,6 +92,28 @@ void UnitSystem::Update(double dt)
             continue;
         }
 
+        // HARD CODE BABY
+        
+        if (transform.position.x < -199)
+        {
+            transform.position.x = -199 - (transform.position.x + 199);
+        }
+
+        if (transform.position.x > 199)
+        {
+            transform.position.x = 199 - (transform.position.x - 199);
+        }
+
+        if (transform.position.z < -199)
+        {
+            transform.position.z = -199 - (transform.position.z + 199);
+        }
+    
+        if (transform.position.z > 199)
+        {
+            transform.position.z = 199 - (transform.position.z - 199);
+        }
+
         if (unit.unitFaction == Unit::ENEMY)
         {
             unitList.push_back(entity);
@@ -252,6 +274,7 @@ Entity UnitSystem::CreateUnit(Unit::UnitType type, Unit::UnitFaction faction, in
     if ((faction == Unit::PLAYER && numberOfPlayer > 500) || (faction == Unit::ENEMY && numberOfEnemies > 500))
     {
         std::cout << "Failed to create new unit due to too many existing units!" << std::endl;
+        return UINT_MAX;
     }
 
     Entity inactiveID = objectpoolsystem->FetchEntityFromPool(Tag::UNIT);
@@ -466,8 +489,7 @@ Entity UnitSystem::CreateProjectile(Entity origin, Entity target)
         glm::vec3 relativePos = targetTransform.position - originTransform.position;
         float magnitude = glm::length(relativePos);
         glm::vec3 projectilePos = originTransform.position + relativePos * glm::vec3(0.5, 0.5, 0.5);
-        std::cout << projectilePos.y << std::endl;
-        
+
         UnitTransform = Transform(projectilePos, glm::vec3(magnitude, 0.2, 0.2), glm::vec3(0, originTransform.rotation.y, 0), TRANSFORM_TYPE::DYNAMIC_TRANSFORM);
     }
 
@@ -549,15 +571,15 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
             {
                 if (receiverUnit.unitType == Unit::NORMAL || receiverUnit.unitType == Unit::TANK || receiverUnit.unitType == Unit::RANGE)
                 {
-                    aiEntityController.LogEvent(receiverTransform.position, unitSeverity);
+                    aiEntityController.LogEvent(attackerTransform.position, unitSeverity);
                 }
                 else if (receiverUnit.unitType == Unit::NEXUS)
                 {
-                    aiEntityController.LogEvent(receiverTransform.position, nexusSeverity);
+                    aiEntityController.LogEvent(attackerTransform.position, nexusSeverity);
                 }
                 else
                 {
-                    aiEntityController.LogEvent(receiverTransform.position, buildingSeverity);
+                    aiEntityController.LogEvent(attackerTransform.position, buildingSeverity);
                 }
             }
         }
@@ -599,13 +621,12 @@ void UnitSystem::UpdateProjectile(Entity projectile)
         glm::vec3 relativePos = TargetTransform.position - OriginTransform.position;
         float magnitude = glm::length(relativePos);
         glm::vec3 projectilePos = OriginTransform.position + relativePos * glm::vec3(0.5, 0.5, 0.5);
-        std::cout << projectilePos.y << std::endl;
 
         UnitTransform.position = projectilePos;
         UnitTransform.scale = glm::vec3(magnitude, 0.2, 0.2);
         UnitTransform.rotation = glm::vec3(0, OriginTransform.rotation.y, 0);
 
-        if (d_elapsedTime >= UnitData.delay)
+        if (d_elapsedTime >= UnitData.delay || !OriginEntityState.active)
         {
             AddInactiveEntity(projectile);
             return;

@@ -120,6 +120,9 @@ void SceneCombat::Init()
 
 	gridcontrollersystem->Init();
 	gridcontrollersystem->getUnitEntity(&unitsystem->m_Entities);
+
+	cSoundController = CSoundController::GetInstance();
+	cSoundController->PlaySoundByID(28);
 }
 
 void SceneCombat::EarlyUpdate(double dt)

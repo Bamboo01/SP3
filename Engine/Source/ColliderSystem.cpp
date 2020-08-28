@@ -117,21 +117,21 @@ void ColliderSystem::Update(double dt)
 
 void ColliderSystem::Render()
 {
-    //for (auto const& entity : m_Entities)
-    //{
-    //    auto& transform = coordinator.GetComponent<Transform>(entity);
-    //    auto& collider = coordinator.GetComponent<Collider>(entity);
+   /* for (auto const& entity : m_Entities)
+    {
+        auto& transform = coordinator.GetComponent<Transform>(entity);
+        auto& collider = coordinator.GetComponent<Collider>(entity);
 
-    //    glm::mat4 modelmat(1.f);
-    //    glm::vec3 rot = glm::radians(transform.rotation);
-    //    modelmat = glm::translate(modelmat, transform.position);
-    //    modelmat = glm::rotate(modelmat, rot.x, glm::vec3(1, 0, 0));
-    //    modelmat = glm::rotate(modelmat, rot.y, glm::vec3(0, 1, 0));
-    //    modelmat = glm::rotate(modelmat, rot.z, glm::vec3(0, 0, 1));
-    //    modelmat = glm::scale(modelmat, collider.scale);
+        glm::mat4 modelmat(1.f);
+        glm::vec3 rot = glm::radians(transform.rotation);
+        modelmat = glm::translate(modelmat, transform.position);
+        modelmat = glm::rotate(modelmat, rot.x, glm::vec3(1, 0, 0));
+        modelmat = glm::rotate(modelmat, rot.y, glm::vec3(0, 1, 0));
+        modelmat = glm::rotate(modelmat, rot.z, glm::vec3(0, 0, 1));
+        modelmat = glm::scale(modelmat, collider.scale);
 
-    //    renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(modelmat);
-    //}
+        renderer.getMesh(GEO_GRIDCUBE)->DynamicTransformMatrices.push_back(modelmat);
+    }*/
 }
 
 void ColliderSystem::Setup()

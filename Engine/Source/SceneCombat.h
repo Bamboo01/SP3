@@ -21,6 +21,7 @@
 #include "AIControllerSystem.h"
 #include "PauseMenuSystem.h"
 #include "WinLoseSystem.h"
+#include "SoundController.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -65,6 +66,7 @@ class SceneCombat : public Scene
 	Entity cameraHandler;
 	std::vector<Entity> activeEntityList; // A vector containing a list of active entities
 
+	CSoundController* cSoundController;
 	/*Systems of the scene*/
 	std::shared_ptr<TransformSystem> transformsystem;
 	std::shared_ptr<CameraSystem> camerasystem;
