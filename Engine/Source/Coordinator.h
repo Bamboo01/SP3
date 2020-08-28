@@ -23,15 +23,15 @@ public:
 
 	void Exit()
 	{
-		if (m_ComponentManager)
-		{
-			delete m_ComponentManager;
-			m_ComponentManager = nullptr;
-		}
 		if (m_SystemManager)
 		{
 			delete m_SystemManager;
 			m_SystemManager = nullptr;
+		}
+		if (m_ComponentManager)
+		{
+			delete m_ComponentManager;
+			m_ComponentManager = nullptr;
 		}
 		if (m_EntityManager)
 		{

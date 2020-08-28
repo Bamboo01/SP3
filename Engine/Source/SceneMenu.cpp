@@ -267,5 +267,6 @@ void SceneMenu::PostRender()
 
 void SceneMenu::Exit()
 {
+	coordinator.Exit();
 	CSoundController::GetInstance()->StopAllSounds();
 }

@@ -240,6 +240,7 @@ void SceneCombat::PostRender()
 void SceneCombat::Exit()
 {
 	coordinator.Exit();
+	CSoundController::GetInstance()->StopAllSounds();
 }
 
 void SceneCombat::InitGUIText()

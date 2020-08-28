@@ -1,4 +1,5 @@
 #include "CanvasImageSystem.h"
+#include <GL/glew.h>
 
 void CanvasImageSystem::Setup()
 {
@@ -39,5 +40,17 @@ void CanvasImageSystem::Render()
 		model = glm::rotate(model, rot.z, glm::vec3(0, 0, 1));
 		model = glm::scale(model, transform.scale);
 		renderer.CanvasImage.push_back(std::make_pair(model, canvasimage.TextureID));
+	}
+}
+
+void CanvasImageSystem::Exit()
+{
+	for (auto const& entity : m_Entities)
+	{
+		auto& canvasimage = coordinator.GetComponent<CanvasImage>(entity);
+		if (canvasimage.ImagePath != "")
+		{
+			glDeleteTextures(1, &canvasimage.TextureID);
+		}
 	}
 }

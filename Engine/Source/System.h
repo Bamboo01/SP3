@@ -9,7 +9,6 @@ class System
 public:
 	std::set<Entity> m_Entities;
 	System() {}
-	virtual ~System() {}
 	virtual void Setup() {}
 	virtual void Init() {}
 	virtual void EarlyUpdate(float dt) {}
@@ -18,5 +17,6 @@ public:
 	virtual void Render() {}
 	virtual void OnCollision() {}
 	virtual void GrabEntity(Entity entity) {}
+	virtual void Exit() {}
 };
 

@@ -14,9 +14,8 @@ class CanvasImageSystem : public System
 private:
 
 public:
-    virtual void Setup();
-    virtual void Init();
-    virtual void Render();
-
-    //Create a destructor for this system! Delete all textures for textures with a path!
+    void Setup();
+    void Init();
+    void Render();
+    void Exit();
 };

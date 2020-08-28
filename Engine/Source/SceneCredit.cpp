@@ -111,4 +111,5 @@ void SceneCredit::PostRender()
 void SceneCredit::Exit()
 {
 	coordinator.Exit();
+	CSoundController::GetInstance()->StopAllSounds();
 }

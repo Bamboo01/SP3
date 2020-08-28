@@ -12,6 +12,14 @@ private:
 	std::unordered_map<const char*, std::shared_ptr<System>> m_Systems{};
 
 public:
+	~SystemManager()
+	{
+		for (auto& s : m_Systems)
+		{
+			s.second->Exit();
+		}
+	}
+
 	template<typename T>
 	std::shared_ptr<T> RegisterSystem()
 	{

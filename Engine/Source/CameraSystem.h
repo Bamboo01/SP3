@@ -16,9 +16,10 @@ private:
 	std::vector<FrameBufferObject*> FBOList;
 	std::vector<Shader*> shaderList;
 public:
-	virtual void Setup();
-	virtual void Init();
-	virtual void Update(float dt);
-	virtual void Render();
+	void Setup();
+	void Init();
+	void Update(float dt);
+	void Render();
+	void Exit();
 };
 

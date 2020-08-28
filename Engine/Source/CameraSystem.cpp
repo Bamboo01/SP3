@@ -69,3 +69,22 @@ void CameraSystem::Render()
 	}
 	renderer.RenderScreenQuad();
 }
+
+void CameraSystem::Exit()
+{
+	for (auto i : FBOList)
+	{
+		if (i)
+		{
+			i->~FrameBufferObject();
+		}
+	}
+
+	for (auto i : shaderList)
+	{
+		if (i)
+		{
+			i->~Shader();
+		}
+	}
+}
