@@ -158,6 +158,9 @@
     <ClCompile Include="Source\AIControllerSystem.cpp">
       <Filter>Auxillary\Systems\AIControllerSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PauseMenuSystem.cpp">
+      <Filter>Auxillary\Systems\PauseMenuSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -448,6 +451,12 @@
     <ClInclude Include="Source\AIControllerSystem.h">
       <Filter>Auxillary\Systems\AIControllerSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\PauseMenu.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PauseMenuSystem.h">
+      <Filter>Auxillary\Systems\PauseMenuSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -602,6 +611,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\AIControllerSystem">
       <UniqueIdentifier>{721c3bd4-e803-4762-9c66-c43f4360d8b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\PauseMenuSystem">
+      <UniqueIdentifier>{847b7670-141e-4fb2-8a4a-bff09d3c7ae0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
