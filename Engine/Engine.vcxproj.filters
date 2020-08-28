@@ -161,6 +161,9 @@
     <ClCompile Include="Source\PauseMenuSystem.cpp">
       <Filter>Auxillary\Systems\PauseMenuSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\WinLoseSystem.cpp">
+      <Filter>Auxillary\Systems\WinLoseSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -457,6 +460,12 @@
     <ClInclude Include="Source\PauseMenuSystem.h">
       <Filter>Auxillary\Systems\PauseMenuSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\WinLoseMenu.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinLoseSystem.h">
+      <Filter>Auxillary\Systems\WinLoseSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -614,6 +623,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\PauseMenuSystem">
       <UniqueIdentifier>{847b7670-141e-4fb2-8a4a-bff09d3c7ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\WinLoseSystem">
+      <UniqueIdentifier>{7c94be15-bd51-459c-8ef8-91194b5b78e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

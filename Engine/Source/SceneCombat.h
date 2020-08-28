@@ -20,6 +20,7 @@
 #include "QuadTreeSystem.h"
 #include "AIControllerSystem.h"
 #include "PauseMenuSystem.h"
+#include "WinLoseSystem.h"
 
 // Includes for ImGui
 #include "../Dependencies/ImGui/imgui.h"
@@ -53,6 +54,7 @@ class SceneCombat : public Scene
 	void InitController();
 	void InitMiniMap();
 	void InitPauseMenu();
+	void InitWinLose();
 
 	void UpdateImGui();
 	void UpdateImGuiRaycast();
@@ -84,5 +86,6 @@ class SceneCombat : public Scene
 	std::shared_ptr<QuadTreeSystem> quadtreesystem;
 	std::shared_ptr<AIControllerSystem> aicontrollersystem;
 	std::shared_ptr<PauseMenuSystem> pausemenusystem;
+	std::shared_ptr<WinLoseSystem> winlosesystem;
 };
 

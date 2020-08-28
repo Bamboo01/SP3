@@ -10,7 +10,6 @@ void UnitSystem::Setup()
     signature.set(coordinator.GetComponentType<Collider>());
     signature.set(coordinator.GetComponentType<RenderData>());
     signature.set(coordinator.GetComponentType<EntityState>());
-
     coordinator.SetSystemSignature<UnitSystem>(signature);
 }
 
@@ -20,6 +19,9 @@ void UnitSystem::Init(std::set<Entity> terrainEntitySet, std::set<Entity> aiCont
     aiControllerEntity = aiControllerSet;
     cameraEntity = cameraentity;
     cSoundController = CSoundController::GetInstance();
+    UnitsDeath = 0;
+    WinLose = 0;
+    PlayerTotalUnit = 0;
 
     for (int i = 0; i < 100; i++) // Init xxx amount of inactive objects
     {
@@ -38,6 +40,8 @@ void UnitSystem::Update(double dt)
 {
     d_elapsedTime += dt;
 
+    PlayerTotalUnit = 0;
+
     std::vector<Entity> unitList;
 
     for (auto const& entity : m_Entities)
@@ -46,6 +50,10 @@ void UnitSystem::Update(double dt)
         auto& unit = coordinator.GetComponent<Unit>(entity);
         auto& entityState = coordinator.GetComponent<EntityState>(entity);
 
+        if (unit.unitFaction == Unit::PLAYER)
+        {
+            PlayerTotalUnit++;
+        }
 
         if (unit.health <= 0) // In the event the unit's health falls to/below 0, deactivate the unit.
         {
@@ -58,6 +66,20 @@ void UnitSystem::Update(double dt)
             {
                 cSoundController->SetSoundSourcePosition(24, transform.position.x, transform.position.y, transform.position.z);
                 cSoundController->PlaySoundByID(24);
+            }
+
+            if (unit.unitType == Unit::NEXUS && unit.unitFaction == Unit::PLAYER)
+            {
+                WinLose = 1;
+            }
+            else if (unit.unitType == Unit::NEXUS && unit.unitFaction == Unit::ENEMY)
+            {
+                WinLose = 2;
+            }
+
+            if (unit.unitFaction == Unit::PLAYER)
+            {
+                UnitsDeath++;
             }
 
             AddInactiveEntity(entity);

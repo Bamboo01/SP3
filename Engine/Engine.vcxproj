@@ -213,6 +213,7 @@
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TransformSystem.cpp" />
     <ClCompile Include="Source\TerrainSystem.cpp" />
+    <ClCompile Include="Source\WinLoseSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AIController.h" />
@@ -240,6 +241,8 @@
     <ClInclude Include="Source\EntityState.h" />
     <ClInclude Include="Source\CanvasTextSystem.h" />
     <ClCompile Include="Source\UnitSystem.cpp" />
+    <ClInclude Include="Source\WinLoseMenu.h" />
+    <ClInclude Include="Source\WinLoseSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\ImGui\imconfig.h" />
