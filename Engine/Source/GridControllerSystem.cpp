@@ -606,71 +606,83 @@ void GridControllerSystem::UpdateUnitPosition()
 
 void GridControllerSystem::UpdateEnemyGridCost(glm::vec3 Destination, std::vector<Entity> units, bool attacking)
 {
-	if (attacking == false)
+	if (attacking == true)
 	{
-		CreateGrids();
-		glm::vec2 destination = glm::vec2(-1, -1);	// If it is -1 at the end, means that destination is impossible
+		for (auto it = units.begin(); it != units.end();)
+		{
+			auto& a = coordinator.GetComponent<Unit>(*it);
+			if (a.UnitID != INT_MAX || a.velocity == glm::vec3(0,0,0))
+			{
+				it = units.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+	CreateGrids();
+	glm::vec2 destination = glm::vec2(-1, -1);	// If it is -1 at the end, means that destination is impossible
+	for (int x = 0; x < 30; ++x)
+	{
+		for (int y = 0; y < 30; ++y)
+		{
+			glm::vec3 GridTopLeft = GridPosition[x][y];
+			glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 20, GridTopLeft.y, GridTopLeft.z - 20);
+			if (Destination.x >= GridTopLeft.x && Destination.x <= GridBottomRight.x && Destination.z <= GridTopLeft.z && Destination.z >= GridBottomRight.z)
+			{
+				/*if (GridCost[x][y] == -1)
+				{*/	// Set The Empty Grid To the Destination Point
+				GridCost[x][y] = 0;
+				destination.x = x;
+				destination.y = y;
+				//std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
+				x = 30;
+				y = 30;
+				break;
+				/*}
+				else
+					break;	*/	// If there is a wall at the destination point, Destination is impossible to reach
+			}
+		}
+	}
+	if (destination.x != -1 && destination.y != -1)
+	{
+		// A Grid that has been selected
+		CreatePathTop(destination);
+
+		CreatePathBottom(destination);
+
+		SafetyPathCheck(destination);
+
+
+		std::vector <std::vector<int>> temp;
+		temp.resize(30);
+		for (auto& vec : temp)
+		{
+			vec.resize(30);
+		}
+
 		for (int x = 0; x < 30; ++x)
 		{
 			for (int y = 0; y < 30; ++y)
 			{
-				glm::vec3 GridTopLeft = GridPosition[x][y];
-				glm::vec3 GridBottomRight = glm::vec3(GridTopLeft.x + 20, GridTopLeft.y, GridTopLeft.z - 20);
-				if (Destination.x >= GridTopLeft.x && Destination.x <= GridBottomRight.x && Destination.z <= GridTopLeft.z && Destination.z >= GridBottomRight.z)
-				{
-					/*if (GridCost[x][y] == -1)
-					{*/	// Set The Empty Grid To the Destination Point
-						GridCost[x][y] = 0;
-						destination.x = x;
-						destination.y = y;
-						//std::cout << GridPosition[x][y].x << ", " << GridPosition[x][y].z << std::endl;
-						x = 30;
-						y = 30;
-						break;
-					/*}
-					else
-						break;	*/	// If there is a wall at the destination point, Destination is impossible to reach
-				}
+				temp[x][y] = GridCost[x][y];
 			}
 		}
-		if (destination.x != -1 && destination.y != -1)
+
+		IDtoFlowfield.insert({ FlowfieldIDs.front(),std::make_pair(units.size(), temp) });
+		for (auto e : units)
 		{
-			// A Grid that has been selected
-			CreatePathTop(destination);
-
-			CreatePathBottom(destination);
-
-			SafetyPathCheck(destination);
-
-
-			std::vector <std::vector<int>> temp;
-			temp.resize(30);
-			for (auto& vec : temp)
+			auto& a = coordinator.GetComponent<Unit>(e);
+			if (a.UnitID != INT_MAX)
 			{
-				vec.resize(30);
+				IDtoFlowfield.at(a.UnitID).first--;
 			}
-
-			for (int x = 0; x < 30; ++x)
-			{
-				for (int y = 0; y < 30; ++y)
-				{
-					temp[x][y] = GridCost[x][y];
-				}
-			}
-
-			IDtoFlowfield.insert({ FlowfieldIDs.front(),std::make_pair(units.size(), temp) });
-			for (auto e : units)
-			{
-				auto& a = coordinator.GetComponent<Unit>(e);
-				if (a.UnitID != INT_MAX)
-				{
-					IDtoFlowfield.at(a.UnitID).first--;
-				}
-				a.UnitID = FlowfieldIDs.front();
-			}
-			FlowfieldIDs.pop();
-			UpdateUnitPosition();
+			a.UnitID = FlowfieldIDs.front();
 		}
+		FlowfieldIDs.pop();
+		UpdateUnitPosition();
 	}
 }
 
