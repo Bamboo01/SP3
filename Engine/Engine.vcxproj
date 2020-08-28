@@ -161,11 +161,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AIControllerSystem.cpp" />
+    <ClCompile Include="Source\CreditScrollSystem.cpp" />
     <ClCompile Include="Source\IntroTextSystem.cpp" />
     <ClCompile Include="Source\MenuCameraSystem.cpp" />
     <ClCompile Include="Source\MenuGUISystem.cpp" />
     <ClCompile Include="Source\MenuNexusSystem.cpp" />
     <ClCompile Include="Source\MenuUnitSystem.cpp" />
+    <ClCompile Include="Source\SceneCredit.cpp" />
     <ClCompile Include="Source\SceneMenu.cpp" />
     <ClCompile Include="Source\SceneCombat.cpp" />
     <ClCompile Include="Source\ControllerSystem.cpp" />
@@ -216,6 +218,7 @@
   <ItemGroup>
     <ClInclude Include="Source\AIController.h" />
     <ClInclude Include="Source\AIControllerSystem.h" />
+    <ClInclude Include="Source\CreditScrollSystem.h" />
     <ClInclude Include="Source\IntroTextSystem.h" />
     <ClInclude Include="Source\MenuGUI.h" />
     <ClInclude Include="Source\MenuCameraSystem.h" />
@@ -225,6 +228,7 @@
     <ClInclude Include="Source\MenuUnit.h" />
     <ClInclude Include="Source\MenuUnitSystem.h" />
     <ClInclude Include="Source\PlacingShader.h" />
+    <ClInclude Include="Source\SceneCredit.h" />
     <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\SceneMenu.h" />
     <ClInclude Include="Source\SceneCombat.h" />

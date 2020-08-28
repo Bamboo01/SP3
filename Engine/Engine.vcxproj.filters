@@ -158,6 +158,12 @@
     <ClCompile Include="Source\AIControllerSystem.cpp">
       <Filter>Auxillary\Systems\AIControllerSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneCredit.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CreditScrollSystem.cpp">
+      <Filter>Auxillary\Systems\CreditScrollSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -448,6 +454,12 @@
     <ClInclude Include="Source\AIControllerSystem.h">
       <Filter>Auxillary\Systems\AIControllerSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SceneCredit.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CreditScrollSystem.h">
+      <Filter>Auxillary\Systems\CreditScrollSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -602,6 +614,9 @@
     </Filter>
     <Filter Include="Auxillary\Systems\AIControllerSystem">
       <UniqueIdentifier>{721c3bd4-e803-4762-9c66-c43f4360d8b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\CreditScrollSystem">
+      <UniqueIdentifier>{e8326009-37d3-4483-9cda-4b56c43af68d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
