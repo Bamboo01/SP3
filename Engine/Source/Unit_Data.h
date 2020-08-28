@@ -17,25 +17,25 @@ public:
 	{
 		std::string unitName = "Normal";
 
-		float baseHealth = 600;
-		float healthGrowth = 95;
+		float baseHealth = 100;
+		float healthGrowth = 10;
 		float additionalHealthOffset = 0.7025;
 		float multiplierHealthOffset = 0.0175;
 
-		float baseDefense = 25;
-		float defenseGrowth = 3.5;
+		float baseDefense = 5;
+		float defenseGrowth = 0.5;
 		float additionalDefenseOffset = 0.7025;
 		float multiplierDefenseOffset = 0.0175;
 
-		float baseDamage = 65;
-		float damageGrowth = 3.3;
+		float baseDamage = 10;
+		float damageGrowth = 0.8;
 		float additionalDamageOffset = 0.7025;
 		float multiplierDamageOffset = 0.0175;
 
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 6.0;
 		float unitMass = 1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(4, 4, 4);
 
 		name = unitName;
 		level = unitLevel;
@@ -73,25 +73,25 @@ public:
 	{
 		std::string unitName = "Range";
 
-		float baseHealth = 600;
-		float healthGrowth = 95;
+		float baseHealth = 65;
+		float healthGrowth = 0.7;
 		float additionalHealthOffset = 0.7025;
 		float multiplierHealthOffset = 0.0175;
 
-		float baseDefense = 25;
-		float defenseGrowth = 3.5;
+		float baseDefense = 3;
+		float defenseGrowth = 0.5;
 		float additionalDefenseOffset = 0.7025;
 		float multiplierDefenseOffset = 0.0175;
 
-		float baseDamage = 65;
-		float damageGrowth = 3.3;
+		float baseDamage = 15;
+		float damageGrowth = 0.8;
 		float additionalDamageOffset = 0.7025;
 		float multiplierDamageOffset = 0.0175;
 
-		float baseAttackSpeed = 1.0;
+		float baseAttackSpeed = 1.5;
 		float baseAttackRange = 30.0;
 		float unitMass = 1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(4.5, 4, 5);
 
 		name = unitName;
 		level = unitLevel;
@@ -129,25 +129,25 @@ public:
 	{
 		std::string unitName = "Tank";
 
-		float baseHealth = 600;
-		float healthGrowth = 95;
+		float baseHealth = 200;
+		float healthGrowth = 15;
 		float additionalHealthOffset = 0.7025;
 		float multiplierHealthOffset = 0.0175;
 
-		float baseDefense = 25;
-		float defenseGrowth = 3.5;
+		float baseDefense = 15;
+		float defenseGrowth = 1.0;
 		float additionalDefenseOffset = 0.7025;
 		float multiplierDefenseOffset = 0.0175;
 
-		float baseDamage = 65;
-		float damageGrowth = 3.3;
+		float baseDamage = 5;
+		float damageGrowth = 0.5;
 		float additionalDamageOffset = 0.7025;
 		float multiplierDamageOffset = 0.0175;
 
 		float baseAttackSpeed = 1.0;
 		float baseAttackRange = 6.0;
 		float unitMass = 1;
-		glm::vec3 collisionScale = glm::vec3(3, 3, 3);
+		glm::vec3 collisionScale = glm::vec3(4, 9, 4);
 
 		name = unitName;
 		level = unitLevel;
@@ -185,7 +185,7 @@ public:
 	{
 		std::string unitName = "Tower";
 
-		float baseHealth = 3000;
+		float baseHealth = 1500;
 		float healthGrowth = 100;
 		float additionalHealthOffset = 0.7025;
 		float multiplierHealthOffset = 0.0175;
@@ -195,7 +195,7 @@ public:
 		float additionalDefenseOffset = 0.7025;
 		float multiplierDefenseOffset = 0.0175;
 
-		float baseDamage = 200;
+		float baseDamage = 100;
 		float damageGrowth = 50;
 		float additionalDamageOffset = 0.7025;
 		float multiplierDamageOffset = 0.0175;

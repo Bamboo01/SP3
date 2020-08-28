@@ -443,6 +443,12 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
     if (receiverUnit.unitType == Unit::PROJECTILE || attackerUnit.unitType == Unit::MELEE_PROJECTILE || receiverUnit.unitType == Unit::MELEE_PROJECTILE) // In the event a unit targets a projectile, by right shouldnt happen but just incase it gets called
         return;
 
+    if (attackerUnit.unitType == Unit::NORMAL || attackerUnit.unitType == Unit::TANK || attackerUnit.unitType == Unit::RANGE)
+    {
+        glm::vec3 dir = glm::normalize(attackerTransform.position - receiverTransform.position);
+        attackerTransform.rotation.y = Math::RadianToDegree(atan2f(dir.x, dir.z)) - 90;
+    }
+
     if (attackerUnit.unitType == Unit::PROJECTILE)
     {
         auto& originTransform = coordinator.GetComponent<Transform>(attackerUnit.originUnit);
@@ -488,12 +494,6 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
             CreateProjectile(attacker, receiver);
         }
 
-        if (attackerUnit.unitType != Unit::TOWER)
-        {
-            glm::vec3 dir = glm::normalize(attackerTransform.position - receiverTransform.position);
-            attackerTransform.rotation.y = Math::RadianToDegree(atan2f(dir.x, dir.z)) - 90;
-        }
-
         attackerUnit.delay = d_elapsedTime + (1.0 / attackerUnit.attackSpeed); // Adds in the resultant delay after inclusion of attackSpeed
 
         for (auto& const aientity : aiControllerEntity)
@@ -531,6 +531,10 @@ void UnitSystem::UpdateProjectile(Entity projectile)
     if (UnitData.unitType != Unit::PROJECTILE && UnitData.unitType != Unit::MELEE_PROJECTILE) // This method is specifically only for projectiles!
         return;
 
+    auto& OriginTransform = coordinator.GetComponent<Transform>(UnitData.originUnit);
+    auto& OriginUnitData = coordinator.GetComponent<Unit>(UnitData.originUnit);
+    auto& OriginEntityState = coordinator.GetComponent<EntityState>(UnitData.originUnit);
+
     auto& TargetTransform = coordinator.GetComponent<Transform>(UnitData.targetUnit);
     auto& TargetUnitData = coordinator.GetComponent<Unit>(UnitData.targetUnit);
     auto& TargetEntityState = coordinator.GetComponent<EntityState>(UnitData.targetUnit);
@@ -550,6 +554,15 @@ void UnitSystem::UpdateProjectile(Entity projectile)
     }
     else if (UnitData.unitType == Unit::MELEE_PROJECTILE)
     {
+        glm::vec3 relativePos = TargetTransform.position - OriginTransform.position;
+        float magnitude = glm::length(relativePos);
+        glm::vec3 projectilePos = OriginTransform.position + relativePos * glm::vec3(0.5, 0.5, 0.5);
+        std::cout << projectilePos.y << std::endl;
+
+        UnitTransform.position = projectilePos;
+        UnitTransform.scale = glm::vec3(magnitude, 0.2, 0.2);
+        UnitTransform.rotation = glm::vec3(0, OriginTransform.rotation.y, 0);
+
         if (d_elapsedTime >= UnitData.delay)
         {
             AddInactiveEntity(projectile);

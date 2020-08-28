@@ -342,6 +342,25 @@ void AIControllerSystem::Update(float dt)
         }
 
         //Process the collection of resources from ALL generators
+
+        for (const auto& entity : aicontroller.unitlist)
+        {
+            auto& unitData = coordinator.GetComponent<Unit>(entity);
+            
+            if (unitData.resourcesgenerated != 0)
+            {
+                if (unitData.unitType == Unit::GENERATOR1)
+                {
+                    aicontroller.resource1 += unitData.resourcesgenerated;
+                    unitData.resourcesgenerated = 0;
+                }
+                else if (unitData.unitType == Unit::GENERATOR2)
+                {
+                    aicontroller.resource2 += unitData.resourcesgenerated;
+                    unitData.resourcesgenerated = 0;
+                }
+            }
+        }
     }
 }
 
