@@ -14,8 +14,8 @@ bool WinLoseSystem::CollideWithCanvas(float x, float y, float xscale, float ysca
 	else if (Application::GetWindowWidth() < Application::GetWindowHeight())
 		offsetx = 0;
 
-	float newx = ((x + 1) / 2) * (Application::GetWindowWidth() - offsetx);
-	float newy = ((y + 1) / 2) * (Application::GetWindowHeight() + offsety);
+	float newx = ((x + 1.5) / 3) * (Application::GetWindowWidth() - offsetx);
+	float newy = ((y + 1.5) / 3) * (Application::GetWindowHeight() + offsety);
 	float newxscale = (xscale) * (Application::GetWindowWidth() - offsetx);
 	float newyscale = (yscale) * (Application::GetWindowHeight() + offsety);
 
