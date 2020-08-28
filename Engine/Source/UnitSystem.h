@@ -37,6 +37,10 @@ public:
     void ApplyAttack(Entity attacker, Entity receiver);
     void UpdateProjectile(Entity projectile);
 
+    int UnitsDeath;
+    int WinLose; // 0 = none, 1 = lose, 2 = win;
+    int PlayerTotalUnit;
+
 private:
     double d_elapsedTime;
     Entity cameraEntity;
