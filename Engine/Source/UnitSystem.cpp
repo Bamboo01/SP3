@@ -51,7 +51,7 @@ void UnitSystem::Update(double dt)
         auto& entityState = coordinator.GetComponent<EntityState>(entity);
 
         //POSITION THINGY DON'T MIND ME THANKS - SHERWYN
-        if (unit.unitFaction == Unit::PLAYER && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE)
+        if (unit.unitFaction == Unit::PLAYER && unit.unitType != Unit::PROJECTILE && unit.unitType != Unit::MELEE_PROJECTILE && !unit.isPreview)
         {
             renderer.fogofwarManager.positions.push_back(glm::vec4(transform.position, 0));
         }
