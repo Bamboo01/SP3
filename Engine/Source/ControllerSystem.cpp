@@ -19,17 +19,17 @@ void ControllerSystem::Update(double dt)
 	{
 		auto& controller = coordinator.GetComponent<Controller>(control);
 		// Update unit cost
-		controller.normalunitcost = controller.normalunitlevel * 50;
-		controller.rangeunitcost = controller.rangeunitlevel * 100;
-		controller.tankunitcost = controller.tankunitlevel * 150;
-		controller.normalunitcost2 = controller.normalunitlevel * 40;
-		controller.rangeunitcost2 = controller.rangeunitlevel * 80;
-		controller.tankunitcost2 = controller.tankunitlevel * 110;
+		controller.normalunitcost = controller.normalunitlevel * 40;
+		controller.rangeunitcost = controller.rangeunitlevel * 60;
+		controller.tankunitcost = controller.tankunitlevel * 90;
+		controller.normalunitcost2 = controller.normalunitlevel * 30;
+		controller.rangeunitcost2 = controller.rangeunitlevel * 50;
+		controller.tankunitcost2 = controller.tankunitlevel * 80;
 		controller.levelupnormalcost = controller.normalunitlevel * 30;
-		controller.leveluprangecost = controller.rangeunitlevel * 130;
-		controller.leveluptankcost = controller.tankunitlevel * 200;
-		controller.levelupnormalcost2 = controller.normalunitlevel * 70;
-		controller.leveluprangecost2 = controller.rangeunitlevel * 120;
-		controller.leveluptankcost2 = controller.tankunitlevel * 160;
+		controller.leveluprangecost = controller.rangeunitlevel * 70;
+		controller.leveluptankcost = controller.tankunitlevel * 100;
+		controller.levelupnormalcost2 = controller.normalunitlevel * 40;
+		controller.leveluprangecost2 = controller.rangeunitlevel * 100;
+		controller.leveluptankcost2 = controller.tankunitlevel * 150;
 	}
 }
