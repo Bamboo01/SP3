@@ -167,6 +167,12 @@
     <ClCompile Include="Source\CreditScrollSystem.cpp">
       <Filter>Auxillary\Systems\CreditScrollSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PauseMenuSystem.cpp">
+      <Filter>Auxillary\Systems\PauseMenuSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinLoseSystem.cpp">
+      <Filter>Auxillary\Systems\WinLoseSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -466,6 +472,18 @@
     <ClInclude Include="Source\CreditScrollSystem.h">
       <Filter>Auxillary\Systems\CreditScrollSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Source\WinLoseMenu.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PauseMenu.h">
+      <Filter>Auxillary\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PauseMenuSystem.h">
+      <Filter>Auxillary\Systems\PauseMenuSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinLoseSystem.h">
+      <Filter>Auxillary\Systems\WinLoseSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -626,6 +644,12 @@
     </Filter>
     <Filter Include="Auxillary\Systems\CreditScrollSystem">
       <UniqueIdentifier>{4d7fa13f-374c-4d5d-b66b-55806f49e917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\PauseMenuSystem">
+      <UniqueIdentifier>{8d3b9d48-1543-453e-8a5d-11161e125770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Auxillary\Systems\WinLoseSystem">
+      <UniqueIdentifier>{585a4c34-9fa9-4fca-94dc-57ba322993bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
