@@ -70,6 +70,21 @@ void AIControllerSystem::Update(float dt)
 
         aicontroller.TotalAggression = aicontroller.AIAggression - aicontroller.PlayerAggression;
 
+        if ((highestseverity > 5 || aicontroller.PlayerAggression > 4.f || aicontroller.AIAggression > 5.f) && IsCombatplaying == false)
+        {
+            CSoundController::GetInstance()->StopAllSounds();
+            CSoundController::GetInstance()->PlaySoundByID(29);
+            songdelay = timer + 205;
+            IsCombatplaying = true;
+            IsBGMplaying = false;
+        }
+        else if (songdelay < timer && IsBGMplaying == false)
+        {
+            CSoundController::GetInstance()->PlaySoundByID(28);
+            IsBGMplaying = true;
+            IsCombatplaying = false;
+        }
+
         //Movement of units via events
         if (aicontroller.ProcessEventsTimer > 1.f)
         {
@@ -97,20 +112,6 @@ void AIControllerSystem::Update(float dt)
                 highestseverity = aicontroller.eventlist.begin()->severity;
             }
 
-            if ((highestseverity > 5 || aicontroller.PlayerAggression > 4.f || aicontroller.AIAggression > 5.f) && IsCombatplaying == false)
-            {
-                CSoundController::GetInstance()->StopAllSounds();
-                CSoundController::GetInstance()->PlaySoundByID(29);
-                songdelay = timer + 205;
-                IsCombatplaying = true;
-                IsBGMplaying = false;
-            }
-            else if (songdelay < timer && IsBGMplaying == false)
-            {
-                CSoundController::GetInstance()->PlaySoundByID(28);
-                IsBGMplaying = true;
-                IsCombatplaying = false;
-            }
             aicontroller.eventlist.clear();
             aicontroller.eventlist.shrink_to_fit();
         }
@@ -316,6 +317,26 @@ void AIControllerSystem::Update(float dt)
                                             break;
                                         }
                                     }
+                                }
+
+                                //Check if still can build a unit
+                                if (aicontroller.resource1 > 150.f)
+                                {
+                                    //Build tank
+                                    aicontroller.resource1 -= aicontroller.tankunitcost;
+                                    unitsystem->CreateUnit(Unit::TANK, Unit::ENEMY, aicontroller.tankunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+                                }
+                                else if (aicontroller.resource1 > 100.f)
+                                {
+                                    //Build Ranged
+                                    aicontroller.resource1 -= aicontroller.rangeunitcost;
+                                    unitsystem->CreateUnit(Unit::RANGE, Unit::ENEMY, aicontroller.rangeunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+                                }
+                                else if (aicontroller.resource1 > 30.f)
+                                {
+                                    //Build normal
+                                    aicontroller.resource1 -= aicontroller.normalunitcost;
+                                    unitsystem->CreateUnit(Unit::NORMAL, Unit::ENEMY, aicontroller.normalunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                                 }
                             }
                         }
