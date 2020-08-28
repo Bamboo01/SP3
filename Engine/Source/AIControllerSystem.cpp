@@ -46,7 +46,7 @@ void AIControllerSystem::Update(float dt)
 
         float highestseverity = 0.f;
 
-        if (aicontroller.AIAggroTimer > 20.f)
+        if (aicontroller.AIAggroTimer > 15.f)
         {
             aicontroller.AIAggression += 1.f;
             aicontroller.AIAggroTimer = 0.f;
@@ -57,14 +57,18 @@ void AIControllerSystem::Update(float dt)
             }
         }
 
-        if (aicontroller.PlayerAggroTimer > 30.f)
+        if (aicontroller.PlayerAggroTimer > 10.f)
         {
             aicontroller.PlayerAggression -= 1.5f;
             aicontroller.PlayerAggroTimer = 0.f;
 
-            if (aicontroller.AIAggression > 6.f)
+            if (aicontroller.PlayerAggression > 6.f)
             {
-                aicontroller.AIAggression = 6.f;
+                aicontroller.PlayerAggression = 6.f;
+            }
+            else if (aicontroller.PlayerAggression < -1.f)
+            {
+                aicontroller.PlayerAggression = -1.f;
             }
         }
 
@@ -395,6 +399,27 @@ void AIControllerSystem::Update(float dt)
                                 }
                             }
                         }
+                    }
+                }
+                else
+                {
+                    if (aicontroller.resource1 > 150.f)
+                    {
+                        //Build tank
+                        aicontroller.resource1 -= aicontroller.tankunitcost;
+                        unitsystem->CreateUnit(Unit::TANK, Unit::ENEMY, aicontroller.tankunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+                    }
+                    else if (aicontroller.resource1 > 100.f)
+                    {
+                        //Build Ranged
+                        aicontroller.resource1 -= aicontroller.rangeunitcost;
+                        unitsystem->CreateUnit(Unit::RANGE, Unit::ENEMY, aicontroller.rangeunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
+                    }
+                    else if (aicontroller.resource1 > 30.f)
+                    {
+                        //Build normal
+                        aicontroller.resource1 -= aicontroller.normalunitcost;
+                        unitsystem->CreateUnit(Unit::NORMAL, Unit::ENEMY, aicontroller.normalunitlevel, Transform(glm::vec3(-130, 0, -160), glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), DYNAMIC_TRANSFORM));
                     }
                 }
             }
