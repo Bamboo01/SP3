@@ -51,6 +51,7 @@ void MenuGUISystem::Init()
 	GUI_Entities.push_back(GUI_VolumeDown);
 	GUI_Entities.push_back(GUI_VolumeMeter);
 	GUI_Entities.push_back(GUI_BackToMainMenu);
+	GUI_Entities.push_back(GUI_Instructionbutton);
 }
 
 void MenuGUISystem::Update(float dt)
@@ -117,6 +118,13 @@ void MenuGUISystem::Update(float dt)
 					state = S_MAIN_MENU;
 				}
 				break;
+			case MenuGUI::INSTRUCTION_BUTTON:
+				if (Application::IsMousePressed(0))
+				{
+					CSoundController::GetInstance()->PlaySoundByID(1000);
+					state = S_INSTRUCTIONS;
+				}
+				break;
 			default:
 				canvastext.size = 0.1f;
 				break;
@@ -136,6 +144,14 @@ void MenuGUISystem::Render()
 		coordinator.GetComponent<EntityState>(GUI_VolumeDown).active = false;;
 		coordinator.GetComponent<EntityState>(GUI_BackToMainMenu).active = false;
 		coordinator.GetComponent<EntityState>(GUI_VolumeMeter).active = false;
+
+		coordinator.GetComponent<EntityState>(GUI_Instructionbutton).active = true;
+		coordinator.GetComponent<EntityState>(GUI_Instructions).active = false;
+		coordinator.GetComponent<EntityState>(GUI_Escape).active = false;
+		coordinator.GetComponent<EntityState>(GUI_LeftMousePress).active = false;
+		coordinator.GetComponent<EntityState>(GUI_RightMousePress).active = false;
+		coordinator.GetComponent<EntityState>(GUI_ScrollWheel).active = false;
+
 	}
 	else if (state == S_OPTIONS)
 	{
@@ -146,6 +162,30 @@ void MenuGUISystem::Render()
 		coordinator.GetComponent<EntityState>(GUI_VolumeDown).active = true;
 		coordinator.GetComponent<EntityState>(GUI_BackToMainMenu).active = true;
 		coordinator.GetComponent<EntityState>(GUI_VolumeMeter).active = true;
+
+		coordinator.GetComponent<EntityState>(GUI_Instructionbutton).active = false;
+		coordinator.GetComponent<EntityState>(GUI_Instructions).active = false;
+		coordinator.GetComponent<EntityState>(GUI_Escape).active = false;
+		coordinator.GetComponent<EntityState>(GUI_LeftMousePress).active = false;
+		coordinator.GetComponent<EntityState>(GUI_RightMousePress).active = false;
+		coordinator.GetComponent<EntityState>(GUI_ScrollWheel).active = false;
+	}
+	else if (state == S_INSTRUCTIONS)
+	{
+		coordinator.GetComponent<EntityState>(GUI_Start).active = false;
+		coordinator.GetComponent<EntityState>(GUI_Exit).active = false;
+		coordinator.GetComponent<EntityState>(GUI_Options).active = false;
+		coordinator.GetComponent<EntityState>(GUI_VolumeUp).active = false;
+		coordinator.GetComponent<EntityState>(GUI_VolumeDown).active = false;
+		coordinator.GetComponent<EntityState>(GUI_BackToMainMenu).active = true;
+		coordinator.GetComponent<EntityState>(GUI_VolumeMeter).active = false;
+
+		coordinator.GetComponent<EntityState>(GUI_Instructionbutton).active = false;
+		coordinator.GetComponent<EntityState>(GUI_Instructions).active = true;
+		coordinator.GetComponent<EntityState>(GUI_Escape).active = true;
+		coordinator.GetComponent<EntityState>(GUI_LeftMousePress).active = true;
+		coordinator.GetComponent<EntityState>(GUI_RightMousePress).active = true;
+		coordinator.GetComponent<EntityState>(GUI_ScrollWheel).active = true;
 	}
 }
 

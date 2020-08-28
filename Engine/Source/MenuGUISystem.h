@@ -18,7 +18,8 @@ private:
 	enum MENU_STATE
 	{
 		S_MAIN_MENU,
-		S_OPTIONS
+		S_OPTIONS,
+		S_INSTRUCTIONS,
 	};
 public:
 	Entity GUI_Start;
@@ -28,6 +29,13 @@ public:
 	Entity GUI_VolumeDown;
 	Entity GUI_BackToMainMenu;
 	Entity GUI_VolumeMeter;
+	Entity GUI_Instructionbutton;
+
+	Entity GUI_Instructions;
+	Entity GUI_Escape;
+	Entity GUI_LeftMousePress;
+	Entity GUI_RightMousePress;
+	Entity GUI_ScrollWheel;
 	
 	std::vector<Entity> GUI_Entities;
 
