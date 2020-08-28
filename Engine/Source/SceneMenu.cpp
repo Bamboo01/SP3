@@ -99,6 +99,13 @@ void SceneMenu::Init()
 	coordinator.GetComponent<Transform>(GUI_Exit).position.y = -0.80;
 	coordinator.AddComponent<MenuGUI>(GUI_Exit, MenuGUI(MenuGUI::EXIT_BUTTON));
 
+	Entity GUI_Credits = coordinator.CreateEntity();
+	coordinator.AddComponent<Transform>(GUI_Credits, Transform());
+	coordinator.AddComponent<EntityState>(GUI_Credits, EntityState());
+	coordinator.AddComponent<CanvasText>(GUI_Credits, CanvasText("Credits", ALIGN_CENTER));
+	coordinator.GetComponent<Transform>(GUI_Credits).position.y = -1.2f;
+	coordinator.AddComponent<MenuGUI>(GUI_Credits, MenuGUI(MenuGUI::CREDITS_BUTTON));
+
 	Entity GUI_VolumeUp = coordinator.CreateEntity();
 	coordinator.AddComponent<Transform>(GUI_VolumeUp, Transform());
 	coordinator.AddComponent<EntityState>(GUI_VolumeUp, EntityState());
@@ -177,6 +184,7 @@ void SceneMenu::Init()
 	menuguisystem->GUI_VolumeDown = GUI_VolumeDown;
 	menuguisystem->GUI_VolumeUp = GUI_VolumeUp;
 	menuguisystem->GUI_VolumeMeter = GUI_VolumeMeter;
+	menuguisystem->GUI_Credits = GUI_Credits;
 
 	menuguisystem->GUI_Instructionbutton = GUI_Instructionbutton;
 	menuguisystem->GUI_Instructions = GUI_Instructions;

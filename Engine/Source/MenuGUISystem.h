@@ -32,10 +32,13 @@ public:
 	Entity GUI_Instructionbutton;
 
 	Entity GUI_Instructions;
+	Entity GUI_Credits;
 	Entity GUI_Escape;
 	Entity GUI_LeftMousePress;
 	Entity GUI_RightMousePress;
 	Entity GUI_ScrollWheel;
+
+	
 	
 	std::vector<Entity> GUI_Entities;
 

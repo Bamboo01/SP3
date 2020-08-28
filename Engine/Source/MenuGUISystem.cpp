@@ -18,8 +18,8 @@ bool MenuGUISystem::CollideWithCanvas(float x, float y, float xscale, float ysca
 	else if (Application::GetWindowWidth() < Application::GetWindowHeight())
 		offsetx = 0;
 
-	float newx = ((x + 1) / 2) * (Application::GetWindowWidth() - offsetx);
-	float newy = ((y + 1) / 2) * (Application::GetWindowHeight() + offsety);
+	float newx = ((x + 1.5) / 3) * (Application::GetWindowWidth() - offsetx);
+	float newy = ((y + 1.5) / 3) * (Application::GetWindowHeight() + offsety);
 	float newxscale = (xscale) * (Application::GetWindowWidth() - offsetx);
 	float newyscale = (yscale) * (Application::GetWindowHeight() + offsety);
 
@@ -52,6 +52,7 @@ void MenuGUISystem::Init()
 	GUI_Entities.push_back(GUI_VolumeMeter);
 	GUI_Entities.push_back(GUI_BackToMainMenu);
 	GUI_Entities.push_back(GUI_Instructionbutton);
+	GUI_Entities.push_back(GUI_Credits);
 }
 
 void MenuGUISystem::Update(float dt)
@@ -70,12 +71,13 @@ void MenuGUISystem::Update(float dt)
 
 		auto& transform = coordinator.GetComponent<Transform>(entity);
 		auto& canvastext = coordinator.GetComponent<CanvasText>(entity);
-		canvastext.size = 0.1f;
+		auto& menugui = coordinator.GetComponent<MenuGUI>(entity);
 
-		if (CollideWithCanvas(transform.position.x, transform.position.y + (1.5f * canvastext.size), canvastext.size, canvastext.size))
+		canvastext.size = 0.1f;
+	
+		if (CollideWithCanvas(transform.position.x, transform.position.y, canvastext.size, canvastext.size * 0.5f))
 		{
 			canvastext.size = 0.13f;
-			auto& menugui = coordinator.GetComponent<MenuGUI>(entity);
 			switch (menugui.menuGUIType)
 			{
 			case MenuGUI::START_BUTTON:
@@ -123,6 +125,12 @@ void MenuGUISystem::Update(float dt)
 				{
 					CSoundController::GetInstance()->PlaySoundByID(1000);
 					state = S_INSTRUCTIONS;
+				}
+				break;
+			case MenuGUI::CREDITS_BUTTON:
+				if (Application::IsMousePressed(0))
+				{
+					SceneManager::getInstance()->ChangeScene(SCENE_CREDIT);
 				}
 				break;
 			default:
