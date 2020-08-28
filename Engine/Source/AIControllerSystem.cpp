@@ -84,7 +84,7 @@ void AIControllerSystem::Update(float dt)
                 }
 
                 // GridController stuff here!
-                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities, false);
+                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(e.position, selectedentities, true);
                 // Make sure that if a unit is enroute to anything, SKIP it and process the next one
 
             }
@@ -134,6 +134,21 @@ void AIControllerSystem::Update(float dt)
                 }
                 std::sort(EntitiesToNexus.begin(), EntitiesToNexus.end(), [](const std::pair<Entity, float>& a, const std::pair<Entity, float>& b) { return a.second < b.second; });
                 //Send those units to attack, select those few units and send to grid function, position is player nexus
+                std::vector<Entity> selectedEntity;
+                for (auto a : EntitiesToNexus)
+                {
+                    auto& units = coordinator.GetComponent<Unit>(a.first);
+                    auto& transform = coordinator.GetComponent<Transform>(a.first);
+                    if (selectedEntity.size() >= aicontroller.AIAggression)
+                    {
+                        break;
+                    }
+                    if (((units.unitType == Unit::NORMAL) || (units.unitType == Unit::RANGE) || (units.unitType == Unit::TANK)) && (units.unitFaction == Unit::ENEMY) )
+                    {
+                        selectedEntity.push_back(a.first);
+                    }
+                }
+                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(aicontroller.targetNexusPosition, selectedEntity, false);
                 
             }
             else if (aicontroller.TotalAggression > 0.f)
