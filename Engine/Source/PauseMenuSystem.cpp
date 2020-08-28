@@ -93,18 +93,21 @@ void PauseMenuSystem::Update(float dt)
 				if (Application::IsMousePressed(0))
 				{
 					state = S_NONE;
+					CSoundController::GetInstance()->PlaySoundByID(1000);
 				}
 				break;
 			case PauseMenu::EXIT_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
 					Application::exitProgram = true;
+					CSoundController::GetInstance()->PlaySoundByID(1000);
 				}
 				break;
 			case PauseMenu::OPTION_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
 					state = S_OPTIONS;
+					CSoundController::GetInstance()->PlaySoundByID(1000);
 				}
 				break;
 			case PauseMenu::AUDIO_INCREASE_BUTTON:
@@ -122,6 +125,7 @@ void PauseMenuSystem::Update(float dt)
 			case PauseMenu::BACK_BUTTON:
 				if (Application::IsMousePressed(0))
 				{
+					CSoundController::GetInstance()->PlaySoundByID(1000);
 					state = S_PAUSE_MENU;
 				}
 				break;
