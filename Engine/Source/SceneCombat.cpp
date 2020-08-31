@@ -229,7 +229,7 @@ void SceneCombat::Render()
 	canvasimageupdatesystem->Render();
 	pausemenusystem->Render();
 	winlosesystem->Render();
-	UpdateImGui();
+	/*UpdateImGui();*/
 }
 
 void SceneCombat::PostRender()
@@ -800,7 +800,7 @@ void SceneCombat::InitPoolPrefab()
 			glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f), false, 10.f
 		));
 
-	objectpoolsystem->AddToPool(Pool(Tag::UNIT, unitPoolPrefab, 100));
+	objectpoolsystem->AddToPool(Pool(Tag::UNIT, unitPoolPrefab, 1500));
 }
 
 void SceneCombat::InitMainCamera()
@@ -1017,229 +1017,229 @@ void SceneCombat::InitWinLose()
 	winlosesystem->WinLoseCanvas = WinLoseCanvas;
 }
 
-void SceneCombat::UpdateImGui()
-{
-	static bool unitSpawner = false;
-	static bool entityList = false;
-	static bool raycastInfo = false;
-
-	if (unitSpawner)
-	{
-		UpdateImGuiUnitSpawn();
-	}
-
-	if (entityList)
-	{
-		UpdateImGuiEntityList();
-	}
-
-	if (raycastInfo)
-	{
-		UpdateImGuiRaycast();
-	}
-
-	ImGui::Begin("Main");
-
-	ImGui::Checkbox(" Unit Spawn Menu", &unitSpawner);
-	ImGui::Checkbox(" Entity List", &entityList);
-	ImGui::Checkbox(" Raycast Info", &raycastInfo);
-
-	if (ImGui::Button("Print Quad Tree"))
-	{
-		quadtreesystem->PrintTree(quadtreesystem->root);
-	}
-
-	ImGui::End();
-}
-
-void SceneCombat::UpdateImGuiRaycast()
-{
-	ImGui::Begin("Cursor");
-	ImGui::Text("X: %f", raycastingsystem->cursorOnHeightMapPosition.x);
-	ImGui::SameLine();
-	ImGui::Text("Y: %f", raycastingsystem->cursorOnHeightMapPosition.y);
-	ImGui::End();
-}
-
-void SceneCombat::UpdateImGuiUnitSpawn()
-{
-	static float f = 0.0f;
-	static const char* unitTypes[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
-	static const char* unitfaction[]{ "PLAYER","ENEMY" };
-	static int counter = 0;
-	static int selectedItem = 0;
-	static int selectedItem2 = 0;
-	static float translation[] = { 0.f, 0.f, 0.f };
-	static float rotation[] = { 0.f, 0.f, 0.f };
-	static float scale[] = { 1.f, 1.f, 1.f };
-	static int levelOfUnit = 1;
-	static int numOfUnit = 0;
-
-	ImGui::Begin("Debug");                          // Create a window called "Hello, world!" and append into it.
-
-	ImGui::Combo("UnitType", &selectedItem, unitTypes, IM_ARRAYSIZE(unitTypes));
-	ImGui::Combo("UnitFaction", &selectedItem2, unitfaction, IM_ARRAYSIZE(unitfaction));
-
-	ImGui::SliderInt("UnitLevel", &levelOfUnit, 1, 50);
-	ImGui::SliderInt("Number Of Units", &numOfUnit, 0, 100);
-
-	if (ImGui::CollapsingHeader("Transformation"))
-	{
-		ImGui::SliderFloat("Translation X", &translation[0], -2000.0f, 2000.0f);
-		ImGui::SliderFloat("Translation Y", &translation[1], -2000.0f, 2000.0f);
-		ImGui::SliderFloat("Translation Z", &translation[2], -2000.0f, 2000.0f);
-
-		ImGui::SliderFloat("Rotation X", &rotation[0], 0.f, 360.0f);
-		ImGui::SliderFloat("Rotation Y", &rotation[1], 0.f, 360.0f);
-		ImGui::SliderFloat("Rotation Z", &rotation[2], 0.f, 360.0f);
-
-		ImGui::SliderFloat("Scale X", &scale[0], 0.f, 500.0f);
-		ImGui::SliderFloat("Scale Y", &scale[1], 0.f, 500.0f);
-		ImGui::SliderFloat("Scale Z", &scale[2], 0.f, 500.0f);
-	}
-
-	if (ImGui::Button("Spawn Unit"))             // Display some text (you can use a format strings too)
-	{
-		for (int i = 0; i < numOfUnit; i++)
-		{
-			Entity newUnit = unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
-			activeEntityList.push_back(newUnit);
-		}
-	}
-
-	ImGui::SameLine();
-	if (ImGui::Button("Spawn Unit (Random Pos)"))
-	{
-		for (int i = 0; i < numOfUnit; i++)
-		{
-			translation[0] = Math::RandFloatMinMax(-200, 200);
-			translation[2] = Math::RandFloatMinMax(-200, 200);
-			Entity newUnit = unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
-			activeEntityList.push_back(newUnit);
-		}
-	}
-
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::End();
-}
-
-void SceneCombat::UpdateImGuiEntityList()
-{
-	activeEntityList.clear();
-	ImGui::Begin("EntityList");
-	if (activeEntityList.empty())
-	{
-		std::set<Entity> entitySetTest = unitsystem->m_Entities;
-		if (entitySetTest.empty())
-		{
-			ImGui::Text("No active entities");
-		}
-		else
-		{
-			for (auto const& entity : entitySetTest)
-			{
-				activeEntityList.push_back(entity);
-			}
-		}
-	}
-
-	if (!activeEntityList.empty())
-	{
-		static int selection = 0;
-		ImGui::SliderInt(("activeEntities: " + std::to_string(activeEntityList.size())).c_str(), &selection, 0, activeEntityList.size() - 1);
-
-		if (selection >= activeEntityList.size())
-		{
-			selection = activeEntityList.size() - 1;
-		}
-
-		testHandler = activeEntityList[selection];
-		auto& transform = coordinator.GetComponent<Transform>(testHandler);
-		auto& collider = coordinator.GetComponent<Collider>(testHandler);
-		auto& unit = coordinator.GetComponent<Unit>(testHandler);
-		static const char* unitTypes2[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR1","GENERATOR2","LAB","PROJECTILE","MELEE_PROJECTILE"};
-		static const char* unitfaction2[]{ "PLAYER","ENEMY" };
-
-		if (ImGui::CollapsingHeader("Unit Data"))
-		{
-			ImGui::Text("EntityID: %d", testHandler);
-			ImGui::Text("UnitName: %s", unit.name.c_str());
-			ImGui::Text("UnitType: %s", unitTypes2[unit.unitType - 1]);
-			ImGui::Text("UnitFaction: %s", unitfaction2[unit.unitFaction - 1]);
-			ImGui::Text("Level: %d", unit.level);
-			ImGui::SliderFloat("Health", &unit.health, 0.f, 1000.f);
-			ImGui::SliderFloat("Damage", &unit.damage, 0.f, 2000.f);
-			ImGui::SliderFloat("Defense", &unit.defense, 0.f, 2000.f);
-			ImGui::SliderFloat("Attack Range", &unit.attackRange, -50.f, 50.f);
-			ImGui::SliderFloat("Attack Speed", &unit.attackSpeed, -50.f, 50.f);
-
-			if (ImGui::CollapsingHeader(("Targeted EntityID: " + std::to_string(unit.target)).c_str()))
-			{
-				if (unit.target != UINT_MAX)
-				{
-					auto& targetTransform = coordinator.GetComponent<Transform>(unit.target);
-					auto& targetUnit = coordinator.GetComponent<Unit>(unit.target);
-					ImGui::Text("[Target] EntityID: %d", targetUnit.target);
-					ImGui::Text("[Target] UnitName: %s", targetUnit.name.c_str());
-					ImGui::Text("[Target] UnitType: %d", targetUnit.unitType);
-					ImGui::Text("[Target] Level: %d", targetUnit.level);
-					ImGui::SliderFloat("[Target] Health", &targetUnit.health, 0.f, 1000.f);
-					ImGui::SliderFloat("[Target] Damage", &targetUnit.damage, 0.f, 2000.f);
-					ImGui::SliderFloat("[Target] Defense", &targetUnit.defense, 0.f, 2000.f);
-					ImGui::SliderFloat("[Target] Attack Range", &targetUnit.attackRange, -50.f, 50.f);
-					ImGui::SliderFloat("[Target] Attack Speed", &targetUnit.attackSpeed, -50.f, 50.f);
-				}
-			}
-		}
-
-		if (ImGui::CollapsingHeader("Transformation"))
-		{
-			ImGui::SliderFloat("Translation X", &transform.position.x, -2000.0f, 2000.0f);
-			ImGui::SliderFloat("Translation Y", &transform.position.y, -2000.0f, 2000.0f);
-			ImGui::SliderFloat("Translation Z", &transform.position.z, -2000.0f, 2000.0f);
-
-			ImGui::SliderFloat("Rotation X", &transform.rotation.x, -2000.f, 2000.0f);
-			ImGui::SliderFloat("Rotation Y", &transform.rotation.y, -2000.f, 2000.0f);
-			ImGui::SliderFloat("Rotation Z", &transform.rotation.z, -2000.f, 2000.0f);
-
-			ImGui::SliderFloat("Scale X", &transform.scale.x, -2000.f, 2000.0f);
-			ImGui::SliderFloat("Scale Y", &transform.scale.y, -2000.f, 2000.0f);
-			ImGui::SliderFloat("Scale Z", &transform.scale.z, -2000.f, 2000.0f);
-		}
-
-		if (ImGui::CollapsingHeader("Collider"))
-		{
-			ImGui::SliderFloat("Mass", &collider.mass, -1.f, 2000.0f);
-			ImGui::SliderFloat("Collider Scale X", &collider.scale.x, -2000.0f, 2000.0f);
-			ImGui::SliderFloat("Collider Scale Y", &collider.scale.y, -2000.0f, 2000.0f);
-			ImGui::SliderFloat("Collider Scale Z", &collider.scale.z, -2000.0f, 2000.0f);
-		}
-
-		if (ImGui::Button("Set to inactive"))
-		{
-			unitsystem->AddInactiveEntity(testHandler);
-
-			if (selection == activeEntityList.size() - 1)
-			{
-				selection = selection - 1;
-			}
-		}
-
-		ImGui::SameLine();	
-
-		if (ImGui::Button("Set all to inactive"))
-		{
-			for (int i = 0; i < activeEntityList.size(); i++)
-			{
-				Entity tmp = activeEntityList[i];
-
-				unitsystem->AddInactiveEntity(tmp);
-			}
-
-			selection = 0;
-		}
-
-	}
-
-	ImGui::End();
-}
+//void SceneCombat::UpdateImGui()
+//{
+//	static bool unitSpawner = false;
+//	static bool entityList = false;
+//	static bool raycastInfo = false;
+//
+//	if (unitSpawner)
+//	{
+//		UpdateImGuiUnitSpawn();
+//	}
+//
+//	if (entityList)
+//	{
+//		UpdateImGuiEntityList();
+//	}
+//
+//	if (raycastInfo)
+//	{
+//		UpdateImGuiRaycast();
+//	}
+//
+//	ImGui::Begin("Main");
+//
+//	ImGui::Checkbox(" Unit Spawn Menu", &unitSpawner);
+//	ImGui::Checkbox(" Entity List", &entityList);
+//	ImGui::Checkbox(" Raycast Info", &raycastInfo);
+//
+//	if (ImGui::Button("Print Quad Tree"))
+//	{
+//		quadtreesystem->PrintTree(quadtreesystem->root);
+//	}
+//
+//	ImGui::End();
+//}
+//
+//void SceneCombat::UpdateImGuiRaycast()
+//{
+//	ImGui::Begin("Cursor");
+//	ImGui::Text("X: %f", raycastingsystem->cursorOnHeightMapPosition.x);
+//	ImGui::SameLine();
+//	ImGui::Text("Y: %f", raycastingsystem->cursorOnHeightMapPosition.y);
+//	ImGui::End();
+//}
+//
+//void SceneCombat::UpdateImGuiUnitSpawn()
+//{
+//	static float f = 0.0f;
+//	static const char* unitTypes[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR","LAB","PROJECTILE" };
+//	static const char* unitfaction[]{ "PLAYER","ENEMY" };
+//	static int counter = 0;
+//	static int selectedItem = 0;
+//	static int selectedItem2 = 0;
+//	static float translation[] = { 0.f, 0.f, 0.f };
+//	static float rotation[] = { 0.f, 0.f, 0.f };
+//	static float scale[] = { 1.f, 1.f, 1.f };
+//	static int levelOfUnit = 1;
+//	static int numOfUnit = 0;
+//
+//	ImGui::Begin("Debug");                          // Create a window called "Hello, world!" and append into it.
+//
+//	ImGui::Combo("UnitType", &selectedItem, unitTypes, IM_ARRAYSIZE(unitTypes));
+//	ImGui::Combo("UnitFaction", &selectedItem2, unitfaction, IM_ARRAYSIZE(unitfaction));
+//
+//	ImGui::SliderInt("UnitLevel", &levelOfUnit, 1, 50);
+//	ImGui::SliderInt("Number Of Units", &numOfUnit, 0, 100);
+//
+//	if (ImGui::CollapsingHeader("Transformation"))
+//	{
+//		ImGui::SliderFloat("Translation X", &translation[0], -2000.0f, 2000.0f);
+//		ImGui::SliderFloat("Translation Y", &translation[1], -2000.0f, 2000.0f);
+//		ImGui::SliderFloat("Translation Z", &translation[2], -2000.0f, 2000.0f);
+//
+//		ImGui::SliderFloat("Rotation X", &rotation[0], 0.f, 360.0f);
+//		ImGui::SliderFloat("Rotation Y", &rotation[1], 0.f, 360.0f);
+//		ImGui::SliderFloat("Rotation Z", &rotation[2], 0.f, 360.0f);
+//
+//		ImGui::SliderFloat("Scale X", &scale[0], 0.f, 500.0f);
+//		ImGui::SliderFloat("Scale Y", &scale[1], 0.f, 500.0f);
+//		ImGui::SliderFloat("Scale Z", &scale[2], 0.f, 500.0f);
+//	}
+//
+//	if (ImGui::Button("Spawn Unit"))             // Display some text (you can use a format strings too)
+//	{
+//		for (int i = 0; i < numOfUnit; i++)
+//		{
+//			Entity newUnit = unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+//			activeEntityList.push_back(newUnit);
+//		}
+//	}
+//
+//	ImGui::SameLine();
+//	if (ImGui::Button("Spawn Unit (Random Pos)"))
+//	{
+//		for (int i = 0; i < numOfUnit; i++)
+//		{
+//			translation[0] = Math::RandFloatMinMax(-200, 200);
+//			translation[2] = Math::RandFloatMinMax(-200, 200);
+//			Entity newUnit = unitsystem->CreateUnit((Unit::UnitType)(selectedItem + 1), (Unit::UnitFaction)(selectedItem2 + 1), levelOfUnit, Transform(glm::vec3(translation[0], translation[1], translation[2]), glm::vec3(scale[0], scale[1], scale[2]), glm::vec3(rotation[0], rotation[1], rotation[2]), TRANSFORM_TYPE::DYNAMIC_TRANSFORM));
+//			activeEntityList.push_back(newUnit);
+//		}
+//	}
+//
+//	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+//	ImGui::End();
+//}
+//
+//void SceneCombat::UpdateImGuiEntityList()
+//{
+//	activeEntityList.clear();
+//	ImGui::Begin("EntityList");
+//	if (activeEntityList.empty())
+//	{
+//		std::set<Entity> entitySetTest = unitsystem->m_Entities;
+//		if (entitySetTest.empty())
+//		{
+//			ImGui::Text("No active entities");
+//		}
+//		else
+//		{
+//			for (auto const& entity : entitySetTest)
+//			{
+//				activeEntityList.push_back(entity);
+//			}
+//		}
+//	}
+//
+//	if (!activeEntityList.empty())
+//	{
+//		static int selection = 0;
+//		ImGui::SliderInt(("activeEntities: " + std::to_string(activeEntityList.size())).c_str(), &selection, 0, activeEntityList.size() - 1);
+//
+//		if (selection >= activeEntityList.size())
+//		{
+//			selection = activeEntityList.size() - 1;
+//		}
+//
+//		testHandler = activeEntityList[selection];
+//		auto& transform = coordinator.GetComponent<Transform>(testHandler);
+//		auto& collider = coordinator.GetComponent<Collider>(testHandler);
+//		auto& unit = coordinator.GetComponent<Unit>(testHandler);
+//		static const char* unitTypes2[]{ "NORMAL","TANK","RANGE","TOWER","WALL","NEXUS","GENERATOR1","GENERATOR2","LAB","PROJECTILE","MELEE_PROJECTILE"};
+//		static const char* unitfaction2[]{ "PLAYER","ENEMY" };
+//
+//		if (ImGui::CollapsingHeader("Unit Data"))
+//		{
+//			ImGui::Text("EntityID: %d", testHandler);
+//			ImGui::Text("UnitName: %s", unit.name.c_str());
+//			ImGui::Text("UnitType: %s", unitTypes2[unit.unitType - 1]);
+//			ImGui::Text("UnitFaction: %s", unitfaction2[unit.unitFaction - 1]);
+//			ImGui::Text("Level: %d", unit.level);
+//			ImGui::SliderFloat("Health", &unit.health, 0.f, 1000.f);
+//			ImGui::SliderFloat("Damage", &unit.damage, 0.f, 2000.f);
+//			ImGui::SliderFloat("Defense", &unit.defense, 0.f, 2000.f);
+//			ImGui::SliderFloat("Attack Range", &unit.attackRange, -50.f, 50.f);
+//			ImGui::SliderFloat("Attack Speed", &unit.attackSpeed, -50.f, 50.f);
+//
+//			if (ImGui::CollapsingHeader(("Targeted EntityID: " + std::to_string(unit.target)).c_str()))
+//			{
+//				if (unit.target != UINT_MAX)
+//				{
+//					auto& targetTransform = coordinator.GetComponent<Transform>(unit.target);
+//					auto& targetUnit = coordinator.GetComponent<Unit>(unit.target);
+//					ImGui::Text("[Target] EntityID: %d", targetUnit.target);
+//					ImGui::Text("[Target] UnitName: %s", targetUnit.name.c_str());
+//					ImGui::Text("[Target] UnitType: %d", targetUnit.unitType);
+//					ImGui::Text("[Target] Level: %d", targetUnit.level);
+//					ImGui::SliderFloat("[Target] Health", &targetUnit.health, 0.f, 1000.f);
+//					ImGui::SliderFloat("[Target] Damage", &targetUnit.damage, 0.f, 2000.f);
+//					ImGui::SliderFloat("[Target] Defense", &targetUnit.defense, 0.f, 2000.f);
+//					ImGui::SliderFloat("[Target] Attack Range", &targetUnit.attackRange, -50.f, 50.f);
+//					ImGui::SliderFloat("[Target] Attack Speed", &targetUnit.attackSpeed, -50.f, 50.f);
+//				}
+//			}
+//		}
+//
+//		if (ImGui::CollapsingHeader("Transformation"))
+//		{
+//			ImGui::SliderFloat("Translation X", &transform.position.x, -2000.0f, 2000.0f);
+//			ImGui::SliderFloat("Translation Y", &transform.position.y, -2000.0f, 2000.0f);
+//			ImGui::SliderFloat("Translation Z", &transform.position.z, -2000.0f, 2000.0f);
+//
+//			ImGui::SliderFloat("Rotation X", &transform.rotation.x, -2000.f, 2000.0f);
+//			ImGui::SliderFloat("Rotation Y", &transform.rotation.y, -2000.f, 2000.0f);
+//			ImGui::SliderFloat("Rotation Z", &transform.rotation.z, -2000.f, 2000.0f);
+//
+//			ImGui::SliderFloat("Scale X", &transform.scale.x, -2000.f, 2000.0f);
+//			ImGui::SliderFloat("Scale Y", &transform.scale.y, -2000.f, 2000.0f);
+//			ImGui::SliderFloat("Scale Z", &transform.scale.z, -2000.f, 2000.0f);
+//		}
+//
+//		if (ImGui::CollapsingHeader("Collider"))
+//		{
+//			ImGui::SliderFloat("Mass", &collider.mass, -1.f, 2000.0f);
+//			ImGui::SliderFloat("Collider Scale X", &collider.scale.x, -2000.0f, 2000.0f);
+//			ImGui::SliderFloat("Collider Scale Y", &collider.scale.y, -2000.0f, 2000.0f);
+//			ImGui::SliderFloat("Collider Scale Z", &collider.scale.z, -2000.0f, 2000.0f);
+//		}
+//
+//		if (ImGui::Button("Set to inactive"))
+//		{
+//			unitsystem->AddInactiveEntity(testHandler);
+//
+//			if (selection == activeEntityList.size() - 1)
+//			{
+//				selection = selection - 1;
+//			}
+//		}
+//
+//		ImGui::SameLine();	
+//
+//		if (ImGui::Button("Set all to inactive"))
+//		{
+//			for (int i = 0; i < activeEntityList.size(); i++)
+//			{
+//				Entity tmp = activeEntityList[i];
+//
+//				unitsystem->AddInactiveEntity(tmp);
+//			}
+//
+//			selection = 0;
+//		}
+//
+//	}
+//
+//	ImGui::End();
+//}

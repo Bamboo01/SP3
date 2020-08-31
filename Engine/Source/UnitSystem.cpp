@@ -590,15 +590,15 @@ void UnitSystem::ApplyAttack(Entity attacker, Entity receiver)
             {
                 if (receiverUnit.unitType == Unit::NORMAL || receiverUnit.unitType == Unit::TANK || receiverUnit.unitType == Unit::RANGE)
                 {
-                    aiEntityController.LogEvent(attackerTransform.position, unitSeverity);
+                    aiEntityController.LogEvent(receiverTransform.position, unitSeverity);
                 }
                 else if (receiverUnit.unitType == Unit::NEXUS)
                 {
-                    aiEntityController.LogEvent(attackerTransform.position, nexusSeverity);
+                    aiEntityController.LogEvent(receiverTransform.position, nexusSeverity);
                 }
                 else
                 {
-                    aiEntityController.LogEvent(attackerTransform.position, buildingSeverity);
+                    aiEntityController.LogEvent(receiverTransform.position, buildingSeverity);
                 }
             }
         }

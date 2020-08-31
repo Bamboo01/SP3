@@ -176,7 +176,7 @@ void AIControllerSystem::Update(float dt)
                         selectedEntity.push_back(a.first);
                     }
                 }
-                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(aicontroller.targetNexusPosition, selectedEntity, false,dt);
+                aicontroller.gridcontrollersystem->UpdateEnemyGridCost(aicontroller.targetNexusPosition, selectedEntity, false, dt);
                 
             }
             else if (aicontroller.TotalAggression > 0.f)
@@ -194,7 +194,6 @@ void AIControllerSystem::Update(float dt)
                         // Level up normal units
                         if (aicontroller.resource1 > aicontroller.levelupnormalcost)
                         {
-                            std::cout << "ENEMY NORMAL LEVEL UP! " << std::endl;
                             if (aicontroller.normalunitlevel <= 3)
                             {
                                 aicontroller.normalunitlevel++;
@@ -211,7 +210,6 @@ void AIControllerSystem::Update(float dt)
                         // Level up range units
                         else if (aicontroller.resource1 > aicontroller.leveluprangecost)
                         {
-                            std::cout << "ENEMY RANGE LEVEL UP! " << std::endl;
                             if (aicontroller.rangeunitlevel <= 3)
                             {
                                 aicontroller.rangeunitlevel++;
@@ -227,7 +225,6 @@ void AIControllerSystem::Update(float dt)
                         // Level up tank units
                         else if (aicontroller.resource1 > aicontroller.leveluptankcost)
                         {
-                            std::cout << "ENEMY TANK LEVEL UP! " << std::endl;
                             if (aicontroller.tankunitlevel <= 3)
                             {
                                 aicontroller.tankunitlevel++;

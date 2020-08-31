@@ -57,10 +57,10 @@ class SceneCombat : public Scene
 	void InitPauseMenu();
 	void InitWinLose();
 
-	void UpdateImGui();
-	void UpdateImGuiRaycast();
-	void UpdateImGuiUnitSpawn();
-	void UpdateImGuiEntityList();
+	//void UpdateImGui();
+	//void UpdateImGuiRaycast();
+	//void UpdateImGuiUnitSpawn();
+	//void UpdateImGuiEntityList();
 
 	Entity testHandler; // An entity handler to control entities
 	Entity cameraHandler;
