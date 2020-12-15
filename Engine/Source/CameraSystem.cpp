@@ -46,14 +46,16 @@ void CameraSystem::Update(float dt)
 
         camera.right = glm::normalize(glm::cross(glm::vec3(0, 1, 0), camera.target - camera.position));
         camera.up = glm::cross(camera.target - camera.position, camera.right);
-        camera.ViewMatrix = glm::lookAt(camera.position, camera.target, camera.up);
+        
 
         if (camera.mode == CAMERA_MODE::MODE_ORTHOGRAPHIC)
         {
-            camera.ProjectionMatrix = glm::ortho(0, camera.viewWidth, 0, camera.viewHeight, -1, 1000);
+			camera.ViewMatrix = glm::mat4(1.0f);
+            camera.ProjectionMatrix = glm::ortho((float)camera.viewWidth * -0.5f, (float)camera.viewWidth * 0.5f, (float)camera.viewHeight * -0.5f, (float)camera.viewHeight * 0.5f, -1000.f, 1000.f);
         }
         else
         {
+			camera.ViewMatrix = glm::lookAt(camera.position, camera.target, camera.up);
             camera.ProjectionMatrix = glm::perspective(camera.FOV, (float)(camera.viewWidth / camera.viewHeight), 0.1f, 1000.f);
         }
     }

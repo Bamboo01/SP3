@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\SceneCamera.cpp" />
     <ClCompile Include="Source\AIControllerSystem.cpp" />
     <ClCompile Include="Source\CreditScrollSystem.cpp" />
     <ClCompile Include="Source\FogOfWarManager.cpp" />
@@ -219,6 +220,7 @@
     <ClCompile Include="Source\WinLoseSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\SceneCamera.h" />
     <ClInclude Include="Source\AIController.h" />
     <ClInclude Include="Source\AIControllerSystem.h" />
     <ClInclude Include="Source\CreditScrollSystem.h" />

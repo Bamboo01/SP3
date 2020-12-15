@@ -32,7 +32,7 @@ Camera::Camera(
 
 	if (this->mode == CAMERA_MODE::MODE_ORTHOGRAPHIC)
 	{
-		ProjectionMatrix = glm::ortho(0, viewWidth, 0, viewHeight);
+		ProjectionMatrix = glm::ortho((float)viewWidth * -0.5f, (float)viewWidth * 0.5f, (float)viewHeight * -0.5f, (float)viewHeight * 0.5f, -1000.f, 1000.f);
 	}
 	else
 	{

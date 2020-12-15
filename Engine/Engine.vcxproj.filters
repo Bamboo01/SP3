@@ -173,6 +173,9 @@
     <ClCompile Include="Source\WinLoseSystem.cpp">
       <Filter>Auxillary\Systems\WinLoseSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneCamera.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -483,6 +486,9 @@
     </ClInclude>
     <ClInclude Include="Source\WinLoseSystem.h">
       <Filter>Auxillary\Systems\WinLoseSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneCamera.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
